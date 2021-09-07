@@ -36,7 +36,6 @@ contract LaborContract {
 
   // 근로계약서 저장소
   struct laborContract {
-    string ipfsHash;          // ipfsHash
     string peroid;            // 근로계약기간 
     string duties;            // 업무내용
     string workingTime;       // 소정근로시간
@@ -46,7 +45,6 @@ contract LaborContract {
     string comment;           // 기타사항
   }
 
-  
 
 
 
