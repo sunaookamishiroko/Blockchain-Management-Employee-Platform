@@ -8,5 +8,11 @@ module.exports = {
     develop: {
       port: 8545
     }
+  },
+
+  compilers: {
+    solc: {
+      version: "0.8.0" // ex:  "0.4.20". (Default: Truffle's installed solc)
+    }
   }
 };
