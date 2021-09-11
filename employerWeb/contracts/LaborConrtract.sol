@@ -46,7 +46,4 @@ contract LaborContract {
   }
 
 
-
-
-
 }
