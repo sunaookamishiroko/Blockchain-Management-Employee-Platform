@@ -83,7 +83,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      * {IERC20-balanceOf} and {IERC20-transfer}.
      */
     function decimals() public view virtual override returns (uint8) {
-        return 3;
+        return 0;
     }
 
     /**
