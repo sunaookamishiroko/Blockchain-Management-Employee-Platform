@@ -32,6 +32,18 @@ contract LaborContract {
     string name;
     string location;
     address [] employee;
+    attendance [] attendance;
+  }
+
+  // 출석부 // 후에 프론트 화면에서 요구하는 양식에 따라 변경할 수 있음
+  struct attendance {
+    address employee;
+    string startDay;
+    uint startTimeHour;
+    uint startTimeMinute;
+    string endDay;
+    uint endTimeHour;
+    uint endTimeMinute;
   }
 
   // 근로계약서 저장소
@@ -44,6 +56,8 @@ contract LaborContract {
     string wageday;           // 임금지급일
     string comment;           // 기타사항
   }
+
+
 
 
 }
