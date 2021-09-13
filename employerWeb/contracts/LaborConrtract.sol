@@ -77,10 +77,11 @@ contract LaborContract {
     for (employeeIndex = 0 ; employeeIndex  <= workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
       if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == msg.sender) {
         employee = msg.sender;
+        break;
       }
     }
 
-    require(employee != address(0), "your address is not employee");
+    require(employee != address(0), "you are not employee");
 
     if (classifyNum == 0) {
 
@@ -98,6 +99,34 @@ contract LaborContract {
 
     return 1;
 
+  }
+
+  // 출퇴근 내역을 return하는 함수
+  // 후에 프론트 화면에서 요구하는 양식에 따라 변경할 수 있음
+  function checkAttendance (uint workPlaceInfoIndex, address employeeAdress) public view 
+  returns (string [] memory, uint [] memory, uint [] memory, string [] memory, uint [] memory, uint [] memory){
+
+    require(workPlaceInfoIndex < workplaceinfo.length, "workplace is not available");
+
+    address employee = address(0);
+    uint employeeIndex;
+    
+    for (employeeIndex = 0 ; employeeIndex  <= workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
+      if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAdress) {
+        employee = employeeAdress;
+        break;
+      }
+    }
+
+    require(employee != address(0), "you are not employee");
+
+    return (
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startDay,
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeHour,
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeMinute,
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endDay,
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeHour,
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeMinute );
   }
 
 }
