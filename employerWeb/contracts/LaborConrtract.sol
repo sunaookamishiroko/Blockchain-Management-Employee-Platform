@@ -36,7 +36,7 @@ contract LaborContract {
     attendance [] attendanceList;
   }
 
-  // 출톼근 기록부
+  // 출퇴근 기록부
   // 후에 프론트 화면에서 요구하는 양식에 따라 변경할 수 있음
   struct attendance {
     string [] startDay;
