@@ -47,6 +47,13 @@ contract LaborContract {
     uint [] endTimeMinute;
   }
 
+  //해당 월 출근 기록부
+  struct monthlyAttendance {
+    uint [] month;             //몇 월의 기록인지 저장
+    uint [] workDate;          //근로자가 해당 월에 며칠 일했는지 저장
+    uint [] workHour;          //근로자가 해당 월에 몇 시간 일했는지 저장
+  }
+
   // 근로계약서 저장소
   struct laborContract {
     string peroid;            // 근로계약기간 
@@ -63,6 +70,33 @@ contract LaborContract {
   personalInfo [] personalinfo;
   workplaceInfo [] workplaceinfo;
   laborContract [] laborcontract;
+
+  //근로자의 근무지 조회하는 함수
+  // 후에 프론트 화면에서 요구하는 양식에 따라 변경할 수 있음
+  function checkWorkplace (address employeeAddress, uint workPlaceInfoIndex ) public returns (){
+  
+    require(workPlaceInfoIndex < workplaceinfo.length, "your workplace is not available");
+
+
+    
+  }
+
+  //근로자의 근로계약서를 조회하는 함수
+  function checkLaborContract (address employeeAddress) public returns() {
+
+  }
+
+  //근로자가 일한 시간 조회하는 함수
+  function checkWorkTime (address employeeAddress) public returns () {
+
+
+  }
+
+  //근로자의 급여 조회
+  function checkPayment (address employeeAddress) public returns () {
+
+
+  }
 
   // 출퇴근 올리는 함수
   // classifyNum : 0 -> 출근 / 1 -> 퇴근
@@ -128,5 +162,6 @@ contract LaborContract {
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeHour,
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeMinute );
   }
+
 
 }
