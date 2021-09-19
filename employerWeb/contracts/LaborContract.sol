@@ -73,9 +73,27 @@ contract LaborContract {
 
   //근로자의 근무지 조회하는 함수
   // 후에 프론트 화면에서 요구하는 양식에 따라 변경할 수 있음
-  function checkWorkplace (address employeeAddress, uint workPlaceInfoIndex ) public returns (){
+  function checkWorkplace (address employeeAddress, uint workPlaceInfoIndex ) public returns (string _name, string _location){
   
     require(workPlaceInfoIndex < workplaceinfo.length, "your workplace is not available");
+
+    address employee = address(0);
+    uint employeeIndex;
+    
+    for (employeeIndex = 0 ; employeeIndex  <= workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
+      if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAddress) {
+        employee = employeeAddress;
+        break;
+      }
+    }
+
+    require(employee != address(0), "you are not employee");
+
+    return (
+      workplaceinfo[workPlaceInfoIndex].name,
+      workplaceinfo[workPlaceInfoIndex].location);
+
+  }
 
 
     
