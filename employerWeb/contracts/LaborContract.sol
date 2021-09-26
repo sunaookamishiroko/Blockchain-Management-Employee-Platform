@@ -113,11 +113,42 @@ contract LaborContract {
 
   }
 
-  //근로자가 일한 시간 조회하는 함수
-  function checkWorkTime (address employeeAddress) public returns () {
+  //당일 근로자가 일한 시간 조회하는 함수
+  //hour(시간), minute(분)을 숫자로 출력합니다   -> 몇 시간 몇 분 근무했는지에 대한 정보
+  function checkWorkTime (address employeeAddress, uint workPlaceInfoIndex) public returns (uint _hour, uint _minute) {
 
+    require(workPlaceInfoIndex < workplaceinfo.length, "error");
+
+    address employee = address(0);
+    uint employeeIndex;
+    
+    for (employeeIndex = 0 ; employeeIndex  <= workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
+      if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAdress) {
+        employee = employeeAdress;
+        break;
+      }
+    }
+
+    require(employee != address(0), "you are not employee");
+
+    uint date = 1;                                              //추우에 날짜 기입 방법이 확정될 경우 이용될 수 있음
+    uint hour = workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeHour - workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeHour;
+    uint minute = workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeMinute - workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeMinute;
+
+    if(hour < 0) {
+      hour = hour + 24;
+    }
+
+    if (minute < 0) {
+      hour = hour - 1;
+      minute = minute + 60;
+    }
+
+    return (hour, minute);
 
   }
+
+
 
   //근로자의 급여 조회
   function checkPayment (address employeeAddress) public returns () {
