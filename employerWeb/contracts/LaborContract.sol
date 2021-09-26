@@ -129,8 +129,8 @@ contract LaborContract {
     uint employeeIndex;
     
     for (employeeIndex = 0 ; employeeIndex  <= workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
-      if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAdress) {
-        employee = employeeAdress;
+      if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAddress) {
+        employee = employeeAddress;
         break;
       }
     }
@@ -157,7 +157,7 @@ contract LaborContract {
 
 
   //근로자의 급여 조회
-  function checkPayment (address employeeAddress) public returns () {
+  function checkPayment (address employeeAddress) public returns ( ) {
 
 
   }
@@ -207,7 +207,7 @@ contract LaborContract {
   // 출퇴근 내역을 return하는 함수
   // 후에 프론트 화면에서 요구하는 양식에 따라 변경할 수 있음
   // 출퇴근 출력 내용 중 날짜 부분을 년도, 월, 일 세분화하였습니다.
-  function checkAttendance (uint workPlaceInfoIndex, address employeeAdress) public view 
+  function checkAttendance (uint workPlaceInfoIndex, address employeeAddress) public view 
   returns (uint [] memory, uint [] memory, uint [] memory, uint [] memory, uint [] memory, 
   uint [] memory, uint [] memory, uint [] memory, uint [] memory, uint [] memory){
 
@@ -217,8 +217,8 @@ contract LaborContract {
     uint employeeIndex;
     
     for (employeeIndex = 0 ; employeeIndex  <= workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
-      if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAdress) {
-        employee = employeeAdress;
+      if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAddress) {
+        employee = employeeAddress;
         break;
       }
     }
