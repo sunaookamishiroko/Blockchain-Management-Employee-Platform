@@ -96,11 +96,20 @@ contract LaborContract {
   }
 
 
-    
-  }
-
   //근로자의 근로계약서를 조회하는 함수
-  function checkLaborContract (address employeeAddress) public returns() {
+  //아직 미완성 입니다.(근로계약서 등록을 어떻게 하냐에 따라 조회 방법이 달라질 듯 합니다.)
+  function checkLaborContract (address employeeAddress) public view
+  returns(string _period, string _duties, string _workingTime, string _workingDays, string _wage, string _wageday, string _comment) {
+
+
+    return (
+      laborcontract[].period,
+      laborcontract[].duties,
+      laborcontract[].workingTime,
+      laborcontract[].workingDays,
+      laborcontract[].wage,
+      laborcontract[].wageday,
+      laborcontract[].comment);
 
   }
 
