@@ -39,10 +39,16 @@ contract LaborContract {
   // 출톼근 기록부
   // 후에 프론트 화면에서 요구하는 양식에 따라 변경할 수 있음
   struct attendance {
-    string [] startDay;
+    //string [] startDay;
+    uint [] startYear;
+    uint [] startMonth;
+    uint [] startDate;
     uint [] startTimeHour;
     uint [] startTimeMinute;
-    string [] endDay;
+    //string [] endDay;
+    uint [] endYear;
+    uint [] endMonth;
+    uint [] endDate;
     uint [] endTimeHour;
     uint [] endTimeMinute;
   }
@@ -158,8 +164,9 @@ contract LaborContract {
 
   // 출퇴근 올리는 함수
   // classifyNum : 0 -> 출근 / 1 -> 퇴근
-  function uploadAttendance (uint8 classifyNum, string memory day, uint timeHour, 
-  uint timeMinute, uint workPlaceInfoIndex) public returns (uint8) {
+  // 날짜 입력 형식을 기존 string 형식에서 uint 년도, uint 몇월, uint 몇일 형식으로 변경하였습니다.
+  function uploadAttendance (uint8 classifyNum, uint year, uint month, uint date,
+  uint timeHour, uint timeMinute, uint workPlaceInfoIndex) public returns (uint8) {
 
     require(workPlaceInfoIndex < workplaceinfo.length, "your workplace is not available");
 
@@ -177,13 +184,17 @@ contract LaborContract {
 
     if (classifyNum == 0) {
 
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startDay.push(day);
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startYear.push(year);
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startMonth.push(month);
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startDate.push(date);
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeHour.push(timeHour);
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeMinute.push(timeMinute);
       
     } else if (classifyNum == 1){
 
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endDay.push(day);
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endYear.push(year);
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endMonth.push(month);
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endDate.push(date);
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeHour.push(timeHour);
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeMinute.push(timeMinute);
 
@@ -195,8 +206,10 @@ contract LaborContract {
 
   // 출퇴근 내역을 return하는 함수
   // 후에 프론트 화면에서 요구하는 양식에 따라 변경할 수 있음
+  // 출퇴근 출력 내용 중 날짜 부분을 년도, 월, 일 세분화하였습니다.
   function checkAttendance (uint workPlaceInfoIndex, address employeeAdress) public view 
-  returns (string [] memory, uint [] memory, uint [] memory, string [] memory, uint [] memory, uint [] memory){
+  returns (uint [] memory, uint [] memory, uint [] memory, uint [] memory, uint [] memory, 
+  uint [] memory, uint [] memory, uint [] memory, uint [] memory, uint [] memory){
 
     require(workPlaceInfoIndex < workplaceinfo.length, "workplace is not available");
 
@@ -213,10 +226,14 @@ contract LaborContract {
     require(employee != address(0), "you are not employee");
 
     return (
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startDay,
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startYear,
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startMonth,
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startDate,
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeHour,
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeMinute,
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endDay,
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endYear,
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endMonth,
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endDate,
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeHour,
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeMinute );
   }
