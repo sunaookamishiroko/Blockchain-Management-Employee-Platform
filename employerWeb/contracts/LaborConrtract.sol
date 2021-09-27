@@ -170,8 +170,9 @@ contract LaborContract {
     temporaryLabor[employeeIndex].name.push(name);
     temporaryLabor[employeeIndex].age.push(age);
     temporaryLabor[employeeIndex].gender.push(gender);
-    temporaryLabor[employeeIndex].identiNumber.push(identiNumber);
-    temporaryLabor[employeeIndex].employee.push(employee);   
+    temporaryLabor[employeeIndex].employee.push(employee);  
+
+    return 1; 
   }
 
 
@@ -217,8 +218,10 @@ contract LaborContract {
 
   }
 
-  // 근로자가 임시 근로계약서 확인 함수
+  // 근로자가 임시 근로계약서 확인 함수 (작성 중)
   function sendContract(uint employeeIndex) {
 
   }
+
+  // 근로계약서 업로드 함수(작성 중)
 }
