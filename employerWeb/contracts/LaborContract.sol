@@ -182,20 +182,22 @@ contract LaborContract {
     require(employee != address(0), "you are not employee");
     
     //출근기록부를 바탕으로 해당 년, 월에 출근한 내역을 뽑아낸다
+    //조회를 원하는 년도의 데이터를 갖고 있는 배열의 인덱스 번호를 찾는다
     while(workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startYear[Index] != workedYear){
       Index = Index + 1;
     }
 
+    //이어서 조회를 원하는 월의 데이터를 갖고 있는 배열의 인덱스 번호를 찾는다
     while(workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startMonth[Index] != workedMonth){
       Index = Index + 1;
     }
-    
+    //해당 인덱스 번호부터 조회를 원하는 월의 데이터가 아닌 배열이 나타날때까지 다시 조회하여 인덱스 번호를 찾는다
     startIndex = Index;
 
     while(workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startMonth[Index] == workedMonth){
        Index = Index + 1;
     }
-    
+    //조회를 원하는 월의 데이터를 벗어난 시점에서의 인덱스 번호를 마지막 인덱스로 한다
     endIndex = Index;
     //조회하고자 하는 년도, 월의 값을 모두 갖고 있는 인덱스부터 시작하여, 다음달 값이 들어가는 인덱스까지 반복
     for(startIndex; startIndex <endIndex; startIndex++){
