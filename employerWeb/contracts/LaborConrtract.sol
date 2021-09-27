@@ -32,6 +32,7 @@ contract LaborContract {
   struct workplaceInfo {
     string name;
     string location;
+    address employer;                  // 사업장 정보에 고용주 address 추가
     address [] employee;
     attendance [] attendanceList;
   }
@@ -48,21 +49,48 @@ contract LaborContract {
   }
 
   // 근로계약서 저장소
+  // 후에 프론트를 생각하여 근로시작시간 / 근무주기를 추가함
   struct laborContract {
-    string peroid;            // 근로계약기간 
+    string period;            // 근로계약기간 
     string duties;            // 업무내용
+    string workingStartTime;  // 근로시작시간
     string workingTime;       // 소정근로시간
+    string workingCycle;      // 근무주기
     string workingDays;       // 근무일
     string wage;              // 임금(시급)
     string wageday;           // 임금지급일
     string comment;           // 기타사항
   }
+
+  // 근로 계약 전 근로자 임시 저장소
+  struct temporaryLabor{
+    uint8 identiNumber;
+    string name;
+    uint age;
+    string gender;
+    address employee;
+  }
   
+
+  // 근로 계약 전 계약서 임시 저장소
+  struct temporaryContract{
+    string period;            // 근로계약기간 
+    string duties;            // 업무내용
+    string workingStartTime;  // 근로시작시간
+    string workingTime;       // 소정근로시간
+    string workingCycle;      // 근무주기
+    string workingDays;       // 근무일
+    string wage;              // 임금(시급)
+    string wageday;           // 임금지급일
+    string comment;           // 기타사항
+  }
   //struct 배열 선언부
 
   personalInfo [] personalinfo;
   workplaceInfo [] workplaceinfo;
   laborContract [] laborcontract;
+  temporaryLabor [] temporarylabor;          // 임시 저장소(근로자)
+  temporaryContract [] temporarycontract;    // 임시 저장소(계약서)
 
   // 출퇴근 올리는 함수
   // classifyNum : 0 -> 출근 / 1 -> 퇴근
@@ -120,6 +148,7 @@ contract LaborContract {
 
     require(employee != address(0), "you are not employee");
 
+    
     return (
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startDay,
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeHour,
@@ -129,4 +158,67 @@ contract LaborContract {
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeMinute );
   }
 
+  //근로자의 근로계약서 신청 함수(본인의 address 등록 및 개인정보 등록)
+  function signupContract(uint identiNumber, string name, uint age, string gender, uint workPlaceInfoIndex, uint employeeIndex) public returns (uint8) {
+
+    address employee = address(0);
+
+    employee = msg.sender;
+
+    //근로자가 본인의 개인정보를 데이터에 입력
+    temporaryLabor[employeeIndex].identiNumber.push(identiNumber);
+    temporaryLabor[employeeIndex].name.push(name);
+    temporaryLabor[employeeIndex].age.push(age);
+    temporaryLabor[employeeIndex].gender.push(gender);
+    temporaryLabor[employeeIndex].identiNumber.push(identiNumber);
+    temporaryLabor[employeeIndex].employee.push(employee);   
+  }
+
+
+  //고용주 address에서 근로계약서 조건 업로드 함수
+  function uploadRequirement(uint8 classifyNum, string period, string duties,
+  string workingStartTime, string workingTime, string workingCycle, string workingDays, 
+  string wage, string wageday, string comment, uint workPlaceInfoIndex, uint employeeIndex) public returns (uint8) {
+  //근로자의 index를 안다고 가정한 경우로 진행중 추후 변경 가능
+
+    //사업장 확인작업
+    require(workPlaceInfoIndex < workplaceinfo.length, "workplace is not available");
+
+    address employer = address(0);
+
+    // 고용주 확인 작업
+    if (workplaceinfo[workPlaceInfoIndex].employer == msg.sender) {
+      employer == msg.sender;
+      break;
+    } 
+    else if(workpalceinfo[workPlaceInfoIndex].employer != msg.sender) {
+      // 무슨 내용 들어가야될 지 미정
+      break;
+    }
+
+    // 근로자 확인작업 (근로자가 신청을 했을 경우, 임시 데이터에 근로자의 데이터가 올라감)
+    require(employeeIndex < temporaryContract.length, "The employee don't sign up for your workplace")
+
+    // 근로자 확인
+    require(employer != address(0), "you are not employer in this workplace");
+
+    //임시계약서에 데이터 저장
+    temporaryContract[employeeIndex].period.push(period);
+    temporaryContract[employeeIndex].duties.push(duties);
+    temporaryContract[employeeIndex].workingStartTime.push(workingStartTime);
+    temporaryContract[employeeIndex].workingTime.push(workingTime);
+    temporaryContract[employeeIndex].workingCycle.push(workingCycle);
+    temporaryContract[employeeIndex].workingDays.push(workingDays);
+    temporaryContract[employeeIndex].wage.push(wage);
+    temporaryContract[employeeIndex].wageday.push(wageday);
+    temporaryContract[employeeIndex].comment.push(comment);
+    
+    return 1;
+
+  }
+
+  // 근로자가 임시 근로계약서 확인 함수
+  function sendContract(uint employeeIndex) {
+
+  }
 }
