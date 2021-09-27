@@ -157,7 +157,66 @@ contract LaborContract {
 
 
   //근로자의 급여 조회
-  function checkPayment (address employeeAddress) public returns ( ) {
+  function checkPayment (address employeeAddress, uint workPlaceInfoIndex, uint workedYear, uint workedMonth, uint wage) public 
+  returns (uint) {
+
+    require(workPlaceInfoIndex < workplaceinfo.length, "error");
+
+    address employee = address(0);
+    uint employeeIndex;
+    uint Index = 0;
+    uint startIndex;
+    uint endIndex;
+    uint hour;
+    uint minute;
+    uint dailyWage;
+    uint montlyWage = 0;
+    
+    for (employeeIndex = 0 ; employeeIndex  <= workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
+      if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAddress) {
+        employee = employeeAddress;
+        break;
+      }
+    }
+
+    require(employee != address(0), "you are not employee");
+    
+    //출근기록부를 바탕으로 해당 년, 월에 출근한 내역을 뽑아낸다
+    while(workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startYear[Index] != workedYear){
+      Index = Index + 1;
+    }
+
+    while(workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startMonth[Index] != workedMonth){
+      Index = Index + 1;
+    }
+    
+    startIndex = Index;
+
+    while(workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startMonth[Index] == workedMonth){
+       Index = Index + 1;
+    }
+    
+    endIndex = Index;
+    //조회하고자 하는 년도, 월의 값을 모두 갖고 있는 인덱스부터 시작하여, 다음달 값이 들어가는 인덱스까지 반복
+    for(startIndex; startIndex <endIndex; startIndex++){
+      hour = workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeHour[startIndex] - workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeHour[startIndex];
+      minute = workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeMinute[startIndex] - workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeMinute[startIndex];
+
+      if(hour < 0) {
+        hour = hour + 24;
+      }
+
+      if (minute < 0) {
+        hour = hour - 1;
+        minute = minute + 60;
+      }
+      dailyWage = (wage/60)*(hour*60+minute);
+      montlyWage = monthlyWage + dailyWage;
+
+    }
+
+    return (montlyWage);
+  }
 
 
   }
