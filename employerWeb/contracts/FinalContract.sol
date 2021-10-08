@@ -67,6 +67,7 @@ contract LaborContract {
 
   // 근로 계약 전 근로자 임시 저장소
   struct temporaryLabor{
+    uint registationNum;  // 주민등록번호 등록 추가
     string name;
     uint age;
     string gender;
@@ -77,6 +78,8 @@ contract LaborContract {
 
   // 근로 계약 전 계약서 임시 저장소
   struct temporaryContract{
+    address employer;         // 고용주 address
+    address employee;         // 근로자 address
     string period;            // 근로계약기간 
     string duties;            // 업무내용
     string workingStartTime;  // 근로시작시간
@@ -97,15 +100,16 @@ contract LaborContract {
 
 
   //0. 고용주의 사업장 등록
-  frunction registerWorkplace(string employerName, string workplaceName, string location) public returns (uint8){
+  frunction registerWorkplace(uint registationNum, string employerName, string workplaceName, string location) public returns (uint8){
       
-      public address employer;
+      address employer;
       employer = msg.sender;
       uint max = 10000; // 추후 수정
 
-      for(workplaceIndex = 0 ; workplaceIndex <= max ; workplaceIndex++){
+      for(uint workplaceIndex = 0 ; workplaceIndex <= max ; workplaceIndex++){
           //if(workplaceInfo[workplaceIndex].workplaceName에 데이터가 없을 경우)
           {
+            workplaceInfo[workplaceIndex].registationNum.push(registationNum);
             workplaceInfo[workplaceIndex].employerName.push(employerName);
             workplaceInfo[workplaceIndex].workplaceName.push(workplaceName);
             workplaceInfo[workplaceIndex].location.push(location);
@@ -123,9 +127,9 @@ contract LaborContract {
 
     public address employee;
     employee = msg.sender;
-    
+    uint max = 10000; // 추후 수정
 
-    for(employeeIndex = 0 ; employeeIndex <= 20 ; employeeIndex++){
+    for(uint employeeIndex = 0 ; employeeIndex <= max ; employeeIndex++){
         //if(temporaryLabor[employeeIndex].name에 데이터가 없을 경우)
         {
          temporaryLabor[employeeIndex].name.push(name);
@@ -137,48 +141,45 @@ contract LaborContract {
         }
     }
 
-
-
     return 1;
 
   }
 
-  //2. 고용주가 임시 근로계약서 작성
-  function uploadRequirement(string period, string duties, string workingStartTime, string workingTime, string workingCycle, string workingDays, 
-  string wage, string wageday, string comment, uint workPlaceInfoIndex) public returns (uint8) {
+  //2. 고용주가 임시 근로계약서 작성(근로 신청한 근로자의 주민등록번호를 입력하여 근로자 확인)
+  function uploadRequirement(uint registationNum, string period, string duties, string workingStartTime, string workingTime, 
+  string workingCycle, string workingDays, string wage, string wageday, string comment) public returns (uint8) {
 
-    //사업장 확인작업
-    require(workPlaceInfoIndex < workplaceinfo.length, "workplace is not available");
+    uint max = 10000; // 추후 수정
 
-    address employer = address(0);
-
-    // 고용주 확인 작업
-    if (workplaceinfo[workPlaceInfoIndex].employer == msg.sender) {
-      employer == msg.sender;
-      break;
-    } 
-    else if(workpalceinfo[workPlaceInfoIndex].employer != msg.sender) {
-      // 무슨 내용 들어가야될 지 미정
-      break;
+    //사업장, 근로자 확인작업
+    for(uint workplaceIndex = 0 ; workplaceIndex <= workplaceInfo.length ; workplaceIndex++){
+        if(workplaceInfo[workplaceIndex].employer == msg.sender)
+        {
+            for(uint employeeIndex = 0 ; employeeIndex <= temporaryLabor.length ; employeeIndex++){
+                if(temporaryLabor[employeeIndex].registationNum == registationNum)
+                {
+                    for(uint contractIndex = 0 ; contractIndex <= max ; contractIndex++){
+                        //if(temporaryContract[contractIndex].employer에 데이터가 없다면)
+                        {
+                            temporaryContract[contractIndex].employer.push(msg.sender);
+                            temporaryContract[contractIndex].employee.push(temporaryLabor[employeeIndex].employee);
+                            temporaryContract[contractIndex].duties.push(duties);
+                            temporaryContract[contractIndex].workingStartTime.push(workingStartTime);
+                            temporaryContract[contractIndex].workingTime.push(workingTime);
+                            temporaryContract[contractIndex].workingCycle.push(workingCycle);
+                            temporaryContract[contractIndex].workingDays.push(workingDays);
+                            temporaryContract[contractIndex].wage.push(wage);
+                            temporaryContract[contractIndex].wageday.push(wageday);
+                            temporaryContract[contractIndex].comment.push(comment);
+                            break;
+                        }
+                    }
+                }
+            }
+            
+        }
     }
 
-    // 근로자 확인작업 (근로자가 신청을 했을 경우, 임시 데이터에 근로자의 데이터가 올라감)
-    require(employeeIndex < temporaryContract.length, "The employee don't sign up for your workplace")
-
-    // 근로자 확인
-    require(employer != address(0), "you are not employer in this workplace");
-
-    //임시계약서에 데이터 저장
-    temporaryContract[employeeIndex].period.push(period);
-    temporaryContract[employeeIndex].duties.push(duties);
-    temporaryContract[employeeIndex].workingStartTime.push(workingStartTime);
-    temporaryContract[employeeIndex].workingTime.push(workingTime);
-    temporaryContract[employeeIndex].workingCycle.push(workingCycle);
-    temporaryContract[employeeIndex].workingDays.push(workingDays);
-    temporaryContract[employeeIndex].wage.push(wage);
-    temporaryContract[employeeIndex].wageday.push(wageday);
-    temporaryContract[employeeIndex].comment.push(comment);
-    
     return 1;
 
   }
