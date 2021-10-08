@@ -25,6 +25,7 @@ contract LaborContract {
     string name;
     uint age;
     string gender;
+    uint [] workPlaceInfoIndexList;
   }
 
   // 사업장 정보
@@ -74,32 +75,25 @@ contract LaborContract {
   }
   
   //struct 배열 선언부
-
   personalInfo [] personalinfo;
   workplaceInfo [] workplaceinfo;
   laborContract [] laborcontract;
 
-  //근로자의 근무지 조회하는 함수
-  // 후에 프론트 화면에서 요구하는 양식에 따라 변경할 수 있음
-  function checkWorkplace (address employeeAddress, uint workPlaceInfoIndex ) public returns (string _name, string _location){
   
-    require(workPlaceInfoIndex < workplaceinfo.length, "your workplace is not available");
 
-    address employee = address(0);
-    uint employeeIndex;
+  //근로자의 근무지들 조회하는 함수
+  function checkWorkplace (address employeeAddress) public returns (uint [], string [], string []){
     
-    for (employeeIndex = 0 ; employeeIndex  <= workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
-      if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAddress) {
-        employee = employeeAddress;
-        break;
-      }
+    uint [] array = _person[employeeAddress].workPlaceInfoIndexList;
+    string [] name;
+    string [] location;
+    
+    for (uint x = 0; x < array.length ; x++) {
+      name.push(workplaceinfo[array[x]].name);
+      location.push(workplaceinfo[array[x]].location);
     }
 
-    require(employee != address(0), "you are not employee");
-
-    return (
-      workplaceinfo[workPlaceInfoIndex].name,
-      workplaceinfo[workPlaceInfoIndex].location);
+    return (array, name, location);
 
   }
 
@@ -114,7 +108,7 @@ contract LaborContract {
     address employee = address(0);
     uint employeeIndex;
     
-    for (employeeIndex = 0 ; employeeIndex  <= workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
+    for (employeeIndex = 0 ; employeeIndex  < workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
       if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAddress) {
         employee = employeeAddress;
         break;
@@ -141,7 +135,7 @@ contract LaborContract {
     address employee = address(0);
     uint employeeIndex;
     
-    for (employeeIndex = 0 ; employeeIndex  <= workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
+    for (employeeIndex = 0 ; employeeIndex  < workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
       if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAddress) {
         employee = employeeAddress;
         break;
@@ -185,7 +179,7 @@ contract LaborContract {
     uint dailyWage;
     uint montlyWage = 0;
     
-    for (employeeIndex = 0 ; employeeIndex  <= workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
+    for (employeeIndex = 0 ; employeeIndex  < workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
       if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAddress) {
         employee = employeeAddress;
         break;
@@ -242,7 +236,7 @@ contract LaborContract {
     address employee = address(0);
     uint employeeIndex;
     
-    for (employeeIndex = 0 ; employeeIndex  <= workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
+    for (employeeIndex = 0 ; employeeIndex  < workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
       if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAddress) {
         employee = employeeAddress;
         break;
@@ -274,7 +268,7 @@ contract LaborContract {
     address employee = address(0);
     uint employeeIndex;
     
-    for (employeeIndex = 0 ; employeeIndex  <= workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
+    for (employeeIndex = 0 ; employeeIndex  < workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
       if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == msg.sender) {
         employee = msg.sender;
         break;
@@ -317,7 +311,7 @@ contract LaborContract {
     address employee = address(0);
     uint employeeIndex;
     
-    for (employeeIndex = 0 ; employeeIndex  <= workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
+    for (employeeIndex = 0 ; employeeIndex  < workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
       if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAddress) {
         employee = employeeAddress;
         break;
