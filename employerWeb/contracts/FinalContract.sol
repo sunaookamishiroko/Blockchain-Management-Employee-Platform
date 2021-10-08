@@ -52,6 +52,8 @@ contract LaborContract {
 
   // 근로계약서 저장소
   struct laborContract {
+    address employer;         // 고용주 address
+    address employee;         // 근로자 address
     string employeeName;      // 근로자 이름
     string employerName;      // 고용주 이름
     string period;            // 근로계약기간 
@@ -82,7 +84,7 @@ contract LaborContract {
     address employee;         // 근로자 address
     string employerName;      // 고용주명
     string employeeName;      // 근로자명
-    string period;            // 근로계약기간 
+    string period;            // 근로계약기간
     string duties;            // 업무내용
     string workingStartTime;  // 근로시작시간
     string workingTime;       // 소정근로시간
@@ -92,13 +94,13 @@ contract LaborContract {
     string wageday;           // 임금지급일
     string comment;           // 기타사항
   }
-  //struct 배열 선언부
 
+  //struct 배열 선언부
   personalInfo [] personalinfo;
   workplaceInfo [] workplaceinfo;
   laborContract [] laborcontract;
-  temporaryLabor [] temporarylabor;          
-  temporaryContract [] temporarycontract;    
+  temporaryLabor [] temporarylabor;
+  temporaryContract [] temporarycontract;
 
 
   //0. 고용주의 사업장 등록
@@ -147,8 +149,8 @@ contract LaborContract {
 
   }
 
-  //2. 고용주가 임시 근로계약서 작성(근로 신청한 근로자의 주민등록번호를 입력하여 근로자 확인)
-  function uploadRequirement(uint registationNum, string period, string duties, string workingStartTime, string workingTime, 
+  //2. 고용주가 임시 근로계약서 작성(근로 신청한 근로자의 주민등록번호, 이름을 입력하여 근로자 확인)
+  function uploadRequirement(uint registationNum, string name, string period, string duties, string workingStartTime, string workingTime, 
   string workingCycle, string workingDays, string wage, string wageday, string comment) public returns (uint8) {
 
     uint max = 10000; // 추후 수정
@@ -160,27 +162,27 @@ contract LaborContract {
             for(uint employeeIndex = 0 ; employeeIndex <= temporaryLabor.length ; employeeIndex++){
                 if(temporaryLabor[employeeIndex].registationNum == registationNum)
                 {
-                    for(uint contractIndex = 0 ; contractIndex <= max ; contractIndex++){
+                    for(uint tempContractIndex = 0 ; tempContractIndex <= max ; tempContractIndex++){
                         //if(temporaryContract[contractIndex].employer에 데이터가 없다면)
                         {
-                            temporaryContract[contractIndex].employer.push(msg.sender);
-                            temporaryContract[contractIndex].employee.push(temporaryLabor[employeeIndex].employee);
-                            temporaryContract[contractIndex].employerName.push(workplaceInfo[workplaceIndex].employerName);
-                            temporaryContract[contractIndex].period.push(period);
-                            temporaryContract[contractIndex].duties.push(duties);
-                            temporaryContract[contractIndex].workingStartTime.push(workingStartTime);
-                            temporaryContract[contractIndex].workingTime.push(workingTime);
-                            temporaryContract[contractIndex].workingCycle.push(workingCycle);
-                            temporaryContract[contractIndex].workingDays.push(workingDays);
-                            temporaryContract[contractIndex].wage.push(wage);
-                            temporaryContract[contractIndex].wageday.push(wageday);
-                            temporaryContract[contractIndex].comment.push(comment);
+                            temporaryContract[tempContractIndex].employer.push(msg.sender);
+                            temporaryContract[tempContractIndex].employee.push(temporaryLabor[employeeIndex].employee);
+                            temporaryContract[tempContractIndex].employerName.push(workplaceInfo[workplaceIndex].employerName);
+                            temporaryContract[tempContractIndex].employeeName.push(name);
+                            temporaryContract[tempContractIndex].period.push(period);
+                            temporaryContract[tempContractIndex].duties.push(duties);
+                            temporaryContract[tempContractIndex].workingStartTime.push(workingStartTime);
+                            temporaryContract[tempContractIndex].workingTime.push(workingTime);
+                            temporaryContract[tempContractIndex].workingCycle.push(workingCycle);
+                            temporaryContract[tempContractIndex].workingDays.push(workingDays);
+                            temporaryContract[tempContractIndex].wage.push(wage);
+                            temporaryContract[tempContractIndex].wageday.push(wageday);
+                            temporaryContract[tempContractIndex].comment.push(comment);
                             break;
                         }
                     }
                 }
             }
-            
         }
     }
 
@@ -194,8 +196,8 @@ contract LaborContract {
     
     uint contractNum = 0;
     
-    for(uint contractIndex = 0 ; contractIndex <= temporaryContract.length ; contractIndex++){
-        if(temporaryContract[contractIndex].employee == msg.sender){
+    for(uint tempContractIndex = 0 ; tempContractIndex <= temporaryContract.length ; tempContractIndex++){
+        if(temporaryContract[tempContractIndex].employee == msg.sender){
             contractNum = 1;
         }
     }
@@ -203,18 +205,59 @@ contract LaborContract {
     require(contractNum != 1, "It isn't your contract in temporary contracts");
 
     return(
-            temporaryContract[contractIndex].employerName,
-            temporaryContract[contractIndex].period
-            temporaryContract[contractIndex].duties
-            temporaryContract[contractIndex].workingStartTime
-            temporaryContract[contractIndex].workingTime
-            temporaryContract[contractIndex].workingDays
-            temporaryContract[contractIndex].wage
-            temporaryContract[contractIndex].wageday
-            temporaryContract[contractIndex].comment);
+            temporaryContract[tempContractIndex].employerName,
+            temporaryContract[tempContractIndex].period,
+            temporaryContract[tempContractIndex].duties,
+            temporaryContract[tempContractIndex].workingStartTime,
+            temporaryContract[tempContractIndex].workingTime,
+            temporaryContract[tempContractIndex].workingDays,
+            temporaryContract[tempContractIndex].wage,
+            temporaryContract[tempContractIndex].wageday,
+            temporaryContract[tempContractIndex].comment);
 
   }
 
-  
-  
+  //4. 근로자가 근로 계약서 확인 후 등록(checkNum : 0 -> 동의 / 1 -> 비동의)
+  function registerContract(uint tempContractIndex, uint checkNum) returns (uint8){
+
+    uint max = 1000000;
+
+    for(uint tempContractIndex = 0 ; tempContractIndex <= temporaryContract.length ; tempContractIndex++){
+        if(temporaryContract[tempContractIndex].employee == msg.sender){
+            contractNum = 1;
+        }
+    }
+
+    require(contractNum != 1, "It isn't your contract in temporary contracts");
+
+    if(checkNum == 0)
+    {
+        for(uint contractIndex = 0 ; contractIndex <= max ; contractIndex++){
+            if(laborContract[contractIndex].employerName에 데이터가 없다면){
+                laborContract[contractIndex].employer.push(temporaryContract[tempContractIndex].employer);
+                laborContract[contractIndex].employee.push(temporaryContract[tempContractIndex].employee);
+                laborContract[contractIndex].employerName.push(temporaryContract[tempContractIndex].employerName);
+                laborContract[contractIndex].employeeName.push(temporaryContract[tempContractIndex].employeeName);
+                laborContract[contractIndex].period.push(temporaryContract[tempContractIndex].period);
+                laborContract[contractIndex].duties.push(temporaryContract[tempContractIndex].duties);
+                laborContract[contractIndex].workingStartTime.push(temporaryContract[tempContractIndex].workingStartTime);
+                laborContract[contractIndex].workingTime.push(temporaryContract[tempContractIndex].workingTime);
+                laborContract[contractIndex].workingCycle.push(temporaryContract[tempContractIndex].workingCycle);
+                laborContract[contractIndex].workingDays.push(temporaryContract[tempContractIndex].workingDays);
+                laborContract[contractIndex].wage.push(temporaryContract[tempContractIndex].wage);
+                laborContract[contractIndex].wageday.push(temporaryContract[tempContractIndex].wageday);
+                laborContract[contractIndex].comment.push(temporaryContract[tempContractIndex].comment);
+            }
+        }
+    }
+
+    if(checkNum == 1)
+    {
+        //이 부분은 협의 후에 정해야될 것으로 보입니다.
+    }
+
+  }
+
+  return 1;
+
 }
