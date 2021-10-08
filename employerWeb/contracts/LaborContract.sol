@@ -42,17 +42,17 @@ contract LaborContract {
   // 후에 프론트 화면에서 요구하는 양식에 따라 변경할 수 있음
   struct attendance {
     //string [] startDay;
-    uint [] startYear;
-    uint [] startMonth;
-    uint [] startDate;
-    uint [] startTimeHour;
-    uint [] startTimeMinute;
+    uint startYear;
+    uint startMonth;
+    uint startDate;
+    uint startTimeHour;
+    uint startTimeMinute;
     //string [] endDay;
-    uint [] endYear;
-    uint [] endMonth;
-    uint [] endDate;
-    uint [] endTimeHour;
-    uint [] endTimeMinute;
+    uint endYear;
+    uint endMonth;
+    uint endDate;
+    uint endTimeHour;
+    uint endTimeMinute;
   }
 
   //해당 월 출근 기록부
