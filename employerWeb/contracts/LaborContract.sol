@@ -9,6 +9,9 @@ contract LaborContract {
   // 고용주의 사업장 리스트 index mapping
   mapping(address => uint256 []) private _employerWorkplaceList;
 
+  // 근로자의 근무지 리스트 index mapping
+  mapping(address => uint256 []) private _employeeWorkplaceList;
+
   // 근로자의 근로계약서 리스트 index mapping
   mapping(address => uint256 []) private _employeeLaborContractList;
 
@@ -25,7 +28,6 @@ contract LaborContract {
     string name;
     uint age;
     string gender;
-    uint [] workPlaceInfoIndexList;
   }
 
   // 사업장 정보
@@ -79,12 +81,18 @@ contract LaborContract {
   workplaceInfo [] workplaceinfo;
   laborContract [] laborcontract;
 
-  
+  //사람 개인정보 추가
+  function addPeopleInfo(address ethAddress, uint8 identiNumber, string name, uint age, string gender) public {
+    _person[ethAddress].identiNumber = identiNumber;
+    _person[ethAddress].name = name;
+    _person[ethAddress].age = age;
+    _person[ethAddress].gender = gender;
+  }
 
   //근로자의 근무지들 조회하는 함수
   function checkWorkplace (address employeeAddress) public returns (uint [], string [], string []){
     
-    uint [] array = _person[employeeAddress].workPlaceInfoIndexList;
+    uint [] array = _employeeWorkplaceList[employeeAddress];
     string [] name;
     string [] location;
     
