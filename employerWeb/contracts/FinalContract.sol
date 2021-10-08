@@ -80,6 +80,8 @@ contract LaborContract {
   struct temporaryContract{
     address employer;         // 고용주 address
     address employee;         // 근로자 address
+    string employerName;      // 고용주명
+    string employeeName;      // 근로자명
     string period;            // 근로계약기간 
     string duties;            // 업무내용
     string workingStartTime;  // 근로시작시간
@@ -100,7 +102,7 @@ contract LaborContract {
 
 
   //0. 고용주의 사업장 등록
-  frunction registerWorkplace(uint registationNum, string employerName, string workplaceName, string location) public returns (uint8){
+  frunction registerWorkplace(string employerName, string workplaceName, string location) public returns (uint8){
       
       address employer;
       employer = msg.sender;
@@ -109,7 +111,6 @@ contract LaborContract {
       for(uint workplaceIndex = 0 ; workplaceIndex <= max ; workplaceIndex++){
           //if(workplaceInfo[workplaceIndex].workplaceName에 데이터가 없을 경우)
           {
-            workplaceInfo[workplaceIndex].registationNum.push(registationNum);
             workplaceInfo[workplaceIndex].employerName.push(employerName);
             workplaceInfo[workplaceIndex].workplaceName.push(workplaceName);
             workplaceInfo[workplaceIndex].location.push(location);
@@ -123,7 +124,7 @@ contract LaborContract {
   1. 근로자가 고용주에게 근로계약서 요청 함수
     (근로자는 고용주에게 본인의 address 및 개인정보를 제시하면서 임시 근로계약서를 요청한다)
   */
-  function requestContract(string name, uint age, string gender, string residence) public returns (uint8){
+  function requestContract(uint registationNum, string name, uint age, string gender, string residence) private returns (uint8){
 
     public address employee;
     employee = msg.sender;
@@ -132,12 +133,13 @@ contract LaborContract {
     for(uint employeeIndex = 0 ; employeeIndex <= max ; employeeIndex++){
         //if(temporaryLabor[employeeIndex].name에 데이터가 없을 경우)
         {
-         temporaryLabor[employeeIndex].name.push(name);
-         temporaryLabor[employeeIndex].age.push(age);
-         temporaryLabor[employeeIndex].gender.push(gender);
-         temporaryLabor[employeeIndex].residence.push(residence);
-         temporaryLabor[employeeIndex].employee.push(employee);
-         break;
+          temporaryLabor[employeeIndex].registationNum.push(registationNum);
+          temporaryLabor[employeeIndex].name.push(name);
+          temporaryLabor[employeeIndex].age.push(age);
+          temporaryLabor[employeeIndex].gender.push(gender);
+          temporaryLabor[employeeIndex].residence.push(residence);
+          temporaryLabor[employeeIndex].employee.push(employee);
+          break;
         }
     }
 
@@ -163,6 +165,8 @@ contract LaborContract {
                         {
                             temporaryContract[contractIndex].employer.push(msg.sender);
                             temporaryContract[contractIndex].employee.push(temporaryLabor[employeeIndex].employee);
+                            temporaryContract[contractIndex].employerName.push(workplaceInfo[workplaceIndex].employerName);
+                            temporaryContract[contractIndex].period.push(period);
                             temporaryContract[contractIndex].duties.push(duties);
                             temporaryContract[contractIndex].workingStartTime.push(workingStartTime);
                             temporaryContract[contractIndex].workingTime.push(workingTime);
@@ -183,5 +187,34 @@ contract LaborContract {
     return 1;
 
   }
+
+  //3. 근로자가 임시 근로계약서 확인
+  function checkTemporaryContract() public view returns (string _employerName, string _period, string _duties, 
+  string _workingStartTime, string _workingTime, string _workingCycle, string _workingDays, string _wage, string _wageday, string _comment){
+    
+    uint contractNum = 0;
+    
+    for(uint contractIndex = 0 ; contractIndex <= temporaryContract.length ; contractIndex++){
+        if(temporaryContract[contractIndex].employee == msg.sender){
+            contractNum = 1;
+        }
+    }
+
+    require(contractNum != 1, "It isn't your contract in temporary contracts");
+
+    return(
+            temporaryContract[contractIndex].employerName,
+            temporaryContract[contractIndex].period
+            temporaryContract[contractIndex].duties
+            temporaryContract[contractIndex].workingStartTime
+            temporaryContract[contractIndex].workingTime
+            temporaryContract[contractIndex].workingDays
+            temporaryContract[contractIndex].wage
+            temporaryContract[contractIndex].wageday
+            temporaryContract[contractIndex].comment);
+
+  }
+
+  
   
 }
