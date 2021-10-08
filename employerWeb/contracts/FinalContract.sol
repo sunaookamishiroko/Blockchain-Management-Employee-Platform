@@ -101,8 +101,18 @@ contract LaborContract {
       
       public address employer;
       employer = msg.sender;
+      uint max = 10000; // 추후 수정
 
-      for(workplaceIndex)
+      for(workplaceIndex = 0 ; workplaceIndex <= max ; workplaceIndex++){
+          //if(workplaceInfo[workplaceIndex].workplaceName에 데이터가 없을 경우)
+          {
+            workplaceInfo[workplaceIndex].employerName.push(employerName);
+            workplaceInfo[workplaceIndex].workplaceName.push(workplaceName);
+            workplaceInfo[workplaceIndex].location.push(location);
+            workplaceInfo[workplaceIndex].employer.push(employer);
+            break;
+          }
+      } 
   }
 
   /* 
@@ -113,15 +123,17 @@ contract LaborContract {
 
     public address employee;
     employee = msg.sender;
+    
 
     for(employeeIndex = 0 ; employeeIndex <= 20 ; employeeIndex++){
         //if(temporaryLabor[employeeIndex].name에 데이터가 없을 경우)
         {
-        temporaryLabor[employeeIndex].name.push(name);
-        temporaryLabor[employeeIndex].age.push(age);
-        temporaryLabor[employeeIndex].gender.push(gender);
-        temporaryLabor[employeeIndex].residence.push(residence);
-        temporaryLabor[employeeIndex].employee.push(employee);
+         temporaryLabor[employeeIndex].name.push(name);
+         temporaryLabor[employeeIndex].age.push(age);
+         temporaryLabor[employeeIndex].gender.push(gender);
+         temporaryLabor[employeeIndex].residence.push(residence);
+         temporaryLabor[employeeIndex].employee.push(employee);
+         break;
         }
     }
 
