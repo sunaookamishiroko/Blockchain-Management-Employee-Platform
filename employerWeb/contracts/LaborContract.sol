@@ -35,6 +35,7 @@ contract LaborContract {
     address [] employee;
     attendance [] attendanceList;
     laborContract [] laborcontract;
+    personalInfo [] personalInformation;
   }
 
   // 출톼근 기록부
@@ -230,6 +231,33 @@ contract LaborContract {
     }
 
     return (montlyWage);
+  }
+
+  //근로자의 개인 정보 조회하는 함수
+  function checkEmployeeInformation (address employeeAddress, uint workPlaceInfoIndex ) public view
+  returns (address _employee, uint8 _identiNumber, string _name, uint _age, string gender){
+  
+    require(workPlaceInfoIndex < workplaceinfo.length, "your workplace is not available");
+
+    address employee = address(0);
+    uint employeeIndex;
+    
+    for (employeeIndex = 0 ; employeeIndex  <= workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
+      if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAddress) {
+        employee = employeeAddress;
+        break;
+      }
+    }
+
+    require(employee != address(0), "you are not employee");
+
+    return (
+      workplaceinfo[workPlaceInfoIndex].employee[employeeIndex],
+      workplaceinfo[workPlaceInfoIndex].personalInformation[employeeIndex].identiNumber,
+      workplaceinfo[workPlaceInfoIndex].personalInformation[employeeIndex].name,
+      workplaceinfo[workPlaceInfoIndex].personalInformation[employeeIndex].age,
+      workplaceinfo[workPlaceInfoIndex].personalInformation[employeeIndex].gender);
+
   }
 
 
