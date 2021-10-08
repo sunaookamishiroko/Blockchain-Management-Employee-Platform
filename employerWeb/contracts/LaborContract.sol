@@ -34,6 +34,7 @@ contract LaborContract {
     string location;
     address [] employee;
     attendance [] attendanceList;
+    laborContract [] laborcontract;
   }
 
   // 출톼근 기록부
@@ -104,18 +105,29 @@ contract LaborContract {
 
   //근로자의 근로계약서를 조회하는 함수
   //아직 미완성 입니다.(근로계약서 등록을 어떻게 하냐에 따라 조회 방법이 달라질 듯 합니다.)
-  function checkLaborContract (address employeeAddress) public view
+  function checkLaborContract (uint workPlaceInfoIndex, address employeeAddress) public view
   returns(string _period, string _duties, string _workingTime, string _workingDays, string _wage, string _wageday, string _comment) {
 
+    require(workPlaceInfoIndex < workplaceinfo.length, "workplace is not available");
+
+    address employee = address(0);
+    uint employeeIndex;
+    
+    for (employeeIndex = 0 ; employeeIndex  <= workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
+      if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAddress) {
+        employee = employeeAddress;
+        break;
+      }
+    }
 
     return (
-      laborcontract[].period,
-      laborcontract[].duties,
-      laborcontract[].workingTime,
-      laborcontract[].workingDays,
-      laborcontract[].wage,
-      laborcontract[].wageday,
-      laborcontract[].comment);
+      workplaceinfo[workPlaceInfoIndex].laborcontract[employeeIndex].period,
+      workplaceinfo[workPlaceInfoIndex].laborcontract[employeeIndex].duties,
+      workplaceinfo[workPlaceInfoIndex].laborcontract[employeeIndex].workingTime,
+      workplaceinfo[workPlaceInfoIndex].laborcontract[employeeIndex].workingDays,
+      workplaceinfo[workPlaceInfoIndex].laborcontract[employeeIndex].wage,
+      workplaceinfo[workPlaceInfoIndex].laborcontract[employeeIndex].wageday,
+      workplaceinfo[workPlaceInfoIndex].laborcontract[employeeIndex].comment);
 
   }
 
