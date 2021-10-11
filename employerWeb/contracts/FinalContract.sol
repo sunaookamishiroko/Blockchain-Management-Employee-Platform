@@ -255,9 +255,8 @@ contract LaborContract {
     {
         //이 부분은 협의 후에 정해야될 것으로 보입니다.
     }
-
+    return 1;
   }
 
-  return 1;
 
 }
