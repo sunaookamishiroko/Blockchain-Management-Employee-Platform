@@ -89,24 +89,6 @@ contract LaborContract {
   temporaryLabor [] temporarylabor;
   temporaryContract [] temporarycontract;
 
-  //0. 고용주의 사업장 등록
-  function registerWorkplace(string employerName, string workplaceName, string location) public returns (uint8){
-      
-      address employer;
-      employer = msg.sender;
-      uint max = 10000; // 추후 수정
-
-      for(uint workplaceIndex = 0 ; workplaceIndex <= max ; workplaceIndex++){
-          //if(workplaceInfo[workplaceIndex].workplaceName에 데이터가 없을 경우)
-          {
-            workplaceInfo[workplaceIndex].employerName.push(employerName);
-            workplaceInfo[workplaceIndex].workplaceName.push(workplaceName);
-            workplaceInfo[workplaceIndex].location.push(location);
-            workplaceInfo[workplaceIndex].employer.push(employer);
-            break;
-          }
-      } 
-  }
 
   /* 
   1. 근로자가 고용주에게 근로계약서 요청 함수
@@ -171,9 +153,7 @@ contract LaborContract {
             }
         }
     }
-
     return 1;
-
   }
 
   //3. 근로자가 임시 근로계약서 확인

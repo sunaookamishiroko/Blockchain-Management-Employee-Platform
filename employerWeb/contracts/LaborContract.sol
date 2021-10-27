@@ -29,13 +29,13 @@ contract LaborContract {
   }
 
   // 사업장 정보
-  // employee와 attendance는 index 번호 같아야함 -> 검색 쉽게 하기 위함
+  // employee와 attendance, laborContractIndex는 index 번호 같아야함 -> 검색 쉽게 하기 위함
   struct workplaceInfo {
     string name;
     string location;
     address [] employee;
+    uint [] laborContractIndex;
     attendance [] attendanceList;
-    laborContract [] laborcontract;
   }
 
   // 출톼근 기록부
@@ -76,6 +76,9 @@ contract LaborContract {
   //struct 배열 선언부
   workplaceInfo [] workplaceinfo;
   laborContract [] laborcontract;
+
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
   //근로자의 근무지들 조회하는 함수
@@ -157,8 +160,6 @@ contract LaborContract {
     return (hour, minute);
 
   }
-
-
 
   //근로자의 급여 조회
   function getPayment (address employeeAddress, uint workPlaceInfoIndex, uint workedYear, uint workedMonth, uint wage) public 
@@ -288,18 +289,11 @@ contract LaborContract {
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeMinute );
   }
 
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
 
-  //개인 정보 등록하는 함수
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+  // 개인 정보 등록하는 함수
   function uploadPersonalInfo(address person, uint8 identiNumber, string name, uint age, string gender) public {
 
     require(person == msg.sender, "your not msg.sender!");
@@ -313,7 +307,7 @@ contract LaborContract {
 
   }
 
-  //고용주가 사업장 등록하는 함수
+  // 고용주가 사업장 등록하는 함수
   function uploadWorkplace(address employer, string workplaceName, string location) public {
 
     require(employer == msg.sender, "your not msg.sender!");
@@ -327,6 +321,28 @@ contract LaborContract {
     _employerWorkplaceList[employer].push(_workplaceIndex);
 
     _workplaceIndex++;
+  }
+
+  // 근로계약서 등록하는 함수
+  function uploadLaborContract(string [] laborContractItems, address employee, uint workPlaceIndex) public {
+
+    require(employee == msg.sender, "your not msg.sender!");
+    require(_person[employee] == 0, "your not employee!");
+
+    laborContract storage newLabor = laborContract(
+      laborContractItems[0], laborContractItems[1], laborContractItems[2], laborContractItems[3],
+      laborContractItems[4], laborContractItems[5], laborContractItems[6]);
+    laborcontract.push(newLabor);
+
+    _employeeLaborContractList[employee].push(_laborContractIndex);
+
+    _person[employee].workPlaceInfoIndexList.push(workPlaceIndex);
+
+    workplaceinfo[workPlaceIndex].employee.push(employee);
+    workplaceinfo[workPlaceIndex].laborContractIndex.push(_laborContractIndex);
+
+    _laborContractIndex++;
+
   }
 
   // 출퇴근 올리는 함수
@@ -370,6 +386,8 @@ contract LaborContract {
     return 1;
 
   }
+
+
 
 
 }
