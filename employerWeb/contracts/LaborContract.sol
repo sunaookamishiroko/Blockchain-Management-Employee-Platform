@@ -6,9 +6,6 @@ contract LaborContract {
   // 사람과 개인정보 mapping
   mapping(address => personalInfo) private _person;
 
-  // 고용주의 사업장 리스트 index mapping
-  mapping(address => uint256 []) private _employerWorkplaceList;
-
   // 근로자의 근로계약서 리스트 index mapping
   mapping(address => uint256 []) private _employeeLaborContractList;
 
@@ -75,11 +72,9 @@ contract LaborContract {
   }
   
   //struct 배열 선언부
-  personalInfo [] personalinfo;
   workplaceInfo [] workplaceinfo;
   laborContract [] laborcontract;
 
-  
 
   //근로자의 근무지들 조회하는 함수
   function getWorkplaces (address employeeAddress) public returns (uint [], string [], string []){
@@ -289,6 +284,31 @@ contract LaborContract {
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endDate,
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeHour,
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeMinute );
+  }
+
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+
+  //개인 정보 등록하는 함수
+  function uploadPersonalInfo(address person, uint8 identiNumber, string name, uint age, string gender) public{
+
+    require(person == msg.sender, "your not msg.sender!");
+
+    personalInfo storage newPersonalInfo = _person[person];
+
+    newPersonalInfo.identiNumber = identiNumber;
+    newPersonalInfo.name = name;
+    newPersonalInfo.age = age;
+    newPersonalInfo.gender = gender;
+
   }
 
   //고용주가 사업장 등록하는 함수
