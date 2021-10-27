@@ -90,7 +90,7 @@ contract LaborContract {
   temporaryContract [] temporarycontract;
 
   //0. 고용주의 사업장 등록
-  frunction registerWorkplace(string employerName, string workplaceName, string location) public returns (uint8){
+  function registerWorkplace(string employerName, string workplaceName, string location) public returns (uint8){
       
       address employer;
       employer = msg.sender;
