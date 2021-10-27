@@ -82,7 +82,7 @@ contract LaborContract {
   
 
   //근로자의 근무지들 조회하는 함수
-  function checkWorkplace (address employeeAddress) public returns (uint [], string [], string []){
+  function getWorkplaces (address employeeAddress) public returns (uint [], string [], string []){
     
     uint [] array = _person[employeeAddress].workPlaceInfoIndexList;
     string [] name;
@@ -100,7 +100,7 @@ contract LaborContract {
 
   //근로자의 근로계약서를 조회하는 함수
   //아직 미완성 입니다.(근로계약서 등록을 어떻게 하냐에 따라 조회 방법이 달라질 듯 합니다.)
-  function checkLaborContract (uint workPlaceInfoIndex, address employeeAddress) public view
+  function getLaborContract (uint workPlaceInfoIndex, address employeeAddress) public view
   returns(string _period, string _duties, string _workingTime, string _workingDays, string _wage, string _wageday, string _comment) {
 
     require(workPlaceInfoIndex < workplaceinfo.length, "workplace is not available");
@@ -128,7 +128,7 @@ contract LaborContract {
 
   //당일 근로자가 일한 시간 조회하는 함수
   //hour(시간), minute(분)을 숫자로 출력합니다   -> 몇 시간 몇 분 근무했는지에 대한 정보
-  function checkWorkTime (address employeeAddress, uint workPlaceInfoIndex) public returns (uint _hour, uint _minute) {
+  function getWorkTime (address employeeAddress, uint workPlaceInfoIndex) public returns (uint _hour, uint _minute) {
 
     require(workPlaceInfoIndex < workplaceinfo.length, "error");
 
@@ -164,7 +164,7 @@ contract LaborContract {
 
 
   //근로자의 급여 조회
-  function checkPayment (address employeeAddress, uint workPlaceInfoIndex, uint workedYear, uint workedMonth, uint wage) public 
+  function getPayment (address employeeAddress, uint workPlaceInfoIndex, uint workedYear, uint workedMonth, uint wage) public 
   returns (uint) {
 
     require(workPlaceInfoIndex < workplaceinfo.length, "error");
@@ -228,7 +228,7 @@ contract LaborContract {
   }
 
   //근로자의 개인 정보 조회하는 함수
-  function checkEmployeeInformation (address employeeAddress, uint workPlaceInfoIndex ) public view
+  function getEmployeeInformation (address employeeAddress, uint workPlaceInfoIndex ) public view
   returns (address _employee, uint8 _identiNumber, string _name, uint _age, string gender){
   
     require(workPlaceInfoIndex < workplaceinfo.length, "your workplace is not available");
@@ -260,7 +260,7 @@ contract LaborContract {
   // 출퇴근 내역을 return하는 함수
   // 후에 프론트 화면에서 요구하는 양식에 따라 변경할 수 있음
   // 출퇴근 출력 내용 중 날짜 부분을 년도, 월, 일 세분화하였습니다.
-  function checkAttendance (uint workPlaceInfoIndex, address employeeAddress) public view 
+  function getAttendance (uint workPlaceInfoIndex, address employeeAddress) public view 
   returns (uint [] memory, uint [] memory, uint [] memory, uint [] memory, uint [] memory, 
   uint [] memory, uint [] memory, uint [] memory, uint [] memory, uint [] memory){
 
@@ -289,6 +289,24 @@ contract LaborContract {
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endDate,
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeHour,
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeMinute );
+  }
+
+  //고용주가 사업장 등록하는 함수
+  function uploadWorkplace(address employer, string workplaceName, string location) public returns (uint8){
+
+    require(employer == msg.sender, "message sender is not employer");
+    
+
+      for(uint workplaceIndex = 0 ; workplaceIndex <= max ; workplaceIndex++){
+          //if(workplaceInfo[workplaceIndex].workplaceName에 데이터가 없을 경우)
+          {
+            workplaceInfo[workplaceIndex].employerName.push(employerName);
+            workplaceInfo[workplaceIndex].workplaceName.push(workplaceName);
+            workplaceInfo[workplaceIndex].location.push(location);
+            workplaceInfo[workplaceIndex].employer.push(employer);
+            break;
+          }
+      } 
   }
 
   // 출퇴근 올리는 함수
