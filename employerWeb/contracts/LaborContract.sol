@@ -9,6 +9,9 @@ contract LaborContract {
   // 근로자의 근로계약서 리스트 index mapping
   mapping(address => uint256 []) private _employeeLaborContractList;
 
+  // 고용주의 사업장 리스트 index mapping
+  mapping(address => uint256 []) private _employerWorkplaceList;
+
   // 사업장 index 전역 변수
   uint private _workplaceIndex = 0;
   
@@ -33,7 +36,6 @@ contract LaborContract {
     address [] employee;
     attendance [] attendanceList;
     laborContract [] laborcontract;
-    personalInfo [] personalInformation;
   }
 
   // 출톼근 기록부
@@ -298,7 +300,7 @@ contract LaborContract {
   //
 
   //개인 정보 등록하는 함수
-  function uploadPersonalInfo(address person, uint8 identiNumber, string name, uint age, string gender) public{
+  function uploadPersonalInfo(address person, uint8 identiNumber, string name, uint age, string gender) public {
 
     require(person == msg.sender, "your not msg.sender!");
 
@@ -312,21 +314,19 @@ contract LaborContract {
   }
 
   //고용주가 사업장 등록하는 함수
-  function uploadWorkplace(address employer, string workplaceName, string location) public returns (uint8){
+  function uploadWorkplace(address employer, string workplaceName, string location) public {
 
-    require(employer == msg.sender, "message sender is not employer");
+    require(employer == msg.sender, "your not msg.sender!");
+    require(_person[employer] == 1, "your not employer!");
     
+    workplaceInfo storage newInfo = workplaceInfo(workplaceName, location);
+    workplaceinfo.push(newinfo);
 
-      for(uint workplaceIndex = 0 ; workplaceIndex <= max ; workplaceIndex++){
-          //if(workplaceInfo[workplaceIndex].workplaceName에 데이터가 없을 경우)
-          {
-            workplaceInfo[workplaceIndex].employerName.push(employerName);
-            workplaceInfo[workplaceIndex].workplaceName.push(workplaceName);
-            workplaceInfo[workplaceIndex].location.push(location);
-            workplaceInfo[workplaceIndex].employer.push(employer);
-            break;
-          }
-      } 
+    _person[person].workPlaceInfoIndexList.push(_workplaceIndex);
+
+    _employerWorkplaceList[employer].push(_workplaceIndex);
+
+    _workplaceIndex++;
   }
 
   // 출퇴근 올리는 함수
