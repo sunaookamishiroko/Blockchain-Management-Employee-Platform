@@ -28,7 +28,6 @@ contract LaborContract {
     string name;
     uint age;
     string gender;
-    uint [] workPlaceInfoIndexList; // 근로자의 경우에만 사용함
   }
 
   // 사업장 정보
