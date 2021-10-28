@@ -12,6 +12,9 @@ contract LaborContract {
   // 고용주의 사업장 리스트 index mapping
   mapping(address => uint256 []) private _employerWorkplaceList;
 
+  // 근로자의 근무지 리스트 index mapping
+  mapping(address => uint256 []) private _employeeWorkplaceList;
+
   // 사업장 index 전역 변수
   uint private _workplaceIndex = 0;
   
@@ -85,7 +88,7 @@ contract LaborContract {
 
 
   // 고용주의 사업장들 조회하는 함수
-  function getWorkplacesEA(address employerAddress) public returns (uint [], string memory [], string memory []){
+  function getWorkplacesEW (address employerAddress) public returns (uint [], string memory [], string memory []){
 
     uint [] array = _employerWorkplaceList[employerAddress];
     string [] name;
@@ -103,7 +106,7 @@ contract LaborContract {
   // 근로자의 근무지들 조회하는 함수
   function getWorkplacesEA (address employeeAddress) public returns (uint [], string memory [], string memory []){
     
-    uint [] array = _person[employeeAddress].workPlaceInfoIndexList;
+    uint [] array = _employeeWorkplaceList[employeeAddress];
     string [] name;
     string [] location;
     
@@ -275,30 +278,19 @@ contract LaborContract {
     return (montlyWage);
   }
 
-  //근로자의 개인 정보 조회하는 함수
-  function getEmployeeInformation (address employeeAddress, uint workPlaceInfoIndex ) public view
-  returns (address _employee, uint8 _identiNumber, string _name, uint _age, string gender){
-  
-    require(workPlaceInfoIndex < workplaceinfo.length, "your workplace is not available");
+  //사람의 개인 정보 조회하는 함수
+  function getEmployeeInformation (address person) public view returns (string memory []){
 
-    address employee = address(0);
-    uint employeeIndex;
-    
-    for (employeeIndex = 0 ; employeeIndex  < workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
-      if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAddress) {
-        employee = employeeAddress;
-        break;
-      }
-    }
+    require(person == msg.sender, "your not msg.sender!");
 
-    require(employee != address(0), "you are not employee");
+    string [] personItems;
 
-    return (
-      workplaceinfo[workPlaceInfoIndex].employee[employeeIndex],
-      workplaceinfo[workPlaceInfoIndex].personalInformation[employeeIndex].identiNumber,
-      workplaceinfo[workPlaceInfoIndex].personalInformation[employeeIndex].name,
-      workplaceinfo[workPlaceInfoIndex].personalInformation[employeeIndex].age,
-      workplaceinfo[workPlaceInfoIndex].personalInformation[employeeIndex].gender);
+    personItems.push(_person[person].identiNumber);
+    personItems.push(_person[person].name);
+    personItems.push(_person[person].age);
+    personItems.push(_person[person].gender);
+
+    return (personItems);
 
   }
 
@@ -368,8 +360,6 @@ contract LaborContract {
     workplaceInfo storage newInfo = workplaceInfo(workplaceName, location);
     workplaceinfo.push(newinfo);
 
-    //_person[person].workPlaceInfoIndexList.push(_workplaceIndex);
-
     _employerWorkplaceList[employer].push(_workplaceIndex);
 
     _workplaceIndex++;
@@ -388,7 +378,7 @@ contract LaborContract {
 
     _employeeLaborContractList[employee].push(_laborContractIndex);
 
-    _person[employee].workPlaceInfoIndexList.push(workPlaceIndex);
+    _employeeWorkplaceList[employee].push(workPlaceIndex);
 
     workplaceinfo[workPlaceIndex].employee.push(employee);
     workplaceinfo[workPlaceIndex].laborContractIndex.push(_laborContractIndex);
