@@ -89,7 +89,7 @@ contract LaborContract {
   }
 
   // 고용주의 사업장들 조회하는 함수
-  function getWorkplacesEW (address employerAddress) public returns (uint [], string [] memory, string [] memory){
+  function getWorkplacesEW (address employerAddress) public view returns (uint [], string [] memory, string [] memory){
 
     uint [] array = _employerWorkplaceList[employerAddress];
     string [] name;
@@ -105,7 +105,7 @@ contract LaborContract {
   }
 
   // 근로자의 근무지들 조회하는 함수
-  function getWorkplacesEA (address employeeAddress) public returns (uint [], string [] memory, string [] memory){
+  function getWorkplacesEA (address employeeAddress) public view returns (uint [], string [] memory, string [] memory){
     
     uint [] array = _employeeWorkplaceList[employeeAddress];
     string [] name;
@@ -208,7 +208,7 @@ contract LaborContract {
 
   // 근로자가 일한 시간 조회하는 함수
   // hour(시간), minute(분)을 숫자로 출력합니다   -> 몇 시간 몇 분 근무했는지에 대한 정보
-  function getWorkTime (address employeeAddress, uint workPlaceInfoIndex) public returns (uint _hour, uint _minute) {
+  function getWorkTime (address employeeAddress, uint workPlaceInfoIndex) public view returns (uint _hour, uint _minute) {
 
     require(workPlaceInfoIndex < workplaceinfo.length, "error");
 
