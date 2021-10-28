@@ -179,7 +179,34 @@ contract LaborContract {
 
   }
 
-  // 당일 근로자가 일한 시간 조회하는 함수
+  // 출퇴근 내역을 return하는 함수
+  function getAttendance (uint workPlaceInfoIndex, address employeeAddress) public view 
+  returns (string [] memory, uint [], uint [], string [] memory, uint [], uint []){
+    
+    require(workPlaceInfoIndex < workplaceinfo.length, "workplace is not available");
+
+    uint employeeIndex = -1;
+    
+    for (uint x = 0 ; x  < workplaceinfo[workPlaceInfoIndex].employee.length ; x++) {
+      if (workplaceinfo[workPlaceInfoIndex].employee[x] == employeeAddress) {
+        employeeIndex = x;
+        break;
+      }
+    }
+
+    require(employeeIndex != -1, "you are not employee");
+
+    return (
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startDay,
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeHour,
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeMinute,
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endDay,
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeHour,
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeMinute);
+  }
+
+
+  // 근로자가 일한 시간 조회하는 함수
   // hour(시간), minute(분)을 숫자로 출력합니다   -> 몇 시간 몇 분 근무했는지에 대한 정보
   function getWorkTime (address employeeAddress, uint workPlaceInfoIndex) public returns (uint _hour, uint _minute) {
 
@@ -276,40 +303,6 @@ contract LaborContract {
     }
 
     return (montlyWage);
-  }
-
-  // 출퇴근 내역을 return하는 함수
-  // 후에 프론트 화면에서 요구하는 양식에 따라 변경할 수 있음
-  // 출퇴근 출력 내용 중 날짜 부분을 년도, 월, 일 세분화하였습니다.
-  function getAttendance (uint workPlaceInfoIndex, address employeeAddress) public view 
-  returns (uint [] memory, uint [] memory, uint [] memory, uint [] memory, uint [] memory, 
-  uint [] memory, uint [] memory, uint [] memory, uint [] memory, uint [] memory){
-
-    require(workPlaceInfoIndex < workplaceinfo.length, "workplace is not available");
-
-    address employee = address(0);
-    uint employeeIndex;
-    
-    for (employeeIndex = 0 ; employeeIndex  < workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
-      if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAddress) {
-        employee = employeeAddress;
-        break;
-      }
-    }
-
-    require(employee != address(0), "you are not employee");
-
-    return (
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startYear,
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startMonth,
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startDate,
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeHour,
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeMinute,
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endYear,
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endMonth,
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endDate,
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeHour,
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeMinute );
   }
 
 
