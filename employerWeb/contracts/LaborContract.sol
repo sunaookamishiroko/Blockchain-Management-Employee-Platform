@@ -25,7 +25,7 @@ contract LaborContract {
     string name;
     uint age;
     string gender;
-    uint [] workPlaceInfoIndexList;
+    uint [] workPlaceInfoIndexList; // 근로자의 경우에만 사용함
   }
 
   // 사업장 정보
@@ -84,8 +84,24 @@ contract LaborContract {
   //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+  // 고용주의 사업장들 조회하는 함수
+  function getWorkplacesEA(address employerAddress) public returns (uint [], string memory [], string memory []){
+
+    uint [] array = _employerWorkplaceList[employerAddress];
+    string [] name;
+    string [] location;
+
+    for (uint x = 0; x < array.length ; x++) {
+      name.push(workplaceinfo[array[x]].name);
+      location.push(workplaceinfo[array[x]].location);
+    }
+
+    return (array, name, location);
+
+  }
+
   // 근로자의 근무지들 조회하는 함수
-  function getWorkplaces (address employeeAddress) public returns (uint [], string [], string []){
+  function getWorkplacesEA (address employeeAddress) public returns (uint [], string memory [], string memory []){
     
     uint [] array = _person[employeeAddress].workPlaceInfoIndexList;
     string [] name;
@@ -352,7 +368,7 @@ contract LaborContract {
     workplaceInfo storage newInfo = workplaceInfo(workplaceName, location);
     workplaceinfo.push(newinfo);
 
-    _person[person].workPlaceInfoIndexList.push(_workplaceIndex);
+    //_person[person].workPlaceInfoIndexList.push(_workplaceIndex);
 
     _employerWorkplaceList[employer].push(_workplaceIndex);
 
@@ -422,8 +438,5 @@ contract LaborContract {
     return 1;
 
   }
-
-
-
 
 }
