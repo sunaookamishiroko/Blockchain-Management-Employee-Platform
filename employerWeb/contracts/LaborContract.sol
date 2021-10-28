@@ -31,7 +31,7 @@ contract LaborContract {
   }
 
   // 사업장 정보
-  // employee와 attendance, laborContractIndex는 index 번호 같아야함 -> 검색 쉽게 하기 위함
+  // employee와 attendance, laborContractIndex는 index 번호 같아야함 -> 근로자에게 하나의 index 배치
   struct workplaceInfo {
     string name;
     string location;
@@ -41,27 +41,13 @@ contract LaborContract {
   }
 
   // 출톼근 기록부
-  // 후에 프론트 화면에서 요구하는 양식에 따라 변경할 수 있음
   struct attendance {
-    //string [] startDay;
-    uint startYear;
-    uint startMonth;
-    uint startDate;
-    uint startTimeHour;
-    uint startTimeMinute;
-    //string [] endDay;
-    uint endYear;
-    uint endMonth;
-    uint endDate;
-    uint endTimeHour;
-    uint endTimeMinute;
-  }
-
-  //해당 월 출근 기록부
-  struct monthlyAttendance {
-    uint [] month;             //몇 월의 기록인지 저장
-    uint [] workDate;          //근로자가 해당 월에 며칠 일했는지 저장
-    uint [] workHour;          //근로자가 해당 월에 몇 시간 일했는지 저장
+    string [] startDay;
+    uint8 [] startTimeHour;
+    uint8 [] startTimeMinute;
+    string [] endDay;
+    uint8 [] endTimeHour;
+    uint8 [] endTimeMinute;
   }
 
   // 근로계약서 저장소
@@ -87,7 +73,7 @@ contract LaborContract {
 
 
   //사람의 개인 정보 조회하는 함수
-  function getEmployeeInformation (address person) public view returns (string memory []){
+  function getEmployeeInformation (address person) public view returns (string [] memory){
 
     require(person == msg.sender, "your not msg.sender!");
 
@@ -103,7 +89,7 @@ contract LaborContract {
   }
 
   // 고용주의 사업장들 조회하는 함수
-  function getWorkplacesEW (address employerAddress) public returns (uint [], string memory [], string memory []){
+  function getWorkplacesEW (address employerAddress) public returns (uint [], string [] memory, string [] memory){
 
     uint [] array = _employerWorkplaceList[employerAddress];
     string [] name;
@@ -119,7 +105,7 @@ contract LaborContract {
   }
 
   // 근로자의 근무지들 조회하는 함수
-  function getWorkplacesEA (address employeeAddress) public returns (uint [], string memory [], string memory []){
+  function getWorkplacesEA (address employeeAddress) public returns (uint [], string [] memory, string [] memory){
     
     uint [] array = _employeeWorkplaceList[employeeAddress];
     string [] name;
@@ -136,7 +122,7 @@ contract LaborContract {
 
 
   // 고용주가 선택한 근로자의 근로계약서를 조회하는 함수
-  function getLaborContractEW (uint workPlaceInfoIndex, address employeeAddress) public view returns(string memory []) {
+  function getLaborContractEW (uint workPlaceInfoIndex, address employeeAddress) public view returns(string [] memory) {
     
     require(employeeAddress == msg.sender, "your not msg.sender!");
     require(workPlaceInfoIndex < workplaceinfo.length, "workplace is not available");
@@ -168,7 +154,7 @@ contract LaborContract {
   }
 
   // 근로자가 선택한 아르바이트의 근로계약서를 조회하는 함수
-  function getLaborContractEA (uint workPlaceInfoIndex, address employeeAddress) public view returns(string memory []) {
+  function getLaborContractEA (uint workPlaceInfoIndex, address employeeAddress) public view returns(string [] memory) {
 
     require(employeeAddress == msg.sender, "your not msg.sender!");
     require(workPlaceInfoIndex < workplaceinfo.length, "workplace is not available");
@@ -178,13 +164,12 @@ contract LaborContract {
     for (uint x = 0 ; x < _employeeLaborContractList[employeeAddress].length ; x++) {
 
       if (laborcontract[_employeeLaborContractList[employeeAddress][x]].workplaceIndex == workPlaceInfoIndex) {
-        laborContractItems.push(laborcontract[laborContractIndex].period);
-        laborContractItems.push(laborcontract[laborContractIndex].duties);
-        laborContractItems.push(laborcontract[laborContractIndex].workingTime);
-        laborContractItems.push(laborcontract[laborContractIndex].workingDays);
-        laborContractItems.push(laborcontract[laborContractIndex].wage);
-        laborContractItems.push(laborcontract[laborContractIndex].wageday);
-        laborContractItems.push(laborcontract[laborContractIndex].comment);
+        laborContractItems.push(laborcontract[_employeeLaborContractList[employeeAddress][x]].period);
+        laborContractItems.push(laborcontract[_employeeLaborContractList[employeeAddress][x]].duties);
+        laborContractItems.push(laborcontract[_employeeLaborContractList[employeeAddress][x]].workingDays);
+        laborContractItems.push(laborcontract[_employeeLaborContractList[employeeAddress][x]].wage);
+        laborContractItems.push(laborcontract[_employeeLaborContractList[employeeAddress][x]].wageday);
+        laborContractItems.push(laborcontract[_employeeLaborContractList[employeeAddress][x]].comment);
 
         return (laborContractItems);
       }
@@ -354,7 +339,7 @@ contract LaborContract {
     require(_person[employer] == 1, "your not employer!");
     
     workplaceInfo storage newInfo = workplaceInfo(workplaceName, location);
-    workplaceinfo.push(newinfo);
+    workplaceinfo.push(newInfo);
 
     _employerWorkplaceList[employer].push(_workplaceIndex);
 
@@ -385,41 +370,39 @@ contract LaborContract {
 
   // 출퇴근 올리는 함수
   // classifyNum : 0 -> 출근 / 1 -> 퇴근
-  // 날짜 입력 형식을 기존 string 형식에서 uint 년도, uint 몇월, uint 몇일 형식으로 변경하였습니다.
-  function uploadAttendance (uint8 classifyNum, uint year, uint month, uint date,
-  uint timeHour, uint timeMinute, uint workPlaceInfoIndex) public returns (uint8) {
+  function uploadAttendance (uint8 classifyNum, uint workPlaceInfoIndex, address employee,
+  string day, uint timeHour, uint timeMinute) public returns (uint8) {
 
     require(workPlaceInfoIndex < workplaceinfo.length, "your workplace is not available");
+    require(personalInfo[employee].identiNumber != 0, "you are not employee");
 
-    address employee = address(0);
-    uint employeeIndex;
-    
-    for (employeeIndex = 0 ; employeeIndex  < workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
-      if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == msg.sender) {
-        employee = msg.sender;
+    uint employeeIndex = -1;
+
+    for (uint x = 0 ; x <= workplaceinfo[workPlaceInfoIndex].employee.length ; x++) {
+      
+      if(workplaceinfo[workPlaceInfoIndex].employee[x] == employee) {
+        employeeIndex = x;
         break;
       }
     }
 
-    require(employee != address(0), "you are not employee");
+    require(employeeIndex != -1, "can't find address in workplace");
 
+    // 출근
     if (classifyNum == 0) {
 
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startYear.push(year);
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startMonth.push(month);
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startDate.push(date);
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startDay.push(day);
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeHour.push(timeHour);
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeMinute.push(timeMinute);
-      
+    
+    // 퇴근
     } else if (classifyNum == 1){
 
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endYear.push(year);
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endMonth.push(month);
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endDate.push(date);
+      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endDay.push(day);
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeHour.push(timeHour);
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeMinute.push(timeMinute);
 
-    }
+    } else return 0;
 
     return 1;
 
