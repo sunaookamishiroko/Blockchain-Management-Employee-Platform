@@ -100,31 +100,30 @@ contract LaborContract {
   }
 
 
-  //근로자가 근로자 자신의 근로계약서를 조회하는 함수
-  function getLaborContract (uint workPlaceInfoIndex, address employeeAddress) public view
-  returns(string _period, string _duties, string _workingTime, string _workingDays, string _wage, string _wageday, string _comment) {
+  //고용주가 선택한 근로자의 근로계약서를 조회하는 함수
+  function getLaborContract (uint workPlaceInfoIndex, address employeeAddress) public view returns(string memory []) {
     
     require(employeeAddress == msg.sender, "your not msg.sender!");
     require(workPlaceInfoIndex < workplaceinfo.length, "workplace is not available");
 
-    address employee = address(0);
     uint employeeIndex;
     
     for (employeeIndex = 0 ; employeeIndex  < workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
-      if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAddress) {
-        employee = employeeAddress;
-        break;
-      }
+      if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAddress) break;
     }
 
-    return (
-      workplaceinfo[workPlaceInfoIndex].laborcontract[employeeIndex].period,
-      workplaceinfo[workPlaceInfoIndex].laborcontract[employeeIndex].duties,
-      workplaceinfo[workPlaceInfoIndex].laborcontract[employeeIndex].workingTime,
-      workplaceinfo[workPlaceInfoIndex].laborcontract[employeeIndex].workingDays,
-      workplaceinfo[workPlaceInfoIndex].laborcontract[employeeIndex].wage,
-      workplaceinfo[workPlaceInfoIndex].laborcontract[employeeIndex].wageday,
-      workplaceinfo[workPlaceInfoIndex].laborcontract[employeeIndex].comment);
+    uint laborContractIndex = workplaceinfo[workPlaceInfoIndex].laborContractIndex[employeeIndex];
+    string [] laborContractItems;
+
+    laborContractItems.push(laborcontract[laborContractIndex].period);
+    laborContractItems.push(laborcontract[laborContractIndex].duties);
+    laborContractItems.push(laborcontract[laborContractIndex].workingTime);
+    laborContractItems.push(laborcontract[laborContractIndex].workingDays);
+    laborContractItems.push(laborcontract[laborContractIndex].wage);
+    laborContractItems.push(laborcontract[laborContractIndex].wageday);
+    laborContractItems.push(laborcontract[laborContractIndex].comment);
+
+    return (laborContractItems);
 
   }
 
