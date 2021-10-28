@@ -86,6 +86,22 @@ contract LaborContract {
   //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+  //사람의 개인 정보 조회하는 함수
+  function getEmployeeInformation (address person) public view returns (string memory []){
+
+    require(person == msg.sender, "your not msg.sender!");
+
+    string [] personItems;
+
+    personItems.push(_person[person].identiNumber);
+    personItems.push(_person[person].name);
+    personItems.push(_person[person].age);
+    personItems.push(_person[person].gender);
+
+    return (personItems);
+
+  }
+
   // 고용주의 사업장들 조회하는 함수
   function getWorkplacesEW (address employerAddress) public returns (uint [], string memory [], string memory []){
 
@@ -275,25 +291,6 @@ contract LaborContract {
     }
 
     return (montlyWage);
-  }
-
-  //사람의 개인 정보 조회하는 함수
-  function getEmployeeInformation (address person) public view returns (string memory []){
-
-    require(person == msg.sender, "your not msg.sender!");
-
-    string [] personItems;
-
-    personItems.push(_person[person].identiNumber);
-    personItems.push(_person[person].name);
-    personItems.push(_person[person].age);
-    personItems.push(_person[person].gender);
-
-    return (personItems);
-
-  }
-
-
   }
 
   // 출퇴근 내역을 return하는 함수
