@@ -71,6 +71,9 @@ contract LaborContract {
   //////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  // 함수 뒤에 EW : employerWeb -> 고용주가 사용하는 함수
+  //         EA : employeeApp -> 근로자가 사용하는 함수
+
 
   //사람의 개인 정보 조회하는 함수
   function getEmployeeInformation (address person) public view returns (string [] memory){
@@ -120,21 +123,20 @@ contract LaborContract {
 
   }
 
-
   // 고용주가 선택한 근로자의 근로계약서를 조회하는 함수
-  function getLaborContractEW (uint workPlaceInfoIndex, address employeeAddress) public view returns(string [] memory) {
+  function getLaborContractEW (uint workplaceInfoIndex, address employeeAddress) public view returns(string [] memory) {
     
     require(employeeAddress == msg.sender, "your not msg.sender!");
-    require(workPlaceInfoIndex < workplaceinfo.length, "workplace is not available");
+    require(workplaceInfoIndex < workplaceinfo.length, "workplace is not available");
 
     uint employeeIndex;
     string [] laborContractItems;
     
-    for (employeeIndex = 0 ; employeeIndex  < workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
+    for (employeeIndex = 0 ; employeeIndex  < workplaceinfo[workplaceInfoIndex].employee.length ; employeeIndex++) {
 
-      if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAddress) {
+      if (workplaceinfo[workplaceInfoIndex].employee[employeeIndex] == employeeAddress) {
 
-        uint laborContractIndex = workplaceinfo[workPlaceInfoIndex].laborContractIndex[employeeIndex];
+        uint laborContractIndex = workplaceinfo[workplaceInfoIndex].laborContractIndex[employeeIndex];
 
         laborContractItems.push(laborcontract[laborContractIndex].period);
         laborContractItems.push(laborcontract[laborContractIndex].duties);
@@ -154,16 +156,16 @@ contract LaborContract {
   }
 
   // 근로자가 선택한 아르바이트의 근로계약서를 조회하는 함수
-  function getLaborContractEA (uint workPlaceInfoIndex, address employeeAddress) public view returns(string [] memory) {
+  function getLaborContractEA (uint workplaceInfoIndex, address employeeAddress) public view returns(string [] memory) {
 
     require(employeeAddress == msg.sender, "your not msg.sender!");
-    require(workPlaceInfoIndex < workplaceinfo.length, "workplace is not available");
+    require(workplaceInfoIndex < workplaceinfo.length, "workplace is not available");
 
     string [] laborContractItems;
 
     for (uint x = 0 ; x < _employeeLaborContractList[employeeAddress].length ; x++) {
 
-      if (laborcontract[_employeeLaborContractList[employeeAddress][x]].workplaceIndex == workPlaceInfoIndex) {
+      if (laborcontract[_employeeLaborContractList[employeeAddress][x]].workplaceIndex == workplaceInfoIndex) {
         laborContractItems.push(laborcontract[_employeeLaborContractList[employeeAddress][x]].period);
         laborContractItems.push(laborcontract[_employeeLaborContractList[employeeAddress][x]].duties);
         laborContractItems.push(laborcontract[_employeeLaborContractList[employeeAddress][x]].workingDays);
@@ -179,6 +181,21 @@ contract LaborContract {
 
   }
 
+  // 고용주의 사업장 근로자 정보 목록을 return하는 함수
+  function getEmployerInfo (uint workplaceInfoIndex) public view returns (address [], string [] memory) {
+    
+    string [] nameList;
+
+    for (uint x = 0; x < workplaceinfo[workplaceInfoIndex].employee.length ; x++) {
+      nameList.push(_person[workplaceinfo[workplaceInfoIndex].employee[x]].name);
+    }
+
+    return (
+      workplaceinfo[workplaceInfoIndex].employee,
+      nameList
+    );
+  }
+
   // 고용주의 사업장의 근로자 수를 return하는 함수
   function getNumOfEmployer (uint workplaceInfoIndex) public view returns (uint){
     return (workplaceinfo[workplaceInfoIndex].employee.length);
@@ -187,28 +204,17 @@ contract LaborContract {
   // 출근, 퇴근 날짜만 return하는 함수 -> 달력에 사용
   function getCalAttendance (uint workplaceInfoIndex, uint employeeIndex) public view 
   returns (string [] memory, string [] memory){
+
     return(
       workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].startDay,
       workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].endDay
     );
+
   }
 
   // 자세한 출퇴근 내역을 return하는 함수
-  function getAllAttendance (uint workplaceInfoIndex, address employeeAddress) public view 
+  function getAllAttendance (uint workplaceInfoIndex, uint employeeIndex) public view 
   returns (string [] memory, uint [], uint [], string [] memory, uint [], uint []){
-    
-    require(workplaceInfoIndex < workplaceinfo.length, "workplace is not available");
-
-    uint employeeIndex = -1;
-    
-    for (uint x = 0 ; x  < workplaceinfo[workplaceInfoIndex].employee.length ; x++) {
-      if (workplaceinfo[workplaceInfoIndex].employee[x] == employeeAddress) {
-        employeeIndex = x;
-        break;
-      }
-    }
-
-    require(employeeIndex != -1, "you are not employee");
 
     return (
       workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].startDay,
@@ -220,105 +226,49 @@ contract LaborContract {
   }
 
 
-  // 근로자가 일한 시간 조회하는 함수
+  // 근로자가 하나의 월에 일한 시간을 return하는 함수
   // hour(시간), minute(분)을 숫자로 출력합니다   -> 몇 시간 몇 분 근무했는지에 대한 정보
-  function getWorkTime (address employeeAddress, uint workPlaceInfoIndex) public view returns (uint _hour, uint _minute) {
+  // 웹, 앱 단에서 getCalAttendance를 이용해서 string 패턴 매칭 작업을 통해 해당 월의 인덱스 번호만 골라내서 이 함수를 사용합니다.
+  function getWorkTime (uint employeeIndex, uint workplaceInfoIndex, uint startIndex, uint endIndex) public view returns (uint, uint) {
 
-    require(workPlaceInfoIndex < workplaceinfo.length, "error");
+    uint Allhour = 0;
+    uint Allminute = 0;
 
-    address employee = address(0);
-    uint employeeIndex;
-    
-    for (employeeIndex = 0 ; employeeIndex  < workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
-      if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAddress) {
-        employee = employeeAddress;
-        break;
-      }
-    }
-
-    require(employee != address(0), "you are not employee");
-
-    uint date = 1;                                              //추우에 날짜 기입 방법이 확정될 경우 이용될 수 있음
-    uint hour = workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeHour - workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeHour;
-    uint minute = workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeMinute - workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeMinute;
-
-    if(hour < 0) {
-      hour = hour + 24;
-    }
-
-    if (minute < 0) {
-      hour = hour - 1;
-      minute = minute + 60;
-    }
-
-    return (hour, minute);
-
-  }
-
-  // 근로자의 급여 조회
-  function getPayment (address employeeAddress, uint workPlaceInfoIndex, uint workedYear, uint workedMonth, uint wage) public 
-  returns (uint) {
-
-    require(workPlaceInfoIndex < workplaceinfo.length, "error");
-
-    address employee = address(0);
-    uint employeeIndex;
-    uint Index = 0;
-    uint startIndex;
-    uint endIndex;
     uint hour;
     uint minute;
-    uint dailyWage;
-    uint montlyWage = 0;
-    
-    for (employeeIndex = 0 ; employeeIndex  < workplaceinfo[workPlaceInfoIndex].employee.length ; employeeIndex++) {
-      if (workplaceinfo[workPlaceInfoIndex].employee[employeeIndex] == employeeAddress) {
-        employee = employeeAddress;
-        break;
-      }
+
+    for (uint x = startIndex ; x <= endIndex ; x++) {
+      
+      hour = workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].endTimeHour[x] 
+      - workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].startTimeHour[x];
+
+      minute = workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].endTimeMinute[x] 
+      - workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].startTimeMinute[x];
+
+      if (hour < 0) hour = hour + 24;
+      if (minute < 0) minute = minute + 60;
+
+      Allhour += hour;
+      Allminute += minute;
     }
 
-    require(employee != address(0), "you are not employee");
-    
-    //출근기록부를 바탕으로 해당 년, 월에 출근한 내역을 뽑아낸다
-    //조회를 원하는 년도의 데이터를 갖고 있는 배열의 인덱스 번호를 찾는다
-    while(workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startYear[Index] != workedYear){
-      Index = Index + 1;
-    }
+    return (Allhour, Allminute);
 
-    //이어서 조회를 원하는 월의 데이터를 갖고 있는 배열의 인덱스 번호를 찾는다
-    while(workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startMonth[Index] != workedMonth){
-      Index = Index + 1;
-    }
-    //해당 인덱스 번호부터 조회를 원하는 월의 데이터가 아닌 배열이 나타날때까지 다시 조회하여 인덱스 번호를 찾는다
-    startIndex = Index;
-
-    while(workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startMonth[Index] == workedMonth){
-       Index = Index + 1;
-    }
-    //조회를 원하는 월의 데이터를 벗어난 시점에서의 인덱스 번호를 마지막 인덱스로 한다
-    endIndex = Index;
-    //조회하고자 하는 년도, 월의 값을 모두 갖고 있는 인덱스부터 시작하여, 다음달 값이 들어가는 인덱스까지 반복
-    for(startIndex; startIndex <endIndex; startIndex++){
-      hour = workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeHour[startIndex] - workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeHour[startIndex];
-      minute = workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeMinute[startIndex] - workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeMinute[startIndex];
-
-      if(hour < 0) {
-        hour = hour + 24;
-      }
-
-      if (minute < 0) {
-        hour = hour - 1;
-        minute = minute + 60;
-      }
-      dailyWage = (wage/60)*(hour*60+minute);
-      montlyWage = monthlyWage + dailyWage;
-
-    }
-
-    return (montlyWage);
   }
 
+  // 근로자의 월급 조회
+  // getWorkTime 사용
+  function getPayment (uint employeeIndex, uint workplaceInfoIndex, uint startIndex, uint endIndex) public returns (uint) {
+
+    uint Allhour;
+    uint Allminute;
+
+    (Allhour, Allminute) = getWorkTime(employeeIndex, workplaceInfoIndex, startIndex, endIndex);
+
+    uint wage = (wage/60)*(hour*60+minute);
+
+    return (wage);
+  }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////
