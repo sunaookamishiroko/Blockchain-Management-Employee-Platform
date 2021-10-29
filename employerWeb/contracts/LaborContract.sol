@@ -179,16 +179,30 @@ contract LaborContract {
 
   }
 
-  // 출퇴근 내역을 return하는 함수
-  function getAttendance (uint workPlaceInfoIndex, address employeeAddress) public view 
+  // 고용주의 사업장의 근로자 수를 return하는 함수
+  function getNumOfEmployer (uint workplaceInfoIndex) public view returns (uint){
+    return (workplaceinfo[workplaceInfoIndex].employee.length);
+  }
+
+  // 출근, 퇴근 날짜만 return하는 함수 -> 달력에 사용
+  function getCalAttendance (uint workplaceInfoIndex, uint employeeIndex) public view 
+  returns (string [] memory, string [] memory){
+    return(
+      workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].startDay,
+      workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].endDay
+    );
+  }
+
+  // 자세한 출퇴근 내역을 return하는 함수
+  function getAllAttendance (uint workplaceInfoIndex, address employeeAddress) public view 
   returns (string [] memory, uint [], uint [], string [] memory, uint [], uint []){
     
-    require(workPlaceInfoIndex < workplaceinfo.length, "workplace is not available");
+    require(workplaceInfoIndex < workplaceinfo.length, "workplace is not available");
 
     uint employeeIndex = -1;
     
-    for (uint x = 0 ; x  < workplaceinfo[workPlaceInfoIndex].employee.length ; x++) {
-      if (workplaceinfo[workPlaceInfoIndex].employee[x] == employeeAddress) {
+    for (uint x = 0 ; x  < workplaceinfo[workplaceInfoIndex].employee.length ; x++) {
+      if (workplaceinfo[workplaceInfoIndex].employee[x] == employeeAddress) {
         employeeIndex = x;
         break;
       }
@@ -197,12 +211,12 @@ contract LaborContract {
     require(employeeIndex != -1, "you are not employee");
 
     return (
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startDay,
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeHour,
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeMinute,
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endDay,
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeHour,
-      workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeMinute);
+      workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].startDay,
+      workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].startTimeHour,
+      workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].startTimeMinute,
+      workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].endDay,
+      workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].endTimeHour,
+      workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].endTimeMinute);
   }
 
 
