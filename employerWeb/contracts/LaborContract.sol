@@ -63,8 +63,8 @@ contract LaborContract {
   }
   
   //struct 배열 선언부
-  workplaceInfo [] workplaceinfo;
-  laborContract [] laborcontract;
+  workplaceInfo [] private workplaceinfo;
+  laborContract [] private laborcontract;
 
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,28 +77,16 @@ contract LaborContract {
 
 
   //사람의 개인 정보 조회하는 함수
-  function getEmployeeInformation (address person) public view returns (string [] memory){
+  function getEmployeeInformation (address person) public view returns (uint8, string memory, uint, string memory){
 
     require(person == msg.sender, "your not msg.sender!");
 
-    string [] memory personItems = new string[](4);
-    
-    string memory p1 = _person[person].identiNumber;
-    string memory p2 = _person[person].name;
-    string memory p3 = _person[person].age;
-    string memory p4 = _person[person].gender;
-    
-    personItems[0] = p1;
-    personItems[1] = p2;
-    personItems[2] = p3;
-    personItems[3] = p4;
-
-    return (personItems);
+    return (_person[person].identiNumber, _person[person].name, _person[person].age, _person[person].gender);
 
   }
 
   // 고용주의 사업장 근로자 정보 목록을 return하는 함수
-  function getEmployerInfoEW (uint workplaceInfoIndex) public view returns (address [], string [] memory) {
+  function getEmployerInfoEW (uint workplaceInfoIndex) public view returns (address [] memory, string [] memory) {
     
     string [] memory nameList = new string[](workplaceinfo[workplaceInfoIndex].employee.length);
 
@@ -122,9 +110,9 @@ contract LaborContract {
   }
 
   // 고용주의 사업장들 조회하는 함수
-  function getWorkplacesEW (address employerAddress) public view returns (uint [], string [] memory, string [] memory){
+  function getWorkplacesEW (address employerAddress) public view returns (uint [] memory, string [] memory, string [] memory){
 
-    uint [] array = _employerWorkplaceList[employerAddress];
+    uint [] memory array = _employerWorkplaceList[employerAddress];
     string [] memory nameList = new string[](array.length);
     string [] memory locationList = new string[](array.length);
 
@@ -141,9 +129,9 @@ contract LaborContract {
   }
 
   // 근로자의 근무지들 조회하는 함수
-  function getWorkplacesEA (address employeeAddress) public view returns (uint [], string [] memory, string [] memory){
+  function getWorkplacesEA (address employeeAddress) public view returns (uint [] memory, string [] memory, string [] memory){
     
-    uint [] array = _employeeWorkplaceList[employeeAddress];
+    uint [] memory array = _employeeWorkplaceList[employeeAddress];
     string [] memory nameList = new string[](array.length);
     string [] memory locationList = new string[](array.length);
     
@@ -169,9 +157,9 @@ contract LaborContract {
 
     uint laborContractIndex = workplaceinfo[workplaceInfoIndex].laborContractIndex[employeeIndex];
 
-    temp[0] = laborcontract[laborContractIndex].period;
+    temp[0] = laborcontract[laborContractIndex].peroid;
     temp[1] = laborcontract[laborContractIndex].duties;
-    temp[2] = laborcontract[laborContractIndex].dworkingTimeuties;
+    temp[2] = laborcontract[laborContractIndex].workingTime;
     temp[3] = laborcontract[laborContractIndex].workingDays;
     temp[4] = laborcontract[laborContractIndex].wage;
     temp[5] = laborcontract[laborContractIndex].wageday;
@@ -202,7 +190,7 @@ contract LaborContract {
       }
     }
 
-    temp[0] = laborcontract[_employeeLaborContractList[employeeAddress][laborContractIndex]].period;
+    temp[0] = laborcontract[_employeeLaborContractList[employeeAddress][laborContractIndex]].peroid;
     temp[1] = laborcontract[_employeeLaborContractList[employeeAddress][laborContractIndex]].duties;
     temp[2] = laborcontract[_employeeLaborContractList[employeeAddress][laborContractIndex]].workingTime;
     temp[3] = laborcontract[_employeeLaborContractList[employeeAddress][laborContractIndex]].workingDays;
@@ -228,7 +216,7 @@ contract LaborContract {
     return(wage);
   }
 
-  // 근로자가 선택한 근로지의 시급을 return함
+  // 근로자가 선택한 근무지의 시급을 return함
   function getWageEA (uint workplaceInfoIndex, address employeeAddress) public view returns (string memory) {
 
     require(employeeAddress == msg.sender, "your not msg.sender!");
@@ -246,8 +234,8 @@ contract LaborContract {
     return (wage);
   }
 
-  // 출근, 퇴근 날짜만 return하는 함수 -> 달력에 사용
-  function getCalAttendance (uint workplaceInfoIndex, uint employeeIndex) public view 
+  // 고용주가 선택한 근로자의 출근, 퇴근 날짜만 return하는 함수
+  function getCalAttendanceEW (uint workplaceInfoIndex, uint employeeIndex) public view 
   returns (string [] memory, string [] memory){
 
     return(
@@ -257,9 +245,29 @@ contract LaborContract {
 
   }
 
-  // 자세한 출퇴근 내역을 return하는 함수
-  function getAllAttendance (uint workplaceInfoIndex, uint employeeIndex) public view 
-  returns (string [] memory, uint [], uint [], string [] memory, uint [], uint []){
+  // 근로자가 선택한 근로지의 출근, 퇴근 날짜만 return하는 함수
+  function getCalAttendanceEA (uint workplaceInfoIndex, address employeeAddress) public view 
+  returns (string [] memory, string [] memory) {
+
+    uint index;
+
+    for (uint x = 0 ; x < workplaceinfo[workplaceInfoIndex].employee.length ; x++) {
+      if (employeeAddress == workplaceinfo[workplaceInfoIndex].employee[x]) {
+        index = x;
+        break;
+      }
+    }
+
+    return(
+      workplaceinfo[workplaceInfoIndex].attendanceList[index].startDay,
+      workplaceinfo[workplaceInfoIndex].attendanceList[index].endDay
+    );
+
+  }
+
+  // 고용주가 선택한 근로자의 자세한 출퇴근 내역을 return하는 함수
+  function getAllAttendanceEW (uint workplaceInfoIndex, uint employeeIndex) public view 
+  returns (string [] memory, uint8 [] memory, uint8 [] memory, string [] memory, uint8 [] memory, uint8 [] memory){
 
     return (
       workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].startDay,
@@ -268,6 +276,28 @@ contract LaborContract {
       workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].endDay,
       workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].endTimeHour,
       workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].endTimeMinute);
+  }
+
+  // 근로자가 선택한 근로지의 자세한 출퇴근 내역을 return하는 함수
+  function getAllAttendanceEA (uint workplaceInfoIndex, address employeeAddress) public view 
+  returns (string [] memory, uint8 [] memory, uint8 [] memory, string [] memory, uint8 [] memory, uint8 [] memory){
+
+    uint index;
+
+    for (uint x = 0 ; x < workplaceinfo[workplaceInfoIndex].employee.length ; x++) {
+      if (employeeAddress == workplaceinfo[workplaceInfoIndex].employee[x]) {
+        index = x;
+        break;
+      }
+    }
+
+    return (
+      workplaceinfo[workplaceInfoIndex].attendanceList[index].startDay,
+      workplaceinfo[workplaceInfoIndex].attendanceList[index].startTimeHour,
+      workplaceinfo[workplaceInfoIndex].attendanceList[index].startTimeMinute,
+      workplaceinfo[workplaceInfoIndex].attendanceList[index].endDay,
+      workplaceinfo[workplaceInfoIndex].attendanceList[index].endTimeHour,
+      workplaceinfo[workplaceInfoIndex].attendanceList[index].endTimeMinute);
   }
 
 
@@ -303,16 +333,16 @@ contract LaborContract {
 
   // 근로자의 월급 조회
   // getWorkTime 사용
-  function getPayment (uint employeeIndex, uint workplaceInfoIndex, uint startIndex, uint endIndex) public returns (uint) {
+  function getPayment (uint employeeIndex, uint workplaceInfoIndex, uint startIndex, uint endIndex, uint wage) public returns (uint) {
 
     uint Allhour;
     uint Allminute;
 
     (Allhour, Allminute) = getWorkTime(employeeIndex, workplaceInfoIndex, startIndex, endIndex);
 
-    uint wage = (wage/60)*(hour*60+minute);
+    uint Allwage = (Allhour * wage) + (Allminute * (wage / 60));
 
-    return (wage);
+    return (Allwage);
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -321,7 +351,7 @@ contract LaborContract {
 
 
   // 개인 정보 등록하는 함수
-  function uploadPersonalInfo(address person, uint8 identiNumber, string name, uint age, string gender) public {
+  function uploadPersonalInfo(address person, uint8 identiNumber, string calldata name, uint age, string calldata gender) public {
 
     require(person == msg.sender, "your not msg.sender!");
 
@@ -335,13 +365,16 @@ contract LaborContract {
   }
 
   // 고용주가 사업장 등록하는 함수
-  function uploadWorkplace(address employer, string workplaceName, string location) public {
+  function uploadWorkplace(address employer, string calldata workplaceName, string calldata location) public {
 
     require(employer == msg.sender, "your not msg.sender!");
-    require(_person[employer] == 1, "your not employer!");
+    require(_person[employer].identiNumber == 1, "your not employer!");
     
     workplaceInfo storage newInfo = workplaceInfo(workplaceName, location);
-    workplaceinfo.push(newInfo);
+
+    
+    newInfo.name = workplaceName;
+    newInfo.location = location;
 
     _employerWorkplaceList[employer].push(_workplaceIndex);
 
@@ -349,15 +382,16 @@ contract LaborContract {
   }
 
   // 근로계약서 등록하는 함수
-  function uploadLaborContract(string [] laborContractItems, address employee, uint workPlaceIndex) public {
+  function uploadLaborContract(string [] calldata laborContractItems, address employee, uint workPlaceIndex) public {
 
     require(employee == msg.sender, "your not msg.sender!");
-    require(_person[employee] == 0, "your not employee!");
-
-    laborContract storage newLabor = laborContract(workPlaceIndex,
+    require(_person[employee].identiNumber == 0, "your not employee!");
+    laborContract(workPlaceIndex,
       laborContractItems[0], laborContractItems[1], laborContractItems[2], laborContractItems[3],
       laborContractItems[4], laborContractItems[5], laborContractItems[6]);
-    laborcontract.push(newLabor);
+
+    laborContract storage newLabor = laborcontract[_laborContractIndex];
+    
 
     _employeeLaborContractList[employee].push(_laborContractIndex);
 
@@ -373,12 +407,12 @@ contract LaborContract {
   // 출퇴근 올리는 함수
   // classifyNum : 0 -> 출근 / 1 -> 퇴근
   function uploadAttendance (uint8 classifyNum, uint workPlaceInfoIndex, address employee,
-  string day, uint timeHour, uint timeMinute) public returns (uint8) {
+  string calldata day, uint8 timeHour, uint8 timeMinute) public returns (uint8) {
 
     require(workPlaceInfoIndex < workplaceinfo.length, "your workplace is not available");
-    require(personalInfo[employee].identiNumber != 0, "you are not employee");
+    require(_person[employee].identiNumber != 0, "you are not employee");
 
-    uint employeeIndex = -1;
+    uint employeeIndex;
 
     for (uint x = 0 ; x <= workplaceinfo[workPlaceInfoIndex].employee.length ; x++) {
       
@@ -387,8 +421,6 @@ contract LaborContract {
         break;
       }
     }
-
-    require(employeeIndex != -1, "can't find address in workplace");
 
     // 출근
     if (classifyNum == 0) {
