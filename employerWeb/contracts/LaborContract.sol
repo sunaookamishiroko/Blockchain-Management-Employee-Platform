@@ -121,12 +121,19 @@ contract LaborContract {
     return index;
   }
 
-  // 고용주의 사업장들 조회하는 함수
-  function getWorkplacesEW (address employerAddress) public view 
+  // 고용주의 사업장 & 근로자의 근무지들 조회하는 함수
+  function getWorkplaces (address personAddress) public view 
   returns (uint [] memory, string [] memory, string [] memory){
     
-    // array는 mapping _employerWorkplaceList에 저장되어 있는 사업장 index 리스트
-    uint [] memory array = _employerWorkplaceList[employerAddress];
+    uint [] memory array;
+
+    // identiNumber = 0 => 근로자 1 => 고용주
+    // 0 -> array는 mapping _employeeWorkplaceList에 저장되어 있는 근무지 index 리스트
+    // 1 -> array는 mapping _employerWorkplaceList에 저장되어 있는 사업장 index 리스트
+    
+    if (_person[msg.sender].identiNumber == 0) array = _employeeWorkplaceList[personAddress];
+    else array = _employerWorkplaceList[personAddress];
+
     string [] memory nameList = new string[](array.length);
     string [] memory locationList = new string[](array.length);
 
@@ -143,38 +150,33 @@ contract LaborContract {
 
   }
 
-  // 근로자의 근무지들 조회하는 함수
-  function getWorkplacesEA (address employeeAddress) public view 
-  returns (uint [] memory, string [] memory, string [] memory){
-    
-    // 위 함수와 이 부분만 다름, array는 mapping _employeeWorkplaceList에 저장되어 있는 근무지 index 리스트
-    uint [] memory array = _employeeWorkplaceList[employeeAddress];
-    string [] memory nameList = new string[](array.length);
-    string [] memory locationList = new string[](array.length);
-    
-    for (uint x = 0; x < array.length ; x++) {
-      string memory name = workplaceinfo[array[x]].name;
-      string memory location = workplaceinfo[array[x]].location;
-
-      nameList[x] = name;
-      locationList[x] = location;
-    }
-
-    return (array, nameList, locationList);
-
-  }
-
   // 고용주가 선택한 근로자의 근로계약서를 조회하는 함수
-  function getLaborContractEW (uint workplaceInfoIndex, uint employeeIndex) public view 
+  function getLaborContract (uint workplaceInfoIndex, uint employeeIndex) public view 
   returns(string [] memory) {
-
-    require(_person[msg.sender].identiNumber == 1, "your not employer!");
 
     string [] memory laborContractItems = new string[](7);
     string [] memory temp = new string[](7);
+    uint laborContractIndex;
 
+    // identiNumber : 0 => 근로자 1 => 고용주
+    // mapping _employeeLaborContractList와 근로계약서에 들어있는 workplaceIndex를 이용하여 찾음
+    if (_person[msg.sender].identiNumber == 0) {
+
+      uint tempIndex;
+
+      for (uint x = 0 ; x < _employeeLaborContractList[msg.sender].length ; x++) {
+
+        if (laborcontract[_employeeLaborContractList[msg.sender][x]].workplaceIndex == workplaceInfoIndex) {
+          tempIndex = x;
+          break;
+        }
+
+      }
+      
+      laborContractIndex = _employeeLaborContractList[msg.sender][tempIndex];
+    }
     // workplace에서 index를 찾음
-    uint laborContractIndex = workplaceinfo[workplaceInfoIndex].laborContractIndex[employeeIndex];
+    else laborContractIndex = workplaceinfo[workplaceInfoIndex].laborContractIndex[employeeIndex];
 
     temp[0] = laborcontract[laborContractIndex].peroid;
     temp[1] = laborcontract[laborContractIndex].duties;
@@ -191,41 +193,7 @@ contract LaborContract {
 
   }
 
-  // 근로자가 선택한 근무지의 근로계약서를 조회하는 함수
-  function getLaborContractEA (uint workplaceInfoIndex, address employeeAddress) public view returns(string [] memory) {
-
-    require(employeeAddress == msg.sender, "your not msg.sender!");
-    require(_person[employeeAddress].identiNumber == 0, "your not employee!");
-
-    string [] memory laborContractItems = new string[](7);
-    string [] memory temp = new string[](7);
-    uint laborContractIndex;
-
-    // mapping _employeeLaborContractList와 근로계약서에 들어있는 workplaceIndex를 이용하여 찾음
-    for (uint x = 0 ; x < _employeeLaborContractList[employeeAddress].length ; x++) {
-      if (laborcontract[_employeeLaborContractList[employeeAddress][x]].workplaceIndex == workplaceInfoIndex) {
-        laborContractIndex = x;
-        break;
-      }
-    }
-
-    temp[0] = laborcontract[_employeeLaborContractList[employeeAddress][laborContractIndex]].peroid;
-    temp[1] = laborcontract[_employeeLaborContractList[employeeAddress][laborContractIndex]].duties;
-    temp[2] = laborcontract[_employeeLaborContractList[employeeAddress][laborContractIndex]].workingTime;
-    temp[3] = laborcontract[_employeeLaborContractList[employeeAddress][laborContractIndex]].workingDays;
-    temp[4] = laborcontract[_employeeLaborContractList[employeeAddress][laborContractIndex]].wage;
-    temp[5] = laborcontract[_employeeLaborContractList[employeeAddress][laborContractIndex]].wageday;
-    temp[6] = laborcontract[_employeeLaborContractList[employeeAddress][laborContractIndex]].comment;
-    
-    for (uint x = 0 ; x < laborContractItems.length ; x++) {
-      laborContractItems[x] = temp[x];
-    }
-
-    return (laborContractItems);
-
-  }
-
-  // 근로자가 선택한 근무지 / 고용주가 선택한 근로자의 시급을 return함
+  // 근로자가 선택한 근무지 & 고용주가 선택한 근로자의 시급을 return함
   function getWage (uint workplaceInfoIndex, uint employeeIndex) public view 
   returns (string memory) {
     string memory wage = laborcontract[workplaceinfo[workplaceInfoIndex].laborContractIndex[employeeIndex]].wage;
@@ -421,6 +389,5 @@ contract LaborContract {
     return 1;
 
   }
-  
 
 } 
