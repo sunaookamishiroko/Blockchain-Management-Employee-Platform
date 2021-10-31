@@ -214,7 +214,7 @@ contract LaborContract {
 
   }
 
-  // 고용주가 선택한 근로자 or 근로자가 선택한 근무지 의 자세한 출퇴근 내역을 return하는 함수
+  // 고용주가 선택한 근로자 or 근로자가 선택한 근무지의 자세한 출퇴근 내역을 return하는 함수
   function getAllAttendance (uint workplaceInfoIndex, uint employeeIndex) public view 
   returns (string [] memory, uint8 [] memory, uint8 [] memory, string [] memory, uint8 [] memory, uint8 [] memory){
 
@@ -230,7 +230,7 @@ contract LaborContract {
   // 근로자가 하나의 월에 일한 시간을 return하는 함수
   // hour(시간), minute(분)을 숫자로 출력합니다   -> 몇 시간 몇 분 근무했는지에 대한 정보
   // 웹, 앱 단에서 getCalAttendance를 이용해서 string 패턴 매칭 작업을 통해 해당 월의 인덱스 번호만 골라내서 이 함수를 사용합니다.
-  function getWorkTime (uint employeeIndex, uint workplaceInfoIndex, uint startIndex, uint endIndex) public view 
+  function getWorkTime (uint workplaceInfoIndex, uint employeeIndex, uint startIndex, uint endIndex) public view 
   returns (uint, uint) {
 
     uint Allhour = 0;
@@ -259,8 +259,7 @@ contract LaborContract {
   }
 
   // 근로자의 월급 조회
-  // getWorkTime 사용
-  // wage는 프론트에서 getWage()를 이용해 string to int 변환해준 다음 인자로 넣어줍니다
+  // wage는 프론트에서 getWage를 이용해 string to int 변환해준 다음 인자로 넣어줍니다
   function getPayment (uint employeeIndex, uint workplaceInfoIndex, uint startIndex, uint endIndex, uint wage) public view 
   returns (uint) {
 
