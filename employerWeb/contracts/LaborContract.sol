@@ -316,14 +316,14 @@ contract LaborContract {
   }
 
   // 근로계약서 등록하는 함수
-  function uploadLaborContract(string [] calldata laborContractItems, address employeeAddress, uint workplaceIndex) public {
+  function uploadLaborContract(string [] calldata laborContractItems, address employeeAddress, uint workplaceInfoIndex) public {
 
     require(employeeAddress == msg.sender, "your not msg.sender!");
     require(_person[employeeAddress].identiNumber == 0, "your not employee!");
 
     laborContract memory newLabor;
 
-    newLabor.workplaceIndex = workplaceIndex;
+    newLabor.workplaceIndex = workplaceInfoIndex;
     newLabor.peroid = laborContractItems[0];
     newLabor.duties = laborContractItems[1];
     newLabor.workingTime = laborContractItems[2];
@@ -337,13 +337,13 @@ contract LaborContract {
     // _employeeLaborContractList mapping에 근로계약서 index 등록
     // _employeeWorkplaceList mapping에 근무지 index 등록
     _employeeLaborContractList[employeeAddress].push(_laborContractIndex);
-    _employeeWorkplaceList[employeeAddress].push(workplaceIndex);
+    _employeeWorkplaceList[employeeAddress].push(workplaceInfoIndex);
 
     // workplace의 근로자로 등록하기
-    workplaceinfo[workplaceIndex].employee.push(employeeAddress);
+    workplaceinfo[workplaceInfoIndex].employee.push(employeeAddress);
     
     // workspace에다가 근로계약서의 index 저장하기
-    workplaceinfo[workplaceIndex].laborContractIndex.push(_laborContractIndex);
+    workplaceinfo[workplaceInfoIndex].laborContractIndex.push(_laborContractIndex);
 
     string [] memory startDay;
     uint8 [] memory startTimeHour;
@@ -355,7 +355,7 @@ contract LaborContract {
     attendance memory newAttendance = attendance(startDay, startTimeHour, startTimeMinute, endDay, endTimeHour, endTimeMinute);
 
     // 새로운 출석부 만들어서 출석부 리스트에 넣기
-    workplaceinfo[workplaceIndex].attendanceList.push(newAttendance);
+    workplaceinfo[workplaceInfoIndex].attendanceList.push(newAttendance);
 
     // 근로계약서 index 증가
     _laborContractIndex++;
