@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ERC20Contract from "./contracts/ERC20.json";
+import LaborContract from "./contracts/LaborContract.json";
 import getWeb3 from "./getWeb3";
 
 import "./App.css";
@@ -17,9 +18,9 @@ class App extends Component {
 
       // Get the contract instance.
       const networkId = await web3.eth.net.getId();
-      const deployedNetwork = ERC20Contract.networks[networkId];
+      const deployedNetwork = LaborContract.networks[networkId];
       const instance = new web3.eth.Contract(
-        ERC20Contract.abi,
+        LaborContract.abi,
         deployedNetwork && deployedNetwork.address,
       );
 
@@ -35,22 +36,27 @@ class App extends Component {
     }
   };
 
-  mint = async () => {
+  // 근로자 정보 업로드
+  uploadPersonalInfo0 = async () => {
     const { accounts, contract } = this.state;
-    await contract.methods.mint(accounts[0], 1000000).send({ from: accounts[0] });
-    console.log("mint complete");
+    await contract.methods.uploadPersonalInfo(accounts[0], 0, encodeURI("이서윤"), 24, encodeURI("남")).send({ from: accounts[0] });
+    console.log("uploadPersonalInfo0 complete");
   };
 
-  balance = async () => {
+  // 사업주 정보 업로드
+  uploadPersonalInfo1 = async () => {
     const { accounts, contract } = this.state;
-    const response = await contract.methods.balanceOf(accounts[0]).call();
-    console.log("blance : ", response);
-  }
+    await contract.methods.uploadPersonalInfo(accounts[0], 1, encodeURI("홍길동"), 50, encodeURI("여")).send({ from: accounts[0] });
+    console.log("uploadPersonalInfo1 complete");
+  };
 
-  transfer = async () => {
+  // 사람의 개인정보 보기
+  getPersonInformation = async () => {
     const { accounts, contract } = this.state;
-    await contract.methods.transfer("0x1d9B0E0badA1a8e5Ab3c2045ba6BDE301F15Df20", 500000).send({ from: accounts[0] });
-    console.log("transfer complete");
+    const response = await contract.methods.getPersonInformation(accounts[0]).call({ from: accounts[0] });
+    console.log(response);
+    console.log(decodeURI(response[1]));
+    console.log(decodeURI(response[3]));
   }
 
   render() {
@@ -59,10 +65,11 @@ class App extends Component {
     }
     return (
       <div className="App">
-        <h1>Good to Go!</h1>
-        <button onClick={this.mint}>mint</button>
-        <button onClick={this.balance}>balance</button>
-        <button onClick={this.transfer}>transfer</button>
+        <h1>함수 실험실</h1>
+        <h4>개인정보 업로드</h4>
+        <button onClick={this.uploadPersonalInfo0}>uploadPersonalInfo(근로자)</button>
+        <button onClick={this.uploadPersonalInfo1}>uploadPersonalInfo(사업주)</button>
+        <button onClick={this.getPersonInformation}>getPersonInformation</button>
       </div>
     );
   }

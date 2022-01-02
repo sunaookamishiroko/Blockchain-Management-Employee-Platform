@@ -9,7 +9,7 @@ contract LaborContract {
   // 근로자의 근로계약서 리스트 index mapping
   mapping(address => uint256 []) private _employeeLaborContractList;
 
-  // 고용주의 사업장 리스트 index mapping
+  // 사업주의 사업장 리스트 index mapping
   mapping(address => uint256 []) private _employerWorkplaceList;
 
   // 근로자의 근무지 리스트 index mapping
@@ -22,7 +22,7 @@ contract LaborContract {
   uint private _laborContractIndex = 0;
   
   // 사람 개인정보
-  // identiNumber : 0 => 근로자 1 => 고용주
+  // identiNumber : 0 => 근로자 1 => 사업주
   struct personalInfo {
     uint8 identiNumber;
     string name;
@@ -80,7 +80,7 @@ contract LaborContract {
 
   }
 
-  // 고용주의 사업장 근로자 정보 목록을 return하는 함수
+  // 사업주의 사업장 근로자 정보 목록을 return하는 함수
   function getEmployeeInfo (uint workplaceInfoIndex) public view 
   returns (address [] memory, string [] memory) {
     
@@ -100,7 +100,7 @@ contract LaborContract {
     );
   }
 
-  // 고용주의 사업장의 근로자 수를 return하는 함수
+  // 사업주의 사업장의 근로자 수를 return하는 함수
   function getNumOfEmployee (uint workplaceInfoIndex) public view returns (uint){
     return (workplaceinfo[workplaceInfoIndex].employee.length);
   }
@@ -121,13 +121,13 @@ contract LaborContract {
     return index;
   }
 
-  // 고용주의 사업장 & 근로자의 근무지들 조회하는 함수
+  // 사업주의 사업장 & 근로자의 근무지들 조회하는 함수
   function getWorkplaces () public view 
   returns (uint [] memory, string [] memory, string [] memory){
     
     uint [] memory array;
 
-    // identiNumber = 0 => 근로자 1 => 고용주
+    // identiNumber = 0 => 근로자 1 => 사업주
     // 0 -> array는 mapping _employeeWorkplaceList에 저장되어 있는 근무지 index 리스트
     // 1 -> array는 mapping _employerWorkplaceList에 저장되어 있는 사업장 index 리스트
     
@@ -150,7 +150,7 @@ contract LaborContract {
 
   }
 
-  // 고용주가 선택한 근로자 & 근로자가 선택한 근무지의 근로계약서를 조회하는 함수
+  // 사업주가 선택한 근로자 & 근로자가 선택한 근무지의 근로계약서를 조회하는 함수
   function getLaborContract (uint workplaceInfoIndex, address employeeAddress) public view 
   returns(string [] memory) {
 
@@ -159,7 +159,7 @@ contract LaborContract {
     uint laborContractIndex;
     uint tempIndex;
 
-    // identiNumber : 0 => 근로자 1 => 고용주
+    // identiNumber : 0 => 근로자 1 => 사업주
     // mapping _employeeLaborContractList와 근로계약서에 들어있는 workplaceIndex를 이용하여 찾음
     if (_person[msg.sender].identiNumber == 0) {
 
@@ -195,7 +195,7 @@ contract LaborContract {
 
   }
 
-  // 고용주가 선택한 근로자 or 근로자가 선택한 근무지의 시급을 return함
+  // 사업주가 선택한 근로자 or 근로자가 선택한 근무지의 시급을 return함
   function getWage (uint workplaceInfoIndex, uint employeeIndex) public view 
   returns (string memory) {
     string memory wage = laborcontract[workplaceinfo[workplaceInfoIndex].laborContractIndex[employeeIndex]].wage;
@@ -203,7 +203,7 @@ contract LaborContract {
     return(wage);
   }
 
-  // 고용주가 선택한 근로자 or 근로자가 선택한 근무지의 출근, 퇴근 날짜만 return하는 함수
+  // 사업주가 선택한 근로자 or 근로자가 선택한 근무지의 출근, 퇴근 날짜만 return하는 함수
   function getCalAttendance (uint workplaceInfoIndex, uint employeeIndex) public view 
   returns (string [] memory, string [] memory){
 
@@ -214,7 +214,7 @@ contract LaborContract {
 
   }
 
-  // 고용주가 선택한 근로자 or 근로자가 선택한 근무지의 자세한 출퇴근 내역을 return하는 함수
+  // 사업주가 선택한 근로자 or 근로자가 선택한 근무지의 자세한 출퇴근 내역을 return하는 함수
   function getAllAttendance (uint workplaceInfoIndex, uint employeeIndex) public view 
   returns (string [] memory, uint8 [] memory, uint8 [] memory, string [] memory, uint8 [] memory, uint8 [] memory){
 
@@ -293,7 +293,7 @@ contract LaborContract {
 
   }
   
-  // 고용주가 사업장 등록하는 함수
+  // 사업주가 사업장 등록하는 함수
   function uploadWorkplace(address employerAddress, string calldata workplaceName, string calldata location) public {
 
     require(employerAddress == msg.sender, "your not msg.sender!");
