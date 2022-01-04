@@ -57,7 +57,60 @@ class App extends Component {
     console.log(response);
     console.log(decodeURI(response[1]));
     console.log(decodeURI(response[3]));
-  }
+  };
+  
+  // 사업장 등록
+  uploadWorkplace = async () => {
+    const { accounts, contract } = this.state;
+    await contract.methods.uploadWorkplace(accounts[0], encodeURI("맥도날드"), encodeURI("서울특별시")).send({ from: accounts[0] });
+    console.log("uploadWorkplace complete");
+  };
+
+  // 사업장 조회
+  getWorkplaces = async () => {
+    const { accounts, contract } = this.state;
+    const response = await contract.methods.getWorkplaces().call({ from: accounts[0] });
+    console.log(response);
+  };
+
+  // 근로계약서 업로드
+  uploadLaborContract = async () => {
+    const { accounts, contract } = this.state;
+    let items = [
+      "2022/01/04 ~ 2022/03/31",
+      encodeURI("서빙"),
+      "18:00 ~ 21:00",
+      encodeURI("매주 화요일"),
+      "9160",
+      encodeURI("매월 10일"),
+      encodeURI("없음")
+    ];
+
+    await contract.methods.uploadLaborContract(items, accounts[0], 0).send({ from: accounts[0] });
+    console.log("uploadLaborContract complete");
+  };
+
+  // 근로자가 근로계약서 조회
+  getLaborContract0 = async () => {
+    const { accounts, contract } = this.state;
+    const response = await contract.methods.getLaborContract(0, accounts[0]).call({ from: accounts[0] });
+    console.log(response);
+  };
+
+  // 사업주가 근로계약서 조회
+  getLaborContract1 = async () => {
+    const { accounts, contract } = this.state;
+    const response = await contract.methods.getLaborContract(0, "0x73fA89eDbc136AA1eC77a729D3409c760F631dcf").call({ from: accounts[0] });
+    console.log(response);
+  };
+
+  // 출퇴근 업로드 : 출근
+  uploadAttendance0 = async () => {
+    const { accounts, contract } = this.state;
+    await contract.methods.uploadAttendance(accounts[0], encodeURI("맥도날드"), encodeURI("서울특별시")).send({ from: accounts[0] });
+    console.log("uploadWorkplace complete");
+  }; 
+
 
   render() {
     if (!this.state.web3) {
@@ -66,10 +119,18 @@ class App extends Component {
     return (
       <div className="App">
         <h1>함수 실험실</h1>
-        <h4>개인정보 업로드</h4>
+        <h4>정보 업로드 / 보기</h4>
         <button onClick={this.uploadPersonalInfo0}>uploadPersonalInfo(근로자)</button>
         <button onClick={this.uploadPersonalInfo1}>uploadPersonalInfo(사업주)</button>
         <button onClick={this.getPersonInformation}>getPersonInformation</button>
+        <button onClick={this.uploadWorkplace}>uploadWorkplace</button>
+        <button onClick={this.getWorkplaces}>getWorkplaces</button>
+        <h4>근로계약서 업로드 / 조회</h4>
+        <button onClick={this.uploadLaborContract}>uploadLaborContract</button>
+        <button onClick={this.getLaborContract0}>getLaborContract(근로자)</button>
+        <button onClick={this.getLaborContract1}>getLaborContract(사업주)</button>
+        <h4>출퇴근 업로드 / 조회</h4>
+
       </div>
     );
   }
