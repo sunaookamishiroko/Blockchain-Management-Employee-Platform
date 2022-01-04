@@ -367,7 +367,7 @@ contract LaborContract {
   function uploadAttendance (uint8 classifyNum, uint workPlaceInfoIndex,
   string calldata day, uint8 timeHour, uint8 timeMinute) public returns (uint8) {
 
-    require(_person[msg.sender].identiNumber != 0, "you are not employee");
+    require(_person[msg.sender].identiNumber == 0, "you are not employee");
 
     uint employeeIndex = getIndexOfEmployee(workPlaceInfoIndex, msg.sender);
 

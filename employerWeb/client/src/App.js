@@ -6,7 +6,7 @@ import getWeb3 from "./getWeb3";
 import "./App.css";
 
 class App extends Component {
-  state = { web3: null, accounts: null, contract: null };
+  state = { web3: null, accounts: null, contract: null, tokencontract: null };
 
   componentDidMount = async () => {
     try {
@@ -16,17 +16,25 @@ class App extends Component {
       // Use web3 to get the user's accounts.
       const accounts = await web3.eth.getAccounts();
 
-      // Get the contract instance.
+      // laborContract abi 설정
       const networkId = await web3.eth.net.getId();
       const deployedNetwork = LaborContract.networks[networkId];
       const instance = new web3.eth.Contract(
         LaborContract.abi,
         deployedNetwork && deployedNetwork.address,
       );
+      
+      // ERC20 abi 설정
+      const TokenDeployNetwork = ERC20Contract.networks[networkId];
+      const Tokeninstance = new web3.eth.Contract(
+        ERC20Contract.abi,
+        TokenDeployNetwork && TokenDeployNetwork.address,
+      );
+
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState({ web3, accounts, contract: instance });
+      this.setState({ web3, accounts, contract: instance, tokencontract: Tokeninstance});
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -104,12 +112,55 @@ class App extends Component {
     console.log(response);
   };
 
+  // 0 -> 출근 / 1 -> 퇴근
   // 출퇴근 업로드 : 출근
   uploadAttendance0 = async () => {
     const { accounts, contract } = this.state;
-    await contract.methods.uploadAttendance(accounts[0], encodeURI("맥도날드"), encodeURI("서울특별시")).send({ from: accounts[0] });
-    console.log("uploadWorkplace complete");
+    await contract.methods.uploadAttendance(0, 0, "2022/01/04", 18, 0).send({ from: accounts[0] });
+    console.log("uploadAttendance0 complete");
+  };
+
+  // 출퇴근 업로드 : 퇴근
+  uploadAttendance1 = async () => {
+    const { accounts, contract } = this.state;
+    await contract.methods.uploadAttendance(1, 0, "2022/01/04", 21, 30).send({ from: accounts[0] });
+    console.log("uploadAttendance1 complete");
   }; 
+
+  // 출근, 퇴근 날짜 조회
+  getCalAttendance = async () => {
+    const { accounts, contract } = this.state;
+    const response = await contract.methods.getCalAttendance(0, 0).call({ from: accounts[0] });
+    console.log(response);
+  };
+
+  // 출석부 모두 조회
+  getAllAttendance = async () => {
+    const { accounts, contract } = this.state;
+    const response = await contract.methods.getAllAttendance(0, 0).call({ from: accounts[0] });
+    console.log(response);
+  };
+
+  // 자신에게 토큰 발행
+  mint = async () => {
+    const { accounts, tokencontract } = this.state;
+    await tokencontract.methods.mint(accounts[0], 2000000).send({ from: accounts[0] });
+    console.log("mint complete");
+  };
+
+  // 토큰 잔고
+  balanceOf = async () => {
+    const { accounts, tokencontract } = this.state;
+    const response = await tokencontract.methods.balanceOf(accounts[0]).call({ from: accounts[0] });
+    console.log(response);
+  };
+
+  // 토큰 전송
+  transfer = async () => {
+    const { accounts, tokencontract } = this.state;
+    await tokencontract.methods.transfer("0x73fA89eDbc136AA1eC77a729D3409c760F631dcf", 100000).send({ from: accounts[0] });
+    console.log("transfer complete");
+  };
 
 
   render() {
@@ -130,7 +181,16 @@ class App extends Component {
         <button onClick={this.getLaborContract0}>getLaborContract(근로자)</button>
         <button onClick={this.getLaborContract1}>getLaborContract(사업주)</button>
         <h4>출퇴근 업로드 / 조회</h4>
-
+        <button onClick={this.uploadAttendance0}>uploadAttendance(출근)</button>
+        <button onClick={this.uploadAttendance1}>uploadAttendance(퇴근)</button>
+        <button onClick={this.getCalAttendance}>getCalAttendance</button>
+        <button onClick={this.getAllAttendance}>getAllAttendance</button>
+        <h4>급여 정산</h4>
+        <h4>기타 조회</h4>
+        <h4>토큰 함수</h4>
+        <button onClick={this.mint}>mint</button>
+        <button onClick={this.balanceOf}>balanceOf</button>
+        <button onClick={this.transfer}>transfer</button>
       </div>
     );
   }
