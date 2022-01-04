@@ -43,6 +43,17 @@ class App extends Component {
       console.error(error);
     }
   };
+  
+  /*
+  let accountInterval = setInterval(function() {
+        // 계정이 바뀌었는지 확인
+        if (web3.eth.accounts[0] !== accounts) {
+          accounts = web3.eth.accounts[0];
+          // 새 계정에 대한 UI로 업데이트하기 위한 함수 호출
+          location.reload();
+        }
+      }, 100);
+  */
 
   //////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
