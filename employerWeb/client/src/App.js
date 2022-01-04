@@ -44,10 +44,14 @@ class App extends Component {
     }
   };
 
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
   // 근로자 정보 업로드
   uploadPersonalInfo0 = async () => {
     const { accounts, contract } = this.state;
-    await contract.methods.uploadPersonalInfo(accounts[0], 0, encodeURI("나경원"), 26, encodeURI("여")).send({ from: accounts[0] });
+    await contract.methods.uploadPersonalInfo(accounts[0], 0, encodeURI("이서윤"), 26, encodeURI("여")).send({ from: accounts[0] });
     console.log("uploadPersonalInfo0 complete");
   };
 
@@ -93,7 +97,7 @@ class App extends Component {
       encodeURI("접대"),
       "03:00 ~ 12:00",
       encodeURI("매주 화요일"),
-      "12000",
+      "9160",
       encodeURI("매월 10일"),
       encodeURI("없음")
     ];
@@ -131,7 +135,7 @@ class App extends Component {
   // 출퇴근 업로드 : 퇴근
   uploadAttendance1 = async () => {
     const { accounts, contract } = this.state;
-    await contract.methods.uploadAttendance(1, 0, "2022/01/08", 3, 30).send({ from: accounts[0] });
+    await contract.methods.uploadAttendance(1, 0, "2022/01/08", 3, 45).send({ from: accounts[0] });
     console.log("uploadAttendance1 complete");
   }; 
 
@@ -145,7 +149,21 @@ class App extends Component {
   // 출석부 모두 조회
   getAllAttendance = async () => {
     const { accounts, contract } = this.state;
-    const response = await contract.methods.getAllAttendance(0, 0).call({ from: accounts[0] });
+    const response = await contract.methods.getAllAttendance(0, 1).call({ from: accounts[0] });
+    console.log(response);
+  };
+
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
+  // 급여 정산
+  getPayment = async () => {
+    const { accounts, contract } = this.state;
+    let wage = await contract.methods.getWage(0, 1).call({ from: accounts[0] });
+    wage = parseInt(wage);
+
+    const response = await contract.methods.getPayment(0, 1, 0, 2, wage).call({ from: accounts[0] });
     console.log(response);
   };
 
@@ -177,14 +195,14 @@ class App extends Component {
   // 근로자의 근무 시간 조회
   getWorkTime = async () => {
     const { accounts, contract } = this.state;
-    const response = await contract.methods.getWorkTime(0, 0, 0, 2).call({ from: accounts[0] });
+    const response = await contract.methods.getWorkTime(0, 1, 0, 2).call({ from: accounts[0] });
     console.log(response);
   };
 
   // 근로자의 근무 시간 조회
   getWage = async () => {
     const { accounts, contract } = this.state;
-    const response = await contract.methods.getWage(0, 0).call({ from: accounts[0] });
+    const response = await contract.methods.getWage(0, 1).call({ from: accounts[0] });
     console.log(response);
   };
 
@@ -213,16 +231,9 @@ class App extends Component {
     console.log("transfer complete");
   };
 
-  // 급여 정산
-  getPayment = async () => {
-    const { accounts, contract } = this.state;
-    let wage = await contract.methods.getWage(0, 0).call({ from: accounts[0] });
-    wage = parseInt(wage);
-
-    const response = await contract.methods.getPayment(0, 0, 0, 2, wage).call({ from: accounts[0] });
-    console.log(response);
-  };
-
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
 
   render() {
     if (!this.state.web3) {

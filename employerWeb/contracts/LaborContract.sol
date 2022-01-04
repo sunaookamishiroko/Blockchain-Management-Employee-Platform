@@ -242,13 +242,13 @@ contract LaborContract {
 
   // 근로자의 월급 조회
   // wage는 프론트에서 getWage를 이용해 string to int 변환해준 다음 인자로 넣어줍니다
-  function getPayment (uint employeeIndex, uint workplaceInfoIndex, uint startIndex, uint endIndex, int wage) public view 
+  function getPayment (uint workplaceInfoIndex, uint employeeIndex, uint startIndex, uint endIndex, int wage) public view 
   returns (int) {
 
     int Allhour;
     int Allminute;
 
-    (Allhour, Allminute) = getWorkTime(employeeIndex, workplaceInfoIndex, startIndex, endIndex);
+    (Allhour, Allminute) = getWorkTime(workplaceInfoIndex, employeeIndex, startIndex, endIndex);
 
     int Allwage = (Allhour * wage) + (Allminute * (wage / 60));
 
