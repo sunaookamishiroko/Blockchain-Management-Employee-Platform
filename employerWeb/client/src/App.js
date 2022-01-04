@@ -81,6 +81,10 @@ class App extends Component {
     console.log(response);
   };
 
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
   // 근로계약서 업로드
   uploadLaborContract = async () => {
     const { accounts, contract } = this.state;
@@ -112,18 +116,22 @@ class App extends Component {
     console.log(response);
   };
 
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
   // 0 -> 출근 / 1 -> 퇴근
   // 출퇴근 업로드 : 출근
   uploadAttendance0 = async () => {
     const { accounts, contract } = this.state;
-    await contract.methods.uploadAttendance(0, 0, "2022/01/04", 18, 0).send({ from: accounts[0] });
+    await contract.methods.uploadAttendance(0, 0, "2022/01/06", 18, 0).send({ from: accounts[0] });
     console.log("uploadAttendance0 complete");
   };
 
   // 출퇴근 업로드 : 퇴근
   uploadAttendance1 = async () => {
     const { accounts, contract } = this.state;
-    await contract.methods.uploadAttendance(1, 0, "2022/01/04", 21, 30).send({ from: accounts[0] });
+    await contract.methods.uploadAttendance(1, 0, "2022/01/06", 21, 30).send({ from: accounts[0] });
     console.log("uploadAttendance1 complete");
   }; 
 
@@ -141,6 +149,43 @@ class App extends Component {
     console.log(response);
   };
 
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
+  // 사업주의 사업장 근로자 정보 목록 조회
+  getEmployeeInfo = async () => {
+    const { accounts, contract } = this.state;
+    const response = await contract.methods.getEmployeeInfo(0).call({ from: accounts[0] });
+    console.log(response);
+  };
+
+  // 사업주의 사업장의 근로자 수 조회
+  getNumOfEmployee = async () => {
+    const { accounts, contract } = this.state;
+    const response = await contract.methods.getNumOfEmployee(0).call({ from: accounts[0] });
+    console.log(response);
+  };
+
+  // 근로자의 근무지에서의 index 조회
+  getIndexOfEmployee = async () => {
+    const { accounts, contract } = this.state;
+    const response = await contract.methods.getIndexOfEmployee(0, accounts[0]).call({ from: accounts[0] });
+    console.log(response);
+  };
+
+  // 근로자의 근무 시간 조회
+  getWorkTime = async () => {
+    const { accounts, contract } = this.state;
+    const response = await contract.methods.getWorkTime(0, 0, 0, 2).call({ from: accounts[0] });
+    console.log(response);
+  };
+
+
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
   // 자신에게 토큰 발행
   mint = async () => {
     const { accounts, tokencontract } = this.state;
@@ -151,7 +196,7 @@ class App extends Component {
   // 토큰 잔고
   balanceOf = async () => {
     const { accounts, tokencontract } = this.state;
-    const response = await tokencontract.methods.balanceOf(accounts[0]).call({ from: accounts[0] });
+    const response = await tokencontract.methods.balanceOf( accounts[0] ).call({ from: accounts[0] });
     console.log(response);
   };
 
@@ -160,6 +205,16 @@ class App extends Component {
     const { accounts, tokencontract } = this.state;
     await tokencontract.methods.transfer("0x73fA89eDbc136AA1eC77a729D3409c760F631dcf", 100000).send({ from: accounts[0] });
     console.log("transfer complete");
+  };
+
+  // 급여 정산
+  getPayment = async () => {
+    const { accounts, contract } = this.state;
+    let wage = await contract.methods.getWage(0, 0).call({ from: accounts[0] });
+    wage = parseInt(wage);
+
+    const response = await contract.methods.getPayment(0, 0, 0, 2, wage).call({ from: accounts[0] });
+    console.log(response);
   };
 
 
@@ -186,7 +241,12 @@ class App extends Component {
         <button onClick={this.getCalAttendance}>getCalAttendance</button>
         <button onClick={this.getAllAttendance}>getAllAttendance</button>
         <h4>급여 정산</h4>
+        <button onClick={this.getPayment}>getPayment</button>
         <h4>기타 조회</h4>
+        <button onClick={this.getEmployeeInfo}>getEmployeeInfo</button>
+        <button onClick={this.getNumOfEmployee}>getNumOfEmployee</button>
+        <button onClick={this.getIndexOfEmployee}>getIndexOfEmployee</button>
+        <button onClick={this.getWorkTime}>getWorkTime</button>
         <h4>토큰 함수</h4>
         <button onClick={this.mint}>mint</button>
         <button onClick={this.balanceOf}>balanceOf</button>
