@@ -72,11 +72,11 @@ contract LaborContract {
 
   // 사람의 개인 정보 조회하는 함수
   function getPersonInformation (address person) public view 
-  returns (uint8, string memory, uint, string memory){
+  returns (personalInfo memory){
 
     require(person == msg.sender, "your not msg.sender!");
 
-    return (_person[person].identiNumber, _person[person].name, _person[person].age, _person[person].gender);
+    return (_person[person]);
 
   }
 
@@ -152,10 +152,8 @@ contract LaborContract {
 
   // 사업주가 선택한 근로자 & 근로자가 선택한 근무지의 근로계약서를 조회하는 함수
   function getLaborContract (uint workplaceInfoIndex, address employeeAddress) public view 
-  returns(string [] memory) {
+  returns(laborContract memory) {
 
-    string [] memory laborContractItems = new string[](7);
-    string [] memory temp = new string[](7);
     uint laborContractIndex;
     uint tempIndex;
 
@@ -180,27 +178,14 @@ contract LaborContract {
       laborContractIndex = workplaceinfo[workplaceInfoIndex].laborContractIndex[tempIndex];
     }
 
-    temp[0] = laborcontract[laborContractIndex].peroid;
-    temp[1] = laborcontract[laborContractIndex].duties;
-    temp[2] = laborcontract[laborContractIndex].workingTime;
-    temp[3] = laborcontract[laborContractIndex].workingDays;
-    temp[4] = laborcontract[laborContractIndex].wage;
-    temp[5] = laborcontract[laborContractIndex].wageday;
-    temp[6] = laborcontract[laborContractIndex].comment;
-    
-    for (uint x = 0 ; x < laborContractItems.length ; x++) {
-      laborContractItems[x] = temp[x];
-    }
-    return (laborContractItems);
+    return (laborcontract[laborContractIndex]);
 
   }
 
   // 사업주가 선택한 근로자 or 근로자가 선택한 근무지의 시급을 return함
   function getWage (uint workplaceInfoIndex, uint employeeIndex) public view 
   returns (string memory) {
-    string memory wage = laborcontract[workplaceinfo[workplaceInfoIndex].laborContractIndex[employeeIndex]].wage;
-
-    return(wage);
+    return(laborcontract[workplaceinfo[workplaceInfoIndex].laborContractIndex[employeeIndex]].wage);
   }
 
   // 사업주가 선택한 근로자 or 근로자가 선택한 근무지의 출근, 퇴근 날짜만 return하는 함수
@@ -216,15 +201,8 @@ contract LaborContract {
 
   // 사업주가 선택한 근로자 or 근로자가 선택한 근무지의 자세한 출퇴근 내역을 return하는 함수
   function getAllAttendance (uint workplaceInfoIndex, uint employeeIndex) public view 
-  returns (string [] memory, uint8 [] memory, uint8 [] memory, string [] memory, uint8 [] memory, uint8 [] memory){
-
-    return (
-      workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].startDay,
-      workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].startTimeHour,
-      workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].startTimeMinute,
-      workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].endDay,
-      workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].endTimeHour,
-      workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex].endTimeMinute);
+  returns (attendance memory){
+    return (workplaceinfo[workplaceInfoIndex].attendanceList[employeeIndex]);
   }
 
   // 근로자가 하나의 월에 일한 시간을 return하는 함수

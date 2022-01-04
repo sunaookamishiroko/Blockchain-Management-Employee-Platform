@@ -47,7 +47,7 @@ class App extends Component {
   // 근로자 정보 업로드
   uploadPersonalInfo0 = async () => {
     const { accounts, contract } = this.state;
-    await contract.methods.uploadPersonalInfo(accounts[0], 0, encodeURI("이서윤"), 24, encodeURI("남")).send({ from: accounts[0] });
+    await contract.methods.uploadPersonalInfo(accounts[0], 0, encodeURI("나경원"), 26, encodeURI("여")).send({ from: accounts[0] });
     console.log("uploadPersonalInfo0 complete");
   };
 
@@ -90,10 +90,10 @@ class App extends Component {
     const { accounts, contract } = this.state;
     let items = [
       "2022/01/04 ~ 2022/03/31",
-      encodeURI("서빙"),
-      "18:00 ~ 21:00",
+      encodeURI("접대"),
+      "03:00 ~ 12:00",
       encodeURI("매주 화요일"),
-      "9160",
+      "12000",
       encodeURI("매월 10일"),
       encodeURI("없음")
     ];
