@@ -124,14 +124,14 @@ class App extends Component {
   // 출퇴근 업로드 : 출근
   uploadAttendance0 = async () => {
     const { accounts, contract } = this.state;
-    await contract.methods.uploadAttendance(0, 0, "2022/01/06", 18, 0).send({ from: accounts[0] });
+    await contract.methods.uploadAttendance(0, 0, "2022/01/08", 18, 0).send({ from: accounts[0] });
     console.log("uploadAttendance0 complete");
   };
 
   // 출퇴근 업로드 : 퇴근
   uploadAttendance1 = async () => {
     const { accounts, contract } = this.state;
-    await contract.methods.uploadAttendance(1, 0, "2022/01/06", 21, 30).send({ from: accounts[0] });
+    await contract.methods.uploadAttendance(1, 0, "2022/01/08", 3, 30).send({ from: accounts[0] });
     console.log("uploadAttendance1 complete");
   }; 
 
@@ -181,6 +181,12 @@ class App extends Component {
     console.log(response);
   };
 
+  // 근로자의 근무 시간 조회
+  getWage = async () => {
+    const { accounts, contract } = this.state;
+    const response = await contract.methods.getWage(0, 0).call({ from: accounts[0] });
+    console.log(response);
+  };
 
   //////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
@@ -247,6 +253,7 @@ class App extends Component {
         <button onClick={this.getNumOfEmployee}>getNumOfEmployee</button>
         <button onClick={this.getIndexOfEmployee}>getIndexOfEmployee</button>
         <button onClick={this.getWorkTime}>getWorkTime</button>
+        <button onClick={this.getWage}>getWage</button>
         <h4>토큰 함수</h4>
         <button onClick={this.mint}>mint</button>
         <button onClick={this.balanceOf}>balanceOf</button>

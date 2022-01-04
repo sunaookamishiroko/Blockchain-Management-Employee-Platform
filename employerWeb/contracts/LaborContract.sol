@@ -43,11 +43,11 @@ contract LaborContract {
   // 출톼근 기록부
   struct attendance {
     string [] startDay;
-    uint8 [] startTimeHour;
-    uint8 [] startTimeMinute;
+    int [] startTimeHour;
+    int [] startTimeMinute;
     string [] endDay;
-    uint8 [] endTimeHour;
-    uint8 [] endTimeMinute;
+    int [] endTimeHour;
+    int [] endTimeMinute;
   }
 
   // 근로계약서 저장소
@@ -62,9 +62,13 @@ contract LaborContract {
     string comment;           // 기타사항
   }
   
-  //struct 배열 선언부
+  // struct 배열 선언부
   workplaceInfo [] private workplaceinfo;
   laborContract [] private laborcontract;
+
+  // event 선언
+  event Onwork(string name, uint8 classifyNum);
+  event Offwork(string name, uint8 classifyNum);
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -209,13 +213,13 @@ contract LaborContract {
   // hour(시간), minute(분)을 숫자로 출력합니다   -> 몇 시간 몇 분 근무했는지에 대한 정보
   // 웹, 앱 단에서 getCalAttendance를 이용해서 string 패턴 매칭 작업을 통해 해당 월의 인덱스 번호만 골라내서 이 함수를 사용합니다.
   function getWorkTime (uint workplaceInfoIndex, uint employeeIndex, uint startIndex, uint endIndex) public view 
-  returns (uint, uint) {
+  returns (int, int) {
 
-    uint Allhour = 0;
-    uint Allminute = 0;
+    int Allhour = 0;
+    int Allminute = 0;
 
-    uint hour;
-    uint minute;
+    int hour;
+    int minute;
 
     for (uint x = startIndex ; x <= endIndex ; x++) {
       
@@ -238,15 +242,15 @@ contract LaborContract {
 
   // 근로자의 월급 조회
   // wage는 프론트에서 getWage를 이용해 string to int 변환해준 다음 인자로 넣어줍니다
-  function getPayment (uint employeeIndex, uint workplaceInfoIndex, uint startIndex, uint endIndex, uint wage) public view 
-  returns (uint) {
+  function getPayment (uint employeeIndex, uint workplaceInfoIndex, uint startIndex, uint endIndex, int wage) public view 
+  returns (int) {
 
-    uint Allhour;
-    uint Allminute;
+    int Allhour;
+    int Allminute;
 
     (Allhour, Allminute) = getWorkTime(employeeIndex, workplaceInfoIndex, startIndex, endIndex);
 
-    uint Allwage = (Allhour * wage) + (Allminute * (wage / 60));
+    int Allwage = (Allhour * wage) + (Allminute * (wage / 60));
 
     return (Allwage);
   }
@@ -324,11 +328,11 @@ contract LaborContract {
     workplaceinfo[workplaceInfoIndex].laborContractIndex.push(_laborContractIndex);
 
     string [] memory startDay;
-    uint8 [] memory startTimeHour;
-    uint8 [] memory startTimeMinute;
+    int [] memory startTimeHour;
+    int [] memory startTimeMinute;
     string [] memory endDay;
-    uint8 [] memory endTimeHour;
-    uint8 [] memory endTimeMinute;
+    int [] memory endTimeHour;
+    int [] memory endTimeMinute;
 
     attendance memory newAttendance = attendance(startDay, startTimeHour, startTimeMinute, endDay, endTimeHour, endTimeMinute);
 
@@ -343,7 +347,7 @@ contract LaborContract {
   // 출퇴근 올리는 함수
   // classifyNum : 0 -> 출근 / 1 -> 퇴근
   function uploadAttendance (uint8 classifyNum, uint workPlaceInfoIndex,
-  string calldata day, uint8 timeHour, uint8 timeMinute) public returns (uint8) {
+  string calldata day, int timeHour, int timeMinute) public returns (uint8) {
 
     require(_person[msg.sender].identiNumber == 0, "you are not employee");
 
@@ -355,6 +359,8 @@ contract LaborContract {
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startDay.push(day);
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeHour.push(timeHour);
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeMinute.push(timeMinute);
+
+      emit Onwork(_person[msg.sender].name, 0);
     
     // 퇴근
     } else if (classifyNum == 1){
@@ -362,6 +368,8 @@ contract LaborContract {
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endDay.push(day);
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeHour.push(timeHour);
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeMinute.push(timeMinute);
+
+      emit Offwork(_person[msg.sender].name, 1);
 
     } else return 0;
 
