@@ -67,8 +67,8 @@ contract LaborContract {
   laborContract [] private laborcontract;
 
   // event 선언
-  event Onwork(string name, uint8 classifyNum);
-  event Offwork(string name, uint8 classifyNum);
+  event Onwork(string name, int timeHour, int timeMinute);
+  event Offwork(string name, int timeHour, int timeMinute);
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -360,7 +360,7 @@ contract LaborContract {
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeHour.push(timeHour);
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].startTimeMinute.push(timeMinute);
 
-      emit Onwork(_person[msg.sender].name, 0);
+      emit Onwork(_person[msg.sender].name, timeHour, timeMinute);
     
     // 퇴근
     } else if (classifyNum == 1){
@@ -369,7 +369,7 @@ contract LaborContract {
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeHour.push(timeHour);
       workplaceinfo[workPlaceInfoIndex].attendanceList[employeeIndex].endTimeMinute.push(timeMinute);
 
-      emit Offwork(_person[msg.sender].name, 1);
+      emit Offwork(_person[msg.sender].name, timeHour, timeMinute);
 
     } else return 0;
 
