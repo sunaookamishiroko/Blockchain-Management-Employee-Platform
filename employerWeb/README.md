@@ -15,13 +15,13 @@ npm install
 ### Get function
 
 ```
-getPersonInformation (address person) public view returns (uint8, string memory, uint, string memory)
+getPersonInformation (address person) public view returns (personalInfo memory)
 ```
 
 - 사람의 개인 정보를 조회합니다.
 - Input / Output
   - 인자로 조회하고 싶은 사람의 address가 필요합니다.
-  - 차례대로 identiNumber, name, age, gender를 return합니다.
+  - personalInfo 구조체를 return합니다. (identiNumber, name, age, gender)
 
 ```
 getEmployeeInfo (uint workplaceInfoIndex) public view returns (address [] memory, string [] memory) 
@@ -58,13 +58,13 @@ getWorkplaces () public view returns (uint [] memory, string [] memory, string [
   - 차례대로 사업장/근무지들의 index 배열, name 배열, location 배열을 return합니다.
  
 ```
-getLaborContract (uint workplaceInfoIndex, address employeeAddress) public view returns(string [] memory)
+getLaborContract (uint workplaceInfoIndex, address employeeAddress) public view returns(laborContract memory)
 ```
 - 고용주가 선택한 근로자 또는 근로자가 선택한 근무지의 근로계약서를 조회하는 함수입니다.
 - 고용주와 근로자는 msg.sender와 등록된 identiNumber를 기준으로 구분합니다.
 - Input / Output
   - 인자로 사업장/근무지의 index, 근로자의 address가 필요합니다.
-  - 근로계약서에 적혀져있는 peroid, duties, workingTime, workingDays, wage, wageday, comment를 배열에 담아 return합니다.
+  - laborContract 구조체를 return합니다. (peroid, duties, workingTime, workingDays, wage, wageday, comment)
 
 ```
 getWage (uint workplaceInfoIndex, uint employeeIndex) public view returns (string memory)
@@ -84,16 +84,16 @@ returns (string [] memory, string [] memory)
 
 ```
 getAllAttendance (uint workplaceInfoIndex, uint employeeIndex) public view 
-returns (string [] memory, uint8 [] memory, uint8 [] memory, string [] memory, uint8 [] memory, uint8 [] memory)
+returns (attendance memory)
 ```
 - 고용주가 선택한 근로자 또는 근로자가 선택한 근무지의 자세한 출퇴근 내역을 조회하는 함수입니다.
 - Input / Output
   - 인자로 사업장/근무지의 index, 근로자의 근무지에서의 index가 필요합니다. 
-  - 차례대로 startDay, startTimeHour, startTimeMinute, endDay, endTimeHout, endTimeMinute 배열들을 return합니다.
+  - attendance 구조체를 return합니다. (startDay, startTimeHour, startTimeMinute, endDay, endTimeHout, endTimeMinute)
 
 ```
 getWorkTime (uint workplaceInfoIndex, uint employeeIndex, uint startIndex, uint endIndex) public view 
-returns (uint, uint) 
+returns (int, int) 
 ```
 - 근로자가 하나의 월에 일한 시간을 조회하는 함수입니다.
 - 웹, 앱 단에서 getCalAttendance를 이용해서 string 패턴 매칭 작업을 통해 해당 월의 인덱스 번호만 골라내서 이 함수를 사용합니다.
@@ -103,7 +103,7 @@ returns (uint, uint)
 
 ```
 getPayment (uint employeeIndex, uint workplaceInfoIndex, uint startIndex, uint endIndex, uint wage) public view 
-  returns (uint)
+  returns (int)
 ```
 - 근로자의 월급을 계산하고 조회하는 함수입니다.
 - wage는 프론트에서 getWage를 이용해 string to int 변환해준 다음 인자로 넣어줍니다.
@@ -148,8 +148,7 @@ uploadLaborContract(string [] calldata laborContractItems, address employeeAddre
   - 아무것도 return하지 않습니다.
   
 ```
-uploadAttendance (uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, uint8 timeHour, uint8 timeMinute) public 
-returns (uint8)
+uploadAttendance (uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute) public 
 ```
 - 근로자가 출퇴근을 등록하는 함수 입니다.
 - classifyNum이 0이면 출근, 1이면 퇴근입니다.
