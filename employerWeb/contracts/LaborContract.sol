@@ -347,7 +347,7 @@ contract LaborContract {
   // 출퇴근 올리는 함수
   // classifyNum : 0 -> 출근 / 1 -> 퇴근
   function uploadAttendance (uint8 classifyNum, uint workPlaceInfoIndex,
-  string calldata day, int timeHour, int timeMinute) public returns (uint8) {
+  string calldata day, int timeHour, int timeMinute) public {
 
     require(_person[msg.sender].identiNumber == 0, "you are not employee");
 
@@ -371,9 +371,7 @@ contract LaborContract {
 
       emit Offwork(_person[msg.sender].name, timeHour, timeMinute);
 
-    } else return 0;
-
-    return 1;
+    }
 
   }
 
