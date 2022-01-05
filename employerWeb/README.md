@@ -150,7 +150,7 @@ uploadLaborContract(string [] calldata laborContractItems, address employeeAddre
 ```
 uploadAttendance (uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute) public 
 ```
-- 근로자가 출퇴근을 등록하는 함수 입니다.
+- 근로자가 출퇴근을 등록하는 함수입니다.
 - classifyNum이 0이면 출근, 1이면 퇴근입니다.
 - Input / Output
   - 인자로 classifyNum, workPlaceInfoIndex, 날짜, 시간, 분이 필요합니다.
@@ -158,4 +158,27 @@ uploadAttendance (uint8 classifyNum, uint workPlaceInfoIndex, string calldata da
 
 ## **ERC20**
 
-작성중입니다
+```
+mint(address account, uint256 amount) public
+```
+- 토큰을 만드는 함수입니다.
+- msg.sender와 인자의 address account 일치해야만 토큰 발행 가능합니다.
+- Input / Output
+  - 인자로 토큰을 받고자하는 address, 토큰의 양(원화)을 필요로합니다.
+  - 아무것도 return하지 않습니다.
+ 
+```
+balanceOf(address account) public view virtual override returns (uint256)
+```
+- 토큰의 잔액을 조회하는 함수입니다.
+- Input / Output
+  - 인자로 조회하고 싶은 account의 address가 필요합니다.
+  - 가지고 있는 토큰의 수를 return합니다.
+
+```
+transfer(address recipient, uint256 amount) public virtual override returns (bool)
+```
+- 토큰을 전송하는 함수입니다.
+- Input / Output
+  - 인자로 수신자 address와, 토큰의 양이 필요합니다.
+  - 정상적으로 전송이 완료되면 true를 return합니다.
