@@ -1,14 +1,13 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
 
-import "react-native-get-random-values"
-import "@ethersproject/shims"
+import "react-native-get-random-values";
+import "@ethersproject/shims";
 import { ethers } from "ethers";
 import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Transaction";
 
@@ -109,9 +108,6 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
       {!!connector.connected && (
         <>
           <Text>{connector.accounts[0]}</Text>
-          <TouchableOpacity onPress={killSession} style={styles.buttonStyle}>
-            <Text style={styles.buttonTextStyle}>Log out</Text>
-          </TouchableOpacity>
           <TouchableOpacity onPress={onWork} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>출근</Text>
           </TouchableOpacity>
