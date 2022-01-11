@@ -5,14 +5,12 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
-import SimpleStorageContract from "../contracts/SimpleStorage.json";
-
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
 
 import "react-native-get-random-values"
 import "@ethersproject/shims"
 import { ethers } from "ethers";
-import { makeLabortxobj, provider, contract } from "../transaction/Transaction";
+import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Transaction";
 
 // 내 근무지
 /*
@@ -24,16 +22,21 @@ const shortenAddress = (address: string) => {
 }*/
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+
+  // walletconnect 세션을 저장하는 hook
   const connector = useWalletConnect();
 
+  // wallet과 연결함
   const connectWallet = React.useCallback(() => {
     return connector.connect();
   }, [connector]);
 
+  // wallet과 연결 종료하기
   const killSession = React.useCallback(() => {
     return connector.killSession();
   }, [connector]);
 
+  // 출근하기
   const onWork = React.useCallback(async () => {
 
     let abidata = new ethers.utils
@@ -72,6 +75,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 
   }, [connector]);
 
+  // 퇴근하기
   const uploadPersonalInfo = React.useCallback(async () => {
 
     let abidata = new ethers.utils
