@@ -23,10 +23,6 @@ export default function TabTwoScreen() {
     return connector.connect();
   }, [connector]);
 
-  // wallet과 연결 종료하기
-  const killSession = React.useCallback(() => {
-    return connector.killSession();
-  }, [connector]);
 
   return (
     <View style={styles.container}>
@@ -39,7 +35,7 @@ export default function TabTwoScreen() {
       )}
       {!!connector.connected && (
         <>
-          <Text>{connector.accounts[0]}</Text>
+          <Text>{}</Text>
         </>
       )}
     </View>

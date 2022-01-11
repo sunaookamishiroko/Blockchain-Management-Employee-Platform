@@ -3,6 +3,7 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
+import { PROVIDER_APIKEY, CONTRACT_ADDRESS1, CONTRACT_ADDRESS2} from "@env";
 
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
 
@@ -12,13 +13,6 @@ import { ethers } from "ethers";
 import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Transaction";
 
 // 내 근무지
-/*
-const shortenAddress = (address: string) => {
-  return `${address.slice(0, 6)}...${address.slice(
-    address.length - 4,
-    address.length
-  )}`;
-}*/
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
 
@@ -30,18 +24,13 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
     return connector.connect();
   }, [connector]);
 
-  // wallet과 연결 종료하기
-  const killSession = React.useCallback(() => {
-    return connector.killSession();
-  }, [connector]);
-
   // 출근하기
   const onWork = React.useCallback(async () => {
 
     let abidata = new ethers.utils
     .Interface(["function uploadAttendance(uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute)"])
     .encodeFunctionData("uploadAttendance", [0, 0, "2022/01/11", 18, 0]);
-    let txObj = await makeLabortxobj(connector.accounts[0], abidata, 50000);
+    let txObj = await makeLabortxobj(connector.accounts[0], abidata, 100000);
 
     try {
       await connector.sendTransaction(txObj)
@@ -55,12 +44,13 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 
   }, [connector]);
   
+  // 퇴근하기
   const OffWork = React.useCallback(async () => {
 
     let abidata = new ethers.utils
     .Interface(["function uploadAttendance(uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute)"])
     .encodeFunctionData("uploadAttendance", [1, 0, "2022/01/11", 20, 0]);
-    let txObj = await makeLabortxobj(connector.accounts[0], abidata, 50000);
+    let txObj = await makeLabortxobj(connector.accounts[0], abidata, 100000);
 
     try {
       await connector.sendTransaction(txObj)
@@ -74,13 +64,12 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 
   }, [connector]);
 
-  // 퇴근하기
   const uploadPersonalInfo = React.useCallback(async () => {
 
     let abidata = new ethers.utils
     .Interface(["function uploadPersonalInfo(address person, uint8 identiNumber, string calldata name, uint age, string calldata gender)"])
     .encodeFunctionData("uploadPersonalInfo", [connector.accounts[0], 0, encodeURI("이서윤"), 25, encodeURI("남")]);
-    let txObj = await makeLabortxobj(connector.accounts[0], abidata, 50000);
+    let txObj = await makeLabortxobj(connector.accounts[0], abidata, 100000);
 
     try {
       await connector.sendTransaction(txObj)
@@ -107,7 +96,6 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
       )}
       {!!connector.connected && (
         <>
-          <Text>{connector.accounts[0]}</Text>
           <TouchableOpacity onPress={onWork} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>출근</Text>
           </TouchableOpacity>

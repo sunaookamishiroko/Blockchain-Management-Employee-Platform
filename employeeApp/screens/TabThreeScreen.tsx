@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity} from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
@@ -6,9 +6,32 @@ import { Text, View } from '../components/Themed';
 
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
 
+import "react-native-get-random-values";
+import "@ethersproject/shims";
+import { ethers } from "ethers";
+import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Transaction";
+
 // 프로필
 
+const shortenAddress = (address: string) => {
+  return `${address.slice(0, 10)}...${address.slice(
+    address.length - 4,
+    address.length
+  )}`;
+}
+
 export default function TabThreeScreen() {
+
+  const [name , setName] = useState<string>();
+  const [age, setAge] = useState<string>();
+  const [gender, setGender] = useState<string>();
+  const [ready, setReady] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (connector.connected) {
+      getPersonInformation();
+    }
+  }, []);
 
   // walletconnect 세션을 저장하는 hook
   const connector = useWalletConnect();
@@ -23,20 +46,38 @@ export default function TabThreeScreen() {
     return connector.killSession();
   }, [connector]);
 
+  // 개인정보 불러오기
+  const getPersonInformation = (async() => {
+    let result = await laborContract.getPersonInformation(connector.accounts[0], { from : connector.accounts[0] });
+    console.log(result);
+    setName(decodeURI(result[1]));
+    setAge(ethers.utils.formatUnits(result[2], 0));
+    setGender(decodeURI(result[3]));
+    setReady(true);
+  });
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
+      <Text style={styles.title}>Tab Three</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       {!connector.connected && (
         <TouchableOpacity onPress={connectWallet} style={styles.buttonStyle}>
           <Text style={styles.buttonTextStyle}>Connect a Wallet</Text>
         </TouchableOpacity>
       )}
-      {!!connector.connected && (
+      {connector.connected && !ready && (
         <>
-          <Text>{connector.accounts[0]}</Text>
+          <Text>잠시만 기다려주세요...</Text>
+        </>
+      )}
+      {(connector.connected && ready) && (
+        <>
+          <Text>{name}</Text>
+          <Text>Address : {shortenAddress(connector.accounts[0])}</Text>
+          <Text>성별 : {gender}</Text>
+          <Text>나이 : {age}</Text>
           <TouchableOpacity onPress={killSession} style={styles.buttonStyle}>
-            <Text style={styles.buttonTextStyle}>Log out</Text>
+            <Text style={styles.buttonTextStyle}>Logout</Text>
           </TouchableOpacity>
         </>
       )}
