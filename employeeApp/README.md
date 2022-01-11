@@ -25,3 +25,9 @@ node_modules/@walletconnect/react-native-dapp/dist/providers/WalletConnectProvid
 ![alt text](./assets/images/readme_codeexample.png)
 
 위와 같이 해당 부분을 주석처리 해주시면 정상 동작합니다.
+
+
+## env 관련
+
+.env 파일에 해당하는 값을 넣어주면 됩니다.
+git에 올리지 않도록 주의해주세요
