@@ -6,6 +6,11 @@ import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
+import "react-native-get-random-values"
+import "@ethersproject/shims"
+import { ethers } from "ethers";
+
+import { PROVIDER_APIKEY, CONTRACT_ADDRESS1 } from "@env";
 
 // 내 근무지
 
@@ -27,6 +32,14 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
     return connector.killSession();
   }, [connector]);
 
+  const onWork = React.useCallback(() => {
+    return connector.killSession();
+  }, [connector]);
+  
+  const OffWork = React.useCallback(() => {
+    return connector.killSession();
+  }, [connector]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab One</Text>
@@ -38,9 +51,16 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
       )}
       {!!connector.connected && (
         <>
-          <Text>{shortenAddress(connector.accounts[0])}</Text>
+          <Text>{connector.accounts[0]}</Text>
+          <Text>Log out</Text>
           <TouchableOpacity onPress={killSession} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>Log out</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={onWork} style={styles.buttonStyle}>
+            <Text style={styles.buttonTextStyle}>출근</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={OffWork} style={styles.buttonStyle}>
+            <Text style={styles.buttonTextStyle}>퇴근</Text>
           </TouchableOpacity>
         </>
       )}
