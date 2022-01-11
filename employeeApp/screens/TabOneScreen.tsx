@@ -7,6 +7,8 @@ import { RootTabScreenProps } from '../types';
 
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
 
+// 내 근무지
+
 const shortenAddress = (address: string) => {
   return `${address.slice(0, 6)}...${address.slice(
     address.length - 4,
