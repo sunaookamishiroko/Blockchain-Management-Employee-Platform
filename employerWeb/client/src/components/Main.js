@@ -2,21 +2,25 @@ import React from "react";
 import "../resources/css/Main.scss";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import { Link } from "react-router-dom";
 
 const Main = () => {
   return (
     <div class="Container">
       <div class="Left-Sidebar">
         <h1>** 사장님</h1>
-        <button>근로자 등록</button>
-        <button>근로자 목록</button>
-        <button>급여 정산</button>
-        <button>급여 지급</button>
-        <button>매장</button>
+        <Link to="/AddWorker" className="link">
+          근로자 등록
+        </Link>
+        <Link to="/WorkerList">근로자 목록</Link>
+        <Link to="/AddWorker">급여 정산</Link>
+        <Link to="/AddWorker">급여 지급</Link>
+        <Link to="/AddWorker">매장</Link>
       </div>
       <div class="Contents">
         <h1>출석부</h1>
         <FullCalendar
+          contentHeight={600}
           plugins={[dayGridPlugin]}
           initialView="dayGridMonth"
           events={[

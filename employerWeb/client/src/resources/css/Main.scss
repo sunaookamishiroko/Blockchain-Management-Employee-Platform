@@ -1,5 +1,5 @@
 .Container {
-    width: 1920px;
+    width: 1900px;
     height: 1080px;
     .Left-Sidebar {
         width: 250px;
@@ -9,15 +9,20 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        button {
+        .link {
             width: 200px;
             height: 50px;
             margin-bottom: 20px;
             font-size: 15px;
+            border: 1px solid black;
+            display: flex;
+            align-items: center;
+            text-align: center;
         }
     }
     .Contents {
-        width: 1670px;
+        padding: 10px;
+        width: 1630px;
         height: 1080px;
         background-color: #f7f7f7;
         float: left;

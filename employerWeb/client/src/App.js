@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ERC20Contract from "./contracts/ERC20.json";
 import LaborContract from "./contracts/LaborContract.json";
 import getWeb3 from "./getWeb3";
-
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Main from "./components/Main";
 
@@ -275,8 +275,8 @@ class App extends Component {
     //   return <div>Loading Web3, accounts, and contract...</div>;
     // }
     return (
-      <div>
-        <Main />
+      <Routes>
+        <Route path="/" element={<Main />} />
         {/* <h1>함수 실험실</h1>
                         <h4>정보 업로드 / 보기</h4>
                         <button onClick={this.uploadPersonalInfo0}>uploadPersonalInfo(근로자)</button>
@@ -305,7 +305,7 @@ class App extends Component {
                         <button onClick={this.mint}>mint</button>
                         <button onClick={this.balanceOf}>balanceOf</button>
                         <button onClick={this.transfer}>transfer</button> */}{" "}
-      </div>
+      </Routes>
     );
   }
 }
