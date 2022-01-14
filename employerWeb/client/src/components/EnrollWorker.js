@@ -1,7 +1,4 @@
-import React from "react";
-import "../resources/css/Main.scss";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
+import React, { useState, useCallback } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
@@ -62,45 +59,61 @@ const Content = styled.div`
   float: left;
 `;
 
-const Main = () => {
-  const testEvent = [
-    {
-      title: "홍길동 결근",
-      start: "2022-01-06T13:00:00",
-      //constraint: 'businessHours',
-      color: "#FF0000",
+const SubmitDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Input = styled.input`
+  width: auto;
+  height: auto;
+  padding: 10px;
+  font-size: 20px;
+  border: 1px solid #999999;
+  border-radius: 40px;
+`;
+
+const EnrollWorker = ({ onEnroll }) => {
+  const [value, setValue] = useState("");
+
+  const onChange = useCallback((e) => {
+    setValue(e.target.value);
+  }, []);
+
+  const onSubmit = useCallback(
+    (e) => {
+      onEnroll(value);
+      setValue("");
+      e.preventDefault();
     },
-    {
-      title: "홍길순 출근",
-      start: "2022-01-06T11:00:00",
-      //constraint: 'availableForMeeting', // defined below
-      color: "#00FF00",
-    },
-  ];
+    [onEnroll, value]
+  );
 
   return (
     <Container>
       <LeftSidebar>
         <h1>** 사장님</h1>
-        <SideButton to="/EnrollWorker">근로자 등록</SideButton>
-        <SideButton to="/WorkerList">근로자 목록</SideButton>
-        <SideButton to="/AddWorker">급여 정산</SideButton>
-        <SideButton to="/AddWorker">급여 지급</SideButton>
-        <SideButton to="/AddWorker">매장</SideButton>
+        <SideButton to="/">뒤로가기</SideButton>
       </LeftSidebar>
       <Content>
-        <h1>출석부</h1>
-        <FullCalendar
-          contentHeight={600}
-          plugins={[dayGridPlugin]}
-          initialView="dayGridMonth"
-          events={testEvent}
-        />
-        <h1>보유금액</h1>
-        <h1>근태현황</h1>
+        <form className="Enroll" onSubmit={onSubmit}>
+          <h1>근로자 등록</h1>
+          <h2>근로자 Address</h2>
+          <Input
+            placeholder="근로자 주소를 입력하세요"
+            value={value}
+            onChange={onChange}
+          />
+          <h2>근로 계약 기간</h2>
+          <Input type="date" />
+          <SubmitDiv>
+            <button type="submit">요청 보내기</button>
+          </SubmitDiv>
+        </form>
       </Content>
     </Container>
   );
 };
 
-export default Main;
+export default EnrollWorker;

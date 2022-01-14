@@ -5,6 +5,8 @@ import getWeb3 from "./getWeb3";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Main from "./components/Main";
+import WorkerList from "./components/WorkerList";
+import EnrollWorker from "./components/EnrollWorker";
 
 class App extends Component {
   // state = { web3: null, accounts: null, contract: null, tokencontract: null };
@@ -277,6 +279,8 @@ class App extends Component {
     return (
       <Routes>
         <Route path="/" element={<Main />} />
+        <Route path="/WorkerList" element={<WorkerList />} />
+        <Route path="/EnrollWorker" element={<EnrollWorker />} />
         {/* <h1>함수 실험실</h1>
                         <h4>정보 업로드 / 보기</h4>
                         <button onClick={this.uploadPersonalInfo0}>uploadPersonalInfo(근로자)</button>
