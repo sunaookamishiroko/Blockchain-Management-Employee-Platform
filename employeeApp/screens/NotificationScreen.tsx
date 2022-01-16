@@ -1,19 +1,55 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet, TouchableOpacity } from 'react-native';
-
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
+
+import { useWalletConnect } from '@walletconnect/react-native-dapp';
+
+import "react-native-get-random-values";
+import "@ethersproject/shims";
+import { ethers } from "ethers";
+import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Transaction";
+
+
 
 // 근로계약서 알림 모달창
 
 export default function ModalScreen() {
   
+  const connector = useWalletConnect();
+
+  const uploadLaborContract = React.useCallback(async () => {
+    let items = [
+      "2022/01/04 ~ 2022/03/31",
+      encodeURI("접대"),
+      "03:00 ~ 12:00",
+      encodeURI("매주 화요일"),
+      "9160",
+      encodeURI("매월 10일"),
+      encodeURI("없음")
+    ];
+
+    let abidata = new ethers.utils
+    .Interface(["function uploadLaborContract(string [] calldata laborContractItems, address employeeAddress, uint workplaceInfoIndex)"])
+    .encodeFunctionData("uploadLaborContract", [items, connector.accounts[0], 1]);
+    let txObj = await makeLabortxobj(connector.accounts[0], abidata, 500000);
+
+    try {
+      await connector.sendTransaction(txObj)
+      .then((result) => {
+        console.log("tx hash:", result);
+        console.log(`https://ropsten.etherscan.io/tx/${result}`)
+      });
+    } catch (e) {
+      console.error(e);
+    };
+
+  }, [connector]);
   
   return (
     <View style={styles.container}>
       <Text style={styles.title}>근로계약서</Text>
-      <TouchableOpacity style={styles.buttonStyle}>
+      <TouchableOpacity onPress={uploadLaborContract} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>근로계약서 업로드</Text>
       </TouchableOpacity>
     </View>

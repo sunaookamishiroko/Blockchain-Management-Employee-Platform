@@ -37,6 +37,7 @@
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
     "react": "17.0.1",
+    "react-devtools": "^4.22.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
     "react-native-dotenv": "^3.3.1",

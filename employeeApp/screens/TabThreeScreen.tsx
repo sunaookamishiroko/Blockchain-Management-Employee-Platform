@@ -22,9 +22,7 @@ const shortenAddress = (address: string) => {
 
 export default function TabThreeScreen() {
 
-  const [name , setName] = useState<string>();
-  const [age, setAge] = useState<string>();
-  const [gender, setGender] = useState<string>();
+  const [personalinfo, setPersonalinfo] = useState<string[]>([]);
   const [ready, setReady] = useState<boolean>(false);
 
   useEffect(() => {
@@ -50,9 +48,13 @@ export default function TabThreeScreen() {
   const getPersonInformation = (async() => {
     let result = await laborContract.getPersonInformation(connector.accounts[0], { from : connector.accounts[0] });
     console.log(result);
-    setName(decodeURI(result[1]));
-    setAge(ethers.utils.formatUnits(result[2], 0));
-    setGender(decodeURI(result[3]));
+
+    setPersonalinfo([
+      decodeURI(result[1]),
+      ethers.utils.formatUnits(result[2], 0),
+      decodeURI(result[3])
+    ])
+    
     setReady(true);
   });
 
@@ -72,10 +74,10 @@ export default function TabThreeScreen() {
       )}
       {(connector.connected && ready) && (
         <>
-          <Text>{name}</Text>
+          <Text>{personalinfo[0]}</Text>
           <Text>Address : {shortenAddress(connector.accounts[0])}</Text>
-          <Text>성별 : {gender}</Text>
-          <Text>나이 : {age}</Text>
+          <Text>성별 : {personalinfo[1]}</Text>
+          <Text>나이 : {personalinfo[2]}</Text>
           <TouchableOpacity onPress={killSession} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>Logout</Text>
           </TouchableOpacity>

@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
@@ -13,7 +12,18 @@ import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Tr
 
 // 근무지 정보
 
+let callresult;
+
 export default function TabTwoScreen() {
+
+  const [ready, setReady] = useState<boolean>(false);
+  const [callresult, setCallresult] = useState<string[]>([]);
+  
+  useEffect(() => {
+    if (connector.connected) {
+      getWorkplace();
+    }
+  }, []);
 
   // walletconnect 세션을 저장하는 hook
   const connector = useWalletConnect();
@@ -23,19 +33,54 @@ export default function TabTwoScreen() {
     return connector.connect();
   }, [connector]);
 
+  // 근무지 불러오기
+  const getWorkplace = (async() => {
+    let result = await laborContract.getWorkplaces({ from : connector.accounts[0] });
+    console.log(result);
+    setCallresult(result);
+    setReady(true);
+  })
+
+  // 렌더링 하기 위해 배치작업
+  const makeJsx = (() => {
+    let workplaceInfo = [];
+
+    for (let x = 0 ; x < callresult[1].length; x++) {
+      workplaceInfo.push(
+        <View style={styles.container} key={x}>
+            <Text>{ethers.utils.formatUnits(callresult[0][x], 0)}</Text>
+            <Text>{decodeURI(callresult[1][x])}</Text>
+            <Text>{decodeURI(callresult[2][x])}</Text>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.buttonStyle}>
+                <Text style={styles.buttonTextStyle}>근로계약서</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.buttonStyle}>
+                <Text style={styles.buttonTextStyle}>근태 / 급여</Text>
+              </TouchableOpacity>
+            </View>
+        </View>
+      );
+    }
+
+    return workplaceInfo;
+  })
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       {!connector.connected && (
         <TouchableOpacity onPress={connectWallet} style={styles.buttonStyle}>
           <Text style={styles.buttonTextStyle}>Connect a Wallet</Text>
         </TouchableOpacity>
       )}
-      {!!connector.connected && (
+      {connector.connected && !ready && (
         <>
-          <Text>{}</Text>
+          <Text>잠시만 기다려주세요...</Text>
+        </>
+      )}
+      {(connector.connected && ready) && (
+        <>
+          {makeJsx()}
         </>
       )}
     </View>
@@ -77,5 +122,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
+  buttonContainer: {
+    display: "flex",
+    flexDirection: "row"
+  }
 });
 
