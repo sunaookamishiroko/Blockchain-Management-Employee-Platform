@@ -17,6 +17,8 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import TabThreeScreen from '../screens/TabThreeScreen';
+import AttendancePayScreen from '../screens/AttendancePayScreen';
+import LaborContractScreen from '../screens/LaborContractScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -41,6 +43,8 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      <Stack.Screen name="LaborContractScreen" component={LaborContractScreen} options={{ title: '근로계약서 조회' }} />
+      <Stack.Screen name="AttendancePayScreen" component={AttendancePayScreen} options={{ title: '근태 / 급여 조회' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="NotificationModal" component={NotificationScreen} options={{ title: '알림' }}/>
       </Stack.Group>
@@ -77,7 +81,7 @@ function BottomTabNavigator() {
               })}>
               <Ionicons
                 name="notifications"
-                size={30}
+                size={27}
                 color={Colors[colorScheme].text}
                 style={{ marginRight: 15 }}
               />
@@ -99,7 +103,7 @@ function BottomTabNavigator() {
               })}>
               <Ionicons
                 name="notifications"
-                size={30}
+                size={27}
                 color={Colors[colorScheme].text}
                 style={{ marginRight: 15 }}
               />
@@ -121,7 +125,7 @@ function BottomTabNavigator() {
               })}>
               <Ionicons
                 name="notifications"
-                size={30}
+                size={27}
                 color={Colors[colorScheme].text}
                 style={{ marginRight: 15 }}
               />

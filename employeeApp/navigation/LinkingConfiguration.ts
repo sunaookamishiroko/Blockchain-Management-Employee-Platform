@@ -32,6 +32,8 @@ const linking: LinkingOptions<RootStackParamList> = {
           },
         },
       },
+      AttendancePayScreen: 'AttendancePayScreen',
+      LaborContractScreen: 'LaborContractScreen',
       NotificationModal: 'modal',
       NotFound: '*',
     },
