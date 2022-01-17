@@ -2,8 +2,10 @@ import React from "react";
 import { useState, useRef, useCallback } from "react";
 import "../resources/css/Main.scss";
 import { NavLink } from "react-router-dom";
-import styled from "styled-components";
+import styled, { ThemeConsumer } from "styled-components";
 import WorkerAdapter from "./WorkerAdapter";
+import Dialog from "@mui/material/Dialog";
+import { DialogTitle } from "@mui/material";
 
 const LeftSidebar = styled.div`
   width: 250px;
@@ -63,6 +65,9 @@ const Content = styled.div`
 `;
 
 const WorkerList = () => {
+  const [open, setOpen] = useState(false);
+  const [contract, setContract] = useState();
+
   const [workers, setWorkers] = useState([
     {
       id: 1,
@@ -82,7 +87,7 @@ const WorkerList = () => {
       phone: "010-1234-5678",
       state: "근로중",
       contract: {
-        name: "이서윤",
+        name: "김동현",
         from: "2021.08.21",
         to: "2022.12.31",
         date: "매달 10일",
@@ -94,7 +99,7 @@ const WorkerList = () => {
       phone: "010-1234-5678",
       state: "근로중",
       contract: {
-        name: "이서윤",
+        name: "박태민",
         from: "2021.08.21",
         to: "2022.12.31",
         date: "매달 10일",
@@ -106,7 +111,7 @@ const WorkerList = () => {
       phone: "010-1234-5678",
       state: "근로중",
       contract: {
-        name: "이서윤",
+        name: "표민성",
         from: "2021.08.21",
         to: "2022.12.31",
         date: "매달 10일",
@@ -114,15 +119,34 @@ const WorkerList = () => {
     },
   ]);
 
+  const handleClickOpen = (contract) => {
+    setOpen(true);
+    setContract(contract);
+  };
+
+  const handleClose = () => {
+    setContract(null);
+    setOpen(false);
+  };
+
   return (
     <Container>
+      {contract && (
+        <Dialog onClose={handleClose} open={open} contract={contract}>
+          <DialogTitle>{contract.name}님</DialogTitle>
+          <h2>근로 계약 기간</h2>
+          <p>{contract.from}</p>
+          <p>{contract.to}</p>
+          <h2>임금 지급일</h2>
+          <p>{contract.date}</p>
+        </Dialog>
+      )}
       <LeftSidebar>
-        <h1>** 사장님</h1>
-        <SideButton to="/">뒤로가기</SideButton>
+        <h1> ** 사장님 </h1> <SideButton to="/"> 뒤로가기 </SideButton>
       </LeftSidebar>
       <Content>
-        <h1>근로자 목록</h1>
-        <WorkerAdapter workers={workers} />
+        <h1> 근로자 목록 </h1>
+        <WorkerAdapter workers={workers} handleClickOpen={handleClickOpen} />
       </Content>
     </Container>
   );

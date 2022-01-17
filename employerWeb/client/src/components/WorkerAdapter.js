@@ -8,11 +8,15 @@ const Adapter = styled.div`
   overflow-y: auto;
 `;
 
-const WorkerAdapter = ({ workers }) => {
+const WorkerAdapter = ({ workers, handleClickOpen }) => {
   return (
     <Adapter>
       {workers.map((worker) => (
-        <WorkerListItem worker={worker} key={worker.id} />
+        <WorkerListItem
+          worker={worker}
+          key={worker.id}
+          handleClickOpen={handleClickOpen}
+        />
       ))}
     </Adapter>
   );

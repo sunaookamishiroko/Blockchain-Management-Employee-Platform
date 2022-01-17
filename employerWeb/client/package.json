@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
     "@fullcalendar/daygrid": "^5.10.1",
     "@fullcalendar/react": "^5.10.1",
-    "react": "16.11.0",
+    "@mui/material": "^5.2.8",
+    "react": "^17.0.2",
     "react-dom": "16.11.0",
     "react-router-dom": "^6.2.1",
     "react-scripts": "3.2.0",
