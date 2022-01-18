@@ -3,9 +3,9 @@ import { useState, useRef, useCallback } from "react";
 import "../resources/css/Main.scss";
 import { NavLink } from "react-router-dom";
 import styled, { ThemeConsumer } from "styled-components";
-import WorkerListAdapter from "./WorkerListAdapter";
 import Dialog from "@mui/material/Dialog";
 import { DialogTitle } from "@mui/material";
+import SettlementAdapter from "./SettlementAdapter";
 
 const LeftSidebar = styled.div`
   width: 250px;
@@ -64,9 +64,9 @@ const Content = styled.div`
   float: left;
 `;
 
-const WorkerList = () => {
+const Settlement = () => {
   const [open, setOpen] = useState(false);
-  const [contract, setContract] = useState();
+  const [detail, setDetail] = useState();
 
   const [workers, setWorkers] = useState([
     {
@@ -74,11 +74,16 @@ const WorkerList = () => {
       name: "이서윤",
       phone: "010-1234-5678",
       state: "근로중",
+      current: 100000,
+      estimate: 200000,
       contract: {
         name: "이서윤",
         from: "2021.08.21",
         to: "2022.12.31",
         date: "매달 10일",
+      },
+      detail: {
+        test: 10,
       },
     },
     {
@@ -86,11 +91,16 @@ const WorkerList = () => {
       name: "김동현",
       phone: "010-1234-5678",
       state: "근로중",
+      current: 200000,
+      estimate: 300000,
       contract: {
         name: "김동현",
         from: "2021.08.21",
         to: "2022.12.31",
         date: "매달 10일",
+      },
+      detail: {
+        test: 10,
       },
     },
     {
@@ -98,11 +108,16 @@ const WorkerList = () => {
       name: "박태민",
       phone: "010-1234-5678",
       state: "근로중",
+      current: 500000,
+      estimate: 600000,
       contract: {
         name: "박태민",
         from: "2021.08.21",
         to: "2022.12.31",
         date: "매달 10일",
+      },
+      detail: {
+        test: 10,
       },
     },
     {
@@ -110,48 +125,51 @@ const WorkerList = () => {
       name: "표민성",
       phone: "010-1234-5678",
       state: "근로중",
+      current: 700000,
+      estimate: 800000,
       contract: {
         name: "표민성",
         from: "2021.08.21",
         to: "2022.12.31",
         date: "매달 10일",
       },
+      detail: {
+        test: 10,
+      },
     },
   ]);
 
-  const handleClickOpen = (contract) => {
+  const handleClickOpen = (detail) => {
     setOpen(true);
-    setContract(contract);
+    setDetail(detail);
   };
 
   const handleClose = () => {
-    setContract(null);
+    setDetail(null);
     setOpen(false);
   };
 
   return (
     <Container>
-      {contract && (
+      {detail && (
         <Dialog
           fullWidth={true}
           onClose={handleClose}
           open={open}
-          contract={contract}
+          detail={detail}
         >
-          <DialogTitle>{contract.name}님</DialogTitle>
-          <h2>근로 계약 기간</h2>
-          <p>{contract.from}</p>
-          <p>{contract.to}</p>
-          <h2>임금 지급일</h2>
-          <p>{contract.date}</p>
+          <DialogTitle>{detail.name}님</DialogTitle>
+          <h2>결근</h2>
+          <h2>출퇴근</h2>
+          <h2>총 </h2>
         </Dialog>
       )}
       <LeftSidebar>
         <h1> ** 사장님 </h1> <SideButton to="/"> 뒤로가기 </SideButton>
       </LeftSidebar>
       <Content>
-        <h1> 근로자 목록 </h1>
-        <WorkerListAdapter
+        <h1> 급여 정산 </h1>
+        <SettlementAdapter
           workers={workers}
           handleClickOpen={handleClickOpen}
         />
@@ -160,4 +178,4 @@ const WorkerList = () => {
   );
 };
 
-export default WorkerList;
+export default Settlement;

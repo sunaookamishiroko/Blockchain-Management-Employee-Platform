@@ -81,23 +81,22 @@ const Main = () => {
   return (
     <Container>
       <LeftSidebar>
-        <h1>** 사장님</h1>
-        <SideButton to="/EnrollWorker">근로자 등록</SideButton>
-        <SideButton to="/WorkerList">근로자 목록</SideButton>
-        <SideButton to="/AddWorker">급여 정산</SideButton>
-        <SideButton to="/AddWorker">급여 지급</SideButton>
-        <SideButton to="/AddWorker">매장</SideButton>
+        <h1> ** 사장님 </h1>
+        <SideButton to="/EnrollWorker"> 근로자 등록 </SideButton>
+        <SideButton to="/WorkerList"> 근로자 목록 </SideButton>
+        <SideButton to="/Settlement"> 급여 정산 </SideButton>
+        <SideButton to="/AddWorker"> 급여 지급 </SideButton>
+        <SideButton to="/AddWorker"> 매장 </SideButton>
       </LeftSidebar>
       <Content>
-        <h1>출석부</h1>
+        <h1> 출석부 </h1>
         <FullCalendar
           contentHeight={600}
           plugins={[dayGridPlugin]}
           initialView="dayGridMonth"
           events={testEvent}
         />
-        <h1>보유금액</h1>
-        <h1>근태현황</h1>
+        <h1> 보유금액 </h1> <h1> 근태현황 </h1>
       </Content>
     </Container>
   );

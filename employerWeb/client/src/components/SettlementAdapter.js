@@ -1,5 +1,5 @@
 import React from "react";
-import WorkerListItem from "./WorkerListItem";
+import SettlementItem from "./SettlementItem";
 import styled from "styled-components";
 
 const Adapter = styled.div`
@@ -8,11 +8,11 @@ const Adapter = styled.div`
   overflow-y: auto;
 `;
 
-const WorkerAdapter = ({ workers, handleClickOpen }) => {
+const SettlementAdapter = ({ workers, handleClickOpen }) => {
   return (
     <Adapter>
       {workers.map((worker) => (
-        <WorkerListItem
+        <SettlementItem
           worker={worker}
           key={worker.id}
           handleClickOpen={handleClickOpen}
@@ -22,4 +22,4 @@ const WorkerAdapter = ({ workers, handleClickOpen }) => {
   );
 };
 
-export default WorkerAdapter;
+export default SettlementAdapter;
