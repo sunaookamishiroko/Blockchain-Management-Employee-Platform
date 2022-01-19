@@ -6,6 +6,8 @@ import styled, { ThemeConsumer } from "styled-components";
 import Dialog from "@mui/material/Dialog";
 import { DialogTitle } from "@mui/material";
 import SettlementAdapter from "./SettlementAdapter";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
 
 const LeftSidebar = styled.div`
   width: 250px;
@@ -149,6 +151,25 @@ const Settlement = () => {
     setOpen(false);
   };
 
+  // test용 데이터
+  // title : 표시되는 이름
+  // color : RGB 색상
+  // display(고정) : 둥근 아이콘
+  const testEvent = [
+    {
+      title: "홍길동 결근",
+      start: "2022-01-06",
+      color: "#FF0000",
+      display: "list-item",
+    },
+    {
+      title: "홍길순 출근",
+      start: "2022-01-06",
+      color: "#00FF00",
+      display: "list-item",
+    },
+  ];
+
   return (
     <Container>
       {detail && (
@@ -159,6 +180,12 @@ const Settlement = () => {
           detail={detail}
         >
           <DialogTitle>{detail.name}님</DialogTitle>
+          <FullCalendar
+            contentHeight={425}
+            plugins={[dayGridPlugin]}
+            initialView="dayGridMonth"
+            events={testEvent}
+          />
           <h2>결근</h2>
           <h2>출퇴근</h2>
           <h2>총 </h2>

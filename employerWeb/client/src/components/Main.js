@@ -63,18 +63,22 @@ const Content = styled.div`
 `;
 
 const Main = () => {
+  // test용 데이터
+  // title : 표시되는 이름
+  // color : RGB 색상
+  // display(고정) : 둥근 아이콘
   const testEvent = [
     {
       title: "홍길동 결근",
-      start: "2022-01-06T13:00:00",
-      //constraint: 'businessHours',
+      start: "2022-01-06",
       color: "#FF0000",
+      display: "list-item",
     },
     {
       title: "홍길순 출근",
-      start: "2022-01-06T11:00:00",
-      //constraint: 'availableForMeeting', // defined below
+      start: "2022-01-06",
       color: "#00FF00",
+      display: "list-item",
     },
   ];
 
@@ -85,8 +89,8 @@ const Main = () => {
         <SideButton to="/EnrollWorker"> 근로자 등록 </SideButton>
         <SideButton to="/WorkerList"> 근로자 목록 </SideButton>
         <SideButton to="/Settlement"> 급여 정산 </SideButton>
-        <SideButton to="/AddWorker"> 급여 지급 </SideButton>
-        <SideButton to="/AddWorker"> 매장 </SideButton>
+        <SideButton to="/Payroll"> 급여 지급 </SideButton>
+        <SideButton to="/Another"> 매장 </SideButton>
       </LeftSidebar>
       <Content>
         <h1> 출석부 </h1>
