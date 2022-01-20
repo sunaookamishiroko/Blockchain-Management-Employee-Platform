@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { StyleSheet, TouchableOpacity, SafeAreaView, Dimensions } from 'react-native';
+import Carousel from 'react-native-snap-carousel';
+import { scrollInterpolator, animatedStyles } from '../util/animation.js';
 
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
@@ -14,10 +16,24 @@ import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Tr
 
 // 내 근무지
 
+const SLIDER_WIDTH = Dimensions.get('window').width;
+  const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
+  const ITEM_HEIGHT = Math.round(ITEM_WIDTH * 3 / 4);
+
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+
 
   const [ready, setReady] = useState<boolean>(false);
   const [callresult, setCallresult] = useState<string[]>([]);
+  const [activeindex, setActiveindex] = useState<number>(0);
+
+  const isCarousel = useRef(null);
+  
+  const DATA = [];
+  for (let i = 0; i < 10; i++) {
+    DATA.push(i)
+  }
+
 
   useEffect(() => {
     if (connector.connected) {
@@ -100,6 +116,15 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 
   }, [connector]);
 
+  const renderItem = () => {
+    return (
+      <View style={styles.itemContainer}>
+        <Text style={styles.itemLabel}>title</Text>
+        <Text>왜안되냐ㅅㅂ</Text>
+      </View>
+    );
+  }
+
 
 
   return (
@@ -111,6 +136,19 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
       )}
       {!!connector.connected && (
         <>
+          <Carousel
+          ref={isCarousel}
+          data={DATA}
+          renderItem={renderItem}
+          sliderWidth={SLIDER_WIDTH}
+          itemWidth={ITEM_WIDTH}
+          containerCustomStyle={styles.carouselContainer}
+          inactiveSlideShift={0}
+          onSnapToItem={(index) => setActiveindex(index)}
+          scrollInterpolator={scrollInterpolator}
+          slideInterpolatedStyle={animatedStyles}
+          useScrollView={true}          
+          />
           <TouchableOpacity onPress={onWork} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>출근</Text>
           </TouchableOpacity>
@@ -161,4 +199,24 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
+  carouselContainer: {
+    marginTop: 50
+  },
+  itemContainer: {
+    width: ITEM_WIDTH,
+    height: ITEM_HEIGHT,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'dodgerblue'
+  },
+  itemLabel: {
+    color: 'white',
+    fontSize: 24
+  },
+  counter: {
+    marginTop: 25,
+    fontSize: 30,
+    fontWeight: 'bold',
+    textAlign: 'center'
+  }
 });
