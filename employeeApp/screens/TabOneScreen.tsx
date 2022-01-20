@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, TouchableOpacity, SafeAreaView, Dimensions } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
-import { scrollInterpolator, animatedStyles } from '../util/animation.js';
+import { scrollInterpolator, animatedStyles } from '../utils/animation.js';
 
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
@@ -17,7 +17,7 @@ import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Tr
 // 내 근무지
 
 const SLIDER_WIDTH = Dimensions.get('window').width;
-  const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
+  const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
   const ITEM_HEIGHT = Math.round(ITEM_WIDTH * 3 / 4);
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
@@ -29,10 +29,28 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 
   const isCarousel = useRef(null);
   
-  const DATA = [];
-  for (let i = 0; i < 10; i++) {
-    DATA.push(i)
-  }
+  const DATA = [
+    {
+        title:"Item 1",
+        text: "Text 1",
+    },
+    {
+        title:"Item 2",
+        text: "Text 2",
+    },
+    {
+        title:"Item 3",
+        text: "Text 3",
+    },
+    {
+        title:"Item 4",
+        text: "Text 4",
+    },
+    {
+        title:"Item 5",
+        text: "Text 5",
+    },
+  ];
 
 
   useEffect(() => {
@@ -116,11 +134,11 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 
   }, [connector]);
 
-  const renderItem = () => {
+  const renderItem = ({item}) => {
     return (
       <View style={styles.itemContainer}>
-        <Text style={styles.itemLabel}>title</Text>
-        <Text>왜안되냐ㅅㅂ</Text>
+        <Text style={styles.itemLabel}>{item.title}</Text>
+        <Text>{item.text}</Text>
       </View>
     );
   }
@@ -138,8 +156,8 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
         <>
           <Carousel
           ref={isCarousel}
-          data={DATA}
-          renderItem={renderItem}
+          data={DATA} 
+          renderItem={(item) => renderItem(item)}
           sliderWidth={SLIDER_WIDTH}
           itemWidth={ITEM_WIDTH}
           containerCustomStyle={styles.carouselContainer}
@@ -149,6 +167,10 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           slideInterpolatedStyle={animatedStyles}
           useScrollView={true}          
           />
+          <Text style={styles.counter}
+        >
+          {activeindex}
+        </Text>
           <TouchableOpacity onPress={onWork} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>출근</Text>
           </TouchableOpacity>
