@@ -14,7 +14,7 @@ import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Tr
 
 // 내 근무지
 
-export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+export default function AttendancePayScreen({ navigation }: RootTabScreenProps<'AttendancePayScreen'>) {
 
   // walletconnect 세션을 저장하는 hook
   const connector = useWalletConnect();

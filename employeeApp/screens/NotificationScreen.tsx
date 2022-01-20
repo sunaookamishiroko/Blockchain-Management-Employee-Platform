@@ -14,7 +14,7 @@ import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Tr
 
 // 근로계약서 알림 모달창
 
-export default function ModalScreen() {
+export default function NotificationScreen() {
   
   const connector = useWalletConnect();
 

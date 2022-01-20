@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import { Text, View } from '../components/Themed';
@@ -16,6 +16,15 @@ import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Tr
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
 
+  const [ready, setReady] = useState<boolean>(false);
+  const [callresult, setCallresult] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (connector.connected) {
+      getWorkplace();
+    }
+  }, []);
+
   // walletconnect 세션을 저장하는 hook
   const connector = useWalletConnect();
 
@@ -23,6 +32,14 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
   const connectWallet = React.useCallback(() => {
     return connector.connect();
   }, [connector]);
+
+   // 근무지 불러오기
+   const getWorkplace = (async() => {
+    let result = await laborContract.getWorkplaces({ from : connector.accounts[0] });
+    console.log(result);
+    setCallresult(result);
+    setReady(true);
+  })
 
   // 출근하기
   const onWork = React.useCallback(async () => {
@@ -87,8 +104,6 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       {!connector.connected && (
         <TouchableOpacity onPress={connectWallet} style={styles.buttonStyle}>
           <Text style={styles.buttonTextStyle}>Connect a Wallet</Text>

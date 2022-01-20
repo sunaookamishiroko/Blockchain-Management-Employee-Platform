@@ -54,7 +54,7 @@ export default function TabThreeScreen() {
       ethers.utils.formatUnits(result[2], 0),
       decodeURI(result[3])
     ])
-    
+
     setReady(true);
   });
 

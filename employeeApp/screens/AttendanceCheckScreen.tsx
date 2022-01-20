@@ -14,7 +14,7 @@ import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Tr
 
 // 내 근무지
 
-export default function LaborContractScreen({ navigation }: RootTabScreenProps<'LaborContractScreen'>) {
+export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
 
   // walletconnect 세션을 저장하는 hook
   const connector = useWalletConnect();
@@ -28,14 +28,7 @@ export default function LaborContractScreen({ navigation }: RootTabScreenProps<'
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>근로계약서탭</Text>
-      <Text style={styles.title}>근로계약서탭</Text>
-      <Text style={styles.title}>근로계약서탭</Text>
-      <Text style={styles.title}>근로계약서탭</Text>
-      <Text style={styles.title}>근로계약서탭</Text>
-      <Text style={styles.title}>근로계약서탭</Text>
-      <Text style={styles.title}>근로계약서탭</Text>
-      <Text style={styles.title}>근로계약서탭</Text>
+      <Text style={styles.title}>출근 퇴근 결과창</Text>
     </View>
   );
 }
