@@ -10,8 +10,6 @@ import "@ethersproject/shims";
 import { ethers } from "ethers";
 import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Transaction";
 
-
-
 // 근로계약서 알림 모달창
 
 export default function NotificationScreen() {
@@ -48,10 +46,17 @@ export default function NotificationScreen() {
   
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>근로계약서</Text>
-      <TouchableOpacity onPress={uploadLaborContract} style={styles.buttonStyle}>
-            <Text style={styles.buttonTextStyle}>근로계약서 업로드</Text>
-      </TouchableOpacity>
+      {!connector.connected && (
+        <Text style={styles.buttonTextStyle}>로그인 해주세요</Text>
+      )}
+      {connector.connected && (
+        <>
+        <Text style={styles.title}>근로계약서</Text>
+        <TouchableOpacity onPress={uploadLaborContract} style={styles.buttonStyle}>
+          <Text style={styles.buttonTextStyle}>근로계약서 업로드</Text>
+        </TouchableOpacity>
+        </>
+      )}
     </View>
   );
 }

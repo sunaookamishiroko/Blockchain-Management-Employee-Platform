@@ -5,6 +5,7 @@ import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
+import { makeWorkplaceInfoCard } from '../components/WorkplaceInfoCard';
 
 import "react-native-get-random-values";
 import "@ethersproject/shims";
@@ -12,8 +13,6 @@ import { ethers } from "ethers";
 import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Transaction";
 
 // 근무지 정보
-
-let callresult;
 
 export default function TabTwoScreen({navigation} : RootTabScreenProps<'TabTwo'>) {
 
@@ -53,10 +52,10 @@ export default function TabTwoScreen({navigation} : RootTabScreenProps<'TabTwo'>
             <Text>{decodeURI(callresult[1][x])}</Text>
             <Text>{decodeURI(callresult[2][x])}</Text>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('LaborContractScreen')}>
+              <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('LaborContractScreen', { index : x })}>
                 <Text style={styles.buttonTextStyle}>근로계약서</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('AttendancePayScreen')}>
+              <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('AttendancePayScreen', { index : x })}>
                 <Text style={styles.buttonTextStyle}>근태 / 급여</Text>
               </TouchableOpacity>
             </View>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import { Text, View } from '../components/Themed';
@@ -14,7 +14,7 @@ import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Tr
 
 // 내 근무지
 
-export default function AttendancePayScreen({ navigation }: RootTabScreenProps<'AttendancePayScreen'>) {
+export default function AttendancePayScreen({ navigation, route }: RootTabScreenProps<'AttendancePayScreen'>) {
 
   // walletconnect 세션을 저장하는 hook
   const connector = useWalletConnect();
@@ -24,11 +24,10 @@ export default function AttendancePayScreen({ navigation }: RootTabScreenProps<'
     return connector.connect();
   }, [connector]);
 
-
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>근태 / 급여 탭</Text>
+      <Text style={styles.title}>{route.params.index}</Text>
     </View>
   );
 }
