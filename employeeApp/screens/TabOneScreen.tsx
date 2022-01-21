@@ -22,36 +22,12 @@ const SLIDER_WIDTH = Dimensions.get('window').width;
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
 
-
   const [ready, setReady] = useState<boolean>(false);
-  const [callresult, setCallresult] = useState<string[]>([]);
-  const [activeindex, setActiveindex] = useState<number>(0);
+  const [cardindex, setCardindex] = useState<number>(0);
+  const [carddata, setCarddata] = useState<any[]>([]);
 
   const isCarousel = useRef(null);
   
-  const DATA = [
-    {
-        title:"Item 1",
-        text: "Text 1",
-    },
-    {
-        title:"Item 2",
-        text: "Text 2",
-    },
-    {
-        title:"Item 3",
-        text: "Text 3",
-    },
-    {
-        title:"Item 4",
-        text: "Text 4",
-    },
-    {
-        title:"Item 5",
-        text: "Text 5",
-    },
-  ];
-
 
   useEffect(() => {
     if (connector.connected) {
@@ -71,9 +47,28 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
    const getWorkplace = (async() => {
     let result = await laborContract.getWorkplaces({ from : connector.accounts[0] });
     console.log(result);
-    setCallresult(result);
+    let temp = [];
+
+    for (let x = 0 ; x < result[1].length; x++) {
+      temp.push({
+        title : decodeURI(result[1][x]),
+        text: decodeURI(result[2][x])
+      })
+    }
+
+    setCarddata(temp);
     setReady(true);
   })
+
+  // 카드 렌더링
+  const renderItem = ({item}) => {
+    return (
+      <View style={styles.itemContainer}>
+        <Text style={styles.itemLabel}>{item.title}</Text>
+        <Text>{item.text}</Text>
+      </View>
+    );
+  }
 
   // 출근하기
   const onWork = React.useCallback(async () => {
@@ -134,17 +129,6 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 
   }, [connector]);
 
-  const renderItem = ({item}) => {
-    return (
-      <View style={styles.itemContainer}>
-        <Text style={styles.itemLabel}>{item.title}</Text>
-        <Text>{item.text}</Text>
-      </View>
-    );
-  }
-
-
-
   return (
     <View style={styles.container}>
       {!connector.connected && (
@@ -152,25 +136,27 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           <Text style={styles.buttonTextStyle}>Connect a Wallet</Text>
         </TouchableOpacity>
       )}
-      {!!connector.connected && (
+      {connector.connected && !ready &&(
+        <>
+          <Text>잠시만 기다려주세요...</Text>
+        </>
+      )}
+      {connector.connected && ready &&(
         <>
           <Carousel
           ref={isCarousel}
-          data={DATA} 
+          data={carddata} 
           renderItem={(item) => renderItem(item)}
           sliderWidth={SLIDER_WIDTH}
           itemWidth={ITEM_WIDTH}
           containerCustomStyle={styles.carouselContainer}
           inactiveSlideShift={0}
-          onSnapToItem={(index) => setActiveindex(index)}
+          onSnapToItem={(index) => setCardindex(index)}
           scrollInterpolator={scrollInterpolator}
           slideInterpolatedStyle={animatedStyles}
           useScrollView={true}          
           />
-          <Text style={styles.counter}
-        >
-          {activeindex}
-        </Text>
+          <Text style={styles.counter}>{cardindex}</Text>
           <TouchableOpacity onPress={onWork} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>출근</Text>
           </TouchableOpacity>
