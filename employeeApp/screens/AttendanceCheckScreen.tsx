@@ -13,13 +13,15 @@ import "@ethersproject/shims";
 import { ethers } from "ethers";
 import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Transaction";
 
-// 내 근무지
+// 출근 / 퇴근하기
 
 export default function AttendanceCheckScreen({ navigation, route }: RootTabScreenProps<'AttendanceCheckScreen'>) {
   
   const [hasPermission, setHasPermission] = useState<null | boolean>(null);
   const [scanned, setScanned] = useState<boolean>(false);
   const [scandata, setScandata] = useState<any>();
+  const [txhash, setTxhash] = useState<any>();
+  const [issendtx, setIssendtx] = useState<null | boolean>(null);
 
   useEffect(() => {
     (async () => {
@@ -30,12 +32,6 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
 
   // walletconnect 세션을 저장하는 hook
   const connector = useWalletConnect();
-
-  const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
-    setScandata(data);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-  };
 
   const getTime = () => {
     let time = new Date();
@@ -54,11 +50,11 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
     ]);
   }
 
-  const onWork = React.useCallback(async () => {
+  const onWork = async () => {
 
     let abidata = new ethers.utils
     .Interface(["function uploadAttendance(uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute)"])
-    .encodeFunctionData("uploadAttendance", [0, 0, "2022-01-11", 18, 0]);
+    .encodeFunctionData("uploadAttendance", [0, 0, "2022-01-13", 18, 0]);
     let txObj = await makeLabortxobj(connector.accounts[0], abidata, 200000);
 
     try {
@@ -66,21 +62,24 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
       .then((result) => {
         console.log("tx hash:", result);
         console.log(`https://ropsten.etherscan.io/tx/${result}`)
+        setTxhash(result);
+        return true;
       });
     } catch (e) {
       console.error(e);
+      return false;
     };
 
-  }, [connector]);
+  };
 
-  const OffWork = React.useCallback(async () => {
+  const offWork = async () => {
 
     let timedata = getTime();
     console.log(timedata);
 
     let abidata = new ethers.utils
     .Interface(["function uploadAttendance(uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute)"])
-    .encodeFunctionData("uploadAttendance", [1, 0, "2022-01-11", 20, 0]);
+    .encodeFunctionData("uploadAttendance", [1, 0, "2022-01-12", 20, 0]);
     let txObj = await makeLabortxobj(connector.accounts[0], abidata, 200000);
 
     try {
@@ -88,12 +87,36 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
       .then((result) => {
         console.log("tx hash:", result);
         console.log(`https://ropsten.etherscan.io/tx/${result}`)
+        setTxhash(result);
+        return true;
       });
     } catch (e) {
       console.error(e);
+      return false;
     };
 
-  }, [connector]);
+  };
+
+  const handleBarCodeScanned = async ({ type, data }) => {
+    setScanned(true);
+    setScandata(data);
+
+    let isSuccess;
+    
+    if ( route.params.num == 0 ) {
+
+      isSuccess = await onWork();
+      if (isSuccess) setIssendtx(true);
+      else setIssendtx(false);
+
+    } else if ( route.params.num == 1 ) {
+
+      isSuccess = await offWork();
+      if (isSuccess) setIssendtx(true);
+      else setIssendtx(false);
+
+    }
+  };
 
   if (hasPermission === null) {
     return <Text>Requesting for camera permission</Text>;
@@ -110,22 +133,35 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
         style={StyleSheet.absoluteFillObject}
         />
       )}
-      {scanned && route.params.num == 0 &&(
+      {scanned && issendtx == null &&(
+        <Text style={styles.title}>잠시만 기다려주세요...</Text>
+      )}
+      {scanned && issendtx == false &&(
+        <Text style={styles.title}>트랜잭션 전송에 실패하였습니다</Text>
+      )}
+      {scanned && route.params.num == 0 && issendtx &&(
         <>
           <Text style={styles.title}>출근 결과창</Text>
+          <TouchableOpacity onPress={getTime} style={styles.buttonStyle}>
+            <Text style={styles.buttonTextStyle}>시간</Text>
+          </TouchableOpacity>
+          <Text>{scandata}</Text>
+          <Text>{txhash}</Text>
+          <Text>{route.params.index}</Text>
         </>
       )}
-      {scanned && route.params.num == 1 &&(
+      {scanned && route.params.num == 1 && issendtx &&(
         <>
           <Text style={styles.title}>퇴근 결과창</Text>
+          <TouchableOpacity onPress={getTime} style={styles.buttonStyle}>
+            <Text style={styles.buttonTextStyle}>시간</Text>
+          </TouchableOpacity>
+          <Text>{scandata}</Text>
+          <Text>{txhash}</Text>
+          <Text>{route.params.index}</Text>
         </>
       )}
-      <TouchableOpacity onPress={getTime} style={styles.buttonStyle}>
-        <Text style={styles.buttonTextStyle}>시간</Text>
-      </TouchableOpacity>
-      <Text>{scandata}</Text>
-      <Text>{route.params.index}</Text>
-    </View>
+      </View>
   );
 }
 
