@@ -75,7 +75,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 
     let abidata = new ethers.utils
     .Interface(["function uploadAttendance(uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute)"])
-    .encodeFunctionData("uploadAttendance", [0, cardindex, "2022/01/11", 18, 0]);
+    .encodeFunctionData("uploadAttendance", [0, cardindex, "2022-01-11", 18, 0]);
     let txObj = await makeLabortxobj(connector.accounts[0], abidata, 200000);
 
     try {
@@ -95,7 +95,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 
     let abidata = new ethers.utils
     .Interface(["function uploadAttendance(uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute)"])
-    .encodeFunctionData("uploadAttendance", [1, cardindex, "2022/01/11", 20, 0]);
+    .encodeFunctionData("uploadAttendance", [1, cardindex, "2022-01-11", 20, 0]);
     let txObj = await makeLabortxobj(connector.accounts[0], abidata, 200000);
 
     try {
