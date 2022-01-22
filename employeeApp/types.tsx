@@ -18,6 +18,7 @@ export type RootStackParamList = {
   LaborContractScreen: undefined;
   AttendancePayScreen: undefined;
   NotificationModal: undefined;
+  AttendanceCheckScreen: undefined;
   NotFound: undefined;
 };
 
@@ -33,6 +34,7 @@ export type RootTabParamList = {
   LaborContractScreen: undefined;
   AttendancePayScreen: undefined;
   NotificationModal: undefined;
+  AttendanceCheckScreen: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 
 import { Text, View } from '../components/Themed';
@@ -13,7 +13,11 @@ import "@ethersproject/shims";
 import { ethers } from "ethers";
 import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Transaction";
 
-// 내 근무지
+const SLIDER_WIDTH = Dimensions.get('window').width;
+const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
+const ITEM_HEIGHT = Math.round(ITEM_WIDTH * 3 / 4);
+
+// 근태 / 급여 조회
 
 export default function AttendancePayScreen({ navigation, route }: RootTabScreenProps<'AttendancePayScreen'>) {
 
@@ -53,14 +57,16 @@ export default function AttendancePayScreen({ navigation, route }: RootTabScreen
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>근태 / 급여 탭</Text>
+      <Calendar
+        style={{
+          width: ITEM_WIDTH,
+        }}
+        markedDates = {{
+          '2022-01-01' : {marked: true, dotColor: 'red'},
+
+        }}/>
       <Text style={styles.title}>{caldata[0]}</Text>
       <Text style={styles.title}>{caldata[1]}</Text>
-      <Calendar
-        markedDates = {{
-          '2022-01-23' : {marked: true, dotColor: 'red'},
-          
-        }}/>
     </View>
   );
 }
@@ -68,8 +74,7 @@ export default function AttendancePayScreen({ navigation, route }: RootTabScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'center'
   },
   title: {
     fontSize: 20,

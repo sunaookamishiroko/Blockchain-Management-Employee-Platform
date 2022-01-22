@@ -52,7 +52,8 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
     for (let x = 0 ; x < result[1].length; x++) {
       temp.push({
         title : decodeURI(result[1][x]),
-        text: decodeURI(result[2][x])
+        text: decodeURI(result[2][x]),
+        wage: "1000"
       })
     }
 
@@ -66,49 +67,10 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
       <View style={styles.itemContainer}>
         <Text style={styles.itemLabel}>{item.title}</Text>
         <Text>{item.text}</Text>
+        <Text>{item.wage}</Text>
       </View>
     );
   }
-
-  // 출근하기
-  const onWork = React.useCallback(async () => {
-
-    let abidata = new ethers.utils
-    .Interface(["function uploadAttendance(uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute)"])
-    .encodeFunctionData("uploadAttendance", [0, cardindex, "2022-01-11", 18, 0]);
-    let txObj = await makeLabortxobj(connector.accounts[0], abidata, 200000);
-
-    try {
-      await connector.sendTransaction(txObj)
-      .then((result) => {
-        console.log("tx hash:", result);
-        console.log(`https://ropsten.etherscan.io/tx/${result}`)
-      });
-    } catch (e) {
-      console.error(e);
-    };
-
-  }, [connector]);
-  
-  // 퇴근하기
-  const OffWork = React.useCallback(async () => {
-
-    let abidata = new ethers.utils
-    .Interface(["function uploadAttendance(uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute)"])
-    .encodeFunctionData("uploadAttendance", [1, cardindex, "2022-01-11", 20, 0]);
-    let txObj = await makeLabortxobj(connector.accounts[0], abidata, 200000);
-
-    try {
-      await connector.sendTransaction(txObj)
-      .then((result) => {
-        console.log("tx hash:", result);
-        console.log(`https://ropsten.etherscan.io/tx/${result}`)
-      });
-    } catch (e) {
-      console.error(e);
-    };
-
-  }, [connector]);
 
   const uploadPersonalInfo = React.useCallback(async () => {
 
@@ -157,10 +119,10 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           useScrollView={true}          
           />
           <Text style={styles.counter}>{cardindex}</Text>
-          <TouchableOpacity onPress={onWork} style={styles.buttonStyle}>
+          <TouchableOpacity onPress={() => navigation.navigate('AttendanceCheckScreen', { index : cardindex, num : 0 })} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>출근</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={OffWork} style={styles.buttonStyle}>
+          <TouchableOpacity onPress={() => navigation.navigate('AttendanceCheckScreen', { index : cardindex, num : 1 })} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>퇴근</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={uploadPersonalInfo} style={styles.buttonStyle}>

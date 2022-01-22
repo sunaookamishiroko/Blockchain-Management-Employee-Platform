@@ -1,5 +1,6 @@
-import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, TouchableOpacity, Button } from 'react-native';
+import { BarCodeScanner } from 'expo-barcode-scanner';
 
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
@@ -14,21 +15,116 @@ import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Tr
 
 // 내 근무지
 
-export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+export default function AttendanceCheckScreen({ navigation, route }: RootTabScreenProps<'AttendanceCheckScreen'>) {
+  
+  const [hasPermission, setHasPermission] = useState<null | boolean>(null);
+  const [scanned, setScanned] = useState<boolean>(false);
+  const [scandata, setScandata] = useState<any>();
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+  }, []);
 
   // walletconnect 세션을 저장하는 hook
   const connector = useWalletConnect();
 
-  // wallet과 연결함
-  const connectWallet = React.useCallback(() => {
-    return connector.connect();
+  const handleBarCodeScanned = ({ type, data }) => {
+    setScanned(true);
+    setScandata(data);
+    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+  };
+
+  const getTime = () => {
+    let time = new Date();
+
+    let year = time.getFullYear();
+    let month = time.getMonth() + 1;
+    let day = time.getDate();
+
+    let hour = time.getHours();
+    let min = time.getMinutes();
+
+    console.log([
+      year+"-"+(("0"+month.toString()).slice(-2))+"-"+(("0"+day.toString()).slice(-2)),
+      hour,
+      min
+    ]);
+  }
+
+  const onWork = React.useCallback(async () => {
+
+    let abidata = new ethers.utils
+    .Interface(["function uploadAttendance(uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute)"])
+    .encodeFunctionData("uploadAttendance", [0, 0, "2022-01-11", 18, 0]);
+    let txObj = await makeLabortxobj(connector.accounts[0], abidata, 200000);
+
+    try {
+      await connector.sendTransaction(txObj)
+      .then((result) => {
+        console.log("tx hash:", result);
+        console.log(`https://ropsten.etherscan.io/tx/${result}`)
+      });
+    } catch (e) {
+      console.error(e);
+    };
+
   }, [connector]);
 
+  const OffWork = React.useCallback(async () => {
 
+    let timedata = getTime();
+    console.log(timedata);
+
+    let abidata = new ethers.utils
+    .Interface(["function uploadAttendance(uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute)"])
+    .encodeFunctionData("uploadAttendance", [1, 0, "2022-01-11", 20, 0]);
+    let txObj = await makeLabortxobj(connector.accounts[0], abidata, 200000);
+
+    try {
+      await connector.sendTransaction(txObj)
+      .then((result) => {
+        console.log("tx hash:", result);
+        console.log(`https://ropsten.etherscan.io/tx/${result}`)
+      });
+    } catch (e) {
+      console.error(e);
+    };
+
+  }, [connector]);
+
+  if (hasPermission === null) {
+    return <Text>Requesting for camera permission</Text>;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>출근 퇴근 결과창</Text>
+      {!scanned && (
+        <BarCodeScanner
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={StyleSheet.absoluteFillObject}
+        />
+      )}
+      {scanned && route.params.num == 0 &&(
+        <>
+          <Text style={styles.title}>출근 결과창</Text>
+        </>
+      )}
+      {scanned && route.params.num == 1 &&(
+        <>
+          <Text style={styles.title}>퇴근 결과창</Text>
+        </>
+      )}
+      <TouchableOpacity onPress={getTime} style={styles.buttonStyle}>
+        <Text style={styles.buttonTextStyle}>시간</Text>
+      </TouchableOpacity>
+      <Text>{scandata}</Text>
+      <Text>{route.params.index}</Text>
     </View>
   );
 }
