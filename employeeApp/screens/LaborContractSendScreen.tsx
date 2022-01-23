@@ -15,7 +15,7 @@ import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Tr
 
 // 내 근무지
 
-export default function LaborContractScreen({ route }) {
+export default function LaborContractSendScreen({ route }) {
 
   const [ready, setReady] = useState<boolean>(false);
   const [contractdata, setContractdata] = useState<any[]>([]);
@@ -33,27 +33,6 @@ export default function LaborContractScreen({ route }) {
   }, [connector]);
 
   const getLaborContract = (async() => {
-    let result = await laborContract.getLaborContract(
-      route.params.index, 
-      connector.accounts[0], 
-      { from : connector.accounts[0] }
-      );
-
-    console.log(result);
-    
-    let temp = [];
-
-    temp.push(ethers.utils.formatUnits(result[0], 0))
-    temp.push(result[1])
-    temp.push(decodeURI(result[2]))
-    temp.push(result[3])
-    temp.push(decodeURI(result[4]))
-    temp.push(result[5])
-    temp.push(decodeURI(result[6]))
-    temp.push(decodeURI(result[7]))
-    
-    setContractdata(temp);
-    setReady(true);
   })
 
   return (
@@ -66,14 +45,6 @@ export default function LaborContractScreen({ route }) {
       )}
       {ready && (
         <>
-          <Text style={styles.title}>{contractdata[0]}</Text>
-          <Text style={styles.title}>{contractdata[1]}</Text>
-          <Text style={styles.title}>{contractdata[2]}</Text>
-          <Text style={styles.title}>{contractdata[3]}</Text>
-          <Text style={styles.title}>{contractdata[4]}</Text>
-          <Text style={styles.title}>{contractdata[5]}</Text>
-          <Text style={styles.title}>{contractdata[6]}</Text>
-          <Text style={styles.title}>{contractdata[7]}</Text>
         </>
       )} 
     </View>

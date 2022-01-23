@@ -3,6 +3,7 @@ import { StyleSheet, TouchableOpacity, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
 import { Text, View } from '../components/Themed';
+import { styles } from '../css/styles';
 import { RootTabScreenProps } from '../types';
 import { PROVIDER_APIKEY, CONTRACT_ADDRESS1, CONTRACT_ADDRESS2} from "@env";
 
@@ -13,13 +14,14 @@ import "@ethersproject/shims";
 import { ethers } from "ethers";
 import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Transaction";
 
-// 출근 / 퇴근하기
+// 출근 퇴근하기
 
 export default function AttendanceCheckScreen({ navigation, route }: RootTabScreenProps<'AttendanceCheckScreen'>) {
   
   const [hasPermission, setHasPermission] = useState<null | boolean>(null);
   const [scanned, setScanned] = useState<boolean>(false);
   const [scandata, setScandata] = useState<any>();
+
   const [txhash, setTxhash] = useState<any>();
   const [issendtx, setIssendtx] = useState<null | boolean>(null);
 
@@ -33,6 +35,7 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
   // walletconnect 세션을 저장하는 hook
   const connector = useWalletConnect();
 
+  // 현재 시간과 날짜를 불러옴
   const getTime = () => {
     let time = new Date();
 
@@ -48,9 +51,18 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
       hour,
       min
     ]);
+
+    return([
+      year+"-"+(("0"+month.toString()).slice(-2))+"-"+(("0"+day.toString()).slice(-2)),
+      hour,
+      min
+    ]);
   }
 
+  // 출근하기
   const onWork = async () => {
+
+    let timedata = getTime();
 
     let abidata = new ethers.utils
     .Interface(["function uploadAttendance(uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute)"])
@@ -72,10 +84,10 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
 
   };
 
+  // 퇴근하기
   const offWork = async () => {
 
     let timedata = getTime();
-    console.log(timedata);
 
     let abidata = new ethers.utils
     .Interface(["function uploadAttendance(uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute)"])
@@ -97,6 +109,7 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
 
   };
 
+  // qr코드 스캔 후 출근퇴근에 따라 분류
   const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
     setScandata(data);
@@ -137,7 +150,7 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
         <Text style={styles.title}>잠시만 기다려주세요...</Text>
       )}
       {scanned && issendtx == false &&(
-        <Text style={styles.title}>트랜잭션 전송에 실패하였습니다</Text>
+        <Text style={styles.title}>트랜잭션 전송에 실패했습니다.</Text>
       )}
       {scanned && route.params.num == 0 && issendtx &&(
         <>
@@ -145,6 +158,7 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
           <TouchableOpacity onPress={getTime} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>시간</Text>
           </TouchableOpacity>
+          <Text></Text>
           <Text>{scandata}</Text>
           <Text>{txhash}</Text>
           <Text>{route.params.index}</Text>
@@ -164,40 +178,3 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
       </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-  buttonStyle: {
-    backgroundColor: "#3399FF",
-    borderWidth: 0,
-    color: "#FFFFFF",
-    borderColor: "#3399FF",
-    height: 40,
-    alignItems: "center",
-    borderRadius: 30,
-    marginLeft: 35,
-    marginRight: 35,
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  buttonTextStyle: {
-    color: "#FFFFFF",
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    fontSize: 16,
-    fontWeight: "600",
-  },
-});

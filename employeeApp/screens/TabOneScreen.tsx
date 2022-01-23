@@ -5,6 +5,7 @@ import { scrollInterpolator, animatedStyles } from '../utils/animation.js';
 
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
+import { styles } from '../css/styles';
 import { PROVIDER_APIKEY, CONTRACT_ADDRESS1, CONTRACT_ADDRESS2} from "@env";
 
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
@@ -17,14 +18,15 @@ import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Tr
 // 내 근무지
 
 const SLIDER_WIDTH = Dimensions.get('window').width;
-  const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
-  const ITEM_HEIGHT = Math.round(ITEM_WIDTH * 3 / 4);
+const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
+const ITEM_HEIGHT = Math.round(ITEM_WIDTH * 3 / 4);
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
 
   const [ready, setReady] = useState<boolean>(false);
   const [cardindex, setCardindex] = useState<number>(0);
   const [carddata, setCarddata] = useState<any[]>([]);
+  const [workplaeindex, setWorkplaceindex] = useState<any[]>([]);
 
   const isCarousel = useRef(null);
   
@@ -45,18 +47,20 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 
    // 근무지 불러오기
   const getWorkplace = (async() => {
-  let result = await laborContract.getWorkplaces({ from : connector.accounts[0] });
+    let result = await laborContract.getWorkplaces({ from : connector.accounts[0] });
     console.log(result);
     let temp = [];
+    let index = [];
 
     for (let x = 0 ; x < result[1].length; x++) {
+      index.push(ethers.utils.formatUnits(result[0][x], 0));
       temp.push({
         title : decodeURI(result[1][x]),
         text: decodeURI(result[2][x]),
         wage: "1000"
       })
     }
-
+    setWorkplaceindex(index);
     setCarddata(temp);
     setReady(true);
   })
@@ -119,10 +123,11 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           useScrollView={true}          
           />
           <Text style={styles.counter}>{cardindex}</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('AttendanceCheckScreen', { index : cardindex, num : 0 })} style={styles.buttonStyle}>
+          <Text style={styles.counter}>{workplaeindex[cardindex]}</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('AttendanceCheckScreen', { index : workplaeindex[cardindex], num : 0 })} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>출근</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('AttendanceCheckScreen', { index : cardindex, num : 1 })} style={styles.buttonStyle}>
+          <TouchableOpacity onPress={() => navigation.navigate('AttendanceCheckScreen', { index : workplaeindex[cardindex], num : 1 })} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>퇴근</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={uploadPersonalInfo} style={styles.buttonStyle}>
@@ -133,60 +138,3 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-  buttonStyle: {
-    backgroundColor: "#3399FF",
-    borderWidth: 0,
-    color: "#FFFFFF",
-    borderColor: "#3399FF",
-    height: 40,
-    alignItems: "center",
-    borderRadius: 30,
-    marginLeft: 35,
-    marginRight: 35,
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  buttonTextStyle: {
-    color: "#FFFFFF",
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  carouselContainer: {
-    marginTop: 50
-  },
-  itemContainer: {
-    width: ITEM_WIDTH,
-    height: ITEM_HEIGHT,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'dodgerblue'
-  },
-  itemLabel: {
-    color: 'white',
-    fontSize: 24
-  },
-  counter: {
-    marginTop: 25,
-    fontSize: 30,
-    fontWeight: 'bold',
-    textAlign: 'center'
-  }
-});
