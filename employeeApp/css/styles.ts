@@ -62,6 +62,18 @@ export const styles = StyleSheet.create({
       fontSize: 30,
       fontWeight: 'bold',
       textAlign: 'center'
+    },
+    notificatioonContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    notificationBox: {
+      width: SLIDER_WIDTH,
+      backgroundColor: "#3399FF",
+      alignItems: "center",
+    },
+    notificationBoxText: {
+      fontSize: 20,
     }
 });
 

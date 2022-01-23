@@ -12,7 +12,7 @@ import { ColorSchemeName, Pressable } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import NotificationScreen from '../screens/NotificationScreen';
+import NotificationScreen from '../screens/NotificationModal';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
@@ -20,6 +20,7 @@ import TabThreeScreen from '../screens/TabThreeScreen';
 import AttendancePayScreen from '../screens/AttendancePayScreen';
 import LaborContractScreen from '../screens/LaborContractScreen';
 import AttendanceCheckScreen from '../screens/AttendanceCheckScreen';
+import LaborContractSendScreen from '../screens/LaborContractSendScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -47,6 +48,7 @@ function RootNavigator() {
       <Stack.Screen name="LaborContractScreen" component={LaborContractScreen} options={{ title: '근로계약서 조회' }} />
       <Stack.Screen name="AttendancePayScreen" component={AttendancePayScreen} options={{ title: '근태 / 급여 조회' }} />
       <Stack.Screen name="AttendanceCheckScreen" component={AttendanceCheckScreen} options={{ title: '출근 / 퇴근' }} />
+      <Stack.Screen name="LaborContractSendScreen" component={LaborContractSendScreen} options={{ title: '근로계약서 확인' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="NotificationModal" component={NotificationScreen} options={{ title: '알림' }}/>
       </Stack.Group>

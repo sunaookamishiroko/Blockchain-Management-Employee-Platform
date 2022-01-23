@@ -12,7 +12,7 @@ import { useWalletConnect } from '@walletconnect/react-native-dapp';
 import "react-native-get-random-values";
 import "@ethersproject/shims";
 import { ethers } from "ethers";
-import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Transaction";
+import { makeLabortxobj, infuraProvider, laborContract } from "../connectETH/Transaction";
 
 // 출근 퇴근하기
 
@@ -24,6 +24,8 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
 
   const [txhash, setTxhash] = useState<any>();
   const [issendtx, setIssendtx] = useState<null | boolean>(null);
+
+  const [time, setTime] = useState<any[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -46,27 +48,26 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
     let hour = time.getHours();
     let min = time.getMinutes();
 
-    console.log([
+    let temp = [
       year+"-"+(("0"+month.toString()).slice(-2))+"-"+(("0"+day.toString()).slice(-2)),
       hour,
       min
-    ]);
+    ];
 
-    return([
-      year+"-"+(("0"+month.toString()).slice(-2))+"-"+(("0"+day.toString()).slice(-2)),
-      hour,
-      min
-    ]);
+    console.log(temp);
+    setTime(temp);
+
+    return (temp);
   }
 
-  // 출근하기
-  const onWork = async () => {
+  // 출/퇴근하기
+  const uploadWork = async () => {
 
     let timedata = getTime();
 
     let abidata = new ethers.utils
     .Interface(["function uploadAttendance(uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute)"])
-    .encodeFunctionData("uploadAttendance", [0, 0, "2022-01-13", 18, 0]);
+    .encodeFunctionData("uploadAttendance", [route.params.num, route.params.index, "2022-01-23", 18, 0]);
     let txObj = await makeLabortxobj(connector.accounts[0], abidata, 200000);
 
     try {
@@ -75,36 +76,11 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
         console.log("tx hash:", result);
         console.log(`https://ropsten.etherscan.io/tx/${result}`)
         setTxhash(result);
-        return true;
+        setIssendtx(true);
       });
     } catch (e) {
       console.error(e);
-      return false;
-    };
-
-  };
-
-  // 퇴근하기
-  const offWork = async () => {
-
-    let timedata = getTime();
-
-    let abidata = new ethers.utils
-    .Interface(["function uploadAttendance(uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute)"])
-    .encodeFunctionData("uploadAttendance", [1, 0, "2022-01-12", 20, 0]);
-    let txObj = await makeLabortxobj(connector.accounts[0], abidata, 200000);
-
-    try {
-      await connector.sendTransaction(txObj)
-      .then((result) => {
-        console.log("tx hash:", result);
-        console.log(`https://ropsten.etherscan.io/tx/${result}`)
-        setTxhash(result);
-        return true;
-      });
-    } catch (e) {
-      console.error(e);
-      return false;
+      setIssendtx(false);
     };
 
   };
@@ -114,21 +90,7 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
     setScanned(true);
     setScandata(data);
 
-    let isSuccess;
-    
-    if ( route.params.num == 0 ) {
-
-      isSuccess = await onWork();
-      if (isSuccess) setIssendtx(true);
-      else setIssendtx(false);
-
-    } else if ( route.params.num == 1 ) {
-
-      isSuccess = await offWork();
-      if (isSuccess) setIssendtx(true);
-      else setIssendtx(false);
-
-    }
+    uploadWork();
   };
 
   if (hasPermission === null) {
@@ -154,11 +116,9 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
       )}
       {scanned && route.params.num == 0 && issendtx &&(
         <>
-          <Text style={styles.title}>출근 결과창</Text>
-          <TouchableOpacity onPress={getTime} style={styles.buttonStyle}>
-            <Text style={styles.buttonTextStyle}>시간</Text>
-          </TouchableOpacity>
-          <Text></Text>
+          <Text>{time[0]} {time[1]}:{time[2]}</Text>
+          <Text style={styles.title}>출근을 완료했습니다.</Text>
+          <Text>tx hash : {txhash}</Text>
           <Text>{scandata}</Text>
           <Text>{txhash}</Text>
           <Text>{route.params.index}</Text>
@@ -166,10 +126,9 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
       )}
       {scanned && route.params.num == 1 && issendtx &&(
         <>
-          <Text style={styles.title}>퇴근 결과창</Text>
-          <TouchableOpacity onPress={getTime} style={styles.buttonStyle}>
-            <Text style={styles.buttonTextStyle}>시간</Text>
-          </TouchableOpacity>
+          <Text>{time[0]} {time[1]}:{time[2]}</Text>
+          <Text style={styles.title}>퇴근을 완료했습니다.</Text>
+          <Text>tx hash : {txhash}</Text>
           <Text>{scandata}</Text>
           <Text>{txhash}</Text>
           <Text>{route.params.index}</Text>

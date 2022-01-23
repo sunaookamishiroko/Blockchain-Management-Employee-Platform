@@ -9,7 +9,7 @@ import { useWalletConnect } from '@walletconnect/react-native-dapp';
 import "react-native-get-random-values";
 import "@ethersproject/shims";
 import { ethers } from "ethers";
-import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Transaction";
+import { makeLabortxobj, infuraProvider, laborContract } from "../connectETH/Transaction";
 
 export default async function makeWorkplaceInfoCard({navigation} : RootTabScreenProps<'TabTwo'>) {
 

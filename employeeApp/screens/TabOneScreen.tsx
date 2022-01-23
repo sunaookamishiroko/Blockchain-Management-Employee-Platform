@@ -13,7 +13,8 @@ import { useWalletConnect } from '@walletconnect/react-native-dapp';
 import "react-native-get-random-values";
 import "@ethersproject/shims";
 import { ethers } from "ethers";
-import { makeLabortxobj, infuraProvider, laborContract } from "../transaction/Transaction";
+import { connectWallet } from "../connectETH/connectWallet";
+import { makeLabortxobj, infuraProvider, laborContract } from "../connectETH/Transaction";
 
 // 내 근무지
 
@@ -39,11 +40,6 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 
   // walletconnect 세션을 저장하는 hook
   const connector = useWalletConnect();
-
-  // wallet과 연결함
-  const connectWallet = React.useCallback(() => {
-    return connector.connect();
-  }, [connector]);
 
    // 근무지 불러오기
   const getWorkplace = (async() => {

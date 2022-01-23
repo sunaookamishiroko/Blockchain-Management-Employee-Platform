@@ -18,6 +18,7 @@ export type RootStackParamList = {
   LaborContractScreen: any;
   AttendancePayScreen: any;
   NotificationModal: any;
+  LaborContractSendScreen: any;
   AttendanceCheckScreen: any;
   NotFound: any;
 };
@@ -34,6 +35,7 @@ export type RootTabParamList = {
   LaborContractScreen: any;
   AttendancePayScreen: any;
   NotificationModal: any;
+  LaborContractSendScreen: any;
   AttendanceCheckScreen: any;
 };
 
