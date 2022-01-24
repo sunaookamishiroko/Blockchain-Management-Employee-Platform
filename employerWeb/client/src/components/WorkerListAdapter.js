@@ -8,12 +8,19 @@ const Adapter = styled.div`
   overflow-y: auto;
 `;
 
-const WorkerListAdapter = ({ workers, handleClickOpen }) => {
+const WorkerListAdapter = ({
+  workers,
+  contracts,
+  attendances,
+  handleClickOpen,
+}) => {
   return (
     <Adapter>
-      {workers.map((worker) => (
+      {workers.map((worker, index) => (
         <WorkerListItem
           worker={worker}
+          contract={contracts[index]}
+          attendance={attendances[index]}
           key={worker.id}
           handleClickOpen={handleClickOpen}
         />

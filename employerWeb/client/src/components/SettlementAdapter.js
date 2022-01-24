@@ -8,12 +8,19 @@ const Adapter = styled.div`
   overflow-y: auto;
 `;
 
-const SettlementAdapter = ({ workers, handleClickOpen }) => {
+const SettlementAdapter = ({
+  workers,
+  contracts,
+  attendances,
+  handleClickOpen,
+}) => {
   return (
     <Adapter>
-      {workers.map((worker) => (
+      {workers.map((worker, index) => (
         <SettlementItem
           worker={worker}
+          contract={contracts[index]}
+          attendance={attendances[index]}
           key={worker.id}
           handleClickOpen={handleClickOpen}
         />

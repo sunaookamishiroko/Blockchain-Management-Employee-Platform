@@ -65,93 +65,55 @@ const Content = styled.div`
   float: left;
 `;
 
-const WorkerList = () => {
+const WorkerList = ({ workers, contracts, attendances }) => {
   const [open, setOpen] = useState(false);
-  const [contract, setContract] = useState();
+  const [selectedNumber, setSelectedNumber] = useState();
 
-  const [workers, setWorkers] = useState([
-    {
-      id: 1,
-      name: "이서윤",
-      phone: "010-1234-5678",
-      state: "근로중",
-      contract: {
-        name: "이서윤",
-        from: "2021.08.21",
-        to: "2022.12.31",
-        date: "매달 10일",
-      },
-    },
-    {
-      id: 2,
-      name: "김동현",
-      phone: "010-1234-5678",
-      state: "근로중",
-      contract: {
-        name: "김동현",
-        from: "2021.08.21",
-        to: "2022.12.31",
-        date: "매달 10일",
-      },
-    },
-    {
-      id: 3,
-      name: "박태민",
-      phone: "010-1234-5678",
-      state: "근로중",
-      contract: {
-        name: "박태민",
-        from: "2021.08.21",
-        to: "2022.12.31",
-        date: "매달 10일",
-      },
-    },
-    {
-      id: 4,
-      name: "표민성",
-      phone: "010-1234-5678",
-      state: "근로중",
-      contract: {
-        name: "표민성",
-        from: "2021.08.21",
-        to: "2022.12.31",
-        date: "매달 10일",
-      },
-    },
-  ]);
-
-  const handleClickOpen = (contract) => {
+  const handleClickOpen = (identiNumber) => {
     setOpen(true);
-    setContract(contract);
+    setSelectedNumber(identiNumber);
   };
 
   const handleClose = () => {
-    setContract(null);
+    setSelectedNumber(null);
     setOpen(false);
   };
 
   return (
     <Container>
-      <Categories />
-      {contract && (
-        <Dialog
-          fullWidth={true}
-          onClose={handleClose}
-          open={open}
-          contract={contract}
-        >
-          <DialogTitle>{contract.name}님</DialogTitle>
-          <h2>근로 계약 기간</h2>
-          <p>{contract.from}</p>
-          <p>{contract.to}</p>
-          <h2>임금 지급일</h2>
-          <p>{contract.date}</p>
+      {selectedNumber != null && (
+        <Dialog fullWidth={true} onClose={handleClose} open={open}>
+          <DialogTitle> {workers[selectedNumber].name}님 </DialogTitle>
+          {/* uint workplaceIndex;      // 사업장 index
+    string peroid;            // 근로계약기간 
+    string duties;            // 업무내용
+    string workingTime;       // 소정근로시간
+    string workingDays;       // 근무일
+    string wage;              // 임금(시급)
+    string wageday;           // 임금지급일
+    string comment;           // 기타사항 */}
+          <h2> 근로 계약 기간 </h2> <p> {contracts[selectedNumber].period} </p>
+          <h2> 업무 내용 </h2>
+          <p> {contracts[selectedNumber].duties} </p>
+          <h2> 소정 근로 시간 </h2>
+          <p> {contracts[selectedNumber].workingTime} </p>
+          <h2> 근무일 </h2>
+          <p> {contracts[selectedNumber].workingDays} </p>
+          <h2> 임금(시급) </h2>
+          <p> {contracts[selectedNumber].wage} </p>
+          <h2> 임금지급일 </h2>
+          <p> {contracts[selectedNumber].wageday} </p>
+          <h2> 기타사항 </h2>
+          <p> {contracts[selectedNumber].comment} </p>
         </Dialog>
       )}
+      <Categories />
       <Content>
         <h1> 근로자 목록 </h1>
         <WorkerListAdapter
           workers={workers}
+          contracts={contracts}
+          attendances={attendances}
           handleClickOpen={handleClickOpen}
         />
       </Content>

@@ -30,7 +30,7 @@ const Content = styled.div`
   float: left;
 `;
 
-const Main = () => {
+const Main = ({ workers, contracts, attendances }) => {
   // test용 데이터
   // title : 표시되는 이름
   // color : RGB 색상

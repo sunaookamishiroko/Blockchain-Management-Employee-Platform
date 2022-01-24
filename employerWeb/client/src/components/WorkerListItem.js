@@ -14,15 +14,14 @@ const Item = styled.div`
 `;
 
 const WorkerListItem = ({ worker, handleClickOpen }) => {
-  const { id, name, phone, state, contract } = worker;
+  const { identiNumber, name } = worker;
 
   return (
     <Item>
-      <div> {id} </div> <div> {name} </div> <div> {phone} </div>
-      <div> {state} </div>
+      <div> {identiNumber} </div> <div> {name} </div>
       <button
         onClick={() => {
-          handleClickOpen(contract);
+          handleClickOpen(identiNumber);
         }}
       >
         계약서 보기
