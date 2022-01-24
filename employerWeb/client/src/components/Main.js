@@ -2,41 +2,9 @@ import React from "react";
 import "../resources/css/Main.scss";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import { NavLink } from "react-router-dom";
+
 import styled from "styled-components";
-
-const LeftSidebar = styled.div`
-  width: 250px;
-  height: 1080px;
-  background-color: #e9e9e9;
-  float: left;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const SideButton = styled(NavLink)`
-  display: flex;
-  justify-content: center;
-  width: 200px;
-  height: 50px;
-  margin-bottom: 20px;
-  font-size: 15px;
-  color: inherit;
-  text-decoration: none;
-  border: 1px solid black;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  background-color: white;
-  cursor: pointer;
-  &:hover {
-    color: #495057;
-  }
-  & + & {
-    margin-top: 1rem;
-  }
-`;
+import Categories from "./Categories";
 
 const Container = styled.div`
   width: 1900px;
@@ -84,14 +52,7 @@ const Main = () => {
 
   return (
     <Container>
-      <LeftSidebar>
-        <h1> ** 사장님 </h1>
-        <SideButton to="/EnrollWorker"> 근로자 등록 </SideButton>
-        <SideButton to="/WorkerList"> 근로자 목록 </SideButton>
-        <SideButton to="/Settlement"> 급여 정산 </SideButton>
-        <SideButton to="/Payroll"> 급여 지급 </SideButton>
-        <SideButton to="/Another"> 매장 </SideButton>
-      </LeftSidebar>
+      <Categories />
       <Content>
         <h1> 출석부 </h1>
         <FullCalendar

@@ -7,6 +7,7 @@ import WorkerListAdapter from "./WorkerListAdapter";
 import Dialog from "@mui/material/Dialog";
 import { DialogTitle } from "@mui/material";
 import PayrollAdapter from "./PayrollAdapter";
+import Categories from "./Categories";
 
 const LeftSidebar = styled.div`
   width: 250px;
@@ -77,6 +78,26 @@ const Payroll = () => {
       state: "근로중",
       pay: 10000,
       contract: {
+        //       // 근로계약서 저장소
+        // struct laborContract {
+        //   uint workplaceIndex;      // 사업장 index
+        //   string peroid;            // 근로계약기간
+        //   string duties;            // 업무내용
+        //   string workingTime;       // 소정근로시간
+        //   string workingDays;       // 근무일
+        //   string wage;              // 임금(시급)
+        //   string wageday;           // 임금지급일
+        //   string comment;           // 기타사항
+        // }
+        workplaceIndex: 0,
+        period: "1",
+        duties: "배달",
+        workingTime: "2h",
+        workingDays: "4일",
+        wage: "6000원",
+        wageday: "매달 10일",
+        comment: null,
+
         name: "이서윤",
         from: "2021.08.21",
         to: "2022.12.31",
@@ -130,9 +151,7 @@ const Payroll = () => {
 
   return (
     <Container>
-      <LeftSidebar>
-        <h1> ** 사장님 </h1> <SideButton to="/"> 뒤로가기 </SideButton>
-      </LeftSidebar>
+      <Categories />
       <Content>
         <h1> 급여 지급 </h1>
         <PayrollAdapter workers={workers} onSubmit={onSubmit} />

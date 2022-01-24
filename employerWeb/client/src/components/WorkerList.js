@@ -6,6 +6,7 @@ import styled, { ThemeConsumer } from "styled-components";
 import WorkerListAdapter from "./WorkerListAdapter";
 import Dialog from "@mui/material/Dialog";
 import { DialogTitle } from "@mui/material";
+import Categories from "./Categories";
 
 const LeftSidebar = styled.div`
   width: 250px;
@@ -131,6 +132,7 @@ const WorkerList = () => {
 
   return (
     <Container>
+      <Categories />
       {contract && (
         <Dialog
           fullWidth={true}
@@ -146,9 +148,6 @@ const WorkerList = () => {
           <p>{contract.date}</p>
         </Dialog>
       )}
-      <LeftSidebar>
-        <h1> ** 사장님 </h1> <SideButton to="/"> 뒤로가기 </SideButton>
-      </LeftSidebar>
       <Content>
         <h1> 근로자 목록 </h1>
         <WorkerListAdapter

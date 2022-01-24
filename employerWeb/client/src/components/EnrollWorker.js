@@ -1,6 +1,8 @@
+import { FormLabel } from "@mui/material";
 import React, { useState, useCallback } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import Categories from "./Categories";
 
 const LeftSidebar = styled.div`
   width: 250px;
@@ -75,40 +77,121 @@ const Input = styled.input`
 `;
 
 const EnrollWorker = ({ onEnroll }) => {
-  const [value, setValue] = useState("");
+  const [worker, setWorker] = useState({
+    address: "",
+    age: 0,
+    gender: "남",
+    period: "",
+    duties: "",
+    workingTime: "",
+    workingDays: "",
+    wage: "",
+    wageday: "",
+    comment: "",
+  });
 
-  const onChange = useCallback((e) => {
-    setValue(e.target.value);
-  }, []);
+  const onChange = (event) => {
+    const { name, value } = event.target;
+    setWorker({ ...worker, [name]: value });
+  };
 
-  const onSubmit = useCallback(
-    (e) => {
-      onEnroll(value);
-      setValue("");
-      e.preventDefault();
-    },
-    [onEnroll, value]
-  );
+  const onSubmit = (e) => {
+    console.log(worker);
+    //onEnroll(worker);
+    e.preventDefault();
+  };
 
   return (
     <Container>
-      <LeftSidebar>
-        <h1>** 사장님</h1>
-        <SideButton to="/">뒤로가기</SideButton>
-      </LeftSidebar>
+      <Categories />
       <Content>
         <form className="Enroll" onSubmit={onSubmit}>
-          <h1>근로자 등록</h1>
-          <h2>근로자 Address</h2>
+          <h1> 근로자 등록 </h1>
+
+          <h2> 근로자 Address </h2>
           <Input
             placeholder="근로자 주소를 입력하세요"
-            value={value}
+            name="address"
             onChange={onChange}
           />
-          <h2>근로 계약 기간</h2>
-          <Input type="date" />
+
+          <h2> 근로자 이름</h2>
+          <Input
+            placeholder="근로자 이름을 입력하세요"
+            name="name"
+            onChange={onChange}
+          />
+
+          <h2> 근로자 나이 </h2>
+          <Input
+            placeholder="근로자 나이 입력하세요"
+            name="age"
+            onChange={onChange}
+          />
+
+          <h2>근로자 성별</h2>
+          <FormLabel>
+            남
+            <Input
+              type="radio"
+              name="gender"
+              value="남"
+              onChange={onChange}
+              checked
+            />
+          </FormLabel>
+          <FormLabel>
+            여
+            <Input type="radio" name="gender" value="여" onChange={onChange} />
+          </FormLabel>
+
+          <h2> 근로 계약 기간 </h2>
+          <Input type="date" name="period" />
+
+          <h2> 업무 내용 </h2>
+          <Input
+            placeholder="업무 내용을 입력하세요"
+            name="duties"
+            onChange={onChange}
+          />
+
+          <h2>소정 근로 시간</h2>
+          <Input
+            placeholder="소정 근로 시간을 입력하세요"
+            name="workingTime"
+            onChange={onChange}
+          />
+
+          <h2>근무일</h2>
+          <Input
+            placeholder="근무일을 입력하세요"
+            name="workingDays"
+            onChange={onChange}
+          />
+
+          <h2>임금(시급)</h2>
+          <Input
+            placeholder="임금(시급)을 입력하세요"
+            name="wage"
+            onChange={onChange}
+          />
+
+          <h2>임금지급일</h2>
+          <Input
+            placeholder="임금(시급)지급일을 입력하세요"
+            name="wageday"
+            onChange={onChange}
+          />
+
+          <h2>기타사항</h2>
+          <Input
+            placeholder="기타 사항을 입력하세요"
+            name="comment"
+            onChange={onChange}
+          />
+
           <SubmitDiv>
-            <button type="submit">요청 보내기</button>
+            <button type="submit"> 요청 보내기 </button>
           </SubmitDiv>
         </form>
       </Content>

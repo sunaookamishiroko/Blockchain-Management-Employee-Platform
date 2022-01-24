@@ -8,6 +8,7 @@ import { DialogTitle } from "@mui/material";
 import SettlementAdapter from "./SettlementAdapter";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import Categories from "./Categories";
 
 const LeftSidebar = styled.div`
   width: 250px;
@@ -172,6 +173,7 @@ const Settlement = () => {
 
   return (
     <Container>
+      <Categories />
       {detail && (
         <Dialog
           fullWidth={true}
@@ -191,9 +193,6 @@ const Settlement = () => {
           <h2>총 </h2>
         </Dialog>
       )}
-      <LeftSidebar>
-        <h1> ** 사장님 </h1> <SideButton to="/"> 뒤로가기 </SideButton>
-      </LeftSidebar>
       <Content>
         <h1> 급여 정산 </h1>
         <SettlementAdapter
