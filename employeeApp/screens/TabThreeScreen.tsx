@@ -55,9 +55,28 @@ export default function TabThreeScreen() {
       ethers.utils.formatUnits(result[2], 0),
       decodeURI(result[3])
     ])
-
     setReady(true);
-  });
+  })
+
+  // 개인정보 업로드
+  const uploadPersonalInfo = (async () => {
+
+      let abidata = new ethers.utils
+      .Interface(["function uploadPersonalInfo(address person, uint8 identiNumber, string calldata name, uint age, string calldata gender)"])
+      .encodeFunctionData("uploadPersonalInfo", [connector.accounts[0], 0, encodeURI("이서윤"), 24, encodeURI("남")]);
+      let txObj = await makeLabortxobj(connector.accounts[0], abidata, 100000);
+  
+      try {
+        await connector.sendTransaction(txObj)
+        .then((result) => {
+          console.log("tx hash:", result);
+          console.log(`https://ropsten.etherscan.io/tx/${result}`)
+        });
+      } catch (e) {
+        console.error(e);
+      };
+  
+  })
 
   return (
     <View style={styles.container}>
@@ -70,6 +89,9 @@ export default function TabThreeScreen() {
       )}
       {connector.connected && !ready && (
         <>
+          <TouchableOpacity onPress={uploadPersonalInfo} style={styles.buttonStyle}>
+            <Text style={styles.buttonTextStyle}>개인정보 업로드</Text>
+          </TouchableOpacity>
           <Text>잠시만 기다려주세요...</Text>
         </>
       )}

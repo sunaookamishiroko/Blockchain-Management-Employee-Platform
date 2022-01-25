@@ -6,7 +6,6 @@ import { scrollInterpolator, animatedStyles } from '../utils/animation.js';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { styles } from '../css/styles';
-import { PROVIDER_APIKEY, CONTRACT_ADDRESS1, CONTRACT_ADDRESS2} from "@env";
 
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
 
@@ -14,7 +13,7 @@ import "react-native-get-random-values";
 import "@ethersproject/shims";
 import { ethers } from "ethers";
 //import { connectWallet } from "../connectETH/connectWallet";
-import { makeLabortxobj, infuraProvider, laborContract } from "../connectETH/Transaction";
+import { makeLabortxobj, laborContract } from "../connectETH/Transaction";
 
 // 내 근무지
 
@@ -30,7 +29,6 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
   const [workplaeindex, setWorkplaceindex] = useState<any[]>([]);
 
   const isCarousel = useRef(null);
-  
 
   useEffect(() => {
     if (connector.connected) {
@@ -77,25 +75,6 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
     );
   }
 
-  const uploadPersonalInfo = React.useCallback(async () => {
-
-    let abidata = new ethers.utils
-    .Interface(["function uploadPersonalInfo(address person, uint8 identiNumber, string calldata name, uint age, string calldata gender)"])
-    .encodeFunctionData("uploadPersonalInfo", [connector.accounts[0], 0, encodeURI("이서윤"), 24, encodeURI("남")]);
-    let txObj = await makeLabortxobj(connector.accounts[0], abidata, 100000);
-
-    try {
-      await connector.sendTransaction(txObj)
-      .then((result) => {
-        console.log("tx hash:", result);
-        console.log(`https://ropsten.etherscan.io/tx/${result}`)
-      });
-    } catch (e) {
-      console.error(e);
-    };
-
-  }, [connector]);
-
   return (
     <View style={styles.container}>
       {!connector.connected && (
@@ -130,9 +109,6 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('AttendanceCheckScreen', { index : workplaeindex[cardindex], num : 1 })} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>퇴근</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={uploadPersonalInfo} style={styles.buttonStyle}>
-            <Text style={styles.buttonTextStyle}>개인정보 업로드</Text>
           </TouchableOpacity>
         </>
       )}

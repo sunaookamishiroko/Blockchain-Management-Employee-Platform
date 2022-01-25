@@ -2024,6 +2024,13 @@
     sudo-prompt "^9.0.0"
     wcwidth "^1.0.1"
 
+"@react-native-community/datetimepicker@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-4.0.0.tgz#4629ac3d8d54b4024385f2b2a30bbe13640c6ed3"
+  integrity sha512-q3JfDHX5PI0AxFeMsB6jcHSXODloXAqBVsOfkIvm+YbAe1TUs/xZ3qGazsKVBk9EdFyHO4k+S1Q8tQkEnk2YrQ==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.npmjs.org/@react-native/assets/-/assets-1.0.0.tgz"
@@ -7915,6 +7922,14 @@ react-native-get-random-values@^1.7.2:
   integrity sha512-28KRYGpIG/upV8+k/qFA+TwGW+yGjmtOHaCduJHpOQK1QUTyhiA6E2IgL4UvvU2dybeCTYFmUi9wcEQ0GiWe5g==
   dependencies:
     fast-base64-decode "^1.0.0"
+
+react-native-month-year-picker@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-month-year-picker/-/react-native-month-year-picker-1.8.0.tgz#9fd5b8502e4354506b9dc4525e73f966e8582aaa"
+  integrity sha512-3jf7KXrLTaqWvi+WALgadClnJ+f/HXtCtYMOjG5RH1r5aWWo7lfpETdlfYkRAVy4ZKLsDp65KStbkh4dyytZ8g==
+  dependencies:
+    invariant "^2.2.4"
+    moment "^2.24.0"
 
 react-native-qrcode-svg@6.0.6:
   version "6.0.6"
