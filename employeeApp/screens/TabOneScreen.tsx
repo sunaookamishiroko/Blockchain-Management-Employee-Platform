@@ -13,7 +13,7 @@ import { useWalletConnect } from '@walletconnect/react-native-dapp';
 import "react-native-get-random-values";
 import "@ethersproject/shims";
 import { ethers } from "ethers";
-import { connectWallet } from "../connectETH/connectWallet";
+//import { connectWallet } from "../connectETH/connectWallet";
 import { makeLabortxobj, infuraProvider, laborContract } from "../connectETH/Transaction";
 
 // 내 근무지
@@ -34,17 +34,23 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 
   useEffect(() => {
     if (connector.connected) {
-      getWorkplace();
+      getCardinfo();
     }
   }, []);
 
   // walletconnect 세션을 저장하는 hook
   const connector = useWalletConnect();
 
+  const connectWallet = React.useCallback(() => {
+    return connector.connect();
+  }, [connector]);
+
    // 근무지 불러오기
-  const getWorkplace = (async() => {
+  const getCardinfo = (async() => {
+
     let result = await laborContract.getWorkplaces({ from : connector.accounts[0] });
     console.log(result);
+
     let temp = [];
     let index = [];
 
@@ -52,8 +58,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
       index.push(ethers.utils.formatUnits(result[0][x], 0));
       temp.push({
         title : decodeURI(result[1][x]),
-        text: decodeURI(result[2][x]),
-        wage: "1000"
+        text: decodeURI(result[2][x])
       })
     }
     setWorkplaceindex(index);
@@ -76,7 +81,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 
     let abidata = new ethers.utils
     .Interface(["function uploadPersonalInfo(address person, uint8 identiNumber, string calldata name, uint age, string calldata gender)"])
-    .encodeFunctionData("uploadPersonalInfo", [connector.accounts[0], 0, encodeURI("이서윤"), 25, encodeURI("남")]);
+    .encodeFunctionData("uploadPersonalInfo", [connector.accounts[0], 0, encodeURI("이서윤"), 24, encodeURI("남")]);
     let txObj = await makeLabortxobj(connector.accounts[0], abidata, 100000);
 
     try {
@@ -118,7 +123,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           slideInterpolatedStyle={animatedStyles}
           useScrollView={true}          
           />
-          <Text style={styles.counter}>{cardindex}</Text>
+          <Text style={styles.counter}>{carddata[cardindex].title}</Text>
           <Text style={styles.counter}>{workplaeindex[cardindex]}</Text>
           <TouchableOpacity onPress={() => navigation.navigate('AttendanceCheckScreen', { index : workplaeindex[cardindex], num : 0 })} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>출근</Text>

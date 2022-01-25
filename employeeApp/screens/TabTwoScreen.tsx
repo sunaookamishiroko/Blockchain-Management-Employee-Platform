@@ -12,7 +12,7 @@ import "react-native-get-random-values";
 import "@ethersproject/shims";
 import { ethers } from "ethers";
 import { makeLabortxobj, infuraProvider, laborContract } from "../connectETH/Transaction";
-import { connectWallet } from "../connectETH/connectWallet";
+//import { connectWallet } from "../connectETH/connectWallet";
 
 // 근무지 정보
 
@@ -29,6 +29,10 @@ export default function TabTwoScreen({navigation} : RootTabScreenProps<'TabTwo'>
 
   // walletconnect 세션을 저장하는 hook
   const connector = useWalletConnect();
+
+  const connectWallet = React.useCallback(() => {
+    return connector.connect();
+}, [connector]);
 
   // 근무지 불러오기
   const getWorkplace = (async() => {

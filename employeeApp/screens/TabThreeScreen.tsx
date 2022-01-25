@@ -11,7 +11,7 @@ import "react-native-get-random-values";
 import "@ethersproject/shims";
 import { ethers } from "ethers";
 import { makeLabortxobj, infuraProvider, laborContract } from "../connectETH/Transaction";
-import { connectWallet } from "../connectETH/connectWallet";
+//import { connectWallet } from "../connectETH/connectWallet";
 
 // 프로필
 
@@ -35,6 +35,10 @@ export default function TabThreeScreen() {
 
   // walletconnect 세션을 저장하는 hook
   const connector = useWalletConnect();
+
+  const connectWallet = React.useCallback(() => {
+    return connector.connect();
+}, [connector]);
 
   // wallet과 연결 종료하기
   const killSession = React.useCallback(() => {

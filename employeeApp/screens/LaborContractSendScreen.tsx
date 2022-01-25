@@ -37,10 +37,10 @@ export default function LaborContractSendScreen({ navigation, route }: RootTabSc
   const getLaborContract = async () => {
     setContractdata([
       "2022/01/04 ~ 2022/03/31",
-      encodeURI("접대"),
-      "03:00 ~ 12:00",
-      encodeURI("매주 화요일"),
-      "9160",
+      encodeURI("매장 청소 / 매장 관리 / 계산"),
+      "22:00 ~ 08:00",
+      encodeURI("매주 토요일"),
+      "12000",
       encodeURI("매월 10일"),
       encodeURI("없음")
     ]);
@@ -52,8 +52,8 @@ export default function LaborContractSendScreen({ navigation, route }: RootTabSc
 
     let abidata = new ethers.utils
     .Interface(["function uploadLaborContract(string [] calldata laborContractItems, address employeeAddress, uint workplaceInfoIndex)"])
-    .encodeFunctionData("uploadLaborContract", [contractdata, connector.accounts[0], 1]);
-    let txObj = await makeLabortxobj(connector.accounts[0], abidata, 500000);
+    .encodeFunctionData("uploadLaborContract", [contractdata, connector.accounts[0], 2]);
+    let txObj = await makeLabortxobj(connector.accounts[0], abidata, 1000000);
 
     try {
       await connector.sendTransaction(txObj)
@@ -98,10 +98,10 @@ export default function LaborContractSendScreen({ navigation, route }: RootTabSc
           </View>
         </>
       )}
-      {ready && !issendtx && answer &&(
+      {ready && !issendtx && answer == false &&(
         <Text>트랜잭션 전송에 실패했습니다.</Text>
       )}
-      {ready && issendtx && answer &&(
+      {ready && issendtx && answer == true &&(
         <Text>근로계약이 완료되었습니다.</Text>
       )} 
       {ready && issendtx == null && answer == false &&(

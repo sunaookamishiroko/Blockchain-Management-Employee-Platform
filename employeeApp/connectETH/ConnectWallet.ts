@@ -12,16 +12,13 @@ export async function connectWallet() {
     const connectWallet = React.useCallback(() => {
         return connector.connect();
     }, [connector]);
-
+    /*
     const checkIsExist = async () => {
         
         let result = await laborContract
         .getPersonInformation(connector.accounts[0], { from : connector.accounts[0] });
-        
-        if (result[1] == "")
-        else
 
-    }
+    }*/
     await connectWallet();
-    await checkIsExist();
+    //await checkIsExist();
 }

@@ -23,7 +23,8 @@ const ITEM_HEIGHT = Math.round(ITEM_WIDTH * 3 / 4);
 export default function AttendancePayScreen({ navigation, route }: RootTabScreenProps<'AttendancePayScreen'>) {
 
   const [ready, setReady] = useState<boolean>(false);
-  const [caldata, setCaldata] = useState<any[]>([]);
+  const [caldata, setCaldata] = useState<any>();
+  const [wage, setWage] = useState<any>();
 
   useEffect(() => {
     getAttendance();
@@ -37,6 +38,7 @@ export default function AttendancePayScreen({ navigation, route }: RootTabScreen
     return connector.connect();
   }, [connector]);
 
+  // 출퇴근 날짜 가져오기
   const getAttendance = (async() => {
     let result = await laborContract.getIndexOfEmployee(
       route.params.index, 
@@ -52,22 +54,84 @@ export default function AttendancePayScreen({ navigation, route }: RootTabScreen
       { from : connector.accounts[0] }
     );
 
-    setCaldata(result);
+    let hourwage = await laborContract.getWage(route.params.index, employeeindex);
+    hourwage = parseInt(ethers.utils.formatUnits(hourwage, 0));
+
+    await renderItem(result, employeeindex, hourwage);
+    setReady(true);
+  })
+
+  // 봉급을 비롯해서 계산하기
+  const renderItem = (async (data, employeeindex, hourwage) => {
+
+    console.log(data, employeeindex, hourwage);
+    let dates = {};
+
+    let time = new Date();
+    let year = time.getFullYear();
+    let month = time.getMonth() + 1;
+
+    let stringmatch = year+"-"+(("0"+month.toString()).slice(-2));
+
+    let stflag = 0, edflag = 0;
+    let startIndex, endIndex;
+
+    for (let x = 0 ; x < data[1].length ; x++) {
+      if (data[1][x].search(stringmatch) != -1) {
+        if (stflag == 0) {
+          startIndex = x;
+          stflag = 1;
+        }
+      } else {
+        if (stflag == 0) continue;
+        else {
+          endIndex = x;
+          edflag = 1;
+          break;
+        }
+      }
+    }
+
+    if (edflag == 0) endIndex = data[1].length -1;
+
+    console.log(startIndex, endIndex)
+
+    let wage = await laborContract.getPayment(
+      route.params.index, employeeindex, startIndex, endIndex, hourwage
+    );
+
+    setWage(ethers.utils.formatUnits(wage, 0));
+
+    if (data[0].length == data[1].length) {
+      for(let x = 0 ; x < data[0].length ; x++) {
+        dates[data[0][x]] = {marked: true, dotColor: 'blue'}
+      }
+    } else {
+      for(let x = 0 ; x < data[0].length - 1; x++) {
+        dates[data[0][x]] = {marked: true, dotColor: 'blue'}
+      }
+      dates[data[0][data[0].length -1]] = {marked: true, dotColor: 'red'}
+    }
+    
+    setCaldata(dates);
 
   })
 
   return (
     <View style={styles.container}>
-      <Calendar
-        style={{
-          width: ITEM_WIDTH,
-        }}
-        markedDates = {{
-          '2022-01-01' : {marked: true, dotColor: 'red'},
-
-        }}/>
-      <Text style={styles.title}>{caldata[0]}</Text>
-      <Text style={styles.title}>{caldata[1]}</Text>
+      {!ready && (
+        <Text>잠시만 기다려주세요...</Text>
+      )}
+      {ready && (
+        <>
+          <Calendar
+          style={{
+            width: ITEM_WIDTH,
+          }}
+          markedDates = {caldata}/>
+          <Text>이번 달 월급 : {wage}</Text>
+        </>
+      )}
     </View>
   );
 }

@@ -6,6 +6,7 @@ import { Text, View } from '../components/Themed';
 import { styles } from '../css/styles';
 import { RootTabScreenProps } from '../types';
 import { PROVIDER_APIKEY, CONTRACT_ADDRESS1, CONTRACT_ADDRESS2} from "@env";
+import * as WebBrowser from 'expo-web-browser';
 
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
 
@@ -67,7 +68,7 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
 
     let abidata = new ethers.utils
     .Interface(["function uploadAttendance(uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute)"])
-    .encodeFunctionData("uploadAttendance", [route.params.num, route.params.index, "2022-01-23", 18, 0]);
+    .encodeFunctionData("uploadAttendance", [route.params.num, route.params.index, "2022-01-08", 8, 0]);
     let txObj = await makeLabortxobj(connector.accounts[0], abidata, 200000);
 
     try {
@@ -83,6 +84,10 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
       setIssendtx(false);
     };
 
+  };
+
+  const _handlePressButtonAsync = async () => {
+    await WebBrowser.openBrowserAsync(`https://ropsten.etherscan.io/tx/${txhash}`);
   };
 
   // qr코드 스캔 후 출근퇴근에 따라 분류
@@ -118,9 +123,10 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
         <>
           <Text>{time[0]} {time[1]}:{time[2]}</Text>
           <Text style={styles.title}>출근을 완료했습니다.</Text>
-          <Text>tx hash : {txhash}</Text>
+          <TouchableOpacity style={styles.buttonStyle} onPress={_handlePressButtonAsync}>
+            <Text style={styles.buttonTextStyle}>etherscan</Text>
+          </TouchableOpacity>
           <Text>{scandata}</Text>
-          <Text>{txhash}</Text>
           <Text>{route.params.index}</Text>
         </>
       )}
@@ -128,9 +134,10 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
         <>
           <Text>{time[0]} {time[1]}:{time[2]}</Text>
           <Text style={styles.title}>퇴근을 완료했습니다.</Text>
-          <Text>tx hash : {txhash}</Text>
+          <TouchableOpacity style={styles.buttonStyle} onPress={_handlePressButtonAsync}>
+            <Text style={styles.buttonTextStyle}>etherscan</Text>
+          </TouchableOpacity>
           <Text>{scandata}</Text>
-          <Text>{txhash}</Text>
           <Text>{route.params.index}</Text>
         </>
       )}

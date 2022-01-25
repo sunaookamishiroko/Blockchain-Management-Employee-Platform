@@ -94,7 +94,7 @@ class App extends Component {
   // 사업주 정보 업로드
   uploadPersonalInfo1 = async () => {
     const { accounts, contract } = this.state;
-    await contract.methods.uploadPersonalInfo(accounts[0], 1, encodeURI("홍길동"), 50, encodeURI("여")).send({ from: accounts[0] });
+    await contract.methods.uploadPersonalInfo(accounts[0], 1, encodeURI("홍길동"), 32, encodeURI("남")).send({ from: accounts[0] });
     console.log("uploadPersonalInfo1 complete");
   };
 
@@ -110,7 +110,7 @@ class App extends Component {
   // 사업장 등록
   uploadWorkplace = async () => {
     const { accounts, contract } = this.state;
-    await contract.methods.uploadWorkplace(accounts[0], encodeURI("맥도날드"), encodeURI("서울특별시")).send({ from: accounts[0] });
+    await contract.methods.uploadWorkplace(accounts[0], encodeURI("GS편의점"), encodeURI("경기도 시흥시 정왕2동")).send({ from: accounts[0] });
     console.log("uploadWorkplace complete");
   };
 
