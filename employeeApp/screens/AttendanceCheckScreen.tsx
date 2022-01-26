@@ -68,7 +68,7 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
 
     let abidata = new ethers.utils
     .Interface(["function uploadAttendance(uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute)"])
-    .encodeFunctionData("uploadAttendance", [route.params.num, route.params.index, "2022-01-08", 8, 0]);
+    .encodeFunctionData("uploadAttendance", [route.params.num, route.params.index, "2022-02-01", 20, 0]);
     let txObj = await makeLabortxobj(connector.accounts[0], abidata, 200000);
 
     try {

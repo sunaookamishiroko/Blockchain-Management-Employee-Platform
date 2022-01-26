@@ -43,7 +43,7 @@ export default function TabTwoScreen({navigation} : RootTabScreenProps<'TabTwo'>
   })
 
   // 렌더링 하기 위해 배치작업
-  const makeJsx = (() => {
+  const makeJsx = () => {
     let workplaceInfo = [];
 
     for (let x = 0 ; x < callresult[1].length; x++) {
@@ -65,7 +65,7 @@ export default function TabTwoScreen({navigation} : RootTabScreenProps<'TabTwo'>
     }
 
     return workplaceInfo;
-  })
+  }
 
   return (
     <View style={styles.container}>

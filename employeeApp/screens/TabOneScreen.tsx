@@ -75,6 +75,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
     );
   }
 
+
   return (
     <View style={styles.container}>
       {!connector.connected && (
