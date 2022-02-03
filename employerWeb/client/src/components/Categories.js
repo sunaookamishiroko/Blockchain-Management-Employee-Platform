@@ -51,6 +51,10 @@ const categories = [
     text: "근로자 등록",
   },
   {
+    name: "EnrollList",
+    text: "근로자 등록 요청 목록",
+  },
+  {
     name: "WorkerList",
     text: "근로자 목록",
   },
@@ -66,6 +70,10 @@ const categories = [
     name: "Another",
     text: "매장",
   },
+  {
+    name: "Test",
+    text: "test"
+  }
 ];
 const Categories = () => {
   return (
