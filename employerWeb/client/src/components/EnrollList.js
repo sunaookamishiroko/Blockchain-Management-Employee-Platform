@@ -3,8 +3,8 @@ import React, { useState, useCallback, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import Categories from "./Categories";
-import { firestore } from "./firebase.js";
-import {  } from "firebase/firestore";
+//import { firestore } from "./firebase.js";
+//import {  } from "firebase/firestore";
 
 const LeftSidebar = styled.div`
   width: 250px;
@@ -94,7 +94,7 @@ const EnrollList = ({ onEnroll }) => {
   });
 
   useEffect(() => {
-
+    /*
     const workerlist = firestore.collection('workersData')
     .get()
     .then((querySnapshot) => {
@@ -107,7 +107,7 @@ const EnrollList = ({ onEnroll }) => {
     .catch((error) => {
         console.log("Error getting documents: ", error);
     });
-
+    */
   });
 
   const onClickHandler=(e) => {

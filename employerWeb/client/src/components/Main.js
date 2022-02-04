@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component, useEffect, useState } from "react";
 import "../resources/css/Main.scss";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -30,11 +30,23 @@ const Content = styled.div`
   float: left;
 `;
 
-const Main = ({ accounts, contract, attendances }) => {
+const Main = ({ web3, accounts, contract }) => {
   // test용 데이터
   // title : 표시되는 이름
   // color : RGB 색상
   // display(고정) : 둥근 아이콘
+
+  const [ready, setReady] = useState(false);
+  const [name, setName] = useState();
+
+  useEffect(() =>{
+    getName();
+  }, []);
+
+  useEffect(() =>{
+    setReady(true);
+  }, [name]);
+
   const testEvent = [
     {
       title: "홍길동 결근",
@@ -50,21 +62,35 @@ const Main = ({ accounts, contract, attendances }) => {
     },
   ];
 
-  return (
-    <Container>
-      <Categories />
-      <Content>
-        <h1> 출석부 </h1>
-        <FullCalendar
-          contentHeight={600}
-          plugins={[dayGridPlugin]}
-          initialView="dayGridMonth"
-          events={testEvent}
-        />
-        <h1> 보유금액 </h1> <h1> 근태현황 </h1>
-      </Content>
-    </Container>
-  );
+  const getName = (async () => {
+    const response = await contract.methods.getPersonInformation(accounts[0]).call({ from: accounts[0] });
+    setName(decodeURI(response[1]));
+  })
+
+  
+
+  if (!ready) {
+    return(
+      <div>잠시만ㄱㄷ</div>
+    )
+  } else {
+    return (
+      <Container>
+        <Categories name={name} />
+        <Content>
+          <h1> 출석부 </h1>
+          <FullCalendar
+            contentHeight={600}
+            plugins={[dayGridPlugin]}
+            initialView="dayGridMonth"
+            events={testEvent}
+          />
+          <h1> 보유금액 </h1> <h1> 근태현황 </h1>
+        </Content>
+      </Container>
+    );
+
+  }
 };
 
 export default Main;

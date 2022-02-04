@@ -11,7 +11,7 @@ import Settlement from "./components/Settlement";
 import Payroll from "./components/Payroll";
 import Test from "./components/Test";
 import EnrollList from "./components/EnrollList";
-import { firestore } from "./components/firebase";
+//import { firestore } from "./components/firebase";
 
 const App = () => {
 
@@ -41,6 +41,8 @@ const App = () => {
   const [accounts, setAccounts] = useState();
   const [contract, setContract] = useState();
   const [tokencontract, setTokencontract] = useState();
+
+  const [ready, setReady] = useState(false);
 
   useEffect(() =>{
     setting();
@@ -102,6 +104,8 @@ const App = () => {
       setAccounts(accounts);
       setContract(instance);
       setTokencontract(Tokeninstance);
+
+      setReady(true);
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -110,78 +114,85 @@ const App = () => {
       console.error(error);
     }
 
+
+
   })
 
+  if (!ready) {
+    return (
+      <div>잠시만 기다려주세요</div>
+    );
+  } else {
+    return (
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Main
+              web3={web3}
+              accounts={accounts}
+              contract={contract}
+            />
+          }
+        />{" "}
+        <Route
+          path="/WorkerList"
+          element={
+            <WorkerList
+  
+              attendances={attendances}
+            />
+          }
+        />{" "}
+        <Route
+          path="/EnrollWorker"
+          element={
+            <EnrollWorker
+  
+              attendances={attendances}
+            />
+          }
+        />{" "}
+        <Route
+          path="/EnrollList"
+          element={
+            <EnrollList
+  
+              attendances={attendances}
+            />
+          }
+        />{" "}
+        <Route
+          path="/Settlement"
+          element={
+            <Settlement
+  
+              attendances={attendances}
+            />
+          }
+        />{" "}
+        <Route
+          path="/Payroll"
+          element={
+            <Payroll
+  
+              attendances={attendances}
+            />
+          }
+        />{" "}
+        <Route
+          path="/Test"
+          element={
+            <Test
+              accounts={accounts}
+              contract={contract}
+            />
+          }
+        />{" "}
+      </Routes>
+    );
 
-
-  return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <Main
-            accounts={accounts}
-            contract={contract}
-            attendances={attendances}
-          />
-        }
-      />{" "}
-      <Route
-        path="/WorkerList"
-        element={
-          <WorkerList
-
-            attendances={attendances}
-          />
-        }
-      />{" "}
-      <Route
-        path="/EnrollWorker"
-        element={
-          <EnrollWorker
-
-            attendances={attendances}
-          />
-        }
-      />{" "}
-      <Route
-        path="/EnrollList"
-        element={
-          <EnrollList
-
-            attendances={attendances}
-          />
-        }
-      />{" "}
-      <Route
-        path="/Settlement"
-        element={
-          <Settlement
-
-            attendances={attendances}
-          />
-        }
-      />{" "}
-      <Route
-        path="/Payroll"
-        element={
-          <Payroll
-
-            attendances={attendances}
-          />
-        }
-      />{" "}
-      <Route
-        path="/Test"
-        element={
-          <Test
-            accounts={accounts}
-            contract={contract}
-          />
-        }
-      />{" "}
-    </Routes>
-  );
+  }
 };
 
 export default App;

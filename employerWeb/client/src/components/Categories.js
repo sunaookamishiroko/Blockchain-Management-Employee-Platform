@@ -75,10 +75,10 @@ const categories = [
     text: "test"
   }
 ];
-const Categories = () => {
+const Categories = ({name}) => {
   return (
     <LeftSidebar>
-      <h1> ** 사장님 </h1>
+      <h1> {name} 사장님 </h1>
       {categories.map((c) => (
         <SideButton
           key={c.name}

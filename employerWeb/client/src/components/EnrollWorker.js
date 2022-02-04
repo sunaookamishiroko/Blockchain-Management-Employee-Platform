@@ -3,8 +3,8 @@ import React, { useState, useCallback } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import Categories from "./Categories";
-import { firestore } from "./firebase.js";
-import { collection, addDoc } from "firebase/firestore";
+//import { firestore } from "./firebase.js";
+//import { collection, addDoc } from "firebase/firestore";
 
 const LeftSidebar = styled.div`
   width: 250px;
@@ -172,7 +172,7 @@ class EnrollWorker extends React.Component {
     // } catch (e) {
     //   console.error("Error adding document: ", e);
     // }
-
+    /*
     firestore.collection('workersData').add({
       address:this.state.worker.address,
       name:this.state.worker.name,
@@ -215,7 +215,7 @@ class EnrollWorker extends React.Component {
            comment: "",
             }
         })
-      })
+      })*/
 
   }
 

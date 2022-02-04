@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { firestore } from "./firebase.js";
-import { collection, addDoc } from "firebase/firestore";
+//import { firestore } from "./firebase.js";
+//import { collection, addDoc } from "firebase/firestore";
 
 
 class Test extends Component {
@@ -25,7 +25,7 @@ class Test extends Component {
   // 근로자 정보 업로드
   uploadPersonalInfo0 = async () => {
     const { accounts, contract } = this.props;
-    await contract.methods.uploadPersonalInfo(accounts[0], 0, encodeURI("박태민"), 26, encodeURI("여")).send({ from: accounts[0] });
+    await contract.methods.uploadPersonalInfo(accounts[0], 0, encodeURI("이서윤"), 26, encodeURI("여")).send({ from: accounts[0] });
     console.log("uploadPersonalInfo0 complete");
   };
 
@@ -48,7 +48,7 @@ class Test extends Component {
   // 사업장 등록
   uploadWorkplace = async () => {
     const { accounts, contract } = this.props;
-    await contract.methods.uploadWorkplace(accounts[0], encodeURI("맥도날드"), encodeURI("서울특별시")).send({ from: accounts[0] });
+    await contract.methods.uploadWorkplace(accounts[0], encodeURI("맥도날드"), encodeURI("경기도 시흥시 정왕동")).send({ from: accounts[0] });
     console.log("uploadWorkplace complete");
   };
 
@@ -68,7 +68,7 @@ class Test extends Component {
     const { accounts, contract } = this.props;
     let items = [
       "2022/01/04 ~ 2022/03/31",
-      encodeURI("접대"),
+      encodeURI("서빙"),
       "03:00 ~ 12:00",
       encodeURI("매주 화요일"),
       "9160",
@@ -82,14 +82,14 @@ class Test extends Component {
 
   // 근로자가 근로계약서 조회
   getLaborContract0 = async () => {
-    const { accounts, contract } = this.state;
+    const { accounts, contract } = this.props;
     const response = await contract.methods.getLaborContract(0, accounts[0]).call({ from: accounts[0] });
     console.log(response);
   };
 
   // 사업주가 근로계약서 조회
   getLaborContract1 = async () => {
-    const { accounts, contract } = this.state;
+    const { accounts, contract } = this.props;
     const response = await contract.methods.getLaborContract(0, "0x73fA89eDbc136AA1eC77a729D3409c760F631dcf").call({ from: accounts[0] });
     console.log(response);
   };
@@ -101,28 +101,28 @@ class Test extends Component {
   // 0 -> 출근 / 1 -> 퇴근
   // 출퇴근 업로드 : 출근
   uploadAttendance0 = async () => {
-    const { accounts, contract } = this.state;
-    await contract.methods.uploadAttendance(0, 0, "2022/01/08", 18, 0).send({ from: accounts[0] });
+    const { accounts, contract } = this.props;
+    await contract.methods.uploadAttendance(0, 0, "2022/02/04", 18, 0).send({ from: accounts[0] });
     console.log("uploadAttendance0 complete");
   };
 
   // 출퇴근 업로드 : 퇴근
   uploadAttendance1 = async () => {
-    const { accounts, contract } = this.state;
-    await contract.methods.uploadAttendance(1, 0, "2022/01/08", 3, 45).send({ from: accounts[0] });
+    const { accounts, contract } = this.props;
+    await contract.methods.uploadAttendance(1, 0, "2022/02/04", 3, 45).send({ from: accounts[0] });
     console.log("uploadAttendance1 complete");
   }; 
 
   // 출근, 퇴근 날짜 조회
   getCalAttendance = async () => {
-    const { accounts, contract } = this.state;
+    const { accounts, contract } = this.props;
     const response = await contract.methods.getCalAttendance(0, 0).call({ from: accounts[0] });
     console.log(response);
   };
 
   // 출석부 모두 조회
   getAllAttendance = async () => {
-    const { accounts, contract } = this.state;
+    const { accounts, contract } = this.props;
     const response = await contract.methods.getAllAttendance(0, 1).call({ from: accounts[0] });
     console.log(response);
   };
@@ -133,7 +133,7 @@ class Test extends Component {
 
   // 급여 정산
   getPayment = async () => {
-    const { accounts, contract } = this.state;
+    const { accounts, contract } = this.props;
     let wage = await contract.methods.getWage(0, 1).call({ from: accounts[0] });
     wage = parseInt(wage);
 
@@ -147,35 +147,35 @@ class Test extends Component {
 
   // 사업주의 사업장 근로자 정보 목록 조회
   getEmployeeInfo = async () => {
-    const { accounts, contract } = this.state;
+    const { accounts, contract } = this.props;
     const response = await contract.methods.getEmployeeInfo(0).call({ from: accounts[0] });
     console.log(response);
   };
 
   // 사업주의 사업장의 근로자 수 조회
   getNumOfEmployee = async () => {
-    const { accounts, contract } = this.state;
+    const { accounts, contract } = this.props;
     const response = await contract.methods.getNumOfEmployee(0).call({ from: accounts[0] });
     console.log(response);
   };
 
   // 근로자의 근무지에서의 index 조회
   getIndexOfEmployee = async () => {
-    const { accounts, contract } = this.state;
+    const { accounts, contract } = this.props;
     const response = await contract.methods.getIndexOfEmployee(0, accounts[0]).call({ from: accounts[0] });
     console.log(response);
   };
 
   // 근로자의 근무 시간 조회
   getWorkTime = async () => {
-    const { accounts, contract } = this.state;
+    const { accounts, contract } = this.props;
     const response = await contract.methods.getWorkTime(0, 1, 0, 2).call({ from: accounts[0] });
     console.log(response);
   };
 
   // 근로자의 근무 시간 조회
   getWage = async () => {
-    const { accounts, contract } = this.state;
+    const { accounts, contract } = this.props;
     const response = await contract.methods.getWage(0, 1).call({ from: accounts[0] });
     console.log(response);
   };
@@ -186,21 +186,21 @@ class Test extends Component {
 
   // 자신에게 토큰 발행
   mint = async () => {
-    const { accounts, tokencontract } = this.state;
+    const { accounts, tokencontract } = this.props;
     await tokencontract.methods.mint(accounts[0], 2000000).send({ from: accounts[0] });
     console.log("mint complete");
   };
 
   // 토큰 잔고
   balanceOf = async () => {
-    const { accounts, tokencontract } = this.state;
+    const { accounts, tokencontract } = this.props;
     const response = await tokencontract.methods.balanceOf( accounts[0] ).call({ from: accounts[0] });
     console.log(response);
   };
 
   // 토큰 전송
   transfer = async () => {
-    const { accounts, tokencontract } = this.state;
+    const { accounts, tokencontract } = this.props;
     await tokencontract.methods.transfer("0x73fA89eDbc136AA1eC77a729D3409c760F631dcf", 100000).send({ from: accounts[0] });
     console.log("transfer complete");
   };
