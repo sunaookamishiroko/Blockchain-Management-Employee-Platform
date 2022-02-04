@@ -56,60 +56,69 @@ const Main = ({ web3, accounts, contract }) => {
   }, [attendance]);
 
   const getName = (async () => {
-    const response = await contract.methods.getPersonInformation(accounts[0]).call({ from: accounts[0] });
-    setName(decodeURI(response[1]));
+    try {
+      const response = await contract.methods.getPersonInformation(accounts[0]).call({ from: accounts[0] });
+      setName(decodeURI(response[1]));
+    } catch (e) {
+      console.log(e);
+    }
   })
 
   const getAttendance = (async () => {
     //const response = await contract.methods.getWorkplaces().call({ from: accounts[0] });
 
     //console.log(response[0]);
-    const employeeinfo = await contract.methods.getEmployeeInfo(0).call({ from: accounts[0] });
 
-    let event = [];
+    try {
+      const employeeinfo = await contract.methods.getEmployeeInfo(0).call({ from: accounts[0] });
 
-    for (let x = 0; x < employeeinfo[0].length ; x++) {
-      let caldata = await contract.methods.getCalAttendance(0, x).call({ from: accounts[0] });
-      console.log(caldata);
+      let event = [];
 
-      if (caldata[0].length == caldata[1].length) {
+      for (let x = 0; x < employeeinfo[0].length ; x++) {
+        let caldata = await contract.methods.getCalAttendance(0, x).call({ from: accounts[0] });
+        console.log(caldata);
 
-        for (let y = 0 ; y < caldata[0].length; y++) {
-          event.push({
-            title: decodeURI(employeeinfo[1][x]),
-            start: caldata[0][y],
-            color: "#00FF00", 
-            display: "list-item",
-          })
-        }
+        if (caldata[0].length == caldata[1].length) {
 
-      } else {
-        for (let y = 0 ; y < caldata[0].length - 1; y++) {
+          for (let y = 0 ; y < caldata[0].length; y++) {
+            event.push({
+              title: decodeURI(employeeinfo[1][x]),
+              start: caldata[0][y],
+              color: "#00FF00", 
+              display: "list-item",
+            })
+          }
+
+        } else {
+          for (let y = 0 ; y < caldata[0].length - 1; y++) {
+            event.push({
+              title: employeeinfo[1][x],
+              start: caldata[0][y],
+              color: "#00FF00", 
+              display: "list-item",
+            })
+          }
+
           event.push({
             title: employeeinfo[1][x],
-            start: caldata[0][y],
-            color: "#00FF00", 
+            start: caldata[0][caldata[0].length - 1],
+            color: "##0037ff", 
             display: "list-item",
           })
         }
-
-        event.push({
-          title: employeeinfo[1][x],
-          start: caldata[0][caldata[0].length - 1],
-          color: "##0037ff", 
-          display: "list-item",
-        })
       }
+
+      setAttendance(event);
+
+    } catch (e) {
+      console.log(e);
     }
 
-    setAttendance(event);
   })
 
-  
-
-  if (!nameready) {
+  if (!nameready || !calready) {
     return(
-      <div>잠시만ㄱㄷ</div>
+      <div>잠시만 기다려주세요 ...</div>
     )
   } else {
     return (

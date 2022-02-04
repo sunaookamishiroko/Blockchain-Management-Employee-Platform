@@ -13,15 +13,15 @@ const Item = styled.div`
   }
 `;
 
-const WorkerListItem = ({ worker, handleClickOpen }) => {
-  const { identiNumber, name } = worker;
+const WorkerListItem = ({ index, address, name, handleClickOpen }) => {
 
   return (
     <Item>
-      <div> {identiNumber} </div> <div> {name} </div>
+      <div> {index} </div>
+      <div> {name} </div> <div> {address} </div>
       <button
         onClick={() => {
-          handleClickOpen(identiNumber);
+          handleClickOpen(address);
         }}
       >
         계약서 보기

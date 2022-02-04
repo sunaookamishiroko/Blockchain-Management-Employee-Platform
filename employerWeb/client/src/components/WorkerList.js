@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import "../resources/css/Main.scss";
 import { NavLink } from "react-router-dom";
 import styled, { ThemeConsumer } from "styled-components";
@@ -65,58 +65,79 @@ const Content = styled.div`
   float: left;
 `;
 
-const WorkerList = ({ workers, contracts, attendances }) => {
-  const [open, setOpen] = useState(false);
-  const [selectedNumber, setSelectedNumber] = useState();
+const WorkerList = ({ web3, accounts, contract }) => {
 
-  const handleClickOpen = (identiNumber) => {
+  const [open, setOpen] = useState(false);
+  const [contractAddress, setContractAddress] = useState();
+  const [workers, setWorkers] = useState();
+
+  const [ready, setReady] = useState(false);
+
+  useEffect(() =>{
+    getWorkerList();
+  }, []);
+
+
+  const handleClickOpen = (address) => {
     setOpen(true);
-    setSelectedNumber(identiNumber);
+    setContractAddress(address);
   };
 
   const handleClose = () => {
-    setSelectedNumber(null);
+    setContractAddress(null);
     setOpen(false);
   };
 
+  const getWorkerList = (async() => {
+    const response = await contract.methods.getEmployeeInfo(0).call({ from: accounts[0] });
+    console.log(response);
+
+    let temp = [];
+    
+    for (let x = 0 ; x < response[0].length ; x++) {
+      temp.push([
+        response[0][x], decodeURI(response[1][x])
+      ])
+    }
+    setWorkers(temp);
+    setReady(true);
+  })
+
   return (
     <Container>
-      {selectedNumber != null && (
+      {contractAddress != null && (
         <Dialog fullWidth={true} onClose={handleClose} open={open}>
-          <DialogTitle> {workers[selectedNumber].name}님 </DialogTitle>
-          {/* uint workplaceIndex;      // 사업장 index
-    string peroid;            // 근로계약기간 
-    string duties;            // 업무내용
-    string workingTime;       // 소정근로시간
-    string workingDays;       // 근무일
-    string wage;              // 임금(시급)
-    string wageday;           // 임금지급일
-    string comment;           // 기타사항 */}
-          <h2> 근로 계약 기간 </h2> <p> {contracts[selectedNumber].period} </p>
+          <DialogTitle> {contractAddress} 님 </DialogTitle>
+          <h2> 근로 계약 기간 </h2> <p>  </p>
           <h2> 업무 내용 </h2>
-          <p> {contracts[selectedNumber].duties} </p>
+          <p>  </p>
           <h2> 소정 근로 시간 </h2>
-          <p> {contracts[selectedNumber].workingTime} </p>
+          <p> </p>
           <h2> 근무일 </h2>
-          <p> {contracts[selectedNumber].workingDays} </p>
+          <p> </p>
           <h2> 임금(시급) </h2>
-          <p> {contracts[selectedNumber].wage} </p>
+          <p>  </p>
           <h2> 임금지급일 </h2>
-          <p> {contracts[selectedNumber].wageday} </p>
+          <p>  </p>
           <h2> 기타사항 </h2>
-          <p> {contracts[selectedNumber].comment} </p>
+          <p>  </p>
         </Dialog>
       )}
       <Categories />
-      <Content>
-        <h1> 근로자 목록 </h1>
-        <WorkerListAdapter
-          workers={workers}
-          contracts={contracts}
-          attendances={attendances}
-          handleClickOpen={handleClickOpen}
-        />
-      </Content>
+        <Content>
+          <h1> 근로자 목록 </h1>
+          {!ready && (
+            <p>잠시만 기다려 주세요...</p>
+          )}
+          {ready && (
+            <>
+              <WorkerListAdapter
+              workers={workers}
+              handleClickOpen={handleClickOpen}
+            />
+            </>
+          )}
+        </Content>
     </Container>
   );
 };
