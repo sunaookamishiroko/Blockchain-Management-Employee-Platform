@@ -45,10 +45,10 @@ const App = () => {
   const [ready, setReady] = useState(false);
 
   useEffect(() =>{
-    setting();
+    loginSetting();
   }, []);
 
-  const setting = (async () => {
+  const loginSetting = (async () => {
 
     try {
       // Get network provider and web3 instance.
@@ -100,12 +100,11 @@ const App = () => {
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
+
       setWeb3(web3);
       setAccounts(accounts);
       setContract(instance);
       setTokencontract(Tokeninstance);
-
-      setReady(true);
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -114,13 +113,19 @@ const App = () => {
       console.error(error);
     }
 
+    setReady(true);
 
+  })
 
+  const employerSetting = (async () => {
+    const response = await contract.methods.getWorkplaces().call({ from: accounts[0] });
+    console.log(response);
+    setReady(true);
   })
 
   if (!ready) {
     return (
-      <div>잠시만 기다려주세요</div>
+      <div>메타마스크 로그인, web3 설정중 ...</div>
     );
   } else {
     return (
@@ -139,8 +144,9 @@ const App = () => {
           path="/WorkerList"
           element={
             <WorkerList
-  
-              attendances={attendances}
+              web3={web3}
+              accounts={accounts}
+              contract={contract}
             />
           }
         />{" "}

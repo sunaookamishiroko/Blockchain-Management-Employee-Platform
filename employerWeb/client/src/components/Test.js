@@ -102,14 +102,14 @@ class Test extends Component {
   // 출퇴근 업로드 : 출근
   uploadAttendance0 = async () => {
     const { accounts, contract } = this.props;
-    await contract.methods.uploadAttendance(0, 0, "2022/02/04", 18, 0).send({ from: accounts[0] });
+    await contract.methods.uploadAttendance(0, 0, "2022-02-05", 18, 0).send({ from: accounts[0] });
     console.log("uploadAttendance0 complete");
   };
 
   // 출퇴근 업로드 : 퇴근
   uploadAttendance1 = async () => {
     const { accounts, contract } = this.props;
-    await contract.methods.uploadAttendance(1, 0, "2022/02/04", 3, 45).send({ from: accounts[0] });
+    await contract.methods.uploadAttendance(1, 0, "2022-02-05", 3, 45).send({ from: accounts[0] });
     console.log("uploadAttendance1 complete");
   }; 
 

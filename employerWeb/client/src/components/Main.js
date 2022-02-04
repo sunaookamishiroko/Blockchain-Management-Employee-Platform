@@ -36,40 +36,78 @@ const Main = ({ web3, accounts, contract }) => {
   // color : RGB 색상
   // display(고정) : 둥근 아이콘
 
-  const [ready, setReady] = useState(false);
   const [name, setName] = useState();
+  const [attendance, setAttendance] = useState();
+
+  const [nameready, setNameready] = useState(false);
+  const [calready, setCalready] = useState(false);
 
   useEffect(() =>{
     getName();
+    getAttendance();
   }, []);
 
   useEffect(() =>{
-    setReady(true);
+    setNameready(true);
   }, [name]);
 
-  const testEvent = [
-    {
-      title: "홍길동 결근",
-      start: "2022-01-06",
-      color: "#FF0000",
-      display: "list-item",
-    },
-    {
-      title: "홍길순 출근",
-      start: "2022-01-06",
-      color: "#00FF00",
-      display: "list-item",
-    },
-  ];
+  useEffect(() => {
+    setCalready(true);
+  }, [attendance]);
 
   const getName = (async () => {
     const response = await contract.methods.getPersonInformation(accounts[0]).call({ from: accounts[0] });
     setName(decodeURI(response[1]));
   })
 
+  const getAttendance = (async () => {
+    //const response = await contract.methods.getWorkplaces().call({ from: accounts[0] });
+
+    //console.log(response[0]);
+    const employeeinfo = await contract.methods.getEmployeeInfo(0).call({ from: accounts[0] });
+
+    let event = [];
+
+    for (let x = 0; x < employeeinfo[0].length ; x++) {
+      let caldata = await contract.methods.getCalAttendance(0, x).call({ from: accounts[0] });
+      console.log(caldata);
+
+      if (caldata[0].length == caldata[1].length) {
+
+        for (let y = 0 ; y < caldata[0].length; y++) {
+          event.push({
+            title: decodeURI(employeeinfo[1][x]),
+            start: caldata[0][y],
+            color: "#00FF00", 
+            display: "list-item",
+          })
+        }
+
+      } else {
+        for (let y = 0 ; y < caldata[0].length - 1; y++) {
+          event.push({
+            title: employeeinfo[1][x],
+            start: caldata[0][y],
+            color: "#00FF00", 
+            display: "list-item",
+          })
+        }
+
+        event.push({
+          title: employeeinfo[1][x],
+          start: caldata[0][caldata[0].length - 1],
+          color: "##0037ff", 
+          display: "list-item",
+        })
+      }
+    }
+
+    setAttendance(event);
+  })
+
   
 
-  if (!ready) {
+  if (!nameready) {
     return(
       <div>잠시만ㄱㄷ</div>
     )
@@ -83,7 +121,7 @@ const Main = ({ web3, accounts, contract }) => {
             contentHeight={600}
             plugins={[dayGridPlugin]}
             initialView="dayGridMonth"
-            events={testEvent}
+            events={attendance}
           />
           <h1> 보유금액 </h1> <h1> 근태현황 </h1>
         </Content>
