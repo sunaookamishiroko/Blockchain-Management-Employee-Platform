@@ -21,7 +21,7 @@ const WorkerListItem = ({ index, address, name, handleClickOpen }) => {
       <div> {name} </div> <div> {address} </div>
       <button
         onClick={() => {
-          handleClickOpen(address);
+          handleClickOpen(name, address);
         }}
       >
         계약서 보기

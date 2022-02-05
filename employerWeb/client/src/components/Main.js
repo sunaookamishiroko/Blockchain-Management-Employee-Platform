@@ -30,39 +30,24 @@ const Content = styled.div`
   float: left;
 `;
 
-const Main = ({ web3, accounts, contract }) => {
+const Main = ({ web3, accounts, contract, name }) => {
   // test용 데이터
   // title : 표시되는 이름
   // color : RGB 색상
   // display(고정) : 둥근 아이콘
 
-  const [name, setName] = useState();
+  //const [name, setName] = useState();
   const [attendance, setAttendance] = useState();
 
-  const [nameready, setNameready] = useState(false);
   const [calready, setCalready] = useState(false);
 
   useEffect(() =>{
-    getName();
     getAttendance();
   }, []);
-
-  useEffect(() =>{
-    setNameready(true);
-  }, [name]);
 
   useEffect(() => {
     setCalready(true);
   }, [attendance]);
-
-  const getName = (async () => {
-    try {
-      const response = await contract.methods.getPersonInformation(accounts[0]).call({ from: accounts[0] });
-      setName(decodeURI(response[1]));
-    } catch (e) {
-      console.log(e);
-    }
-  })
 
   const getAttendance = (async () => {
     //const response = await contract.methods.getWorkplaces().call({ from: accounts[0] });
@@ -116,16 +101,15 @@ const Main = ({ web3, accounts, contract }) => {
 
   })
 
-  if (!nameready || !calready) {
-    return(
-      <div>잠시만 기다려주세요 ...</div>
-    )
-  } else {
-    return (
-      <Container>
-        <Categories name={name} />
+  return (
+    <Container>
+      <Categories name={name} />
+      <h1> 출석부 </h1>
+      {!calready && (
+        <p>잠시만 기다려주세요 ...</p>
+      )}
+      {calready && (
         <Content>
-          <h1> 출석부 </h1>
           <FullCalendar
             contentHeight={600}
             plugins={[dayGridPlugin]}
@@ -134,10 +118,9 @@ const Main = ({ web3, accounts, contract }) => {
           />
           <h1> 보유금액 </h1> <h1> 근태현황 </h1>
         </Content>
-      </Container>
-    );
-
-  }
+      )}
+    </Container>
+  );
 };
 
 export default Main;

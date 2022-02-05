@@ -41,12 +41,18 @@ const App = () => {
   const [accounts, setAccounts] = useState();
   const [contract, setContract] = useState();
   const [tokencontract, setTokencontract] = useState();
+  const [name, setName] = useState();
 
+  const [loginready, setLoginready] = useState(false);
   const [ready, setReady] = useState(false);
 
   useEffect(() =>{
     loginSetting();
   }, []);
+
+  useEffect(() =>{
+    getName();
+  }, [loginready]);
 
   const loginSetting = (async () => {
 
@@ -113,7 +119,7 @@ const App = () => {
       console.error(error);
     }
 
-    setReady(true);
+    setLoginready(true);
 
   })
 
@@ -121,6 +127,16 @@ const App = () => {
     const response = await contract.methods.getWorkplaces().call({ from: accounts[0] });
     console.log(response);
     setReady(true);
+  })
+
+  const getName = (async () => {
+    try {
+      const response = await contract.methods.getPersonInformation(accounts[0]).call({ from: accounts[0] });
+      setName(decodeURI(response[1]));
+      setReady(true);
+    } catch (e) {
+      console.log(e);
+    }
   })
 
   if (!ready) {
@@ -137,6 +153,7 @@ const App = () => {
               web3={web3}
               accounts={accounts}
               contract={contract}
+              name={name}
             />
           }
         />{" "}
@@ -147,6 +164,7 @@ const App = () => {
               web3={web3}
               accounts={accounts}
               contract={contract}
+              name={name}
             />
           }
         />{" "}

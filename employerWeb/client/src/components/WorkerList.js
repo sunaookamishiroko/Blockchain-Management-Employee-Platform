@@ -65,65 +65,98 @@ const Content = styled.div`
   float: left;
 `;
 
-const WorkerList = ({ web3, accounts, contract }) => {
+const WorkerList = ({ web3, accounts, contract, name }) => {
 
   const [open, setOpen] = useState(false);
-  const [contractAddress, setContractAddress] = useState();
+  const [workername, setWorkername] = useState();
+  const [contractaddress, setContractAddress] = useState();
   const [workers, setWorkers] = useState();
+  const [laborcontract, setLaborcontract] = useState(); 
 
   const [ready, setReady] = useState(false);
+  const [contractready, setContractready] = useState(false);
 
   useEffect(() =>{
     getWorkerList();
   }, []);
 
+  useEffect(() => {
+    getLaborContract();
+  }, [contractaddress])
 
-  const handleClickOpen = (address) => {
+
+  const handleClickOpen = (name, address) => {
     setOpen(true);
+    setWorkername(name);
     setContractAddress(address);
   };
 
   const handleClose = () => {
     setContractAddress(null);
     setOpen(false);
+    setContractready(false);
   };
 
   const getWorkerList = (async() => {
-    const response = await contract.methods.getEmployeeInfo(0).call({ from: accounts[0] });
-    console.log(response);
+    try {
+      const response = await contract.methods.getEmployeeInfo(0).call({ from: accounts[0] });
+      console.log(response);
 
-    let temp = [];
+      let temp = [];
     
-    for (let x = 0 ; x < response[0].length ; x++) {
-      temp.push([
-        response[0][x], decodeURI(response[1][x])
-      ])
+      for (let x = 0 ; x < response[0].length ; x++) {
+        temp.push([
+          response[0][x], decodeURI(response[1][x])
+        ])
+      }
+      setWorkers(temp);
+      setReady(true);
+
+    } catch(e) {
+      console.log(e);
     }
-    setWorkers(temp);
-    setReady(true);
+  });
+
+  const getLaborContract = (async() => {
+    try {
+      const response = await contract.methods.getLaborContract(0, contractaddress).call({ from: accounts[0] });
+      console.log(response)
+      setLaborcontract(response);
+      setContractready(true);
+    } catch(e) {
+      console.log(e);
+    }
+
   })
 
   return (
     <Container>
-      {contractAddress != null && (
+      {contractaddress != null && (
         <Dialog fullWidth={true} onClose={handleClose} open={open}>
-          <DialogTitle> {contractAddress} 님 </DialogTitle>
-          <h2> 근로 계약 기간 </h2> <p>  </p>
-          <h2> 업무 내용 </h2>
-          <p>  </p>
-          <h2> 소정 근로 시간 </h2>
-          <p> </p>
-          <h2> 근무일 </h2>
-          <p> </p>
-          <h2> 임금(시급) </h2>
-          <p>  </p>
-          <h2> 임금지급일 </h2>
-          <p>  </p>
-          <h2> 기타사항 </h2>
-          <p>  </p>
+          <DialogTitle> {workername} 님 </DialogTitle>
+          {!contractready && (
+            <p>잠시만 기다려주세요...</p> 
+          )}
+          {contractready && (
+            <>
+              <h2> 근로 계약 기간 </h2> <p> {laborcontract[1]}</p>
+              <h2> 업무 내용 </h2>
+              <p>  {decodeURI(laborcontract[2])} </p>
+              <h2> 소정 근로 시간 </h2>
+              <p> {laborcontract[3]} </p>
+              <h2> 근무일 </h2>
+              <p> {decodeURI(laborcontract[4])} </p>
+              <h2> 임금(시급) </h2>
+              <p> {laborcontract[5]} </p>
+              <h2> 임금지급일 </h2>
+              <p> {decodeURI(laborcontract[6])} </p>
+              <h2> 기타사항 </h2>
+              <p> {decodeURI(laborcontract[7])} </p>
+            </>
+          )}
         </Dialog>
       )}
-      <Categories />
+      <Categories name={name}/>
         <Content>
           <h1> 근로자 목록 </h1>
           {!ready && (
