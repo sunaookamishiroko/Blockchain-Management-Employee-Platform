@@ -42,6 +42,7 @@ const App = () => {
   const [contract, setContract] = useState();
   const [tokencontract, setTokencontract] = useState();
   const [name, setName] = useState();
+  const [workers, setWorkers] = useState();
 
   const [loginready, setLoginready] = useState(false);
   const [ready, setReady] = useState(false);
@@ -132,7 +133,9 @@ const App = () => {
   const getName = (async () => {
     try {
       const response = await contract.methods.getPersonInformation(accounts[0]).call({ from: accounts[0] });
+      const response2 = await contract.methods.getEmployeeInfo(0).call({ from: accounts[0] });
       setName(decodeURI(response[1]));
+      setWorkers(response2);
       setReady(true);
     } catch (e) {
       console.log(e);
@@ -141,7 +144,7 @@ const App = () => {
 
   if (!ready) {
     return (
-      <div>메타마스크 로그인, web3 설정중 ...</div>
+      <div>메타마스크 로그인, web3, 초기정보 설정중 ...</div>
     );
   } else {
     return (
@@ -154,6 +157,7 @@ const App = () => {
               accounts={accounts}
               contract={contract}
               name={name}
+              workers={workers}
             />
           }
         />{" "}
@@ -165,6 +169,7 @@ const App = () => {
               accounts={accounts}
               contract={contract}
               name={name}
+              workers={workers}
             />
           }
         />{" "}

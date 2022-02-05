@@ -30,7 +30,7 @@ const Content = styled.div`
   float: left;
 `;
 
-const Main = ({ web3, accounts, contract, name }) => {
+const Main = ({ web3, accounts, contract, name, workers }) => {
   // test용 데이터
   // title : 표시되는 이름
   // color : RGB 색상
@@ -54,62 +54,55 @@ const Main = ({ web3, accounts, contract, name }) => {
 
     //console.log(response[0]);
 
-    try {
-      const employeeinfo = await contract.methods.getEmployeeInfo(0).call({ from: accounts[0] });
+    let event = [];
 
-      let event = [];
+    for (let x = 0; x < workers[0].length ; x++) {
+      let caldata = await contract.methods.getCalAttendance(0, x).call({ from: accounts[0] });
+      console.log(caldata);
 
-      for (let x = 0; x < employeeinfo[0].length ; x++) {
-        let caldata = await contract.methods.getCalAttendance(0, x).call({ from: accounts[0] });
-        console.log(caldata);
+      if (caldata[0].length == caldata[1].length) {
 
-        if (caldata[0].length == caldata[1].length) {
-
-          for (let y = 0 ; y < caldata[0].length; y++) {
-            event.push({
-              title: decodeURI(employeeinfo[1][x]),
-              start: caldata[0][y],
-              color: "#00FF00", 
-              display: "list-item",
-            })
-          }
-
-        } else {
-          for (let y = 0 ; y < caldata[0].length - 1; y++) {
-            event.push({
-              title: employeeinfo[1][x],
-              start: caldata[0][y],
-              color: "#00FF00", 
-              display: "list-item",
-            })
-          }
-
+        for (let y = 0 ; y < caldata[0].length; y++) {
           event.push({
-            title: employeeinfo[1][x],
-            start: caldata[0][caldata[0].length - 1],
-            color: "##0037ff", 
+            title: decodeURI(workers[1][x]),
+            start: caldata[0][y],
+            color: "#00FF00", 
             display: "list-item",
           })
         }
+
+      } else {
+        for (let y = 0 ; y < caldata[0].length - 1; y++) {
+          event.push({
+            title: workers[1][x],
+            start: caldata[0][y],
+            color: "#00FF00", 
+            display: "list-item",
+          })
+        }
+
+        event.push({
+          title: workers[1][x],
+          start: caldata[0][caldata[0].length - 1],
+          color: "##0037ff", 
+          display: "list-item",
+        })
       }
-
-      setAttendance(event);
-
-    } catch (e) {
-      console.log(e);
     }
+
+    setAttendance(event);
 
   })
 
   return (
     <Container>
       <Categories name={name} />
-      <h1> 출석부 </h1>
       {!calready && (
         <p>잠시만 기다려주세요 ...</p>
       )}
       {calready && (
         <Content>
+          <h1> 출석부 </h1>
           <FullCalendar
             contentHeight={600}
             plugins={[dayGridPlugin]}

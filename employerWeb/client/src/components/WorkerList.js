@@ -65,19 +65,19 @@ const Content = styled.div`
   float: left;
 `;
 
-const WorkerList = ({ web3, accounts, contract, name }) => {
+const WorkerList = ({ web3, accounts, contract, name, workers }) => {
 
   const [open, setOpen] = useState(false);
   const [workername, setWorkername] = useState();
+  const [customworkers, setCustomworkers] = useState();
   const [contractaddress, setContractAddress] = useState();
-  const [workers, setWorkers] = useState();
   const [laborcontract, setLaborcontract] = useState(); 
 
   const [ready, setReady] = useState(false);
   const [contractready, setContractready] = useState(false);
 
   useEffect(() =>{
-    getWorkerList();
+    makeCustomWorker();
   }, []);
 
   useEffect(() => {
@@ -97,24 +97,16 @@ const WorkerList = ({ web3, accounts, contract, name }) => {
     setContractready(false);
   };
 
-  const getWorkerList = (async() => {
-    try {
-      const response = await contract.methods.getEmployeeInfo(0).call({ from: accounts[0] });
-      console.log(response);
-
-      let temp = [];
+  const makeCustomWorker = (async() => {
+    let temp = [];
     
-      for (let x = 0 ; x < response[0].length ; x++) {
-        temp.push([
-          response[0][x], decodeURI(response[1][x])
-        ])
-      }
-      setWorkers(temp);
-      setReady(true);
-
-    } catch(e) {
-      console.log(e);
+    for (let x = 0 ; x < workers[0].length ; x++) {
+      temp.push([
+        workers[0][x], decodeURI(workers[1][x])
+      ])
     }
+    setCustomworkers(temp);
+    setReady(true);
   });
 
   const getLaborContract = (async() => {
@@ -165,7 +157,7 @@ const WorkerList = ({ web3, accounts, contract, name }) => {
           {ready && (
             <>
               <WorkerListAdapter
-              workers={workers}
+              workers={customworkers}
               handleClickOpen={handleClickOpen}
             />
             </>
