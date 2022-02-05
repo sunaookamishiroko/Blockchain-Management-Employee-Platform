@@ -13,15 +13,15 @@ const Item = styled.div`
   }
 `;
 
-const SettlementItem = ({ worker, contract, attendance, handleClickOpen }) => {
-  const { identiNumber, name } = worker;
+const SettlementItem = ({ index, address, name, handleClickOpen }) => {
 
   return (
     <Item>
-      <div> {identiNumber} </div> <div> {name} </div>
+      <div> {index} </div> 
+      <div> {name} </div> <div> {address} </div>
       <button
         onClick={() => {
-          handleClickOpen(identiNumber);
+          handleClickOpen(name, address);
         }}
       >
         자세히

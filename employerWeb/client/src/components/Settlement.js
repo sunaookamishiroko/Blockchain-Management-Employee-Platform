@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import "../resources/css/Main.scss";
 import { NavLink } from "react-router-dom";
 import styled, { ThemeConsumer } from "styled-components";
@@ -34,19 +34,30 @@ const Content = styled.div`
   float: left;
 `;
 
-const Settlement = ({ workers, contracts, attendances }) => {
+const Settlement = ({ web3, accounts, contract, name, workers }) => {
   const [open, setOpen] = useState(false);
   const [detail, setDetail] = useState();
-  const [selectedNumber, setSelectedNumber] = useState();
+  const [workername, setWorkername] = useState();
+  const [customworkers, setCustomworkers] = useState();
+  const [contractaddress, setContractAddress] = useState();
 
-  const handleClickOpen = (selectedNumber) => {
+  const [ready, setReady] = useState(false);
+  const [contractready, setContractready] = useState(false);
+
+  useEffect(() =>{
+    makeCustomWorker();
+  }, []);
+
+  const handleClickOpen = (name, address) => {
     setOpen(true);
-    setSelectedNumber(selectedNumber);
+    setWorkername(name);
+    setContractAddress(address);
   };
 
   const handleClose = () => {
-    setSelectedNumber(null);
+    setContractAddress(null);
     setOpen(false);
+    setContractready(false);
   };
 
   // test용 데이터
@@ -68,12 +79,24 @@ const Settlement = ({ workers, contracts, attendances }) => {
     },
   ];
 
+  const makeCustomWorker = (async() => {
+    let temp = [];
+    
+    for (let x = 0 ; x < workers[0].length ; x++) {
+      temp.push([
+        workers[0][x], decodeURI(workers[1][x])
+      ])
+    }
+    setCustomworkers(temp);
+    setReady(true);
+  });
+
   return (
     <Container>
-      <Categories />
-      {selectedNumber != null && (
+      <Categories name={name}/>
+      {contractready != null && (
         <Dialog fullWidth={true} onClose={handleClose} open={open}>
-          <DialogTitle> {workers[selectedNumber].name}님 </DialogTitle>
+          <DialogTitle> {workername}님 </DialogTitle>
           <FullCalendar
             contentHeight={425}
             plugins={[dayGridPlugin]}
@@ -85,12 +108,17 @@ const Settlement = ({ workers, contracts, attendances }) => {
       )}
       <Content>
         <h1> 급여 정산 </h1>
-        <SettlementAdapter
-          workers={workers}
-          contracts={contracts}
-          attendances={attendances}
-          handleClickOpen={handleClickOpen}
-        />
+        {!ready && (
+          <p>잠시만 기다려 주세요...</p>
+        )}
+        {ready && (
+          <>
+            <SettlementAdapter
+            workers={customworkers}
+            handleClickOpen={handleClickOpen}
+            />
+          </>
+        )}
       </Content>
     </Container>
   );

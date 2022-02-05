@@ -10,18 +10,16 @@ const Adapter = styled.div`
 
 const SettlementAdapter = ({
   workers,
-  contracts,
-  attendances,
   handleClickOpen,
 }) => {
   return (
     <Adapter>
-      {workers.map((worker, index) => (
+      {workers.map((x, index) => (
         <SettlementItem
-          worker={worker}
-          contract={contracts[index]}
-          attendance={attendances[index]}
-          key={worker.id}
+          index={index}
+          address={workers[index][0]}
+          name={workers[index][1]}
+          //key={worker.id}
           handleClickOpen={handleClickOpen}
         />
       ))}

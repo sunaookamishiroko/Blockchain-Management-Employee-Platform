@@ -177,8 +177,7 @@ const App = () => {
           path="/EnrollWorker"
           element={
             <EnrollWorker
-  
-              attendances={attendances}
+              name={name}
             />
           }
         />{" "}
@@ -195,8 +194,11 @@ const App = () => {
           path="/Settlement"
           element={
             <Settlement
-  
-              attendances={attendances}
+              web3={web3}
+              accounts={accounts}
+              contract={contract}
+              name={name}
+              workers={workers}
             />
           }
         />{" "}
