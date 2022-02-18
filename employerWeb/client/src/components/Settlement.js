@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useRef, useCallback, useEffect } from "react";
-import "../resources/css/Main.scss";
+
 import { NavLink } from "react-router-dom";
 import styled, { ThemeConsumer } from "styled-components";
 import Dialog from "@mui/material/Dialog";
@@ -8,7 +8,7 @@ import { DialogTitle } from "@mui/material";
 import SettlementAdapter from "./SettlementAdapter";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import Categories from "./Categories";
+import Categories from "./Categories/Categories";
 
 const Container = styled.div`
   width: 1900px;
@@ -44,7 +44,7 @@ const Settlement = ({ web3, accounts, contract, name, workers }) => {
   const [ready, setReady] = useState(false);
   const [contractready, setContractready] = useState(false);
 
-  useEffect(() =>{
+  useEffect(() => {
     makeCustomWorker();
   }, []);
 
@@ -79,21 +79,19 @@ const Settlement = ({ web3, accounts, contract, name, workers }) => {
     },
   ];
 
-  const makeCustomWorker = (async() => {
+  const makeCustomWorker = async () => {
     let temp = [];
-    
-    for (let x = 0 ; x < workers[0].length ; x++) {
-      temp.push([
-        workers[0][x], decodeURI(workers[1][x])
-      ])
+
+    for (let x = 0; x < workers[0].length; x++) {
+      temp.push([workers[0][x], decodeURI(workers[1][x])]);
     }
     setCustomworkers(temp);
     setReady(true);
-  });
+  };
 
   return (
     <Container>
-      <Categories name={name}/>
+      <Categories name={name} />
       {contractready != null && (
         <Dialog fullWidth={true} onClose={handleClose} open={open}>
           <DialogTitle> {workername}님 </DialogTitle>
@@ -108,14 +106,12 @@ const Settlement = ({ web3, accounts, contract, name, workers }) => {
       )}
       <Content>
         <h1> 급여 정산 </h1>
-        {!ready && (
-          <p>잠시만 기다려 주세요...</p>
-        )}
+        {!ready && <p>잠시만 기다려 주세요...</p>}
         {ready && (
           <>
             <SettlementAdapter
-            workers={customworkers}
-            handleClickOpen={handleClickOpen}
+              workers={customworkers}
+              handleClickOpen={handleClickOpen}
             />
           </>
         )}
