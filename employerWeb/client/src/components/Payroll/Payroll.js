@@ -1,13 +1,13 @@
 import React from "react";
 import { useState, useRef, useCallback } from "react";
-import "../resources/css/Main.scss";
+
 import { NavLink } from "react-router-dom";
 import styled, { ThemeConsumer } from "styled-components";
-import WorkerListAdapter from "./WorkerListAdapter";
+import WorkerListAdapter from "../WorkerList/WorkerListAdapter";
 import Dialog from "@mui/material/Dialog";
 import { DialogTitle } from "@mui/material";
 import PayrollAdapter from "./PayrollAdapter";
-import Categories from "./Categories";
+import Categories from "../Categories/Categories";
 
 const Container = styled.div`
   width: 1900px;
