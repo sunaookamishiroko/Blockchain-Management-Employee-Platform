@@ -2,61 +2,18 @@ import { FormLabel } from "@mui/material";
 import React, { useState, useCallback, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-import Categories from "./Categories";
+import Categories from "../Categories/Categories";
 //import { firestore } from "./firebase.js";
 //import {  } from "firebase/firestore";
 
-const LeftSidebar = styled.div`
-  width: 250px;
-  height: 1080px;
-  background-color: #e9e9e9;
-  float: left;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const SideButton = styled(NavLink)`
-  display: flex;
-  justify-content: center;
-  width: 200px;
-  height: 50px;
-  margin-bottom: 20px;
-  font-size: 15px;
-  color: inherit;
-  text-decoration: none;
-  border: 1px solid black;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  background-color: white;
-  cursor: pointer;
-  &:hover {
-    color: #495057;
-  }
-  & + & {
-    margin-top: 1rem;
-  }
-`;
-
 const Container = styled.div`
-  width: 1900px;
+  width: 1800px;
   height: 1080px;
-  .Left-Sidebar {
-    width: 250px;
-    height: 1080px;
-    background-color: #e9e9e9;
-    float: left;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    .link {
-    }
-  }
+  display: flex;
 `;
 
 const Content = styled.div`
-  padding: 10px;
+  padding: 30px;
   width: 1630px;
   height: 1080px;
   background-color: #f7f7f7;
@@ -110,13 +67,13 @@ const EnrollList = ({ onEnroll }) => {
     */
   });
 
-  const onClickHandler=(e) => {
+  const onClickHandler = (e) => {
     console.log(e.target);
-  }
+  };
 
   const onChangeHandler = (e) => {
     console.log(e.target);
-  }
+  };
 
   return (
     <Container>
@@ -125,8 +82,8 @@ const EnrollList = ({ onEnroll }) => {
         <div className="EnrollList">
           <h1> 근로자 등록 요청 목록 </h1>
         </div>
-       </Content>
-     </Container>
+      </Content>
+    </Container>
   );
 };
 
