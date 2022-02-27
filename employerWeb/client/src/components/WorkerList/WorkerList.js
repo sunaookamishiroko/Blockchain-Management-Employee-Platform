@@ -72,45 +72,14 @@ const WorkerList = ({ web3, accounts, contract, name, workers }) => {
   const [contractaddress, setContractAddress] = useState();
   const [laborcontract, setLaborcontract] = useState();
 
-  // 테스트용 하드코딩 데이터
-  const hardcoding_customworkers = [
-    [0, "김철수"],
-    [1, "김영희"],
-  ];
-
-  const hardcoding_laborcontract = [
-    "2021년01월01일-2021년12월31일",
-    "잡일",
-    "",
-    "3000",
-    "다음 달 1일",
-    "기타사항",
-  ];
-
   /////////////////////////////
 
-  // TODO false 로 바꿔야 함
-  const [ready, setReady] = useState(true);
-  // TODO false 로 바꿔야 함
-  const [contractready, setContractready] = useState(true);
+  const [ready, setReady] = useState(false);
+  const [contractready, setContractready] = useState(false);
 
-  const testEvent = [
-    {
-      title: "홍길동 결근",
-      start: "2022-01-06",
-      color: "#FF0000",
-      display: "list-item",
-    },
-    {
-      title: "홍길순 출근",
-      start: "2022-01-06",
-      color: "#00FF00",
-      display: "list-item",
-    },
-  ];
-  // useEffect(() => {
-  //   makeCustomWorker();
-  // }, []);
+  useEffect(() => {
+    makeCustomWorker();
+  }, []);
 
   useEffect(() => {
     getLaborContract();
@@ -125,7 +94,6 @@ const WorkerList = ({ web3, accounts, contract, name, workers }) => {
   };
 
   // 급여정산 정산하기 버튼 눌렀을 때 호출
-  // TODO 수정해야함
   const handleClickSettlement = (name, address) => {
     setOpen(true);
     setSettltmentOpen(true);
@@ -138,21 +106,20 @@ const WorkerList = ({ web3, accounts, contract, name, workers }) => {
     setOpen(false);
     setSettltmentOpen(false);
     setContractOpen(false);
-    // TODO 주석 해제해야 함
-    //setContractready(false);
+    setContractready(false);
   };
 
-  // const makeCustomWorker = (async() => {
-  //   let temp = [];
+  const makeCustomWorker = (async() => {
+    let temp = [];
 
-  //   for (let x = 0 ; x < workers[0].length ; x++) {
-  //     temp.push([
-  //       workers[0][x], decodeURI(workers[1][x])
-  //     ])
-  //   }
-  //   setCustomworkers(temp);
-  //   setReady(true);
-  // });
+    for (let x = 0 ; x < workers[0].length ; x++) {
+      temp.push([
+        workers[0][x], decodeURI(workers[1][x])
+      ])
+    }
+    setCustomworkers(temp);
+    setReady(true);
+  });
 
   const getLaborContract = async () => {
     try {
@@ -176,21 +143,20 @@ const WorkerList = ({ web3, accounts, contract, name, workers }) => {
           <CloseButton onClick={handleClose} />
           {!contractready && <p>잠시만 기다려주세요...</p>}
           {contractready && (
-            // TODO hardcoding_laborcontract -> laborcontract 로 바꿔야 함
             <ContractDialog>
-              <h2> 근로 계약 기간 </h2> <p> {hardcoding_laborcontract[1]}</p>
+              <h2> 근로 계약 기간 </h2> <p> {laborcontract[1]}</p>
               <h2> 업무 내용 </h2>
-              <p> {decodeURI(hardcoding_laborcontract[2])} </p>
+              <p> {decodeURI(laborcontract[2])} </p>
               <h2> 소정 근로 시간 </h2>
-              <p> {hardcoding_laborcontract[3]} </p>
+              <p> {laborcontract[3]} </p>
               <h2> 근무일 </h2>
-              <p> {decodeURI(hardcoding_laborcontract[4])} </p>
+              <p> {decodeURI(laborcontract[4])} </p>
               <h2> 임금(시급) </h2>
-              <p> {hardcoding_laborcontract[5]} </p>
+              <p> {laborcontract[5]} </p>
               <h2> 임금지급일 </h2>
-              <p> {decodeURI(hardcoding_laborcontract[6])} </p>
+              <p> {decodeURI(laborcontract[6])} </p>
               <h2> 기타사항 </h2>
-              <p> {decodeURI(hardcoding_laborcontract[7])} </p>
+              <p> {decodeURI(laborcontract[7])} </p>
             </ContractDialog>
           )}
         </Dialog>
@@ -206,8 +172,7 @@ const WorkerList = ({ web3, accounts, contract, name, workers }) => {
         {ready && (
           <>
             <WorkerListAdapter
-              // TODO hardcoding_customworkers -> customworkers 로 바꿔야함
-              workers={hardcoding_customworkers}
+              workers={customworkers}
               handleClickContract={handleClickContract}
               handleClickSettlement={handleClickSettlement}
             />

@@ -62,7 +62,7 @@ const WorkerListAdapter = ({
 
         {workers.map((x, index) => (
           <WorkerListItem
-            index={index}
+            index={index + 1}
             address={workers[index][0]}
             name={workers[index][1]}
             handleClickContract={handleClickContract}
