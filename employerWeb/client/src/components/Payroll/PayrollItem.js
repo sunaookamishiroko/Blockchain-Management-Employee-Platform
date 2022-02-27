@@ -13,11 +13,12 @@ const Item = styled.div`
   }
 `;
 
-const PayrollItem = ({ worker, total }) => {
-  const { id, name } = worker;
+const PayrollItem = ({ index, address, name }) => {
   return (
     <Item>
-      <div> {id} </div> <div> {name} </div> <div> {total}</div>
+      <div> {index} </div>
+      <div> {name}</div> 
+      <div> {address} </div>  
     </Item>
   );
 };

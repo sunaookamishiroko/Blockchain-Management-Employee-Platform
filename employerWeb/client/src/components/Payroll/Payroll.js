@@ -35,11 +35,11 @@ const Content = styled.div`
 
 const Payroll = ({ accounts, contract, tokencontract, name, workers }) => {
   const [open, setOpen] = useState(false);
-  //const [contract, setContract] = useState();
+
   const [customworkers, setCustomworkers] = useState();
   const [ready, setReady] = useState(false);
 
-  const onSubmit = () => {
+  const payWage = () => {
     alert("submit 클릭");
   };
 
@@ -47,13 +47,66 @@ const Payroll = ({ accounts, contract, tokencontract, name, workers }) => {
     makeCustomWorker();
   }, []);
 
+  const patternMatching = (async(selectdate, index) => {
+    let data = await contract.methods.getAllAttendance(0, index).call({ from: accounts[0] });
+
+    let stflag = 0, edflag = 0;
+    let startIndex = -1, endIndex = -1;
+    
+    for (let x = 0 ; x < data[3].length ; x++) {
+      if (data[3][x].search(selectdate) != -1) {
+        if (stflag == 0) {
+          startIndex = x;
+          stflag = 1;
+        }
+      } else {
+        if (stflag == 0) continue;
+        else {
+          endIndex = x - 1;
+          edflag = 1;
+          break;
+        }
+      }
+    }
+
+    if (startIndex != -1 && edflag == 0) endIndex = data[3].length -1;
+    return ([startIndex, endIndex]);
+  })
+
   const makeCustomWorker = (async() => {
     let temp = [];
 
+    let time = new Date();
+    let year = time.getFullYear();
+    let month = time.getMonth() + 1; 
+
+    let selectdate = year+"-"+(("0"+month.toString()).slice(-2));
+
     for (let x = 0 ; x < workers[0].length ; x++) {
-      temp.push([
-        workers[0][x], decodeURI(workers[1][x])
-      ])
+      let indexarr = await patternMatching(selectdate, x);
+
+      let startIndex = indexarr[0];
+      let endIndex = indexarr[1];
+
+      if (startIndex != -1) {
+        let employeeindex = await contract.methods.getIndexOfEmployee(0, workers[0][x]).call({ from: accounts[0] });
+    
+        let hourwage = await contract.methods.getWage(0, employeeindex).call({ from: accounts[0] });
+        hourwage = parseInt(hourwage);
+    
+        let wage = await contract.methods.getPayment(
+          0, employeeindex, startIndex, endIndex, hourwage
+        ).call({ from: accounts[0] });
+
+        temp.push([
+          workers[0][x], decodeURI(workers[1][x]), wage
+        ])
+        
+      } else {
+          temp.push([
+            workers[0][x], decodeURI(workers[1][x]), 0
+          ])
+      }
     }
     setCustomworkers(temp);
     setReady(true);
@@ -64,13 +117,12 @@ const Payroll = ({ accounts, contract, tokencontract, name, workers }) => {
       {!ready && <p>잠시만 기다려주세요 ... </p>}
       {ready && (
         <>
-          <Categories />
+          <Categories name={name}/>
           <Content>
             <h1> 급여 지급 </h1>{" "}
             <PayrollAdapter
               workers={customworkers}
-              contracts={contract}
-              onSubmit={onSubmit}
+              onSubmit={payWage}
             />{" "}
           </Content>{" "}
         </>

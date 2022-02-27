@@ -54,6 +54,7 @@ const WorkerListItem = ({ index, address, name, handleClickContract }) => {
         <SettlementButton
           onDragExitCapture={("" === "main").toString()}
           to={`/Settlement`}
+
         >
           정산하기
         </SettlementButton>
