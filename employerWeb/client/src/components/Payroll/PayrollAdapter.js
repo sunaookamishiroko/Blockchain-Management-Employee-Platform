@@ -14,8 +14,12 @@ const PayrollAdapter = ({ workers, contracts, onSubmit }) => {
 
   return (
     <Adapter>
-      {workers.map((worker, index) => (
-        <PayrollItem worker={worker} total={total} />
+      {workers.map((workers, index) => (
+        <PayrollItem 
+          index={index + 1}
+          address={workers[index][0]}
+          name={workers[index][1]} 
+          total={total} />
       ))}
       <div>총 {total}원</div>
       <button onClick={onSubmit}>지급하기</button>

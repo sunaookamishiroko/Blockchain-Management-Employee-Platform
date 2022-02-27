@@ -28,10 +28,19 @@ const SettlementButton = styled(NavLink)`
 `;
 
 const WorkerListItem = ({ index, address, name, handleClickContract }) => {
+
+  const shortenAddress = (address) => {
+    return `${address.slice(0, 6)}...${address.slice(
+      address.length - 6,
+      address.length
+    )}`;
+  }
+
   return (
     <tr>
       <td>{index}</td>
       <td>{name}</td>
+      <td>{shortenAddress(address)}</td>
       <td>
         <ContractButton
           onClick={() => {

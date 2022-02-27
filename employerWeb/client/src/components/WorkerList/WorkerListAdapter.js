@@ -50,6 +50,7 @@ const WorkerListAdapter = ({
         <tr>
           <th>번호</th>
           <th>이름</th>
+          <th>Address</th>
           <th>근로계약서</th>
           <th>급여정산</th>
         </tr>
