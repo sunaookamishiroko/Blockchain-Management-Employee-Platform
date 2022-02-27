@@ -13,12 +13,11 @@ const Item = styled.div`
   }
 `;
 
-const PayrollItem = ({ worker, contract, test }) => {
+const PayrollItem = ({ worker, total }) => {
   const { id, name } = worker;
-  const { wage } = contract;
   return (
     <Item>
-      <div> {id} </div> <div> {name} </div> <div> {wage}</div>
+      <div> {id} </div> <div> {name} </div> <div> {total}</div>
     </Item>
   );
 };

@@ -34,7 +34,7 @@ const Content = styled.div`
   float: left;
 `;
 
-const Settlement = ({ web3, accounts, contract, name, workers }) => {
+const Settlement = ({ accounts, contract, name, workers }) => {
   const [open, setOpen] = useState(false);
   const [detail, setDetail] = useState();
   const [workername, setWorkername] = useState();

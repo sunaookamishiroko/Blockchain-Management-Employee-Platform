@@ -150,7 +150,6 @@ const App = () => {
             path="/"
             element={
               <Main
-                web3={web3}
                 accounts={accounts}
                 contract={contract}
                 name={name}
@@ -162,7 +161,6 @@ const App = () => {
             path="/WorkerList"
             element={
               <WorkerList
-                web3={web3}
                 accounts={accounts}
                 contract={contract}
                 name={name}
@@ -179,7 +177,6 @@ const App = () => {
             path="/Settlement"
             element={
               <Settlement
-                web3={web3}
                 accounts={accounts}
                 contract={contract}
                 name={name}
@@ -187,7 +184,19 @@ const App = () => {
               />
             }
           />
-          <Route path="/Payroll" element={<Payroll attendances={attendances} />} />
+          <Route 
+            path="/Payroll" 
+            element={
+              <Payroll 
+                accounts={accounts}
+                contract={contract}
+                tokencontract={tokencontract}
+                name={name}
+                workers={workers}
+                
+              />
+            } 
+          />
           <Route
             path="/Workplace"
             element={<Workplace attendances={attendances} />}

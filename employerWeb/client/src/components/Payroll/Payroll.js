@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useRef, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import { NavLink } from "react-router-dom";
 import styled, { ThemeConsumer } from "styled-components";
@@ -33,26 +33,48 @@ const Content = styled.div`
   float: left;
 `;
 
-const Payroll = ({ workers, contracts, attendances }) => {
+const Payroll = ({ accounts, contract, tokencontract, name, workers }) => {
   const [open, setOpen] = useState(false);
-  const [contract, setContract] = useState();
+  //const [contract, setContract] = useState();
+  const [customworkers, setCustomworkers] = useState();
+  const [ready, setReady] = useState(false);
 
   const onSubmit = () => {
     alert("submit 클릭");
   };
 
+  useEffect(() => {
+    makeCustomWorker();
+  }, []);
+
+  const makeCustomWorker = (async() => {
+    let temp = [];
+
+    for (let x = 0 ; x < workers[0].length ; x++) {
+      temp.push([
+        workers[0][x], decodeURI(workers[1][x])
+      ])
+    }
+    setCustomworkers(temp);
+    setReady(true);
+  });
+  
   return (
     <Container>
-      <Categories />
-      <Content>
-        <h1> 급여 지급 </h1>{" "}
-        <PayrollAdapter
-          workers={workers}
-          contracts={contracts}
-          attendances={attendances}
-          onSubmit={onSubmit}
-        />{" "}
-      </Content>{" "}
+      {!ready && <p>잠시만 기다려주세요 ... </p>}
+      {ready && (
+        <>
+          <Categories />
+          <Content>
+            <h1> 급여 지급 </h1>{" "}
+            <PayrollAdapter
+              workers={customworkers}
+              contracts={contract}
+              onSubmit={onSubmit}
+            />{" "}
+          </Content>{" "}
+        </>
+      )}
     </Container>
   );
 };

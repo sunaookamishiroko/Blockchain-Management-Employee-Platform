@@ -28,7 +28,7 @@ const Content = styled.div`
   }
 `;
 
-const Main = ({ web3, accounts, contract, name, workers }) => {
+const Main = ({ accounts, contract, name, workers }) => {
   // test용 데이터
   // title : 표시되는 이름
   // color : RGB 색상

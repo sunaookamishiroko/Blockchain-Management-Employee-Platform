@@ -59,7 +59,7 @@ const CloseButton = styled.button`
   padding-right: 30px;
 `;
 
-const WorkerList = ({ web3, accounts, contract, name, workers }) => {
+const WorkerList = ({ accounts, contract, name, workers }) => {
   const [open, setOpen] = useState(false);
 
   // 근로계약서 다이얼로그 상태
