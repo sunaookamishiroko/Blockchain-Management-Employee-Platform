@@ -15,26 +15,6 @@ import Workplace from "./components/Workplace/Workplace";
 //import { firestore } from "./components/firebase";
 
 const App = () => {
-  const [attendances, setAttendances] = useState([
-    // string [] startDay;
-    // int [] startTimeHour;
-    // int [] startTimeMinute;
-    // string [] endDay;
-    // int [] endTimeHour;
-    // int [] endTimeMinute;
-    // title: "홍길동 결근",
-    // start: "2022-01-06",
-    // color: "#FF0000",
-    // display: "list-item",
-    {
-      startDay: ["2022-02-06", "2022-02-07", "2022-02-08"],
-      startTimeHour: [1, 2, 3],
-      startTimeMinute: [1, 2, 3],
-      endDay: ["1", "2", "3"],
-      endTimeHour: [1, 2, 3],
-      endTimeMinute: [1, 2, 3],
-    },
-  ]);
 
   const [web3, setWeb3] = useState();
   const [accounts, setAccounts] = useState();
@@ -171,7 +151,7 @@ const App = () => {
           <Route path="/EnrollWorker" element={<EnrollWorker name={name} />} />
           <Route
             path="/EnrollList"
-            element={<EnrollList attendances={attendances} />}
+            element={<EnrollList />}
           />
           <Route
             path="/Settlement"
@@ -199,7 +179,7 @@ const App = () => {
           />
           <Route
             path="/Workplace"
-            element={<Workplace attendances={attendances} />}
+            element={<Workplace />}
           />
           <Route
             path="/Test"
