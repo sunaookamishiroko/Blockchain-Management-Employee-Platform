@@ -111,9 +111,9 @@ const App = () => {
       const workplaceinfo = await contract.methods.getWorkplaces().call({ from: accounts[0] });
       
       let temp = [];
-      temp.push([
+      temp.push(
         workplaceinfo[0][0], decodeURI(workplaceinfo[1][0]), decodeURI(workplaceinfo[2][0])
-      ]);
+      );
 
       const workersinfo = await contract.methods.getEmployeeInfo(workplaceinfo[0][0]).call({ from: accounts[0] });
 

@@ -28,7 +28,7 @@ const Content = styled.div`
   }
 `;
 
-const Main = ({ accounts, contract, name, workers }) => {
+const Main = ({ accounts, contract, name, workers, wpinfo }) => {
   // test용 데이터
   // title : 표시되는 이름
   // color : RGB 색상
@@ -55,7 +55,7 @@ const Main = ({ accounts, contract, name, workers }) => {
     let event = [];
 
       for (let x = 0; x < workers[0].length ; x++) {
-        let caldata = await contract.methods.getCalAttendance(0, x).call({ from: accounts[0] });
+        let caldata = await contract.methods.getCalAttendance(wpinfo[0], x).call({ from: accounts[0] });
         console.log(caldata);
 
         if (caldata[0].length == caldata[1].length) {
@@ -93,7 +93,7 @@ const Main = ({ accounts, contract, name, workers }) => {
 
   return (
     <Container>
-      <Categories name={name} />
+      <Categories name={name} wpname={wpinfo[1]}/>
       {!calready && <p>잠시만 기다려주세요 ...</p>}
       {calready && (
         <Content>
