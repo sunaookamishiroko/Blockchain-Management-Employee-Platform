@@ -112,7 +112,7 @@ const App = () => {
       
       let temp = [];
       temp.push([
-        workplaceinfo[0][0], workplaceinfo[1][0], workplaceinfo[2][0]
+        workplaceinfo[0][0], decodeURI(workplaceinfo[1][0]), decodeURI(workplaceinfo[2][0])
       ]);
 
       const workersinfo = await contract.methods.getEmployeeInfo(workplaceinfo[0][0]).call({ from: accounts[0] });
@@ -141,6 +141,7 @@ const App = () => {
                 contract={contract}
                 name={name}
                 workers={workers}
+                wpinfo={wpinfo}
               />
             }
           />
