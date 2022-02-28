@@ -37,19 +37,78 @@ const Payroll = ({ accounts, contract, tokencontract, name, workers, wpinfo }) =
   const [open, setOpen] = useState(false);
 
   const [customworkers, setCustomworkers] = useState();
-  const [ready, setReady] = useState(false);
+  const [balance, setBalance] = useState();
 
-  const payWage = () => {
-    alert("submit 클릭");
-  };
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     makeCustomWorker();
   }, []);
 
-  const patternMatching = (async(selectdate, index) => {
-    let data = await contract.methods.getAllAttendance(0, index).call({ from: accounts[0] });
+  // 근로자들의 월급을 게산하는 함수
+  const makeCustomWorker = (async() => {
+    let temp = [];
 
+    let time = new Date();
+    let year = time.getFullYear();
+    let month = time.getMonth() + 1; 
+
+    let selectdate = year+"-"+(("0"+month.toString()).slice(-2));
+
+    for (let x = 0 ; x < workers[0].length ; x++) {
+      let indexarr = await patternMatching(selectdate, x);
+
+      let startIndex = indexarr[0];
+      let endIndex = indexarr[1];
+
+      try {
+        if (startIndex != -1) {
+          let employeeindex = await contract.methods.getIndexOfEmployee(0, workers[0][x]).call({ from: accounts[0] });
+        
+          let hourwage = await contract.methods.getWage(0, employeeindex).call({ from: accounts[0] });
+          hourwage = parseInt(hourwage);
+        
+          let wage = await contract.methods.getPayment(
+            0, employeeindex, startIndex, endIndex, hourwage
+          ).call({ from: accounts[0] });
+  
+          temp.push([
+            workers[0][x], decodeURI(workers[1][x]), wage
+          ])
+            
+        } else {
+            temp.push([
+              workers[0][x], decodeURI(workers[1][x]), 0
+            ])
+        }
+      } catch(e) {
+        console.log(e);
+      }
+    }
+    await getBalnce();
+    setCustomworkers(temp);
+    setReady(true);
+  });
+
+  // 토큰의 잔고를 조회하는 함수
+  const getBalnce = (async() => {
+    try {
+      const response = await tokencontract.methods.balanceOf( accounts[0] ).call({ from: accounts[0] });
+      setBalance(response);
+    } catch(e) {
+      console.log(e);
+    }
+  })
+
+  // 패턴 매칭하는 함수 -> 현재 달의 출석을 찾음
+  const patternMatching = (async(selectdate, index) => {
+    let data;
+    try {
+      data = await contract.methods.getAllAttendance(0, index).call({ from: accounts[0] });
+    } catch(e) {
+      console.log(e);
+    }
+    
     let stflag = 0, edflag = 0;
     let startIndex = -1, endIndex = -1;
     
@@ -72,46 +131,12 @@ const Payroll = ({ accounts, contract, tokencontract, name, workers, wpinfo }) =
     if (startIndex != -1 && edflag == 0) endIndex = data[3].length -1;
     return ([startIndex, endIndex]);
   })
-
-  const makeCustomWorker = (async() => {
-    let temp = [];
-
-    let time = new Date();
-    let year = time.getFullYear();
-    let month = time.getMonth() + 1; 
-
-    let selectdate = year+"-"+(("0"+month.toString()).slice(-2));
-
-    for (let x = 0 ; x < workers[0].length ; x++) {
-      let indexarr = await patternMatching(selectdate, x);
-
-      let startIndex = indexarr[0];
-      let endIndex = indexarr[1];
-
-      if (startIndex != -1) {
-        let employeeindex = await contract.methods.getIndexOfEmployee(0, workers[0][x]).call({ from: accounts[0] });
-    
-        let hourwage = await contract.methods.getWage(0, employeeindex).call({ from: accounts[0] });
-        hourwage = parseInt(hourwage);
-    
-        let wage = await contract.methods.getPayment(
-          0, employeeindex, startIndex, endIndex, hourwage
-        ).call({ from: accounts[0] });
-
-        temp.push([
-          workers[0][x], decodeURI(workers[1][x]), wage
-        ])
-        
-      } else {
-          temp.push([
-            workers[0][x], decodeURI(workers[1][x]), 0
-          ])
-      }
-    }
-    setCustomworkers(temp);
-    setReady(true);
-  });
   
+  // 월급을 지급하는 함수
+  const payWage = () => {
+    alert("submit 클릭");
+  };
+
   return (
     <Container>
       {!ready && <p>잠시만 기다려주세요 ... </p>}
@@ -124,6 +149,7 @@ const Payroll = ({ accounts, contract, tokencontract, name, workers, wpinfo }) =
               workers={customworkers}
               onSubmit={payWage}
             />{" "}
+            <p>나의 잔고 : {balance}원</p>
           </Content>{" "}
         </>
       )}

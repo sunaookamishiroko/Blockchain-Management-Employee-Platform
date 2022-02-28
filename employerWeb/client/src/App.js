@@ -200,7 +200,7 @@ const App = () => {
           />
           <Route
             path="/Test"
-            element={<Test accounts={accounts} contract={contract} />}
+            element={<Test accounts={accounts} contract={contract} tokencontract={tokencontract} />}
           />
         </Routes>
       );
