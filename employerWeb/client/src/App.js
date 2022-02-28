@@ -116,10 +116,10 @@ const App = () => {
       );
 
       const workersinfo = await contract.methods.getEmployeeInfo(workplaceinfo[0][0]).call({ from: accounts[0] });
-
+      console.log("실행");
       setName(decodeURI(personalinfo[1]));
       setWorkers(workersinfo);
-      setWpinfo(temp);
+      setWpinfo(temp); 
       setReady(true);
     } catch (e) {
       console.log(e);
@@ -153,10 +153,11 @@ const App = () => {
                 contract={contract}
                 name={name}
                 workers={workers}
+                wpinfo={wpinfo}
               />
             }
           />
-          <Route path="/EnrollWorker" element={<EnrollWorker name={name} />} />
+          <Route path="/EnrollWorker" element={<EnrollWorker name={name} wpinfo={wpinfo}/>} />
           <Route
             path="/EnrollList"
             element={<EnrollList />}
@@ -169,6 +170,7 @@ const App = () => {
                 contract={contract}
                 name={name}
                 workers={workers}
+                wpinfo={wpinfo}
               />
             }
           />
@@ -181,13 +183,20 @@ const App = () => {
                 tokencontract={tokencontract}
                 name={name}
                 workers={workers}
-                
+                wpinfo={wpinfo}
               />
             } 
           />
           <Route
             path="/Workplace"
-            element={<Workplace />}
+            element={
+              <Workplace
+                accounts={accounts}
+                contract={contract}
+                name={name}
+                wpinfo={wpinfo}
+              />
+            }
           />
           <Route
             path="/Test"

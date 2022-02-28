@@ -59,7 +59,7 @@ const CloseButton = styled.button`
   padding-right: 30px;
 `;
 
-const WorkerList = ({ accounts, contract, name, workers }) => {
+const WorkerList = ({ accounts, contract, name, workers, wpinfo }) => {
   const [open, setOpen] = useState(false);
 
   // 근로계약서 다이얼로그 상태
@@ -163,7 +163,7 @@ const WorkerList = ({ accounts, contract, name, workers }) => {
       )}
 
       {/* 좌측 카테고리 */}
-      <Categories name={name} />
+      <Categories name={name} wpname={wpinfo[1]}/>
 
       {/* 근로자 목록 */}
       <Content>

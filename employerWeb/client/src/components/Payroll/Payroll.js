@@ -33,7 +33,7 @@ const Content = styled.div`
   float: left;
 `;
 
-const Payroll = ({ accounts, contract, tokencontract, name, workers }) => {
+const Payroll = ({ accounts, contract, tokencontract, name, workers, wpinfo }) => {
   const [open, setOpen] = useState(false);
 
   const [customworkers, setCustomworkers] = useState();
@@ -117,7 +117,7 @@ const Payroll = ({ accounts, contract, tokencontract, name, workers }) => {
       {!ready && <p>잠시만 기다려주세요 ... </p>}
       {ready && (
         <>
-          <Categories name={name}/>
+          <Categories name={name} wpname={wpinfo[1]}/>
           <Content>
             <h1> 급여 지급 </h1>{" "}
             <PayrollAdapter
