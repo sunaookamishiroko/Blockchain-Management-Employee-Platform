@@ -104,7 +104,7 @@ const EnrollLabel = styled.label`
   }
 `;
 
-const EnrollWorker = ({ onEnroll }) => {
+const EnrollWorker = ({ name, onEnroll }) => {
   const [worker, setWorker] = useState({
     address: "",
     age: 0,
@@ -176,7 +176,7 @@ const EnrollWorker = ({ onEnroll }) => {
 
   return (
     <Container>
-      <Categories />
+      <Categories name={name}/>
       <Content>
         <h1> 근로자 등록 </h1>
         <form className="Enroll" onSubmit={onSubmit}>
