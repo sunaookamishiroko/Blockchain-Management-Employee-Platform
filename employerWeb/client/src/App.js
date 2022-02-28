@@ -20,8 +20,10 @@ const App = () => {
   const [accounts, setAccounts] = useState();
   const [contract, setContract] = useState();
   const [tokencontract, setTokencontract] = useState();
+
   const [name, setName] = useState();
   const [workers, setWorkers] = useState();
+  const [wpinfo, setWpinfo] = useState();
 
   const [loginready, setLoginready] = useState(false);
   const [ready, setReady] = useState(false);
@@ -31,9 +33,10 @@ const App = () => {
   }, []);
   
   useEffect(() => {
-    getName();
-  }, [loginready]);
+    employerSetting();
+  }, [loginready])
 
+  // 컨트랙트 ABI를 설정하고, Web3 provider, 메타마스크 로그인을 설정하는 함수
   const loginSetting = (async () => {
 
     try {
@@ -91,34 +94,38 @@ const App = () => {
       setContract(instance);
       setTokencontract(Tokeninstance);
     } catch (error) {
-      // Catch any errors for any of the above operations.
       alert(
-        `Failed to load web3, accounts, or contract. Check console for details.`,
+        `web3, accounts, contract를 로드하는데 실패했습니다.`,
       );
       console.error(error);
     }
 
     setLoginready(true);
   })
-
+  
+  // 사업주의 이름과 사업장의 근로자들 정보를 불러오는 함수
+  // 맨 처음은 무조건 0번 index의 정보를 불러옴
   const employerSetting = (async () => {
-    const response = await contract.methods.getWorkplaces().call({ from: accounts[0] });
-    console.log(response);
-    setReady(true);
-  })
-
-  const getName = (async () => {
     try {
-      const response = await contract.methods.getPersonInformation(accounts[0]).call({ from: accounts[0] });
-      const response2 = await contract.methods.getEmployeeInfo(0).call({ from: accounts[0] });
-      setName(decodeURI(response[1]));
-      setWorkers(response2);
+      const personalinfo = await contract.methods.getPersonInformation(accounts[0]).call({ from: accounts[0] });
+      const workplaceinfo = await contract.methods.getWorkplaces().call({ from: accounts[0] });
+      
+      let temp = [];
+      temp.push([
+        workplaceinfo[0][0], workplaceinfo[1][0], workplaceinfo[2][0]
+      ]);
+
+      const workersinfo = await contract.methods.getEmployeeInfo(workplaceinfo[0][0]).call({ from: accounts[0] });
+
+      setName(decodeURI(personalinfo[1]));
+      setWorkers(workersinfo);
+      setWpinfo(temp);
       setReady(true);
     } catch (e) {
       console.log(e);
     }
   })
-
+  
   if (!ready) {
     return (
       <div>메타마스크 로그인, web3, 초기정보 설정중 ...</div>
