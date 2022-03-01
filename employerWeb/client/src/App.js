@@ -101,6 +101,7 @@ const App = () => {
     }
   })
   
+  // Test 데이터 설정중에는 !ready -> !loginready로 바꿔줍니다
   if (!ready) {
     return (
       <div>메타마스크 로그인, web3, 초기정보 설정중 ...</div>
