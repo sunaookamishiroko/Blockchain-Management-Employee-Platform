@@ -133,9 +133,18 @@ const Payroll = ({ accounts, contract, tokencontract, name, workers, wpinfo }) =
   })
   
   // 월급을 지급하는 함수
-  const payWage = () => {
-    alert("submit 클릭");
-  };
+  const payWage = (async(name, totalwage, address) => {
+    if(window.confirm(`${name}님의 Address ${address}로 \n${totalwage}원을 보냅니다. 보내시겠습니까?`)) {
+      try {
+        const response = await tokencontract.methods.transfer(address, totalwage).send({ from: accounts[0] })
+        alert(`트랜잭션 전송을 성공했습니다.\ntxhash: ${response["transactionHash"]}`)
+      } catch(e) {
+        console.log(e);
+        alert("트랜잭션 전송을 거절하거나 실패했습니다.");
+      }
+    }
+
+  })
 
   return (
     <Container>
@@ -147,7 +156,7 @@ const Payroll = ({ accounts, contract, tokencontract, name, workers, wpinfo }) =
             <h1> 급여 지급 </h1>{" "}
             <PayrollAdapter
               workers={customworkers}
-              onSubmit={payWage}
+              payWage={payWage}
             />{" "}
             <p>나의 잔고 : {balance}원</p>
           </Content>{" "}

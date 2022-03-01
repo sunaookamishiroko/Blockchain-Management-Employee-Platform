@@ -116,7 +116,7 @@ const App = () => {
       );
 
       const workersinfo = await contract.methods.getEmployeeInfo(workplaceinfo[0][0]).call({ from: accounts[0] });
-      console.log("실행");
+
       setName(decodeURI(personalinfo[1]));
       setWorkers(workersinfo);
       setWpinfo(temp); 

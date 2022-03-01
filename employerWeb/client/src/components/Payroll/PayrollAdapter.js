@@ -8,7 +8,7 @@ const Adapter = styled.div`
   overflow-y: auto;
 `;
 
-const PayrollAdapter = ({ workers, onSubmit }) => {
+const PayrollAdapter = ({ workers, payWage }) => {
 
   return (
     <Adapter>
@@ -20,7 +20,13 @@ const PayrollAdapter = ({ workers, onSubmit }) => {
             name={workers[index][1]} 
           />
           <div>총 {workers[index][2]}원</div>
-          <button onClick={onSubmit}>지급하기</button>
+          <button 
+            onClick={() => {
+              payWage(workers[index][1], workers[index][2], workers[index][0]);
+            }}
+          >
+            지급하기
+          </button>
         </>
       ))}
     </Adapter>
