@@ -15,191 +15,170 @@ import Workplace from "./components/Workplace/Workplace";
 //import { firestore } from "./components/firebase";
 
 const App = () => {
-  const [attendances, setAttendances] = useState([
-    // string [] startDay;
-    // int [] startTimeHour;
-    // int [] startTimeMinute;
-    // string [] endDay;
-    // int [] endTimeHour;
-    // int [] endTimeMinute;
-    // title: "홍길동 결근",
-    // start: "2022-01-06",
-    // color: "#FF0000",
-    // display: "list-item",
-    {
-      startDay: ["2022-01-06", "2022-01-07", "2022-01-08"],
-      startTimeHour: [1, 2, 3],
-      startTimeMinute: [1, 2, 3],
-      endDay: ["1", "2", "3"],
-      endTimeHour: [1, 2, 3],
-      endTimeMinute: [1, 2, 3],
-    },
-  ]);
 
   const [web3, setWeb3] = useState();
   const [accounts, setAccounts] = useState();
   const [contract, setContract] = useState();
   const [tokencontract, setTokencontract] = useState();
+
   const [name, setName] = useState();
   const [workers, setWorkers] = useState();
+  const [wpinfo, setWpinfo] = useState();
 
   const [loginready, setLoginready] = useState(false);
   const [ready, setReady] = useState(false);
 
-  // useEffect(() => {
-  //   loginSetting();
-  // }, []);
+  useEffect(() => {
+    loginSetting();
+  }, []);
+  
+  useEffect(() => {
+    employerSetting();
+  }, [loginready])
 
-  // useEffect(() => {
-  //   getName();
-  // }, [loginready]);
+  // 컨트랙트 ABI를 설정하고, Web3 provider, 메타마스크 로그인을 설정하는 함수
+  const loginSetting = (async () => {
 
-  // const loginSetting = (async () => {
+    try {
+      // Get network provider and web3 instance.
+      const web3 = await getWeb3();
 
-  //   try {
-  //     // Get network provider and web3 instance.
-  //     const web3 = await getWeb3();
+      // Use web3 to get the user's accounts.
+      const accounts = await web3.eth.getAccounts();
 
-  //     // Use web3 to get the user's accounts.
-  //     const accounts = await web3.eth.getAccounts();
+      // laborContract abi 설정
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = LaborContract.networks[networkId];
+      const instance = new web3.eth.Contract(
+        LaborContract.abi,
+        deployedNetwork && deployedNetwork.address,
+      );
 
-  //     // laborContract abi 설정
-  //     const networkId = await web3.eth.net.getId();
-  //     const deployedNetwork = LaborContract.networks[networkId];
-  //     const instance = new web3.eth.Contract(
-  //       LaborContract.abi,
-  //       deployedNetwork && deployedNetwork.address,
-  //     );
+      // ERC20 abi 설정
+      const TokenDeployNetwork = ERC20Contract.networks[networkId];
+      const Tokeninstance = new web3.eth.Contract(
+        ERC20Contract.abi,
+        TokenDeployNetwork && TokenDeployNetwork.address,
+      );
 
-  //     // ERC20 abi 설정
-  //     const TokenDeployNetwork = ERC20Contract.networks[networkId];
-  //     const Tokeninstance = new web3.eth.Contract(
-  //       ERC20Contract.abi,
-  //       TokenDeployNetwork && TokenDeployNetwork.address,
-  //     );
+      // Set web3, accounts, and contract to the state, and then proceed with an
+      // example of interacting with the contract's methods.
 
-  //     // 출근 event 잡는 함수
-  //     instance.events.Onwork().on("data", (event) => {
-  //       let values = event.returnValues;
-  //       console.log(values.name, values.classifyNum);
-  //     }).on("error", console.error);
+      setWeb3(web3);
+      setAccounts(accounts);
+      setContract(instance);
+      setTokencontract(Tokeninstance);
+    } catch (error) {
+      alert(
+        `web3, accounts, contract를 로드하는데 실패했습니다.`,
+      );
+      console.error(error);
+    }
 
-  //     // 퇴근 event 잡는 함수
-  //     instance.events.Offwork().on("data", (event) => {
-  //       let values = event.returnValues;
-  //       console.log(values.name, values.classifyNum);
-  //     }).on("error", console.error);
+    setLoginready(true);
+  })
+  
+  // 사업주의 이름과 사업장의 근로자들 정보를 불러오는 함수
+  // 맨 처음은 무조건 0번 index의 정보를 불러옴
+  const employerSetting = (async () => {
+    try {
+      const personalinfo = await contract.methods.getPersonInformation(accounts[0]).call({ from: accounts[0] });
+      const workplaceinfo = await contract.methods.getWorkplaces().call({ from: accounts[0] });
+      
+      let temp = [];
+      temp.push(
+        workplaceinfo[0][0], decodeURI(workplaceinfo[1][0]), decodeURI(workplaceinfo[2][0])
+      );
 
-  //     // 이벤트 히스토리
-  //     /*
-  //     instance.getPastEvents("Onwork", { fromBlock: 0, toBlock: "latest" })
-  //     .then((events) => {
-  //       console.log(events);
-  //     });
+      const workersinfo = await contract.methods.getEmployeeInfo(workplaceinfo[0][0]).call({ from: accounts[0] });
 
-  //     instance.getPastEvents("Offwork", { fromBlock: 0, toBlock: "latest" })
-  //     .then((events) => {
-  //       console.log(events);
-  //     });
-  //     */
-
-  //     // Set web3, accounts, and contract to the state, and then proceed with an
-  //     // example of interacting with the contract's methods.
-
-  //     setWeb3(web3);
-  //     setAccounts(accounts);
-  //     setContract(instance);
-  //     setTokencontract(Tokeninstance);
-  //   } catch (error) {
-  //     // Catch any errors for any of the above operations.
-  //     alert(
-  //       `Failed to load web3, accounts, or contract. Check console for details.`,
-  //     );
-  //     console.error(error);
-  //   }
-
-  //   setLoginready(true);
-
-  // })
-
-  // const employerSetting = (async () => {
-  //   const response = await contract.methods.getWorkplaces().call({ from: accounts[0] });
-  //   console.log(response);
-  //   setReady(true);
-  // })
-
-  // const getName = (async () => {
-  //   try {
-  //     const response = await contract.methods.getPersonInformation(accounts[0]).call({ from: accounts[0] });
-  //     const response2 = await contract.methods.getEmployeeInfo(0).call({ from: accounts[0] });
-  //     setName(decodeURI(response[1]));
-  //     setWorkers(response2);
-  //     setReady(true);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // })
-
-  // if (!ready) {
-  //   return (
-  //     <div>메타마스크 로그인, web3, 초기정보 설정중 ...</div>
-  //   );
-  // } else {
-  return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <Main
-            web3={web3}
-            accounts={accounts}
-            contract={contract}
-            name={name}
-            workers={workers}
+      setName(decodeURI(personalinfo[1]));
+      setWorkers(workersinfo);
+      setWpinfo(temp); 
+      setReady(true);
+    } catch (e) {
+      console.log(e);
+    }
+  })
+  
+  if (!ready) {
+    return (
+      <div>메타마스크 로그인, web3, 초기정보 설정중 ...</div>
+    );
+  } else {
+      return (
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Main
+                accounts={accounts}
+                contract={contract}
+                name={name}
+                workers={workers}
+                wpinfo={wpinfo}
+              />
+            }
           />
-        }
-      />
-      <Route
-        path="/WorkerList"
-        element={
-          <WorkerList
-            web3={web3}
-            accounts={accounts}
-            contract={contract}
-            name={name}
-            workers={workers}
+          <Route
+            path="/WorkerList"
+            element={
+              <WorkerList
+                accounts={accounts}
+                contract={contract}
+                name={name}
+                workers={workers}
+                wpinfo={wpinfo}
+              />
+            }
           />
-        }
-      />
-      <Route path="/EnrollWorker" element={<EnrollWorker name={name} />} />
-      <Route
-        path="/EnrollList"
-        element={<EnrollList attendances={attendances} />}
-      />
-      <Route
-        path="/Settlement"
-        element={
-          <Settlement
-            web3={web3}
-            accounts={accounts}
-            contract={contract}
-            name={name}
-            workers={workers}
+          <Route path="/EnrollWorker" element={<EnrollWorker name={name} wpinfo={wpinfo}/>} />
+          <Route
+            path="/EnrollList"
+            element={<EnrollList />}
           />
-        }
-      />
-      <Route path="/Payroll" element={<Payroll attendances={attendances} />} />
-      <Route
-        path="/Workplace"
-        element={<Workplace attendances={attendances} />}
-      />
-      <Route
-        path="/Test"
-        element={<Test accounts={accounts} contract={contract} />}
-      />
-    </Routes>
-  );
+          <Route
+            path="/Settlement"
+            element={
+              <Settlement
+                accounts={accounts}
+                contract={contract}
+                name={name}
+                wpinfo={wpinfo}
+              />
+            }
+          />
+          <Route 
+            path="/Payroll" 
+            element={
+              <Payroll 
+                accounts={accounts}
+                contract={contract}
+                tokencontract={tokencontract}
+                name={name}
+                workers={workers}
+                wpinfo={wpinfo}
+              />
+            } 
+          />
+          <Route
+            path="/Workplace"
+            element={
+              <Workplace
+                accounts={accounts}
+                contract={contract}
+                name={name}
+                wpinfo={wpinfo}
+              />
+            }
+          />
+          <Route
+            path="/Test"
+            element={<Test accounts={accounts} contract={contract} tokencontract={tokencontract} />}
+          />
+        </Routes>
+      );
+  };
 };
-//};
 
 export default App;

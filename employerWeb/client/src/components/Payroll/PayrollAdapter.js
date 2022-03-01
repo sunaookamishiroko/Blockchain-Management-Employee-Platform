@@ -8,19 +8,27 @@ const Adapter = styled.div`
   overflow-y: auto;
 `;
 
-const PayrollAdapter = ({ workers, contracts, attendances, onSubmit }) => {
-  // 급여 지급 계산기
-  const total = workers.reduce((stack, el) => {
-    return stack + el.pay;
-  }, 0);
+const PayrollAdapter = ({ workers, payWage }) => {
 
   return (
     <Adapter>
-      {workers.map((worker, index) => (
-        <PayrollItem worker={worker} contract={contracts[index]} />
+      {workers.map((x, index) => (
+        <>
+          <PayrollItem 
+            index={index + 1}
+            address={workers[index][0]}
+            name={workers[index][1]} 
+          />
+          <div>총 {workers[index][2]}원</div>
+          <button 
+            onClick={() => {
+              payWage(workers[index][1], workers[index][2], workers[index][0]);
+            }}
+          >
+            지급하기
+          </button>
+        </>
       ))}
-      <div>총 {total}원</div>
-      <button onClick={onSubmit}>지급하기</button>
     </Adapter>
   );
 };

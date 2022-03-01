@@ -102,11 +102,11 @@ const categories = [
   },
 ];
 
-const Categories = ({ name }) => {
+const Categories = ({ name, wpname }) => {
   return (
     <LeftSidebar>
       {/* TODO 매장 이름, 사장 이름 전달해야 함 */}
-      <Title name={name} />
+      <Title name={name} wpname={wpname}/>
 
       {categories.map((c) => (
         <Category key={c.name}>

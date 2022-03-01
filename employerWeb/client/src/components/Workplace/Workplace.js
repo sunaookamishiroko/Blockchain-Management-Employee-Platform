@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Categories from "../Categories/Categories";
 import styled from "styled-components";
 
@@ -37,7 +37,16 @@ const Item = styled.div`
   overflow: hidden;
 `;
 
-const Workplace = () => {
+const Workplace = ({ accounts, contract, name, wpinfo }) => {
+
+  const [workplaceinfo, setWorkplaceinfo] = useState();
+  
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    getWorkplaceinfo();
+  }, [])
+
   const workplace = [
     "img/cgv.png",
     "img/cu.png",
@@ -50,10 +59,25 @@ const Workplace = () => {
     "",
     "",
   ];
+
+  const getWorkplaceinfo = (async () => {
+    try {
+      const workplaceinfo = await contract.methods.getWorkplaces().call({ from: accounts[0] });
+      console.log(workplaceinfo);
+      setWorkplaceinfo(workplaceinfo);
+    } catch(e) {
+      console.log(e);
+    }
+
+    setReady(true);
+  })
+
   return (
     <Container>
-      <Categories />
-      <Content>
+      <Categories name={name} wpname={wpinfo[1]}/>
+      {!ready && <p>잠시만 기다려주세요... </p>}
+      {ready && (
+        <Content>
         {workplace.map((c, i) => (
           <Item>
             <img
@@ -63,7 +87,8 @@ const Workplace = () => {
             />
           </Item>
         ))}
-      </Content>
+        </Content>
+      )}
     </Container>
   );
 };

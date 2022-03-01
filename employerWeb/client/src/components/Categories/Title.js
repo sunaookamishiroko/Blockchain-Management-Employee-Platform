@@ -1,6 +1,6 @@
 import React from "react";
 
-const Title = ({ name }) => {
+const Title = ({ name, wpname }) => {
   return (
     <>
       <p
@@ -22,7 +22,7 @@ const Title = ({ name }) => {
           fontWeight: "bold",
         }}
       >
-        CU 편의점 산기대점
+        {wpname}
       </p>
       <p
         style={{

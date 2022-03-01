@@ -13,7 +13,7 @@ const CalendarDiv = styled.div`
   background-color: #f7f7f7;
 `;
 
-const Calendar = () => {
+const Calendar = ({attendance}) => {
   const testEvent = [
     {
       title: "홍길동 결근",
@@ -38,7 +38,7 @@ const Calendar = () => {
         contentHeight={560}
         plugins={[dayGridPlugin]}
         initialView="dayGridMonth"
-        events={testEvent}
+        events={attendance}
       />
     </CalendarDiv>
   );

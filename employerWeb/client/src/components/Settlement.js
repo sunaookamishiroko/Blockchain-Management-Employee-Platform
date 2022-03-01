@@ -34,7 +34,7 @@ const Content = styled.div`
   float: left;
 `;
 
-const Settlement = ({ web3, accounts, contract, name, workers }) => {
+const Settlement = ({ accounts, contract, name, workers, wpinfo }) => {
   const [open, setOpen] = useState(false);
   const [detail, setDetail] = useState();
   const [workername, setWorkername] = useState();
@@ -91,7 +91,7 @@ const Settlement = ({ web3, accounts, contract, name, workers }) => {
 
   return (
     <Container>
-      <Categories name={name} />
+      <Categories name={name} wpname={wpinfo[1]}/>
       {contractready != null && (
         <Dialog fullWidth={true} onClose={handleClose} open={open}>
           <DialogTitle> {workername}님 </DialogTitle>
@@ -106,7 +106,7 @@ const Settlement = ({ web3, accounts, contract, name, workers }) => {
       )}
       <Content>
         <h1> 급여 정산 </h1>
-        {!ready && <p>잠시만 기다려 주세요...</p>}
+        {!ready && <p>잠시만 기다려주세요...</p>}
         {ready && (
           <>
             <SettlementAdapter
