@@ -86,7 +86,6 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
 
   const [detail, setDetail] = useState();
   const [attendance, setAttendance] = useState();
-  const [rawattendance, setRawattendance] = useState();
   const [workerindex, setWorkerindex] = useState();
 
   const [indexready, setIndexready] = useState(false);

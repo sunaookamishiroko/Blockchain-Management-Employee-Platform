@@ -61,31 +61,6 @@ const App = () => {
         TokenDeployNetwork && TokenDeployNetwork.address,
       );
 
-      // 출근 event 잡는 함수
-      instance.events.Onwork().on("data", (event) => {
-        let values = event.returnValues;
-        console.log(values.name, values.classifyNum);
-      }).on("error", console.error);
-
-      // 퇴근 event 잡는 함수
-      instance.events.Offwork().on("data", (event) => {
-        let values = event.returnValues;
-        console.log(values.name, values.classifyNum);
-      }).on("error", console.error);
-
-      // 이벤트 히스토리
-      /*
-      instance.getPastEvents("Onwork", { fromBlock: 0, toBlock: "latest" })
-      .then((events) => {
-        console.log(events);
-      });
-
-      instance.getPastEvents("Offwork", { fromBlock: 0, toBlock: "latest" })
-      .then((events) => {
-        console.log(events);
-      });
-      */
-
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
 

@@ -39,7 +39,20 @@ const Main = ({ accounts, contract, name, workers, wpinfo }) => {
 
   const [calready, setCalready] = useState(false);
 
+  // 출근 event 잡는 함수
+  contract.events.Onwork().on("data", (event) => {
+    let values = event.returnValues;
+    console.log(values.name, values.timeHour, values.timeMinute);
+  }).on("error", console.error);
+
+  // 퇴근 event 잡는 함수
+  contract.events.Offwork().on("data", (event) => {
+    let values = event.returnValues;
+    console.log(values.name, values.timeHour, values.timeMinute);
+  }).on("error", console.error);
+
   useEffect(() => {
+    getPastevent();
     getAttendance();
   }, []);
 
@@ -51,41 +64,59 @@ const Main = ({ accounts, contract, name, workers, wpinfo }) => {
     let event = [];
 
       for (let x = 0; x < workers[0].length ; x++) {
-        let caldata = await contract.methods.getCalAttendance(wpinfo[0], x).call({ from: accounts[0] });
-        console.log(caldata);
+        try {
+          let caldata = await contract.methods.getCalAttendance(wpinfo[0], x).call({ from: accounts[0] });
+          console.log(caldata);
 
-        if (caldata[0].length == caldata[1].length) {
+          if (caldata[0].length == caldata[1].length) {
 
-          for (let y = 0 ; y < caldata[0].length; y++) {
+            for (let y = 0 ; y < caldata[0].length; y++) {
+              event.push({
+                title: decodeURI(workers[1][x]),
+                start: caldata[0][y],
+                color: "#00FF00",
+                display: "list-item",
+              })
+            }
+
+          } else {
+            for (let y = 0 ; y < caldata[0].length - 1; y++) {
+              event.push({
+                title: decodeURI(workers[1][x]),
+                start: caldata[0][y],
+                color: "#00FF00",
+                display: "list-item",
+              })
+            }
+
             event.push({
               title: decodeURI(workers[1][x]),
-              start: caldata[0][y],
-              color: "#00FF00",
+              start: caldata[0][caldata[0].length - 1],
+              color: "##0037ff",
               display: "list-item",
             })
           }
 
-        } else {
-          for (let y = 0 ; y < caldata[0].length - 1; y++) {
-            event.push({
-              title: decodeURI(workers[1][x]),
-              start: caldata[0][y],
-              color: "#00FF00",
-              display: "list-item",
-            })
-          }
-
-          event.push({
-            title: decodeURI(workers[1][x]),
-            start: caldata[0][caldata[0].length - 1],
-            color: "##0037ff",
-            display: "list-item",
-          })
+        } catch(e) {
+          console.log(e);
         }
       }
 
       setAttendance(event);
   };
+
+  const getPastevent = (async () => {
+    // 이벤트 히스토리
+    contract.getPastEvents("Onwork", { fromBlock: 0, toBlock: "latest" })
+    .then((events) => {
+      console.log(events);
+    });
+
+    contract.getPastEvents("Offwork", { fromBlock: 0, toBlock: "latest" })
+    .then((events) => {
+      console.log(events);
+    });
+  })
 
   return (
     <Container>
