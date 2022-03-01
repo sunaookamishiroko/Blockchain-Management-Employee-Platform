@@ -1,0 +1,30 @@
+* {
+    font-family: 'Noto Sans CJK KR';
+}
+
+h1 {
+    font-family: 'Noto Sans CJK KR';
+    font-size: 28px;
+    font-weight: bold;
+}
+
+h2 {
+    font-family: 'Noto Sans CJK KR';
+    font-size: 24px;
+}
+
+tr {
+    align-items: center;
+    &::nth-child(even) {
+        background-color: #f8f9fa;
+    }
+    &+& {
+        border-top: 1px solid #dee2e6;
+    }
+    td {
+        font-family: "Noto Sans CJK KR";
+        font-size: 20px;
+        color: #999999;
+        font-weight: bold;
+    }
+}
