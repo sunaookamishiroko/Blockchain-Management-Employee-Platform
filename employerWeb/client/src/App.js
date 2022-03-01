@@ -169,7 +169,6 @@ const App = () => {
                 accounts={accounts}
                 contract={contract}
                 name={name}
-                workers={workers}
                 wpinfo={wpinfo}
               />
             }

@@ -47,7 +47,7 @@ const CalendarLegend = () => {
             marginRight: "10px",
           }}
         ></div>
-        퇴근
+        근무중
       </div>
       <div
         style={{

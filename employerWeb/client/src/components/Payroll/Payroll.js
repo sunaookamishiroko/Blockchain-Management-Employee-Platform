@@ -62,28 +62,29 @@ const Payroll = ({ accounts, contract, tokencontract, name, workers, wpinfo }) =
       let startIndex = indexarr[0];
       let endIndex = indexarr[1];
 
-      try {
-        if (startIndex != -1) {
+      if (startIndex != -1) {
+
+        try {
           let employeeindex = await contract.methods.getIndexOfEmployee(0, workers[0][x]).call({ from: accounts[0] });
-        
+      
           let hourwage = await contract.methods.getWage(0, employeeindex).call({ from: accounts[0] });
           hourwage = parseInt(hourwage);
         
           let wage = await contract.methods.getPayment(
             0, employeeindex, startIndex, endIndex, hourwage
           ).call({ from: accounts[0] });
-  
+
           temp.push([
             workers[0][x], decodeURI(workers[1][x]), wage
           ])
-            
-        } else {
-            temp.push([
-              workers[0][x], decodeURI(workers[1][x]), 0
-            ])
+        } catch(e) {
+          console.log(e);
         }
-      } catch(e) {
-        console.log(e);
+          
+      } else {
+          temp.push([
+            workers[0][x], decodeURI(workers[1][x]), 0
+          ])
       }
     }
     await getBalnce();
@@ -106,7 +107,7 @@ const Payroll = ({ accounts, contract, tokencontract, name, workers, wpinfo }) =
   const patternMatching = (async(selectdate, index) => {
     let data;
     try {
-      data = await contract.methods.getAllAttendance(0, index).call({ from: accounts[0] });
+      data = await contract.methods.getAllAttendance(wpinfo[0], index).call({ from: accounts[0] });
     } catch(e) {
       console.log(e);
     }

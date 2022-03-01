@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useRef, useCallback, useEffect } from "react";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import styled, { ThemeConsumer } from "styled-components";
 import Dialog from "@mui/material/Dialog";
 import { autocompleteClasses, DialogTitle } from "@mui/material";
@@ -81,61 +81,166 @@ const Total = styled.div`
   flex-direction: "row";
 `;
 
-const Settlement = ({ web3, accounts, contract, name, workers }) => {
+const Settlement = ({ accounts, contract, name, wpinfo }) => {
   const [open, setOpen] = useState(false);
+
   const [detail, setDetail] = useState();
-  const [workername, setWorkername] = useState();
-  const [customworkers, setCustomworkers] = useState();
-  const [contractaddress, setContractAddress] = useState();
+  const [attendance, setAttendance] = useState();
+  const [rawattendance, setRawattendance] = useState();
+  const [workerindex, setWorkerindex] = useState();
 
-  // TODO false로 바꿔야 함
-  const [ready, setReady] = useState(true);
+  const [indexready, setIndexready] = useState(false);
+  const [calready, setCalready] = useState(false);
+  const [detailready, setDetailready] = useState(false);
 
-  //   useEffect(() => {
-  //     makeCustomWorker();
-  //   }, []);
+  const location = useLocation();
+  const workerinfo = location["state"];
 
-  // test용 데이터
-  // title : 표시되는 이름
-  // color : RGB 색상
-  // display(고정) : 둥근 아이콘
-  const testEvent = [
-    {
-      title: "홍길동 결근",
-      start: "2022-01-06",
-      color: "#FF0000",
-      display: "list-item",
-    },
-    {
-      title: "홍길순 출근",
-      start: "2022-01-06",
-      color: "#00FF00",
-      display: "list-item",
-    },
-  ];
+  useEffect(() => {
+    getWorkerindex();
+  }, []);
 
-  //   const makeCustomWorker = async () => {
-  //     let temp = [];
+  useEffect(() => {
+    getAttendance();
+    getDetail();
+  }, [indexready])
 
-  //     for (let x = 0; x < workers[0].length; x++) {
-  //       temp.push([workers[0][x], decodeURI(workers[1][x])]);
-  //     }
-  //     setCustomworkers(temp);
-  //     setReady(true);
-  //   };
+  const getWorkerindex = (async () => {
+    let response;
+    try {
+      response = await contract.methods.getIndexOfEmployee(wpinfo[0], workerinfo["address"]).call({ from: accounts[0] });
+    } catch(e) {
+      console.log(e);
+    }
 
-  // TODO 하드코딩 데이터 지워야 함
-  const data = {
-    name: "홍길동",
-    birthday: "1990.03.16",
-    phone: "010-1234-5678",
-    schedule: "주3일(화, 수, 목)/일 4시간 근무",
-  };
-  const total = 0;
+    setWorkerindex(response);
+    setIndexready(true);
+  })
+
+  const getAttendance = (async () => {
+    let event = [];
+    let caldata;
+    try {
+      caldata = await contract.methods.getAllAttendance(wpinfo[0], workerindex).call({ from: accounts[0] });
+
+      if (caldata[0].length == caldata[3].length) {
+
+        for (let y = 0 ; y < caldata[0].length; y++) {
+          event.push({
+            title: "출근",
+            start: caldata[0][y],
+            color: "#00FF00",
+            display: "list-item",
+          })
+        }
+
+      } else {
+        for (let y = 0 ; y < caldata[0].length - 1; y++) {
+          event.push({
+            title: "출근",
+            start: caldata[0][y],
+            color: "#00FF00",
+            display: "list-item",
+          })
+        }
+
+        event.push({
+          title: "근무중",
+          start: caldata[0][caldata[0].length - 1],
+          color: "##0037ff",
+          display: "list-item",
+        })
+      }
+
+      
+    } catch(e) {
+      console.log(e);
+    }
+      setAttendance(event);
+      setCalready(true);
+  });
+
+  const getDetail = (async() => {
+
+    let time = new Date();
+    let year = time.getFullYear();
+    let month = time.getMonth() + 1; 
+
+    let selectdate = year+"-"+(("0"+month.toString()).slice(-2));
+    
+    let indexarr = await patternMatching(selectdate, workerindex);
+
+    let startIndex = indexarr[0];
+    let endIndex = indexarr[1];
+
+    let temp = {};
+    if (startIndex != -1) {
+
+      try {
+    
+        let hourwage = await contract.methods.getWage(0, workerindex).call({ from: accounts[0] });
+        temp["hourwage"] = hourwage;
+        hourwage = parseInt(hourwage);
+      
+        let wage = await contract.methods.getPayment(
+          0, workerindex, startIndex, endIndex, hourwage
+        ).call({ from: accounts[0] });
+        temp["totalwage"] = wage;
+
+        let worktime = await contract.methods.getWorkTime(wpinfo[0], workerindex, startIndex, endIndex).call({ from: accounts[0] });
+
+        temp["allhours"] = worktime[0];
+        temp["allmin"] = worktime[1];
+        
+      } catch(e) {
+        console.log(e);
+      }
+        
+    } else {
+      temp["hourwage"] = 0;
+      temp["totalwage"] = 0;
+      temp["allhours"] = 0;
+      temp["allmin"] = 0;
+    }
+    setDetail(temp);
+    setDetailready(true);
+  });
+
+  // 패턴 매칭하는 함수 -> 현재 달의 출석을 찾음
+  const patternMatching = (async(selectdate, index) => {
+    let data;
+    
+    let stflag = 0, edflag = 0;
+    let startIndex = -1, endIndex = -1;
+
+    try {
+      data = await contract.methods.getAllAttendance(wpinfo[0], index).call({ from: accounts[0] });
+      for (let x = 0 ; x < data[3].length ; x++) {
+        if (data[3][x].search(selectdate) != -1) {
+          if (stflag == 0) {
+            startIndex = x;
+            stflag = 1;
+          }
+        } else {
+          if (stflag == 0) continue;
+          else {
+            endIndex = x - 1;
+            edflag = 1;
+            break;
+          }
+        }
+      }
+  
+      if (startIndex != -1 && edflag == 0) endIndex = data[3].length -1;
+    } catch(e) {
+      console.log(e);
+    }
+    return ([startIndex, endIndex]);
+  })
 
   return (
     <Container>
-      <Categories name={name} />
+      <Categories name={name} wpname={wpinfo[1]} />
       <Content>
         <LeftMenu>
           <Information>
@@ -144,57 +249,40 @@ const Settlement = ({ web3, accounts, contract, name, workers }) => {
               <tr>
                 <td>
                   이름:&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;{" "}
-                  {data.name ? data.name : "홍길동"}
+                  {workerinfo["name"]}
                 </td>
                 <td>
-                  생년월일:&nbsp; &nbsp; &nbsp; &nbsp;{" "}
-                  {data.birthday ? data.birthday : "1990.03.16"}
+                  Address:&nbsp; &nbsp; &nbsp; &nbsp;{" "}
+                  {workerinfo["address"]}
                 </td>
               </tr>
               <tr>
                 <td>
-                  연락처:&nbsp; &nbsp; &nbsp; &nbsp;{" "}
-                  {data.phone ? data.phone : "010-1234-5678"}
-                </td>
-                <td>
                   근무일정:&nbsp; &nbsp; &nbsp; &nbsp;
-                  {data.schedule
-                    ? data.schedule
-                    : "주3일(화,수,목)/일 4시간 근무"}
+                  cc
                 </td>
               </tr>
             </table>
           </Information>
-          <Calendar />
+          {!calready && <p>잠시만 기다려주세요...</p>}
+          {calready && <Calendar attendance={attendance}/>}
         </LeftMenu>
         <History>
           <h1>급여정산 내역</h1>
-          <p>정상출근 몇 번</p>
-          <p>결근 몇 번</p>
-          <p>총 근무 시간 몇 시간</p>
-          <p>시급 얼마</p>
-          <br />
-
-          <p>합해서 000000원</p>
-          <br />
-
-          <p>세금 몇 퍼 적용</p>
-          <p>보험금 몇 퍼 적용</p>
-          <p>그 외 빼야할 것들 적용</p>
-          <br />
-
-          <p>
-            근로계약서에 적힌 계약사항(인센티브, 보너스, 성과금 등) 얼마 적용
-          </p>
-          <br />
-
-          <p>총 계산하면 이정도 000000</p>
-          <br />
-
-          <Total>
-            <h1 style={{ flex: 1, textAlign: "center" }}>금액:</h1>
-            <h1 style={{}}>{total ? total : "000,000 원"}</h1>
-          </Total>
+          {!detailready && <p>계산중입니다...</p>}
+          {detailready && (
+            <>
+              <p>정상출근 몇 번</p>
+              <p>결근 몇 번</p>
+              <p>총 근무 {detail["allhours"]}시간 {detail["allmin"]}분</p>
+              <p>시급 {detail["hourwage"]}원</p>
+              <br />
+              <Total>
+                <h1 style={{ flex: 1, textAlign: "center" }}>총 금액:</h1>
+                <h1 style={{}}>{detail["totalwage"]}원</h1>
+              </Total>
+            </>
+          )}
         </History>
       </Content>
     </Container>

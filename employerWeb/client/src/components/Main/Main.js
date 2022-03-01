@@ -48,10 +48,6 @@ const Main = ({ accounts, contract, name, workers, wpinfo }) => {
   }, [attendance]);
 
   const getAttendance = async () => {
-    //const response = await contract.methods.getWorkplaces().call({ from: accounts[0] });
-
-    //console.log(response[0]);
-
     let event = [];
 
       for (let x = 0; x < workers[0].length ; x++) {
@@ -94,13 +90,11 @@ const Main = ({ accounts, contract, name, workers, wpinfo }) => {
   return (
     <Container>
       <Categories name={name} wpname={wpinfo[1]}/>
-      {!calready && <p>잠시만 기다려주세요 ...</p>}
-      {calready && (
         <Content>
           <h1> 출/퇴근 기록부 </h1>
-          <Calendar attendance={attendance} />
+          {!calready && <p>잠시만 기다려주세요 ...</p>}
+          {calready && <Calendar attendance={attendance} />}
         </Content>
-      )}
       {/* TODO QR 데이터, 근태 데이터 전달해줄 것 */}
       <RightSideComponent />
     </Container>
