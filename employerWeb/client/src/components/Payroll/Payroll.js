@@ -36,6 +36,7 @@ const Content = styled.div`
 const Payroll = ({ accounts, contract, tokencontract, name, workers, wpinfo }) => {
   const [open, setOpen] = useState(false);
 
+  const [todaydate, setTodaydate] = useState();
   const [customworkers, setCustomworkers] = useState();
   const [balance, setBalance] = useState();
 
@@ -86,6 +87,7 @@ const Payroll = ({ accounts, contract, tokencontract, name, workers, wpinfo }) =
       }
     }
     await getBalnce();
+    setTodaydate(selectdate);
     setCustomworkers(temp);
     setReady(true);
   });
@@ -154,6 +156,7 @@ const Payroll = ({ accounts, contract, tokencontract, name, workers, wpinfo }) =
           <Categories name={name} wpname={wpinfo[1]}/>
           <Content>
             <h1> 급여 지급 </h1>{" "}
+            <p>{todaydate}</p>
             <PayrollAdapter
               workers={customworkers}
               payWage={payWage}
