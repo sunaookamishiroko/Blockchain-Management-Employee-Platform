@@ -3,7 +3,7 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -12,11 +12,15 @@ import { ColorSchemeName, Pressable } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import ModalScreen from '../screens/Notification';
+import NotificationScreen from '../screens/NotificationModal';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import TabThreeScreen from '../screens/TabThreeScreen';
+import AttendancePayScreen from '../screens/AttendancePayScreen';
+import LaborContractScreen from '../screens/LaborContractScreen';
+import AttendanceCheckScreen from '../screens/AttendanceCheckScreen';
+import LaborContractSendScreen from '../screens/LaborContractSendScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -41,8 +45,12 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      <Stack.Screen name="LaborContractScreen" component={LaborContractScreen} options={{ title: '근로계약서 조회' }} />
+      <Stack.Screen name="AttendancePayScreen" component={AttendancePayScreen} options={{ title: '근태 / 급여 조회' }} />
+      <Stack.Screen name="AttendanceCheckScreen" component={AttendanceCheckScreen} options={{ title: '출근 / 퇴근' }} />
+      <Stack.Screen name="LaborContractSendScreen" component={LaborContractSendScreen} options={{ title: '근로계약서 확인' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen name="NotificationModal" component={NotificationScreen} options={{ title: '알림' }}/>
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -71,13 +79,13 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate('Modal')}
+              onPress={() => navigation.navigate('NotificationModal')}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}>
-              <FontAwesome
-                name="info-circle"
-                size={25}
+              <Ionicons
+                name="notifications"
+                size={27}
                 color={Colors[colorScheme].text}
                 style={{ marginRight: 15 }}
               />
@@ -88,18 +96,46 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="TabTwo"
         component={TabTwoScreen}
-        options={{
+        options={({ navigation }: RootTabScreenProps<'TabTwo'>) => ({
           title: '근무지 정보',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
+          headerRight: () => (
+            <Pressable
+              onPress={() => navigation.navigate('NotificationModal')}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+              })}>
+              <Ionicons
+                name="notifications"
+                size={27}
+                color={Colors[colorScheme].text}
+                style={{ marginRight: 15 }}
+              />
+            </Pressable>
+          ),
+        })}
       />
       <BottomTab.Screen
         name="TabThree"
         component={TabThreeScreen}
-        options={{
+        options={({ navigation }: RootTabScreenProps<'TabThree'>) => ({
           title: '프로필',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
+          headerRight: () => (
+            <Pressable
+              onPress={() => navigation.navigate('NotificationModal')}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+              })}>
+              <Ionicons
+                name="notifications"
+                size={27}
+                color={Colors[colorScheme].text}
+                style={{ marginRight: 15 }}
+              />
+            </Pressable>
+          ),
+        })}
       />
     </BottomTab.Navigator>
   );

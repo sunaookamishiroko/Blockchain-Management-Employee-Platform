@@ -75,21 +75,6 @@ const App = () => {
       console.error(error);
     }
 
-    setLoginready(true);
-  })
-  
-  // 사업주의 이름과 사업장의 근로자들 정보를 불러오는 함수
-  // 맨 처음은 무조건 0번 index의 정보를 불러옴
-  const employerSetting = (async () => {
-    try {
-      const personalinfo = await contract.methods.getPersonInformation(accounts[0]).call({ from: accounts[0] });
-      const workplaceinfo = await contract.methods.getWorkplaces().call({ from: accounts[0] });
-      
-      let temp = [];
-      temp.push(
-        workplaceinfo[0][0], decodeURI(workplaceinfo[1][0]), decodeURI(workplaceinfo[2][0])
-      );
-
       const workersinfo = await contract.methods.getEmployeeInfo(workplaceinfo[0][0]).call({ from: accounts[0] });
 
       setName(decodeURI(personalinfo[1]));

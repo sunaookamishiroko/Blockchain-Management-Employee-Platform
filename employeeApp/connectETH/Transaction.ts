@@ -1,6 +1,7 @@
 import { PROVIDER_APIKEY, CONTRACT_ADDRESS1, CONTRACT_ADDRESS2} from "@env";
 
-import SimpleStorageContract from "../contracts/SimpleStorage.json";
+import LaborContractABI from "../contracts/LaborContract.json";
+import ERC20ContractABI from "../contracts/ERC20.json";
 
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
 
@@ -9,7 +10,8 @@ import "@ethersproject/shims";
 import { ethers } from "ethers";
 
 export const infuraProvider = new ethers.providers.InfuraProvider("ropsten", PROVIDER_APIKEY);
-export const laborContract = new ethers.Contract(CONTRACT_ADDRESS1, SimpleStorageContract.abi, infuraProvider);
+export const laborContract = new ethers.Contract(CONTRACT_ADDRESS1, LaborContractABI.abi, infuraProvider);
+export const ERC20Contract = new ethers.Contract(CONTRACT_ADDRESS2, ERC20ContractABI.abi, infuraProvider);
 
 export async function makeLabortxobj(from: string, abidata: string, gaslimit: number) {
 
