@@ -2,14 +2,14 @@ import { FormLabel } from "@mui/material";
 import React, { useState, useCallback } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-import Categories from "../Categories/Categories";
+import Categories from "../components/Categories/Categories";
 //import { firestore } from "./firebase.js";
 //import { collection, addDoc } from "firebase/firestore";
 
 const Container = styled.div`
   background: #f5f8fb;
-  width: 1900px;
-  height: 1080px;
+  width: 100%;
+  height: auto;
   display: flex;
 `;
 
@@ -20,7 +20,7 @@ const Content = styled.div`
   margin: 30px;
   padding: 10px;
 
-  width: auto;
+  width: 100%;
   height: auto;
 
   box-shadow: 5px 5px 5px 5px gray;
@@ -176,7 +176,7 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
 
   return (
     <Container>
-      <Categories name={name} wpname={wpinfo[1]}/>
+      <Categories name={name} wpname={wpinfo[1]} />
       <Content>
         <h1> 근로자 등록 </h1>
         <form className="Enroll" onSubmit={onSubmit}>

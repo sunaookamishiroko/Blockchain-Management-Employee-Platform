@@ -5,9 +5,9 @@ import SideLogo from "./SideLogo";
 import Title from "./Title";
 
 const LeftSidebar = styled.div`
-  padding-left: 50px;
-  padding-top: 50px;
-  width: 250px;
+  padding: 50px;
+
+  width: 280px;
   height: auto;
   background-color: white;
   float: left;
@@ -64,16 +64,16 @@ const categories = [
     name: "근로자 관리",
     submenu: [
       {
-        name: "WorkerList",
+        name: "list",
         text: "근로자 목록",
       },
       {
-        name: "EnrollWorker",
+        name: "enroll",
         text: "근로자 등록",
       },
 
       {
-        name: "Payroll",
+        name: "payroll",
         text: "급여 지급",
       },
     ],
@@ -82,7 +82,7 @@ const categories = [
     name: "추가 항목",
     submenu: [
       {
-        name: "Another",
+        name: "another",
         text: "메뉴 추가 필요",
       },
     ],
@@ -91,11 +91,11 @@ const categories = [
     name: "설정",
     submenu: [
       {
-        name: "Workplace",
+        name: "workplace",
         text: "사업장 변경",
       },
       {
-        name: "Logout",
+        name: "logout",
         text: "로그아웃",
       },
     ],
@@ -106,7 +106,7 @@ const Categories = ({ name, wpname }) => {
   return (
     <LeftSidebar>
       {/* TODO 매장 이름, 사장 이름 전달해야 함 */}
-      <Title name={name} wpname={wpname}/>
+      <Title name={name} wpname={wpname} />
 
       {categories.map((c) => (
         <Category key={c.name}>
