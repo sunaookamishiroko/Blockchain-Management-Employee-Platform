@@ -50,25 +50,6 @@ const WorkerListItem = ({ index, address, name, handleClickContract }) => {
           확인
         </ContractButton>
       </td>
-      <td>
-        <SettlementButton
-          onDragExitCapture={("" === "main").toString()}
-          to="/Settlement"
-          state={{ 
-            name:name, 
-            address:address 
-          }}
-        >
-          정산하기
-        </SettlementButton>
-        {/* <SettlementButton
-          onClick={() => {
-            handleClickSettlement(name, address);
-          }}
-        >
-          정산하기
-        </SettlementButton> */}
-      </td>
     </tr>
   );
 };
