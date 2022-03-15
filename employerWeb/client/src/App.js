@@ -10,7 +10,6 @@ import EnrollWorker from "./pages/EnrollWorker";
 import Settlement from "./pages/Settlement";
 import Payroll from "./pages/Payroll";
 import Test from "./pages/Test";
-import EnrollList from "./components/Enroll/EnrollList";
 import Workplace from "./pages/Workplace";
 //import { firestore } from "./components/firebase";
 
@@ -139,7 +138,6 @@ const App = () => {
           path="/enroll"
           element={<EnrollWorker name={name} wpinfo={wpinfo} />}
         />
-        <Route path="/EnrollList" element={<EnrollList />} />
         <Route
           path="/settlement"
           element={

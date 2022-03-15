@@ -1,16 +1,7 @@
 import React, { useState, useCallback } from "react";
 import styled from "styled-components";
-import Categories from "../components/Categories/Categories";
-import EnrollContent from "../components/Enroll/EnrollContent";
 //import { firestore } from "./firebase.js";
 //import { collection, addDoc } from "firebase/firestore";
-
-const Container = styled.div`
-  background: #f5f8fb;
-  width: 100%;
-  height: auto;
-  display: flex;
-`;
 
 const Content = styled.div`
   display: flex;
@@ -103,7 +94,7 @@ const EnrollLabel = styled.label`
   }
 `;
 
-const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
+const EnrollContent = ({ name, onEnroll, wpinfo,onSubmit,onChange,onClickHandler }) => {
   const [worker, setWorker] = useState({
     address: "",
     period1: "",
@@ -116,68 +107,12 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
     comment: "",
   });
 
-  const onChange = (event) => {
-    const { name, value } = event.target;
-    setWorker({ ...worker, [name]: value });
-  };
-
-  const onSubmit = (e) => {
-    //TODO 입력값 검증 필요
-    console.log(worker);
-
-    // 사업장 index를 포함하여 등록할 것
-    //onEnroll(worker);
-    e.preventDefault();
-  };
-
   const onChangeHandler = (e) => {
     console.log(e.target);
   };
 
-  // TODO 주석 해제해야함
-  const onClickHandler = (e) => {
-    e.preventDefault();
-    try {
-      // firestore.collection("workersData").add({
-      //   address: this.state.worker.address,
-      //   age: this.state.worker.age,
-      //   gender: this.state.worker.gender,
-      //   period1: this.state.worker.period1,
-      //   period2: this.state.worker.period2,
-      //   duties: this.state.worker.duties,
-      //   workingTime: this.state.worker.workingTime,
-      //   workingDays: this.state.worker.workingDays,
-      //   wage: this.state.worker.wage,
-      //   wageday: this.state.worker.wageday,
-      //   comment: this.state.worker.comment,
-      // });
-      setWorker({
-        address: "",
-        period1: "",
-        period2: "",
-        duties: "",
-        workingTime: "",
-        workingDays: "",
-        wage: "",
-        wageday: "",
-        comment: "",
-      });
-
-      console.log(e.target);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
-  };
-
   return (
-    <Container>
-      <Categories name={name} wpname={wpinfo[1]} />
-      <EnrollContent
-        onSubmit={onSubmit}
-        onChange={onChange}
-        onClickHandler={onClickHandler}
-      />
-      {/* <Content>
+      <Content>
         <h1> 근로자 등록 </h1>
         <form className="Enroll" onSubmit={onSubmit}>
           <div>
@@ -275,8 +210,8 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
             <input type={"reset"} value="초기화"></input>
           </SubmitDiv>
         </form>
-      </Content> */}
-    </Container>
+      </Content>
+
   );
 };
-export default EnrollWorker;
+export default EnrollContent;
