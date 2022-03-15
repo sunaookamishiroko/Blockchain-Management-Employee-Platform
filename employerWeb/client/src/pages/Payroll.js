@@ -1,36 +1,35 @@
 import React from "react";
-import { useState, useEffect, useCallback } from "react";
-
-import { NavLink } from "react-router-dom";
-import styled, { ThemeConsumer } from "styled-components";
-import WorkerListAdapter from "../components/WorkerList/WorkerListAdapter";
-import Dialog from "@mui/material/Dialog";
-import { DialogTitle } from "@mui/material";
+import { useState, useEffect} from "react";
+import styled from "styled-components";
 import PayrollAdapter from "../components/Payroll/PayrollAdapter";
 import Categories from "../components/Categories/Categories";
 
 const Container = styled.div`
   width: 100%;
-  height: auto;
-  .Left-Sidebar {
-    width: 250px;
-    height: auto;
-    background-color: #e9e9e9;
-    float: left;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    .link {
-    }
-  }
+  height: 100%;
+  display: flex;
 `;
 
 const Content = styled.div`
-  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  margin: 30px;
+  padding: 30px;
   width: 100%;
   height: auto;
+  box-shadow: 5px 5px 5px 5px gray;
+  border-radius: 20px;
   background-color: #f7f7f7;
-  float: left;
+
+  h1 {
+    font-size: 26px;
+    font-family: "Noto Sans CJK KR";
+  }
+
+  .bottom{
+    margin-left:auto;
+    margin-top:auto;
+  }
 `;
 
 const Payroll = ({
@@ -174,10 +173,11 @@ const Payroll = ({
         <>
           <Categories name={name} wpname={wpinfo[1]} />
           <Content>
-            <h1> 급여 지급 </h1> <p>{todaydate}</p>
-            <PayrollAdapter workers={customworkers} payWage={payWage} />{" "}
-            <p>나의 잔고 : {balance}원</p>
-          </Content>{" "}
+            <h1> 급여 지급 </h1>
+            <h2>{todaydate}</h2>
+            <PayrollAdapter workers={customworkers} payWage={payWage} />
+            <h2 className="bottom">나의 잔고 : {balance}원</h2>
+          </Content>
         </>
       )}
     </Container>
