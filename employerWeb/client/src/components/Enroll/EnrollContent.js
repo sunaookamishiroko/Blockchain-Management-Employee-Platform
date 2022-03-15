@@ -31,11 +31,11 @@ const Content = styled.div`
 `;
 
 const LeftInput = styled.div`
-  width: 480px;
+  width: 100%;
 `;
 
 const RightInput = styled.div`
-  width: 768px;
+  width: 100%;
 `;
 
 const SubmitDiv = styled.div`
