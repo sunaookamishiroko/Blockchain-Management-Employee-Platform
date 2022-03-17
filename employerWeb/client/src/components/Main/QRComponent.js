@@ -18,15 +18,14 @@ flex-direction:column;
 `;
 
 const QRComponent = () => {
-  
+  const QRValue = Math.random(1,100);
   return (
     <StyledQRComponent>
       <h2 style={{ textAlign: "center" }}>QR 코드 인증</h2>
-      {/* value에 url을 쏴줄 것
-      string 값도 가능
-      
-       */}
-      <QRCode value="test"/>
+      {/* value에 url을 쏴줄 것 
+      string 값도 가능*/}
+      <h1>{QRValue}</h1>
+      <QRCode value={QRValue.toString()}/>
     </StyledQRComponent>
   );
 };
