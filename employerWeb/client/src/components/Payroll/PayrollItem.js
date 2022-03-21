@@ -1,25 +1,52 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { NavLink } from "react-router-dom";
 
-const Item = styled.div`
-  padding: 1rem;
-  display: flex;
-  align-items: center;
-  &::nth-child(even) {
-    background-color: #f8f9fa;
-  }
-  & + & {
-    border-top: 1px solid #dee2e6;
-  }
+const SettlementButton = styled(NavLink)`
+  background-color: #2669a4;
+  font-family: "Noto Sans CJK KR";
+  font-weight: bold;
+  border: 0px;
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  border-radius: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
 `;
 
-const PayrollItem = ({ index, address, name }) => {
+const PayrollItem = ({ index, address, name, total, payWage }) => {
+    const shortenAddress = (address) => {
+    return `${address.slice(0, 6)}...${address.slice(
+      address.length - 6,
+      address.length
+    )}`;
+  }
+
   return (
-    <Item>
-      <div> {index} </div>
-      <div> {name}</div> 
-      <div> {address} </div>  
-    </Item>
+    <tr>
+      <td> {index} </td>
+      <td> {name}</td> 
+      <td> {shortenAddress(address)} </td>  
+      <td>{total}</td>
+      <td>
+        <button 
+            onClick={() => {
+              payWage(name,total,address);
+            }}>지급하기</button>
+      </td>
+            <td>
+        <SettlementButton
+          onDragExitCapture={("" === "main").toString()}
+          to="/Settlement"
+          state={{ 
+            name:name, 
+            address:address 
+          }}>
+          정산하기
+        </SettlementButton>
+      </td>
+    </tr>
   );
 };
 

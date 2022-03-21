@@ -1,17 +1,7 @@
-import { FormLabel } from "@mui/material";
 import React, { useState, useCallback } from "react";
-import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-import Categories from "../Categories/Categories";
 //import { firestore } from "./firebase.js";
 //import { collection, addDoc } from "firebase/firestore";
-
-const Container = styled.div`
-  background: #f5f8fb;
-  width: 1900px;
-  height: 1080px;
-  display: flex;
-`;
 
 const Content = styled.div`
   display: flex;
@@ -20,7 +10,7 @@ const Content = styled.div`
   margin: 30px;
   padding: 10px;
 
-  width: auto;
+  width: 100%;
   height: auto;
 
   box-shadow: 5px 5px 5px 5px gray;
@@ -41,11 +31,11 @@ const Content = styled.div`
 `;
 
 const LeftInput = styled.div`
-  width: 480px;
+  width: 100%;
 `;
 
 const RightInput = styled.div`
-  width: 768px;
+  width: 100%;
 `;
 
 const SubmitDiv = styled.div`
@@ -104,11 +94,9 @@ const EnrollLabel = styled.label`
   }
 `;
 
-const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
+const EnrollContent = ({ name, onEnroll, wpinfo,onSubmit,onChange,onClickHandler }) => {
   const [worker, setWorker] = useState({
     address: "",
-    age: 0,
-    gender: "남",
     period1: "",
     period2: "",
     duties: "",
@@ -119,64 +107,11 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
     comment: "",
   });
 
-  const onChange = (event) => {
-    const { name, value } = event.target;
-    setWorker({ ...worker, [name]: value });
-  };
-
-  const onSubmit = (e) => {
-    //TODO 입력값 검증 필요
-    console.log(worker);
-
-    // 사업장 index를 포함하여 등록할 것
-    //onEnroll(worker);
-    e.preventDefault();
-  };
-
   const onChangeHandler = (e) => {
     console.log(e.target);
   };
 
-  // TODO 주석 해제해야함
-  const onClickHandler = (e) => {
-    e.preventDefault();
-    try {
-      // firestore.collection("workersData").add({
-      //   address: this.state.worker.address,
-      //   age: this.state.worker.age,
-      //   gender: this.state.worker.gender,
-      //   period1: this.state.worker.period1,
-      //   period2: this.state.worker.period2,
-      //   duties: this.state.worker.duties,
-      //   workingTime: this.state.worker.workingTime,
-      //   workingDays: this.state.worker.workingDays,
-      //   wage: this.state.worker.wage,
-      //   wageday: this.state.worker.wageday,
-      //   comment: this.state.worker.comment,
-      // });
-      setWorker({
-        address: "",
-        age: 0,
-        gender: "남",
-        period1: "",
-        period2: "",
-        duties: "",
-        workingTime: "",
-        workingDays: "",
-        wage: "",
-        wageday: "",
-        comment: "",
-      });
-
-      console.log(e.target);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
-  };
-
   return (
-    <Container>
-      <Categories name={name} wpname={wpinfo[1]}/>
       <Content>
         <h1> 근로자 등록 </h1>
         <form className="Enroll" onSubmit={onSubmit}>
@@ -198,40 +133,6 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
                   onChange={onChange}
                 />
               </EnrollLabel>
-
-              <EnrollLabel>
-                <h2> 근로자 나이 </h2>
-                <input
-                  placeholder="근로자 나이 입력하세요"
-                  name="age"
-                  onChange={onChange}
-                />
-              </EnrollLabel>
-              <EnrollLabel>
-                <h2> 근로자 성별 </h2>
-                <FormLabel>
-                  남
-                  <input
-                    type="radio"
-                    name="gender"
-                    value="남"
-                    onChange={onChange}
-                    checked
-                  />
-                </FormLabel>
-                <FormLabel>
-                  여
-                  <input
-                    type="radio"
-                    name="gender"
-                    value="여"
-                    onChange={onChange}
-                  />
-                </FormLabel>
-              </EnrollLabel>
-            </LeftInput>
-
-            <RightInput>
               <EnrollLabel>
                 <h2>계약기간</h2>
                 <div style={{ display: "flex", width: "auto" }}>
@@ -248,6 +149,10 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
                   <input type="date" name="period2" />
                 </div>
               </EnrollLabel>
+              </LeftInput>
+
+            <RightInput>
+              
 
               <EnrollLabel>
                 <h2> 업무 내용 </h2>
@@ -306,7 +211,7 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
           </SubmitDiv>
         </form>
       </Content>
-    </Container>
+
   );
 };
-export default EnrollWorker;
+export default EnrollContent;

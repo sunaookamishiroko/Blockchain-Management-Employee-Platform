@@ -3,16 +3,16 @@ import { useState, useRef, useCallback, useEffect } from "react";
 
 import { NavLink } from "react-router-dom";
 import styled, { ThemeConsumer } from "styled-components";
-import WorkerListAdapter from "./WorkerListAdapter";
+import WorkerListAdapter from "../components/WorkerList/WorkerListAdapter";
 import Dialog from "@mui/material/Dialog";
 import { DialogTitle } from "@mui/material";
-import Categories from "../Categories/Categories";
+import Categories from "../components/Categories/Categories";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 
 const Container = styled.div`
-  width: 1800px;
-  height: 1080px;
+  width: 100%;
+  height: 100%;
   display: flex;
 `;
 
@@ -21,7 +21,7 @@ const Content = styled.div`
   flex-direction: column;
   margin: 30px;
   padding: 10px;
-  width: 1416px;
+  width: 100%;
   height: auto;
   box-shadow: 5px 5px 5px 5px gray;
   border-radius: 20px;
@@ -109,17 +109,15 @@ const WorkerList = ({ accounts, contract, name, workers, wpinfo }) => {
     setContractready(false);
   };
 
-  const makeCustomWorker = (async() => {
+  const makeCustomWorker = async () => {
     let temp = [];
 
-    for (let x = 0 ; x < workers[0].length ; x++) {
-      temp.push([
-        workers[0][x], decodeURI(workers[1][x])
-      ])
+    for (let x = 0; x < workers[0].length; x++) {
+      temp.push([workers[0][x], decodeURI(workers[1][x])]);
     }
     setCustomworkers(temp);
     setReady(true);
-  });
+  };
 
   const getLaborContract = async () => {
     try {
@@ -163,7 +161,7 @@ const WorkerList = ({ accounts, contract, name, workers, wpinfo }) => {
       )}
 
       {/* 좌측 카테고리 */}
-      <Categories name={name} wpname={wpinfo[1]}/>
+      <Categories name={name} wpname={wpinfo[1]} />
 
       {/* 근로자 목록 */}
       <Content>

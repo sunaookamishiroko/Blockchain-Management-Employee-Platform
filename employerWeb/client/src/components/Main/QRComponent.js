@@ -1,7 +1,14 @@
 import React from "react";
 import styled from "styled-components";
+import QRCode from 'qrcode.react';
+/*
+QR 코드를 보여주는 컴포넌트 입니다.
+*/
 
-const Box = styled.div`
+const StyledQRComponent = styled.div`
+display:flex;
+align-items:center;
+flex-direction:column;
   width: 294px;
   height: 300px;
   box-shadow: 5px 5px 5px 5px gray;
@@ -11,10 +18,15 @@ const Box = styled.div`
 `;
 
 const QRComponent = () => {
+  const QRValue = Math.random(1,100);
   return (
-    <Box>
+    <StyledQRComponent>
       <h2 style={{ textAlign: "center" }}>QR 코드 인증</h2>
-    </Box>
+      {/* value에 url을 쏴줄 것 
+      string 값도 가능*/}
+      <h1>{QRValue}</h1>
+      <QRCode value={QRValue.toString()}/>
+    </StyledQRComponent>
   );
 };
 

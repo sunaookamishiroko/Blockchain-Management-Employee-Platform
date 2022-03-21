@@ -7,7 +7,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 const Calendar = ({ attendance }) => {
   return (
     <FullCalendar
-      contentHeight={560}
+      contentHeight={600}
       plugins={[dayGridPlugin, bootstrap5Plugin]}
       initialView="dayGridMonth"
       events={attendance}

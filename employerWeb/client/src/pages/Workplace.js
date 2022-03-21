@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Categories from "../Categories/Categories";
+import Categories from "../components/Categories/Categories";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -38,14 +38,13 @@ const Item = styled.div`
 `;
 
 const Workplace = ({ accounts, contract, name, wpinfo }) => {
-
   const [workplaceinfo, setWorkplaceinfo] = useState();
-  
+
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     getWorkplaceinfo();
-  }, [])
+  }, []);
 
   const workplace = [
     "img/cgv.png",
@@ -60,33 +59,35 @@ const Workplace = ({ accounts, contract, name, wpinfo }) => {
     "",
   ];
 
-  const getWorkplaceinfo = (async () => {
+  const getWorkplaceinfo = async () => {
     try {
-      const workplaceinfo = await contract.methods.getWorkplaces().call({ from: accounts[0] });
+      const workplaceinfo = await contract.methods
+        .getWorkplaces()
+        .call({ from: accounts[0] });
       console.log(workplaceinfo);
       setWorkplaceinfo(workplaceinfo);
-    } catch(e) {
+    } catch (e) {
       console.log(e);
     }
 
     setReady(true);
-  })
+  };
 
   return (
     <Container>
-      <Categories name={name} wpname={wpinfo[1]}/>
+      <Categories name={name} wpname={wpinfo[1]} />
       {!ready && <p>잠시만 기다려주세요... </p>}
       {ready && (
         <Content>
-        {workplace.map((c, i) => (
-          <Item>
-            <img
-              style={{ objectFit: "cover", width: "100%", height: "100%" }}
-              src={c}
-              alt={i}
-            />
-          </Item>
-        ))}
+          {workplace.map((c, i) => (
+            <Item>
+              <img
+                style={{ objectFit: "cover", width: "100%", height: "100%" }}
+                src={c}
+                alt={i}
+              />
+            </Item>
+          ))}
         </Content>
       )}
     </Container>
