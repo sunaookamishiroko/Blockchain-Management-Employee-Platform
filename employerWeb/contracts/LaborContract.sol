@@ -28,6 +28,7 @@ contract LaborContract {
     string name;
     uint age;
     string gender;
+    careerst career;
   }
 
   // 사업장 정보
@@ -60,6 +61,12 @@ contract LaborContract {
     string wage;              // 임금(시급)
     string wageday;           // 임금지급일
     string comment;           // 기타사항
+  }
+
+  struct careerst {
+    string [] name;
+    string [] startDay;
+    string [] endDay;
   }
   
   // struct 배열 선언부
@@ -374,5 +381,11 @@ contract LaborContract {
     }
 
   }
+
+  function deleteEmployee(address employeeAddress) public {
+
+  }
+
+
 
 } 
