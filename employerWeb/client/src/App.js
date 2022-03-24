@@ -1,6 +1,7 @@
 import React, { Component, useEffect, useState } from "react";
 import ERC20Contract from "./contracts/ERC20.json";
 import LaborContract from "./contracts/LaborContract.json";
+import ERC721Contract from "./contracts/ERC721.json";
 import getWeb3 from "./getWeb3";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
@@ -18,6 +19,7 @@ const App = () => {
   const [accounts, setAccounts] = useState();
   const [contract, setContract] = useState();
   const [tokencontract, setTokencontract] = useState();
+  const [nftcontract, setNftcontract] = useState();
 
   const [name, setName] = useState();
   const [workers, setWorkers] = useState();
@@ -58,6 +60,13 @@ const App = () => {
         TokenDeployNetwork && TokenDeployNetwork.address
       );
 
+      // ERC20 abi 설정
+      const NftDeployNetwork = ERC721Contract.networks[networkId];
+      const Nftinstance = new web3.eth.Contract(
+        ERC721Contract.abi,
+        NftDeployNetwork && NftDeployNetwork.address
+      );
+
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
 
@@ -65,6 +74,7 @@ const App = () => {
       setAccounts(accounts);
       setContract(instance);
       setTokencontract(Tokeninstance);
+      setNftcontract(Nftinstance);
     } catch (error) {
       alert(`web3, accounts, contract를 로드하는데 실패했습니다.`);
       console.error(error);
@@ -105,7 +115,7 @@ const App = () => {
   };
 
   // Test 데이터 설정중에는 !ready -> !loginready로 바꿔줍니다
-  if (!ready) {
+  if (!loginready) {
     return <div>메타마스크 로그인, web3, 초기정보 설정중 ...</div>;
   } else {
     return (
@@ -180,6 +190,7 @@ const App = () => {
               accounts={accounts}
               contract={contract}
               tokencontract={tokencontract}
+              nftcontract={nftcontract}
             />
           }
         />

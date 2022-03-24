@@ -103,13 +103,19 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      */
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
         require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
-        
-        return "";
+
+        string memory baseURI = _baseURI();
+        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString())) : "";
     }
 
+    
     function tokenInfo(uint256 tokenId) public view returns (nftinfo memory) {
         require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
         return _nftinfo[tokenId];
+    }
+
+    function allTokenInfo(address addresss) public view returns (uint [] memory) {
+        return _allbalances[addresss];
     }
 
     /**
@@ -277,9 +283,9 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
         newNftinfo.classfynum = classfynum;
         newNftinfo.comment = comment;
 
-        _balances[to] += 1;
-        _allbalances[to].push(_tokenId);
-        _owners[_tokenId] = to;
+        _balances[msg.sender] += 1;
+        _allbalances[msg.sender].push(_tokenId);
+        _owners[_tokenId] = msg.sender;
 
         _transfer(msg.sender, to, _tokenId);
 

@@ -4,6 +4,6 @@ var Labor = artifacts.require("./LaborContract.sol");
 
 module.exports = function(deployer) {
   deployer.deploy(ERC20,"Money", "WON");
-  deployer.deploy(ERC721,"Badge", "BDG");
+  //deployer.deploy(ERC721,"Badge", "BDG");
   deployer.deploy(Labor);
 };
