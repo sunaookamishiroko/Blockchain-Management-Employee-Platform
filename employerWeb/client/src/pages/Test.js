@@ -76,7 +76,7 @@ class Test extends Component {
       encodeURI("없음")
     ];
 
-    await contract.methods.uploadLaborContract(items, accounts[0], 0).send({ from: accounts[0] });
+    await contract.methods.uploadLaborContract(items, "2022-03-01", accounts[0], 0).send({ from: accounts[0] });
     console.log("uploadLaborContract complete");
   };
 
@@ -93,6 +93,13 @@ class Test extends Component {
     const response = await contract.methods.getLaborContract(0, "0x73fA89eDbc136AA1eC77a729D3409c760F631dcf").call({ from: accounts[0] });
     console.log(response);
   };
+
+  // 근로자의 모든 근로계약서 index 조회
+  getAllLaborContract = async () => {
+    const { accounts, contract } = this.props;
+    const response = await contract.methods.getAllLaborContract(accounts[0]).call({ from: accounts[0] });
+    console.log(response);
+  }
 
   //////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
@@ -126,6 +133,12 @@ class Test extends Component {
     const response = await contract.methods.getAllAttendance(0, 1).call({ from: accounts[0] });
     console.log(response);
   };
+
+  deleteEmployee = async () => {
+    const { accounts, contract } = this.props;
+    const response = await contract.methods.deleteEmployee(0, "0xbE0A2A3894033297F92D632046D98FE5e80cB3fB", "2022-04-05").send({ from: accounts[0] });
+    console.log(response);
+  }
 
   //////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
@@ -209,6 +222,38 @@ class Test extends Component {
   //////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
+  // nft 생성
+  nft_mint = async () => {
+    const { accounts, nftcontract } = this.props;
+    await nftcontract.methods._mint("0xbE0A2A3894033297F92D632046D98FE5e80cB3fB", 0, "2022/03/무지각").send({ from: accounts[0] });
+    console.log("nft_mint complete");
+  }
+
+  // nft 잔고
+  nft_balanceOf = async () => {
+    const { accounts, nftcontract } = this.props;
+    const response = await nftcontract.methods.balanceOf(accounts[0]).call({ from: accounts[0] });
+    console.log(response);
+  }
+
+  // nft tokeninfo
+  nft_tokenInfo = async () => {
+    const { accounts, nftcontract } = this.props;
+    const response = await nftcontract.methods.tokenInfo(0).call({ from: accounts[0] });
+    console.log(response);
+  }
+
+  // nft alltokeninfo
+  nft_allTokenInfo = async () => {
+    const { accounts, nftcontract } = this.props;
+    const response = await nftcontract.methods.allTokenInfo(accounts[0]).call({ from: accounts[0] });
+    console.log(response);
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
   
   render() {
     return (
@@ -224,6 +269,8 @@ class Test extends Component {
         <button onClick={this.uploadLaborContract}>uploadLaborContract</button>
         <button onClick={this.getLaborContract0}>getLaborContract(근로자)</button>
         <button onClick={this.getLaborContract1}>getLaborContract(사업주)</button>
+        <button onClick={this.getAllLaborContract}>getAllLaborContract</button>
+        <button onClick={this.deleteEmployee}>deleteEmployee</button>
         <h4>출퇴근 업로드 / 조회</h4>
         <button onClick={this.uploadAttendance0}>uploadAttendance(출근)</button>
         <button onClick={this.uploadAttendance1}>uploadAttendance(퇴근)</button>
@@ -241,6 +288,11 @@ class Test extends Component {
         <button onClick={this.mint}>mint</button>
         <button onClick={this.balanceOf}>balanceOf</button>
         <button onClick={this.transfer}>transfer</button>
+        <h4>nft 함수</h4>
+        <button onClick={this.nft_mint}>nft_mint</button>
+        <button onClick={this.nft_balanceOf}>nft_balanceOf</button>
+        <button onClick={this.nft_tokenInfo}>nft_tokenInfo</button>
+        <button onClick={this.nft_allTokenInfo}>nft_allTokenInfo</button>
       </div>
     );
   }
