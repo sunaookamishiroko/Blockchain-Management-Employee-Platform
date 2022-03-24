@@ -5,10 +5,10 @@ pragma solidity ^0.8.0;
 import "./IERC721.sol";
 import "./IERC721Receiver.sol";
 import "./IERC721Metadata.sol";
-import "./Context.sol";
-import "./ERC165.sol";
-import "./Strings.sol";
 import "./Address.sol";
+import "./Context.sol";
+import "./Strings.sol";
+import "./ERC165.sol";
 
 /**
  * @dev Implementation of https://eips.ethereum.org/EIPS/eip-721[ERC721] Non-Fungible Token Standard, including
@@ -25,20 +25,11 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     // Token symbol
     string private _symbol;
 
-    uint private _tokenId = 0;
-    
-    struct nftinfo {
-        uint classfynum; // 0 : 지각 1 : 장기 근속 2 : 친절
-        string comment;
-    }
-
     // Mapping from token ID to owner address
     mapping(uint256 => address) private _owners;
 
     // Mapping owner address to token count
     mapping(address => uint256) private _balances;
-
-    mapping(address => uint256 []) private _allbalances;
 
     // Mapping from token ID to approved address
     mapping(uint256 => address) private _tokenApprovals;
@@ -46,9 +37,8 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     // Mapping from owner to operator approvals
     mapping(address => mapping(address => bool)) private _operatorApprovals;
 
-    mapping(uint256 => nftinfo) private _nftinfo;
+    mapping(address => uint[] ) private _allTokens;
 
-    
     /**
      * @dev Initializes the contract by setting a `name` and a `symbol` to the token collection.
      */
@@ -84,6 +74,10 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
         return owner;
     }
 
+    function getAllTokens(address owner) public view returns (uint [] memory) {
+        return _allTokens[owner];
+    }
+
     /**
      * @dev See {IERC721Metadata-name}.
      */
@@ -106,16 +100,6 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
 
         string memory baseURI = _baseURI();
         return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString())) : "";
-    }
-
-    
-    function tokenInfo(uint256 tokenId) public view returns (nftinfo memory) {
-        require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
-        return _nftinfo[tokenId];
-    }
-
-    function allTokenInfo(address addresss) public view returns (uint [] memory) {
-        return _allbalances[addresss];
     }
 
     /**
@@ -259,6 +243,35 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
         return (spender == owner || getApproved(tokenId) == spender || isApprovedForAll(owner, spender));
     }
 
+    /**
+     * @dev Safely mints `tokenId` and transfers it to `to`.
+     *
+     * Requirements:
+     *
+     * - `tokenId` must not exist.
+     * - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.
+     *
+     * Emits a {Transfer} event.
+     */
+    function _safeMint(address to, uint256 tokenId) internal virtual {
+        _safeMint(to, tokenId, "");
+    }
+
+    /**
+     * @dev Same as {xref-ERC721-_safeMint-address-uint256-}[`_safeMint`], with an additional `data` parameter which is
+     * forwarded in {IERC721Receiver-onERC721Received} to contract recipients.
+     */
+    function _safeMint(
+        address to,
+        uint256 tokenId,
+        bytes memory _data
+    ) internal virtual {
+        _mint(to, tokenId);
+        require(
+            _checkOnERC721Received(address(0), to, tokenId, _data),
+            "ERC721: transfer to non ERC721Receiver implementer"
+        );
+    }
 
     /**
      * @dev Mints `tokenId` and transfers it to `to`.
@@ -272,26 +285,17 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      *
      * Emits a {Transfer} event.
      */
-    function _mint(address to, uint classfynum, string calldata comment) public {
+    function _mint(address to, uint256 tokenId) internal virtual {
         require(to != address(0), "ERC721: mint to the zero address");
-        require(!_exists(_tokenId), "ERC721: token already minted");
+        require(!_exists(tokenId), "ERC721: token already minted");
 
         //_beforeTokenTransfer(address(0), to, tokenId);
 
-        nftinfo storage newNftinfo = _nftinfo[_tokenId];
+        _balances[to] += 1;
+        _owners[tokenId] = to;
+         _allTokens[to].push(tokenId);
 
-        newNftinfo.classfynum = classfynum;
-        newNftinfo.comment = comment;
-
-        _balances[msg.sender] += 1;
-        _allbalances[msg.sender].push(_tokenId);
-        _owners[_tokenId] = msg.sender;
-
-        _transfer(msg.sender, to, _tokenId);
-
-        _tokenId++;
-
-        emit Transfer(address(0), to, _tokenId);
+        emit Transfer(address(0), to, tokenId);
     }
 
     /**
@@ -307,7 +311,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     function _burn(uint256 tokenId) internal virtual {
         address owner = ERC721.ownerOf(tokenId);
 
-        _beforeTokenTransfer(owner, address(0), tokenId);
+        //_beforeTokenTransfer(owner, address(0), tokenId);
 
         // Clear approvals
         _approve(address(0), tokenId);
@@ -337,22 +341,13 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
         require(ERC721.ownerOf(tokenId) == from, "ERC721: transfer of token that is not own");
         require(to != address(0), "ERC721: transfer to the zero address");
 
-        _beforeTokenTransfer(from, to, tokenId);
+        //_beforeTokenTransfer(from, to, tokenId);
 
         // Clear approvals from the previous owner
         _approve(address(0), tokenId);
 
         _balances[from] -= 1;
-        
-        for(uint x = 0; x < _allbalances[from].length ; x++) {
-            if (tokenId == _allbalances[from][x]) {
-                delete _allbalances[from][x];
-                break;
-            }
-        }
-
         _balances[to] += 1;
-        _allbalances[to].push(tokenId);
         _owners[tokenId] = to;
 
         emit Transfer(from, to, tokenId);
@@ -415,9 +410,12 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      *
      * To learn more about hooks, head to xref:ROOT:extending-contracts.adoc#using-hooks[Using Hooks].
      */
+
+     
     function _beforeTokenTransfer(
         address from,
         address to,
         uint256 tokenId
-    ) internal virtual {}
+    ) internal virtual {
+    }
 }

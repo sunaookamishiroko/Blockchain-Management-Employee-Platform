@@ -225,7 +225,7 @@ class Test extends Component {
   // nft 생성
   nft_mint = async () => {
     const { accounts, nftcontract } = this.props;
-    await nftcontract.methods._mint("0xbE0A2A3894033297F92D632046D98FE5e80cB3fB", 0, "2022/03/무지각").send({ from: accounts[0] });
+    await nftcontract.methods.mintNFT("0xbE0A2A3894033297F92D632046D98FE5e80cB3fB", "naver.com").send({ from: accounts[0] });
     console.log("nft_mint complete");
   }
 
@@ -237,16 +237,16 @@ class Test extends Component {
   }
 
   // nft tokeninfo
-  nft_tokenInfo = async () => {
+  nft_tokenURI = async () => {
     const { accounts, nftcontract } = this.props;
-    const response = await nftcontract.methods.tokenInfo(0).call({ from: accounts[0] });
+    const response = await nftcontract.methods.tokenURI(0).call({ from: accounts[0] });
     console.log(response);
   }
 
   // nft alltokeninfo
   nft_allTokenInfo = async () => {
     const { accounts, nftcontract } = this.props;
-    const response = await nftcontract.methods.allTokenInfo(accounts[0]).call({ from: accounts[0] });
+    const response = await nftcontract.methods.getAllTokens(accounts[0]).call({ from: accounts[0] });
     console.log(response);
   }
 
@@ -291,7 +291,7 @@ class Test extends Component {
         <h4>nft 함수</h4>
         <button onClick={this.nft_mint}>nft_mint</button>
         <button onClick={this.nft_balanceOf}>nft_balanceOf</button>
-        <button onClick={this.nft_tokenInfo}>nft_tokenInfo</button>
+        <button onClick={this.nft_tokenURI}>nft_tokenInfo</button>
         <button onClick={this.nft_allTokenInfo}>nft_allTokenInfo</button>
       </div>
     );

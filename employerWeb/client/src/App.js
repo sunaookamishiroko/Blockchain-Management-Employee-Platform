@@ -1,7 +1,7 @@
 import React, { Component, useEffect, useState } from "react";
 import ERC20Contract from "./contracts/ERC20.json";
 import LaborContract from "./contracts/LaborContract.json";
-import ERC721Contract from "./contracts/ERC721.json";
+import ERC721Contract from "./contracts/myNFT.json";
 import getWeb3 from "./getWeb3";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
