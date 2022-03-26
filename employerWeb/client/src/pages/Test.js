@@ -2,6 +2,7 @@ import React, { Component } from "react";
 //import { firestore } from "./firebase.js";
 //import { collection, addDoc } from "firebase/firestore";
 
+const axios = require("axios");
 
 class Test extends Component {
   
@@ -254,6 +255,70 @@ class Test extends Component {
   //////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
+  pinjsontoipfs = async() => {
+    const url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`;
+
+    let JSONBody = {
+      pinataMetadata: {
+        name: '1',
+        keyvalues: {
+            owner: '0x35fD6bb34a38CC6746889FF976Fc05C3Ce3Fa236',
+        }
+      },
+      pinataContent: {
+        "attributes": [
+          {
+            "trait_type": "Breed",
+            "value": "Maltipoo"
+          },
+          {
+            "trait_type": "Eye color",
+            "value": "Mocha"
+          }
+        ],
+        "description": "sss",
+        "image": "https://gateway.pinata.cloud/ipfs/Qme4tAfoB1RhF7jmCZgXmurCQHF1Uc5dgXD4ZLb41owVhn",
+        "name": "ccc"
+      }
+    }
+    return axios
+        .post(url, JSONBody, {
+            headers: {
+                pinata_api_key: "",
+                pinata_secret_api_key: ""
+            }
+        })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+  }
+
+  getpin = async() => {
+    const url = `https://api.pinata.cloud/data/pinList?status=pinned&metadata[keyvalues]={"owner":{"value":"0x35fD6bb34a38CC6746889FF976Fc05C3Ce3Fa236", "op":"eq"}}`;
+
+    return axios
+        .get(url, {
+            headers: {
+                pinata_api_key: "",
+                pinata_secret_api_key: ""
+            }
+        })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
   
   render() {
     return (
@@ -293,6 +358,9 @@ class Test extends Component {
         <button onClick={this.nft_balanceOf}>nft_balanceOf</button>
         <button onClick={this.nft_tokenURI}>nft_tokenInfo</button>
         <button onClick={this.nft_allTokenInfo}>nft_allTokenInfo</button>
+        <h4>pinata test</h4>
+        <button onClick={this.pinjsontoipfs}>pinjsontoipfs</button>
+        <button onClick={this.getpin}>getpin</button>
       </div>
     );
   }
