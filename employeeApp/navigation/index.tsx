@@ -17,6 +17,7 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import TabThreeScreen from '../screens/TabThreeScreen';
+import TabFourScreen from '../screens/TabFourScreen';
 import AttendancePayScreen from '../screens/AttendancePayScreen';
 import LaborContractScreen from '../screens/LaborContractScreen';
 import AttendanceCheckScreen from '../screens/AttendanceCheckScreen';
@@ -119,6 +120,28 @@ function BottomTabNavigator() {
         name="TabThree"
         component={TabThreeScreen}
         options={({ navigation }: RootTabScreenProps<'TabThree'>) => ({
+          title: '나의 보상',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerRight: () => (
+            <Pressable
+              onPress={() => navigation.navigate('NotificationModal')}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+              })}>
+              <Ionicons
+                name="notifications"
+                size={27}
+                color={Colors[colorScheme].text}
+                style={{ marginRight: 15 }}
+              />
+            </Pressable>
+          ),
+        })}
+      />
+      <BottomTab.Screen
+        name="TabFour"
+        component={TabFourScreen}
+        options={({ navigation }: RootTabScreenProps<'TabFour'>) => ({
           title: '프로필',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (

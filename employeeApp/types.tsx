@@ -32,6 +32,7 @@ export type RootTabParamList = {
   TabOne: undefined;
   TabTwo: undefined;
   TabThree: undefined;
+  TabFour: undefined;
   LaborContractScreen: any;
   AttendancePayScreen: any;
   NotificationModal: any;

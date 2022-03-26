@@ -30,6 +30,11 @@ const linking: LinkingOptions<RootStackParamList> = {
               TabThreeScreen: 'three',
             },
           },
+          TabFour: {
+            screens: {
+              TabFourScreen: 'four',
+            },
+          },
         },
       },
       AttendancePayScreen: 'AttendancePayScreen',
