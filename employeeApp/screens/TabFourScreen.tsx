@@ -53,7 +53,8 @@ export default function TabFourScreen() {
     setPersonalinfo([
       decodeURI(result[1]),
       ethers.utils.formatUnits(result[2], 0),
-      decodeURI(result[3])
+      decodeURI(result[3]),
+      result[4]
     ])
     setReady(true);
   })
@@ -104,6 +105,7 @@ export default function TabFourScreen() {
           <TouchableOpacity onPress={killSession} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>Logout</Text>
           </TouchableOpacity>
+          <Text>경력 : {personalinfo[3]}</Text>
         </>
       )}
     </View>
