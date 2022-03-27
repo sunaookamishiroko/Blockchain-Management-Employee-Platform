@@ -61,7 +61,7 @@ export default function TabTwoScreen({navigation} : RootTabScreenProps<'TabTwo'>
             <Text>{decodeURI(callresult[1][x])}</Text>
             <Text>{decodeURI(callresult[2][x])}</Text>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('LaborContractViewScreen', { index })}>
+              <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('LaborContractViewScreen', { index : index, classify : 0 })}>
                 <Text style={styles.buttonTextStyle}>근로계약서</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('CheckAttendancePayScreen', { index })}>

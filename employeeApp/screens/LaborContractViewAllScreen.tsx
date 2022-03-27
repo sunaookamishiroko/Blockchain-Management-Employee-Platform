@@ -33,9 +33,23 @@ export default function LaborContractViewAllScreen({navigation} : RootTabScreenP
     let result = await laborContract.getAllLaborContract(connector.accounts[0], { from : connector.accounts[0] });
     console.log(result);
 
-    setCallresult(result);
+    let temp = [];
+
+    for(let x = 0 ; x < result.length ; x++) {
+      let contract = await laborContract.getLaborContract2(ethers.utils.formatUnits(result[x], 0), { from : connector.accounts[0] });
+      let wpinfo = await laborContract.getWorkplcesInfo(ethers.utils.formatUnits(contract[0], 0), { from : connector.accounts[0] });
+      console.log(wpinfo);
+      temp.push(
+        [ 
+          decodeURI(wpinfo[0]), 
+          decodeURI(wpinfo[1]), 
+          ethers.utils.formatUnits(result[x], 0)
+        ]
+      );
+    }
+
+    setCallresult(temp);
     setReady(true);
-    
   })
 
   // 렌더링 하기 위해 배치작업
@@ -43,13 +57,12 @@ export default function LaborContractViewAllScreen({navigation} : RootTabScreenP
     let workplaceInfo = [];
 
     for (let x = 0 ; x < callresult.length; x++) {
-      let index = ethers.utils.formatUnits(callresult[x], 0);
-      
       workplaceInfo.push(
-        <View style={styles.container} key={x}>
-            <Text>{index}</Text>
+        <View key={x}>
+            <Text>{callresult[x][0]}</Text>
+            <Text>{callresult[x][1]}</Text>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('LaborContractViewScreen', { index })}>
+              <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('LaborContractViewScreen', { index : callresult[x][2], classify : 1})}>
                 <Text style={styles.buttonTextStyle}>자세히 보기</Text>
               </TouchableOpacity>
             </View>
