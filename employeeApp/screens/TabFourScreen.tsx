@@ -25,7 +25,7 @@ const shortenAddress = (address: string) => {
 export default function TabFourScreen() {
 
   const [personalinfo, setPersonalinfo] = useState<string[]>([]);
-  const [ready, setReady] = useState<boolean>(false);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     if (connector.connected) {
@@ -50,13 +50,19 @@ export default function TabFourScreen() {
     let result = await laborContract.getPersonInformation(connector.accounts[0], { from : connector.accounts[0] });
     console.log(result);
 
-    setPersonalinfo([
+    if (result[1] == "0") {
+      setReady(null);
+    } else {
+      setPersonalinfo([
       decodeURI(result[1]),
       ethers.utils.formatUnits(result[2], 0),
       decodeURI(result[3]),
       result[4]
-    ])
-    setReady(true);
+      ])
+      setReady(true);
+    }
+
+    
   })
 
   // 개인정보 업로드
@@ -88,12 +94,17 @@ export default function TabFourScreen() {
           <Text style={styles.buttonTextStyle}>Connect a Wallet</Text>
         </TouchableOpacity>
       )}
-      {connector.connected && !ready && (
+      {connector.connected && ready == false && (
+        <>
+          <Text>잠시만 기다려주세요...</Text>
+        </>
+      )}
+      {connector.connected && ready == null && (
         <>
           <TouchableOpacity onPress={uploadPersonalInfo} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>개인정보 업로드</Text>
           </TouchableOpacity>
-          <Text>잠시만 기다려주세요...</Text>
+          <Text>개인 정보가 없습니다.</Text>
         </>
       )}
       {(connector.connected && ready) && (

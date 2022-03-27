@@ -38,8 +38,15 @@ export default function TabTwoScreen({navigation} : RootTabScreenProps<'TabTwo'>
   const getWorkplace = (async() => {
     let result = await laborContract.getWorkplaces({ from : connector.accounts[0] });
     console.log(result);
-    setCallresult(result);
-    setReady(true);
+    if(result[0].length == 0) {
+      setCallresult(result);
+      setReady(null);
+    } else {
+      setCallresult(result);
+      setReady(true);
+    }
+
+    
   })
 
   // 렌더링 하기 위해 배치작업
@@ -74,9 +81,14 @@ export default function TabTwoScreen({navigation} : RootTabScreenProps<'TabTwo'>
           <Text style={styles.buttonTextStyle}>Connect a Wallet</Text>
         </TouchableOpacity>
       )}
-      {connector.connected && !ready && (
+      {connector.connected && ready == false && (
         <>
           <Text>잠시만 기다려주세요...</Text>
+        </>
+      )}
+      {connector.connected && ready == null && (
+        <>
+          <Text>근무지가 존재하지 않습니다.</Text>
         </>
       )}
       {(connector.connected && ready) && (

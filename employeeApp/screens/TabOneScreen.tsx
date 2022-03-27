@@ -90,12 +90,12 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           <Text style={styles.buttonTextStyle}>Connect a Wallet</Text>
         </TouchableOpacity>
       )}
-      {connector.connected && !ready &&(
+      {connector.connected && ready == false &&(
         <>
           <Text>잠시만 기다려주세요...</Text>
         </>
       )}
-      {connector.connected && null &&(
+      {connector.connected && ready == null &&(
         <>
           <Text>근무지가 존재하지 않습니다.</Text>
         </>

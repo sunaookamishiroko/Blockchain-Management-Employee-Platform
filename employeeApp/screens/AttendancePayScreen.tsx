@@ -211,7 +211,7 @@ export default function AttendancePayScreen({ navigation, route }: RootTabScreen
   return (
     <ScrollView>
       <View style={styles.container}>
-      {!calready && !wageready && (
+      {calready == false && wageready == false && (
         <Text>잠시만 기다려주세요...</Text>
       )}
       {calready == null && wageready == null &&(
