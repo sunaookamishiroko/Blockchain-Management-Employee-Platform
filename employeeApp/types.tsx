@@ -20,6 +20,7 @@ export type RootStackParamList = {
   NotificationModal: any;
   SendLaborContractScreen: any;
   SendAttendanceScreen: any;
+  LaborContractViewAllScreen: any;
   NotFound: any;
 };
 
@@ -38,6 +39,7 @@ export type RootTabParamList = {
   NotificationModal: any;
   SendLaborContractScreen: any;
   SendAttendanceScreen: any;
+  LaborContractViewAllScreen: any;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<

@@ -19,7 +19,7 @@ const ITEM_HEIGHT = Math.round(ITEM_WIDTH * 3 / 4);
 
 // 근태 / 급여 조회
 
-export default function AttendancePayScreen({ navigation, route }: RootTabScreenProps<'AttendancePayScreen'>) {
+export default function CheckAttendancePayScreen({ navigation, route }: RootTabScreenProps<'AttendancePayScreen'>) {
 
   const [calready, setCalready] = useState<null | boolean>(false);
   const [wageready, setWageready] = useState<null | boolean>(false);

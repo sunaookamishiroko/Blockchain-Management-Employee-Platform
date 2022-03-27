@@ -20,6 +20,7 @@ import TabThreeScreen from '../screens/TabThreeScreen';
 import TabFourScreen from '../screens/TabFourScreen';
 import CheckAttendancePayScreen from '../screens/CheckAttendancePayScreen';
 import LaborContractViewScreen from '../screens/LaborContractViewScreen';
+import LaborContractViewAllScreen from '../screens/LaborContractViewAllScreen';
 import SendAttendanceScreen from '../screens/SendAttendanceScreen';
 import SendLaborContractScreen from '../screens/SendLaborContractScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
@@ -47,6 +48,7 @@ function RootNavigator() {
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Screen name="LaborContractViewScreen" component={LaborContractViewScreen} options={{ title: '근로계약서 조회' }} />
+      <Stack.Screen name="LaborContractViewAllScreen" component={LaborContractViewAllScreen} options={{ title: '모든 근로계약서 조회' }} />
       <Stack.Screen name="CheckAttendancePayScreen" component={CheckAttendancePayScreen} options={{ title: '근태 / 급여 조회' }} />
       <Stack.Screen name="SendAttendanceScreen" component={SendAttendanceScreen} options={{ title: '출근 / 퇴근' }} />
       <Stack.Screen name="SendLaborContractScreen" component={SendLaborContractScreen} options={{ title: '근로계약서 확인' }} />

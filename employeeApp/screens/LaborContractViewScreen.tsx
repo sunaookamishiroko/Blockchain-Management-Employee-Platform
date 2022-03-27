@@ -15,7 +15,7 @@ import { makeLabortxobj, infuraProvider, laborContract } from "../connectETH/Tra
 
 // 내 근무지
 
-export default function LaborContractScreen({ route }) {
+export default function LaborContractViewScreen({ route }) {
 
   const [ready, setReady] = useState<boolean>(false);
   const [contractdata, setContractdata] = useState<any[]>([]);

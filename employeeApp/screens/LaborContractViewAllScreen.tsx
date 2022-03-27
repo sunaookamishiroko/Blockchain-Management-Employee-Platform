@@ -16,36 +16,25 @@ import { makeLabortxobj, infuraProvider, laborContract } from "../connectETH/Tra
 
 // 근무지 정보
 
-export default function TabTwoScreen({navigation} : RootTabScreenProps<'TabTwo'>) {
+export default function LaborContractViewAllScreen({navigation} : RootTabScreenProps<'TabTwo'>) {
 
   const [ready, setReady] = useState<boolean>(false);
   const [callresult, setCallresult] = useState<string[]>([]);
   
   useEffect(() => {
-    if (connector.connected) {
-      getWorkplace();
-    }
+    getAllLaborContract();
   }, []);
 
   // walletconnect 세션을 저장하는 hook
   const connector = useWalletConnect();
 
-  const connectWallet = React.useCallback(() => {
-    return connector.connect();
-}, [connector]);
-
   // 근무지 불러오기
-  const getWorkplace = (async() => {
-    let result = await laborContract.getWorkplaces({ from : connector.accounts[0] });
+  const getAllLaborContract = (async() => {
+    let result = await laborContract.getAllLaborContract(connector.accounts[0], { from : connector.accounts[0] });
     console.log(result);
-    if(result[0].length == 0) {
-      setCallresult(result);
-      setReady(null);
-    } else {
-      setCallresult(result);
-      setReady(true);
-    }
 
+    setCallresult(result);
+    setReady(true);
     
   })
 
@@ -53,19 +42,15 @@ export default function TabTwoScreen({navigation} : RootTabScreenProps<'TabTwo'>
   const makeJsx = () => {
     let workplaceInfo = [];
 
-    for (let x = 0 ; x < callresult[1].length; x++) {
-      let index = ethers.utils.formatUnits(callresult[0][x], 0);
+    for (let x = 0 ; x < callresult.length; x++) {
+      let index = ethers.utils.formatUnits(callresult[x], 0);
+      
       workplaceInfo.push(
         <View style={styles.container} key={x}>
             <Text>{index}</Text>
-            <Text>{decodeURI(callresult[1][x])}</Text>
-            <Text>{decodeURI(callresult[2][x])}</Text>
             <View style={styles.buttonContainer}>
               <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('LaborContractViewScreen', { index })}>
-                <Text style={styles.buttonTextStyle}>근로계약서</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('CheckAttendancePayScreen', { index })}>
-                <Text style={styles.buttonTextStyle}>근태 / 급여</Text>
+                <Text style={styles.buttonTextStyle}>자세히 보기</Text>
               </TouchableOpacity>
             </View>
         </View>
@@ -77,11 +62,6 @@ export default function TabTwoScreen({navigation} : RootTabScreenProps<'TabTwo'>
 
   return (
     <View style={styles.container}>
-      {!connector.connected && (
-        <TouchableOpacity onPress={connectWallet} style={styles.buttonStyle}>
-          <Text style={styles.buttonTextStyle}>Connect a Wallet</Text>
-        </TouchableOpacity>
-      )}
       {connector.connected && ready == false && (
         <>
           <Text>잠시만 기다려주세요...</Text>
@@ -89,7 +69,7 @@ export default function TabTwoScreen({navigation} : RootTabScreenProps<'TabTwo'>
       )}
       {connector.connected && ready == null && (
         <>
-          <Text>근무지가 존재하지 않습니다.</Text>
+          <Text>근로계약서가 존재하지 않습니다.</Text>
         </>
       )}
       {(connector.connected && ready) && (

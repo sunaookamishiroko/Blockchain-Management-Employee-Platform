@@ -17,7 +17,7 @@ import { makeLabortxobj, infuraProvider, laborContract } from "../connectETH/Tra
 
 // 출근 퇴근하기
 
-export default function AttendanceCheckScreen({ navigation, route }: RootTabScreenProps<'AttendanceCheckScreen'>) {
+export default function SendAttendanceScreen({ navigation, route }: RootTabScreenProps<'AttendanceCheckScreen'>) {
   
   const [hasPermission, setHasPermission] = useState<null | boolean>(null);
   const [scanned, setScanned] = useState<boolean>(false);

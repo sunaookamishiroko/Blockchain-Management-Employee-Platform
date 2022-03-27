@@ -143,7 +143,7 @@ export default function TabFourScreen({navigation} : RootTabScreenProps<'TabFour
           <Text>성별 : {personalinfo[1]}</Text>
           <Text>나이 : {personalinfo[2]}</Text>
           <Text>내 잔액 : {mymoney}</Text>
-          <TouchableOpacity onPress={killSession} style={styles.buttonStyle}>
+          <TouchableOpacity onPress={() => navigation.navigate('LaborContractViewAllScreen')} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>근로계약서 모두 보기</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={killSession} style={styles.buttonStyle}>
