@@ -22,7 +22,7 @@ const Content = styled.div`
   width: 100%;
   height: auto;
 
-  box-shadow: 5px 5px 5px 5px gray;
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
   border-radius: 20px;
 
   background-color: #f7f7f7;

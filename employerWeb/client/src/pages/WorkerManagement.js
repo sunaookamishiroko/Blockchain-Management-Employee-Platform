@@ -9,11 +9,14 @@ import { DialogTitle } from "@mui/material";
 import Categories from "../components/Categories/Categories";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import WorkerList from "../components/WorkerList/WorkerList";
+import WorkerInformation from "../components/WorkerInformation/WorkerInformation";
 
 const Container = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+  background-color: #f5f8fb;
 `;
 
 const Content = styled.div`
@@ -23,7 +26,7 @@ const Content = styled.div`
   padding: 10px;
   width: 100%;
   height: auto;
-  box-shadow: 5px 5px 5px 5px gray;
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
   border-radius: 20px;
   background-color: #f7f7f7;
 
@@ -59,7 +62,7 @@ const CloseButton = styled.button`
   padding-right: 30px;
 `;
 
-const WorkerList = ({ accounts, contract, name, workers, wpinfo }) => {
+const WorkerManagement = ({ accounts, contract, name, workers, wpinfo }) => {
   const [open, setOpen] = useState(false);
 
   // 근로계약서 다이얼로그 상태
@@ -164,7 +167,13 @@ const WorkerList = ({ accounts, contract, name, workers, wpinfo }) => {
       <Categories name={name} wpname={wpinfo[1]} />
 
       {/* 근로자 목록 */}
-      <Content>
+      <WorkerList ready={ready} customworkers={customworkers} />
+
+      {/* 근로자 정보 */}
+      <WorkerInformation />
+
+      {/* TODO 나중에 지울 것 */}
+      {/* <Content>
         <h1> 근로자 목록 </h1>
         {!ready && <p>잠시만 기다려 주세요...</p>}
         {ready && (
@@ -175,10 +184,10 @@ const WorkerList = ({ accounts, contract, name, workers, wpinfo }) => {
               handleClickSettlement={handleClickSettlement}
             />
           </>
-        )}
-      </Content>
+        )} */}
+      {/* </Content> */}
     </Container>
   );
 };
 
-export default WorkerList;
+export default WorkerManagement;

@@ -6,7 +6,7 @@ import getWeb3 from "./getWeb3";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Main from "./pages/Main";
-import WorkerList from "./pages/WorkerList";
+import WorkerManagement from "./pages/WorkerManagement";
 import EnrollWorker from "./pages/EnrollWorker";
 import Settlement from "./pages/Settlement";
 import Payroll from "./pages/Payroll";
@@ -115,7 +115,7 @@ const App = () => {
   };
 
   // Test 데이터 설정중에는 !ready -> !loginready로 바꿔줍니다
-  if (!loginready) {
+  if (!ready) {
     return <div>메타마스크 로그인, web3, 초기정보 설정중 ...</div>;
   } else {
     return (
@@ -133,9 +133,9 @@ const App = () => {
           }
         />
         <Route
-          path="/list"
+          path="/manage"
           element={
-            <WorkerList
+            <WorkerManagement
               accounts={accounts}
               contract={contract}
               name={name}

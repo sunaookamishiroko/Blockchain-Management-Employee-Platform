@@ -13,7 +13,7 @@ const Container = styled.div`
 `;
 
 const Content = styled.div`
-  box-shadow: 5px 5px 5px 5px gray;
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
   border-radius: 20px;
   padding: 10px;
   margin: 30px;

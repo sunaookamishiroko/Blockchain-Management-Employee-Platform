@@ -13,7 +13,7 @@ const Content = styled.div`
   width: 100%;
   height: auto;
 
-  box-shadow: 5px 5px 5px 5px gray;
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
   border-radius: 20px;
 
   background-color: #f7f7f7;
@@ -94,7 +94,14 @@ const EnrollLabel = styled.label`
   }
 `;
 
-const EnrollContent = ({ name, onEnroll, wpinfo,onSubmit,onChange,onClickHandler }) => {
+const EnrollContent = ({
+  name,
+  onEnroll,
+  wpinfo,
+  onSubmit,
+  onChange,
+  onClickHandler,
+}) => {
   const [worker, setWorker] = useState({
     address: "",
     period1: "",
@@ -112,106 +119,103 @@ const EnrollContent = ({ name, onEnroll, wpinfo,onSubmit,onChange,onClickHandler
   };
 
   return (
-      <Content>
-        <h1> 근로자 등록 </h1>
-        <form className="Enroll" onSubmit={onSubmit}>
-          <div>
-            <LeftInput>
-              <EnrollLabel>
-                <h2> 이름 </h2>
-                <input
-                  placeholder="근로자 이름을 입력해주세요."
-                  name="name"
-                  onChange={onChange}
-                />
-              </EnrollLabel>
-              <EnrollLabel>
-                <h2>주소</h2>
-                <input
-                  placeholder="근로자 주소를 입력하세요"
-                  name="address"
-                  onChange={onChange}
-                />
-              </EnrollLabel>
-              <EnrollLabel>
-                <h2>계약기간</h2>
-                <div style={{ display: "flex", width: "auto" }}>
-                  <input type="date" name="period1" />
-                  <p
-                    style={{
-                      color: "#999999",
-                      fontFamily: "Noto Sans CJK KR",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    부터
-                  </p>
-                  <input type="date" name="period2" />
-                </div>
-              </EnrollLabel>
-              </LeftInput>
+    <Content>
+      <h1> 근로자 등록 </h1>
+      <form className="Enroll" onSubmit={onSubmit}>
+        <div>
+          <LeftInput>
+            <EnrollLabel>
+              <h2> 이름 </h2>
+              <input
+                placeholder="근로자 이름을 입력해주세요."
+                name="name"
+                onChange={onChange}
+              />
+            </EnrollLabel>
+            <EnrollLabel>
+              <h2>주소</h2>
+              <input
+                placeholder="근로자 주소를 입력하세요"
+                name="address"
+                onChange={onChange}
+              />
+            </EnrollLabel>
+            <EnrollLabel>
+              <h2>계약기간</h2>
+              <div style={{ display: "flex", width: "auto" }}>
+                <input type="date" name="period1" />
+                <p
+                  style={{
+                    color: "#999999",
+                    fontFamily: "Noto Sans CJK KR",
+                    fontWeight: "bold",
+                  }}
+                >
+                  부터
+                </p>
+                <input type="date" name="period2" />
+              </div>
+            </EnrollLabel>
+          </LeftInput>
 
-            <RightInput>
-              
+          <RightInput>
+            <EnrollLabel>
+              <h2> 업무 내용 </h2>
+              <input
+                placeholder="업무 내용을 입력하세요"
+                name="duties"
+                onChange={onChange}
+              />
+            </EnrollLabel>
 
-              <EnrollLabel>
-                <h2> 업무 내용 </h2>
-                <input
-                  placeholder="업무 내용을 입력하세요"
-                  name="duties"
-                  onChange={onChange}
-                />
-              </EnrollLabel>
-
-              <EnrollLabel>
-                <h2> 소정 근로 시간 </h2>
-                <input
-                  placeholder="소정 근로 시간을 입력하세요"
-                  name="workingTime"
-                  onChange={onChange}
-                />
-              </EnrollLabel>
-              <EnrollLabel>
-                <h2> 근무일 </h2>
-                <input
-                  placeholder="근무일을 입력하세요"
-                  name="workingDays"
-                  onChange={onChange}
-                />
-              </EnrollLabel>
-              <EnrollLabel>
-                <h2> 임금(시급) </h2>
-                <input
-                  placeholder="임금(시급)을 입력하세요"
-                  name="wage"
-                  onChange={onChange}
-                />
-              </EnrollLabel>
-              <EnrollLabel>
-                <h2> 임금지급일 </h2>
-                <input
-                  placeholder="임금(시급)지급일을 입력하세요"
-                  name="wageday"
-                  onChange={onChange}
-                />
-              </EnrollLabel>
-              <EnrollLabel>
-                <h2> 기타사항 </h2>
-                <input
-                  placeholder="기타 사항을 입력하세요"
-                  name="comment"
-                  onChange={onChange}
-                />
-              </EnrollLabel>
-            </RightInput>
-          </div>
-          <SubmitDiv>
-            <button onClick={onClickHandler}>계약서 작성 요청 보내기</button>
-            <input type={"reset"} value="초기화"></input>
-          </SubmitDiv>
-        </form>
-      </Content>
-
+            <EnrollLabel>
+              <h2> 소정 근로 시간 </h2>
+              <input
+                placeholder="소정 근로 시간을 입력하세요"
+                name="workingTime"
+                onChange={onChange}
+              />
+            </EnrollLabel>
+            <EnrollLabel>
+              <h2> 근무일 </h2>
+              <input
+                placeholder="근무일을 입력하세요"
+                name="workingDays"
+                onChange={onChange}
+              />
+            </EnrollLabel>
+            <EnrollLabel>
+              <h2> 임금(시급) </h2>
+              <input
+                placeholder="임금(시급)을 입력하세요"
+                name="wage"
+                onChange={onChange}
+              />
+            </EnrollLabel>
+            <EnrollLabel>
+              <h2> 임금지급일 </h2>
+              <input
+                placeholder="임금(시급)지급일을 입력하세요"
+                name="wageday"
+                onChange={onChange}
+              />
+            </EnrollLabel>
+            <EnrollLabel>
+              <h2> 기타사항 </h2>
+              <input
+                placeholder="기타 사항을 입력하세요"
+                name="comment"
+                onChange={onChange}
+              />
+            </EnrollLabel>
+          </RightInput>
+        </div>
+        <SubmitDiv>
+          <button onClick={onClickHandler}>계약서 작성 요청 보내기</button>
+          <input type={"reset"} value="초기화"></input>
+        </SubmitDiv>
+      </form>
+    </Content>
   );
 };
 export default EnrollContent;

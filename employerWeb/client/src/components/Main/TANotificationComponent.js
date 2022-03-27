@@ -5,7 +5,7 @@ import styled from "styled-components";
 const TANotification = styled.div`
   width: 294px;
   height: 560px;
-  box-shadow: 5px 5px 5px 5px gray;
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
   border-radius: 20px;
   background-color: #f7f7f7;
 `;

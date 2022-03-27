@@ -39,7 +39,7 @@ const LeftMenu = styled.div`
 const Information = styled.div`
   width: 762px;
   height: 150px;
-  box-shadow: 5px 5px 5px 5px gray;
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
   border-radius: 20px;
   padding: 20px;
   background-color: #f7f7f7;
@@ -56,7 +56,7 @@ const Information = styled.div`
 // const Calendar = styled.div`
 //   width: 762px;
 //   height: 702px;
-//   box-shadow: 5px 5px 5px 5px gray;
+//    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
 //   border-radius: 20px;
 //   padding: 20px;
 //   background-color: #f7f7f7;
@@ -65,7 +65,7 @@ const Information = styled.div`
 const History = styled.div`
   width: 606px;
   height: 950px;
-  box-shadow: 5px 5px 5px 5px gray;
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
   border-radius: 20px;
   padding: 20px;
   background-color: #f7f7f7;
@@ -102,45 +102,47 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
   useEffect(() => {
     getAttendance();
     getDetail();
-  }, [indexready])
+  }, [indexready]);
 
-  const getWorkerindex = (async () => {
+  const getWorkerindex = async () => {
     let response;
     try {
-      response = await contract.methods.getIndexOfEmployee(wpinfo[0], workerinfo["address"]).call({ from: accounts[0] });
-    } catch(e) {
+      response = await contract.methods
+        .getIndexOfEmployee(wpinfo[0], workerinfo["address"])
+        .call({ from: accounts[0] });
+    } catch (e) {
       console.log(e);
     }
 
     setWorkerindex(response);
     setIndexready(true);
-  })
+  };
 
-  const getAttendance = (async () => {
+  const getAttendance = async () => {
     let event = [];
     let caldata;
     try {
-      caldata = await contract.methods.getAllAttendance(wpinfo[0], workerindex).call({ from: accounts[0] });
+      caldata = await contract.methods
+        .getAllAttendance(wpinfo[0], workerindex)
+        .call({ from: accounts[0] });
 
       if (caldata[0].length == caldata[3].length) {
-
-        for (let y = 0 ; y < caldata[0].length; y++) {
+        for (let y = 0; y < caldata[0].length; y++) {
           event.push({
             title: "출근",
             start: caldata[0][y],
             color: "#00FF00",
             display: "list-item",
-          })
+          });
         }
-
       } else {
-        for (let y = 0 ; y < caldata[0].length - 1; y++) {
+        for (let y = 0; y < caldata[0].length - 1; y++) {
           event.push({
             title: "출근",
             start: caldata[0][y],
             color: "#00FF00",
             display: "list-item",
-          })
+          });
         }
 
         event.push({
@@ -148,25 +150,22 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
           start: caldata[0][caldata[0].length - 1],
           color: "##0037ff",
           display: "list-item",
-        })
+        });
       }
-
-      
-    } catch(e) {
+    } catch (e) {
       console.log(e);
     }
-      setAttendance(event);
-      setCalready(true);
-  });
+    setAttendance(event);
+    setCalready(true);
+  };
 
-  const getDetail = (async() => {
-
+  const getDetail = async () => {
     let time = new Date();
     let year = time.getFullYear();
-    let month = time.getMonth() + 1; 
+    let month = time.getMonth() + 1;
 
-    let selectdate = year+"-"+(("0"+month.toString()).slice(-2));
-    
+    let selectdate = year + "-" + ("0" + month.toString()).slice(-2);
+
     let indexarr = await patternMatching(selectdate, workerindex);
 
     let startIndex = indexarr[0];
@@ -174,27 +173,27 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
 
     let temp = {};
     if (startIndex != -1) {
-
       try {
-    
-        let hourwage = await contract.methods.getWage(0, workerindex).call({ from: accounts[0] });
+        let hourwage = await contract.methods
+          .getWage(0, workerindex)
+          .call({ from: accounts[0] });
         temp["hourwage"] = hourwage;
         hourwage = parseInt(hourwage);
-      
-        let wage = await contract.methods.getPayment(
-          0, workerindex, startIndex, endIndex, hourwage
-        ).call({ from: accounts[0] });
+
+        let wage = await contract.methods
+          .getPayment(0, workerindex, startIndex, endIndex, hourwage)
+          .call({ from: accounts[0] });
         temp["totalwage"] = wage;
 
-        let worktime = await contract.methods.getWorkTime(wpinfo[0], workerindex, startIndex, endIndex).call({ from: accounts[0] });
+        let worktime = await contract.methods
+          .getWorkTime(wpinfo[0], workerindex, startIndex, endIndex)
+          .call({ from: accounts[0] });
 
         temp["allhours"] = worktime[0];
         temp["allmin"] = worktime[1];
-        
-      } catch(e) {
+      } catch (e) {
         console.log(e);
       }
-        
     } else {
       temp["hourwage"] = 0;
       temp["totalwage"] = 0;
@@ -203,18 +202,22 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
     }
     setDetail(temp);
     setDetailready(true);
-  });
+  };
 
   // 패턴 매칭하는 함수 -> 현재 달의 출석을 찾음
-  const patternMatching = (async(selectdate, index) => {
+  const patternMatching = async (selectdate, index) => {
     let data;
-    
-    let stflag = 0, edflag = 0;
-    let startIndex = -1, endIndex = -1;
+
+    let stflag = 0,
+      edflag = 0;
+    let startIndex = -1,
+      endIndex = -1;
 
     try {
-      data = await contract.methods.getAllAttendance(wpinfo[0], index).call({ from: accounts[0] });
-      for (let x = 0 ; x < data[3].length ; x++) {
+      data = await contract.methods
+        .getAllAttendance(wpinfo[0], index)
+        .call({ from: accounts[0] });
+      for (let x = 0; x < data[3].length; x++) {
         if (data[3][x].search(selectdate) != -1) {
           if (stflag == 0) {
             startIndex = x;
@@ -229,13 +232,13 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
           }
         }
       }
-  
-      if (startIndex != -1 && edflag == 0) endIndex = data[3].length -1;
-    } catch(e) {
+
+      if (startIndex != -1 && edflag == 0) endIndex = data[3].length - 1;
+    } catch (e) {
       console.log(e);
     }
-    return ([startIndex, endIndex]);
-  })
+    return [startIndex, endIndex];
+  };
 
   return (
     <Container>
@@ -251,20 +254,16 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
                   {workerinfo["name"]}
                 </td>
                 <td>
-                  Address:&nbsp; &nbsp; &nbsp; &nbsp;{" "}
-                  {workerinfo["address"]}
+                  Address:&nbsp; &nbsp; &nbsp; &nbsp; {workerinfo["address"]}
                 </td>
               </tr>
               <tr>
-                <td>
-                  근무일정:&nbsp; &nbsp; &nbsp; &nbsp;
-                  cc
-                </td>
+                <td>근무일정:&nbsp; &nbsp; &nbsp; &nbsp; cc</td>
               </tr>
             </table>
           </Information>
           {!calready && <p>잠시만 기다려주세요...</p>}
-          {calready && <Calendar attendance={attendance}/>}
+          {calready && <Calendar attendance={attendance} />}
         </LeftMenu>
         <History>
           <h1>급여정산 내역</h1>
@@ -273,7 +272,9 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
             <>
               <p>정상출근 몇 번</p>
               <p>결근 몇 번</p>
-              <p>총 근무 {detail["allhours"]}시간 {detail["allmin"]}분</p>
+              <p>
+                총 근무 {detail["allhours"]}시간 {detail["allmin"]}분
+              </p>
               <p>시급 {detail["hourwage"]}원</p>
               <br />
               <Total>
