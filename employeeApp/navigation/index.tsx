@@ -18,10 +18,10 @@ import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import TabThreeScreen from '../screens/TabThreeScreen';
 import TabFourScreen from '../screens/TabFourScreen';
-import AttendancePayScreen from '../screens/CheckAttendancePayScreen';
-import LaborContractScreen from '../screens/LaborContractViewScreen';
-import AttendanceCheckScreen from '../screens/SendAttendanceScreen';
-import LaborContractSendScreen from '../screens/LaborContractSendScreen';
+import CheckAttendancePayScreen from '../screens/CheckAttendancePayScreen';
+import LaborContractViewScreen from '../screens/LaborContractViewScreen';
+import SendAttendanceScreen from '../screens/SendAttendanceScreen';
+import SendLaborContractScreen from '../screens/SendLaborContractScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -46,10 +46,10 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-      <Stack.Screen name="LaborContractScreen" component={LaborContractScreen} options={{ title: '근로계약서 조회' }} />
-      <Stack.Screen name="AttendancePayScreen" component={AttendancePayScreen} options={{ title: '근태 / 급여 조회' }} />
-      <Stack.Screen name="AttendanceCheckScreen" component={AttendanceCheckScreen} options={{ title: '출근 / 퇴근' }} />
-      <Stack.Screen name="LaborContractSendScreen" component={LaborContractSendScreen} options={{ title: '근로계약서 확인' }} />
+      <Stack.Screen name="LaborContractViewScreen" component={LaborContractViewScreen} options={{ title: '근로계약서 조회' }} />
+      <Stack.Screen name="CheckAttendancePayScreen" component={CheckAttendancePayScreen} options={{ title: '근태 / 급여 조회' }} />
+      <Stack.Screen name="SendAttendanceScreen" component={SendAttendanceScreen} options={{ title: '출근 / 퇴근' }} />
+      <Stack.Screen name="SendLaborContractScreen" component={SendLaborContractScreen} options={{ title: '근로계약서 확인' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="NotificationModal" component={NotificationScreen} options={{ title: '알림' }}/>
       </Stack.Group>

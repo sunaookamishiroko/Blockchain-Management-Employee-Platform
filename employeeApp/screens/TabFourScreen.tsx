@@ -4,6 +4,7 @@ import { StyleSheet, TouchableOpacity} from 'react-native';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { styles } from '../css/styles';
 import { Text, View } from '../components/Themed';
+import { RootTabScreenProps } from '../types';
 
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
 
@@ -22,7 +23,7 @@ const shortenAddress = (address: string) => {
   )}`;
 }
 
-export default function TabFourScreen() {
+export default function TabFourScreen({navigation} : RootTabScreenProps<'TabFour'>) {
 
   const [personalinfo, setPersonalinfo] = useState<string[]>([]);
   const [mymoney, setMymoney] = useState<string>();

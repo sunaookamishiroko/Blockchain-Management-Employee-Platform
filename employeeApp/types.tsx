@@ -15,11 +15,11 @@ declare global {
 
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
-  LaborContractScreen: any;
-  AttendancePayScreen: any;
+  LaborContractViewScreen: any;
+  CheckAttendancePayScreen: any;
   NotificationModal: any;
-  LaborContractSendScreen: any;
-  AttendanceCheckScreen: any;
+  SendLaborContractScreen: any;
+  SendAttendanceScreen: any;
   NotFound: any;
 };
 
@@ -33,11 +33,11 @@ export type RootTabParamList = {
   TabTwo: undefined;
   TabThree: undefined;
   TabFour: undefined;
-  LaborContractScreen: any;
-  AttendancePayScreen: any;
+  LaborContractViewScreen: any;
+  CheckAttendancePayScreen: any;
   NotificationModal: any;
-  LaborContractSendScreen: any;
-  AttendanceCheckScreen: any;
+  SendLaborContractScreen: any;
+  SendAttendanceScreen: any;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<

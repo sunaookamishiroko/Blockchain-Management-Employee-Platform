@@ -118,10 +118,10 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           />
           <Text style={styles.counter}>{carddata[cardindex].title}</Text>
           <Text style={styles.counter}>{workplaeindex[cardindex]}</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('AttendanceCheckScreen', { index : workplaeindex[cardindex], num : 0 })} style={styles.buttonStyle}>
+          <TouchableOpacity onPress={() => navigation.navigate('SendAttendanceScreen', { index : workplaeindex[cardindex], num : 0 })} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>출근</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('AttendanceCheckScreen', { index : workplaeindex[cardindex], num : 1 })} style={styles.buttonStyle}>
+          <TouchableOpacity onPress={() => navigation.navigate('SendAttendanceScreen', { index : workplaeindex[cardindex], num : 1 })} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>퇴근</Text>
           </TouchableOpacity>
         </>
