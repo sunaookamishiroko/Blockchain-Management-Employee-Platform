@@ -30,11 +30,6 @@ export default function TabThreeScreen() {
     return connector.connect();
 }, [connector]);
 
-  // wallet과 연결 종료하기
-  const killSession = React.useCallback(() => {
-    return connector.killSession();
-  }, [connector]);
-
   // 개인정보 불러오기
   const getPersonInformation = (async() => {
     let result = await laborContract.getPersonInformation(connector.accounts[0], { from : connector.accounts[0] });

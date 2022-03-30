@@ -27,6 +27,7 @@ export default function TabFourScreen({navigation} : RootTabScreenProps<'TabFour
 
   const [personalinfo, setPersonalinfo] = useState<string[]>([]);
   const [mymoney, setMymoney] = useState<string>();
+  const [wpinfo, setWpinfo] = useState();
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -50,10 +51,15 @@ export default function TabFourScreen({navigation} : RootTabScreenProps<'TabFour
   // 개인정보 불러오기
   const getPersonInformation = (async() => {
     let result = await laborContract.getPersonInformation(connector.accounts[0], { from : connector.accounts[0] });
-    console.log(result);
 
     let result2 = await ERC20Contract.balanceOf(connector.accounts[0], { from : connector.accounts[0] });
-    console.log(result2);
+
+    let temp = [];
+
+    for (let x = 0 ; x < result[4][1].length; x++) {
+      let result3 = await laborContract.getWorkplcesInfo(ethers.utils.formatUnits(result[4][0][x], 0), { from : connector.accounts[0] });
+      temp.push(result3);
+    }
 
     if (result[1] == 0) {
       setReady(null);
@@ -64,6 +70,7 @@ export default function TabFourScreen({navigation} : RootTabScreenProps<'TabFour
       decodeURI(result[3]),
       result[4]
       ])
+      setWpinfo(temp);
       setMymoney(ethers.utils.formatUnits(result2, 0));
       setReady(true);
     }
@@ -89,21 +96,24 @@ export default function TabFourScreen({navigation} : RootTabScreenProps<'TabFour
   
   })
 
+
+  // 경력 jsx 컴포넌트 만들기
   const makeJsx = () => {
     let workplaceInfo = [];
-
+    console.log(wpinfo);
     for (let x = 0 ; x < personalinfo[3][1].length; x++) {
+
       if(personalinfo[3][2][x] == "0") {
         workplaceInfo.push(
           <View key={x}>
-            <Text>{ethers.utils.formatUnits(personalinfo[3][0][x], 0)}</Text>
+            <Text>{decodeURI(wpinfo[x][0])}</Text>
             <Text>{personalinfo[3][1][x]} ~ 근무중</Text>
           </View>
         );
       } else {
         workplaceInfo.push(
           <View key={x}>
-            <Text>{ethers.utils.formatUnits(personalinfo[3][0][x], 0)}</Text>
+            <Text>{decodeURI(wpinfo[x][0])}</Text>
             <Text>{personalinfo[3][1][x]} ~ {personalinfo[3][2][x]}</Text>
           </View>
         );
