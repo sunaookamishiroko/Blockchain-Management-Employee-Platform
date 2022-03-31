@@ -21,6 +21,7 @@ export type RootStackParamList = {
   SendLaborContractScreen: any;
   SendAttendanceScreen: any;
   LaborContractViewAllScreen: any;
+  NFTViewScreen: any;
   NotFound: any;
 };
 
@@ -40,6 +41,7 @@ export type RootTabParamList = {
   SendLaborContractScreen: any;
   SendAttendanceScreen: any;
   LaborContractViewAllScreen: any;
+  NFTViewScreen: any;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<

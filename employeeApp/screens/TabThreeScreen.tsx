@@ -13,7 +13,7 @@ import { ethers } from "ethers";
 import { makeLabortxobj, NFTContract, laborContract } from "../connectETH/Transaction";
 //import { connectWallet } from "../connectETH/connectWallet";
 
-export default function TabThreeScreen() {
+export default function TabThreeScreen({navigation} : RootTabScreenProps<'TabThree'>) {
 
   const [tokeninfo, setTokeninfo] = useState();
   const [ready, setReady] = useState(false);
@@ -36,7 +36,7 @@ export default function TabThreeScreen() {
     console.log(result);
     let temp = [];
 
-    const url = `https://api.pinata.cloud/data/pinList?status=pinned&metadata[keyvalues]={"owner":{"value":"0x8F22cbB2Fe066d8671c9C09bfF005F0507e1627e", "op":"eq"}}`;
+    const url = `https://api.pinata.cloud/data/pinList?status=pinned&metadata[keyvalues]={"owner":{"value":"", "op":"eq"}}`;
 
     if (result.length == 0) {
       setReady(null);
@@ -70,15 +70,13 @@ export default function TabThreeScreen() {
     for (let x = tokeninfo.length -1 ; x != -1 ; x--) {
       nfts.push(
         <View key={x}>
-          <Image 
-          source={{uri: ""}}
-          style={{width: 100, height: 100}}
-          />
-          <Text>{decodeURI(tokeninfo[x][1][0])}</Text>
-          <Text>{decodeURI(tokeninfo[x][1][1])}</Text>
+          <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('NFTViewScreen', { tokeninfo : tokeninfo[x] })}>
+            <Image 
+            source={{uri: ""}}
+            style={{width: 100, height: 100}}
+            />
+          </TouchableOpacity>
           <Text>name : {tokeninfo[x][0].name}</Text>
-          <Text>description : {tokeninfo[x][0].description}</Text>
-          <Text>nftindex : {tokeninfo[x][0].nftindex}</Text>
         </View>
       );
     }

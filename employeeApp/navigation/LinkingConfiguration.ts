@@ -43,7 +43,8 @@ const linking: LinkingOptions<RootStackParamList> = {
       SendAttendanceScreen: 'SendAttendanceScreen',
       SendLaborContractScreen: 'SendLaborContractScreen',
       NotFound: '*',
-      LaborContractViewAllScreen: 'LaborContractViewAllScreen'
+      LaborContractViewAllScreen: 'LaborContractViewAllScreen',
+      NFTViewScreen: 'NFTViewScreen'
     },
   },
 };
