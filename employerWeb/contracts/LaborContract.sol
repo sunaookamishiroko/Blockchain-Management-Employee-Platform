@@ -44,11 +44,11 @@ contract LaborContract {
   // 출톼근 기록부
   struct attendance {
     string [] startDay;
-    int [] startTimeHour;
-    int [] startTimeMinute;
+    int [] startHour;
+    int [] startMinute;
     string [] endDay;
-    int [] endTimeHour;
-    int [] endTimeMinute;
+    int [] endHour;
+    int [] endMinute;
   }
 
   // 근로계약서 저장소
@@ -70,8 +70,8 @@ contract LaborContract {
   }
   
   // struct 배열 선언부
-  workplaceInfo [] private workplaceinfo;
-  laborContract [] private laborcontract;
+  workplaceInfo [] private wpinfo;
+  laborContract [] private lbcontract;
 
   // event 선언
   event Onwork(string name, int timeHour, int timeMinute);
@@ -92,24 +92,19 @@ contract LaborContract {
   returns (address [] memory, string [] memory) {
     
     // 이름 정보를 저장하기 위해 배열 선언
-    string [] memory nameList = new string[](workplaceinfo[wpindex].employee.length);
+    string [] memory nameList = new string[](wpinfo[wpindex].employee.length);
     
     // employee의 address를 모두 찾아, 그것으로 name을 가져옴
-    for (uint x = 0; x < workplaceinfo[wpindex].employee.length ; x++) {
-      string memory name = _person[workplaceinfo[wpindex].employee[x]].name;
+    for (uint x = 0; x < wpinfo[wpindex].employee.length ; x++) {
+      string memory name = _person[wpinfo[wpindex].employee[x]].name;
       nameList[x] = name;
     }
 
     // address들과 name들 return
     return (
-      workplaceinfo[wpindex].employee,
+      wpinfo[wpindex].employee,
       nameList
     );
-  }
-
-  // 사업주의 사업장의 근로자 수를 return하는 함수
-  function getNumOfEmployee (uint wpindex) public view returns (uint){
-    return (workplaceinfo[wpindex].employee.length);
   }
 
   // 근로자의 근무지에서의 index를 return하는 함수
@@ -118,8 +113,8 @@ contract LaborContract {
     uint index;
 
     // msg.sender가 근무지에 저장되어 있는 근로자의 address와 같으면 그것의 index return
-    for (uint x = 0; x < workplaceinfo[wpindex].employee.length ; x++) {
-      if(employeeAddress == workplaceinfo[wpindex].employee[x]){
+    for (uint x = 0; x < wpinfo[wpindex].employee.length ; x++) {
+      if(employeeAddress == wpinfo[wpindex].employee[x]){
         index = x;
         break;
       }
@@ -137,7 +132,7 @@ contract LaborContract {
     // identiNumber = 0 => 근로자 1 => 사업주
     // 0 -> array는 mapping _employeeWorkplaceList에 저장되어 있는 근무지 index 리스트
     // 1 -> array는 mapping _employerWorkplaceList에 저장되어 있는 사업장 index 리스트
-    
+
     if (_person[msg.sender].identiNumber == 0) array = _employeeWorkplaceList[msg.sender];
     else array = _employerWorkplaceList[msg.sender];
 
@@ -145,8 +140,8 @@ contract LaborContract {
     string [] memory locationList = new string[](array.length);
 
     for (uint x = 0; x < array.length ; x++) {
-      string memory name = workplaceinfo[array[x]].name;
-      string memory location = workplaceinfo[array[x]].location;
+      string memory name = wpinfo[array[x]].name;
+      string memory location = wpinfo[array[x]].location;
 
       nameList[x] = name;
       locationList[x] = location;
@@ -154,39 +149,32 @@ contract LaborContract {
 
     // 사업장 index list, name의 list, location의 list return
     return (array, nameList, locationList);
+  }
 
+  // 사업장의 이름, 위치 조회하는 함수
+  function getWorkplcesInfo (uint wpindex) public view
+  returns (string memory, string memory) {
+    return(wpinfo[wpindex].name, wpinfo[wpindex].location);
   }
 
   // 사업주가 선택한 근로자 & 근로자가 선택한 근무지의 근로계약서를 조회하는 함수
   function getLaborContract (uint wpindex, address employeeAddress) public view 
   returns(laborContract memory) {
-
-    uint laborContractIndex;
     uint tempIndex;
-
-    // identiNumber : 0 => 근로자 1 => 사업주
-    // mapping _employeeLaborContractList와 근로계약서에 들어있는 workplaceIndex를 이용하여 찾음
-    if (_person[msg.sender].identiNumber == 0) {
-
-      for (uint x = 0 ; x < _employeeLaborContractList[msg.sender].length ; x++) {
-
-        if (laborcontract[_employeeLaborContractList[msg.sender][x]].workplaceIndex == wpindex) {
+     // mapping _employeeLaborContractList와 근로계약서에 들어있는 workplaceIndex를 이용하여 찾음
+    for (uint x = 0 ; x < _employeeLaborContractList[employeeAddress].length ; x++){
+      if (lbcontract[_employeeLaborContractList[employeeAddress][x]].workplaceIndex == wpindex) {
           tempIndex = x;
           break;
         }
-
       }
-      
-      laborContractIndex = _employeeLaborContractList[msg.sender][tempIndex];
-    }
-    // workplace에서 index를 찾음
-    else {
-      tempIndex = getIndexOfEmployee(wpindex, employeeAddress);
-      laborContractIndex = workplaceinfo[wpindex].laborContractIndex[tempIndex];
-    }
 
-    return (laborcontract[laborContractIndex]);
+      return (lbcontract[_employeeLaborContractList[employeeAddress][tempIndex]]);
+  }
 
+  // index를 바탕으로 근로계약서를 조회하는 함수
+  function getLaborContract2 (uint lbindex) public view returns (laborContract memory){
+    return(lbcontract[lbindex]);
   }
 
   // 근로자의 모든 근로계약서 조회하는 함수
@@ -197,7 +185,7 @@ contract LaborContract {
   // 사업주가 선택한 근로자 or 근로자가 선택한 근무지의 시급을 return함
   function getWage (uint wpindex, uint employeeIndex) public view 
   returns (string memory) {
-    return(laborcontract[workplaceinfo[wpindex].laborContractIndex[employeeIndex]].wage);
+    return(lbcontract[wpinfo[wpindex].laborContractIndex[employeeIndex]].wage);
   }
 
   // 사업주가 선택한 근로자 or 근로자가 선택한 근무지의 출근, 퇴근 날짜만 return하는 함수
@@ -205,8 +193,8 @@ contract LaborContract {
   returns (string [] memory, string [] memory){
 
     return(
-      workplaceinfo[wpindex].attendanceList[employeeIndex].startDay,
-      workplaceinfo[wpindex].attendanceList[employeeIndex].endDay
+      wpinfo[wpindex].attendanceList[employeeIndex].startDay,
+      wpinfo[wpindex].attendanceList[employeeIndex].endDay
     );
 
   }
@@ -214,7 +202,7 @@ contract LaborContract {
   // 사업주가 선택한 근로자 or 근로자가 선택한 근무지의 자세한 출퇴근 내역을 return하는 함수
   function getAllAttendance (uint wpindex, uint employeeIndex) public view 
   returns (attendance memory){
-    return (workplaceinfo[wpindex].attendanceList[employeeIndex]);
+    return (wpinfo[wpindex].attendanceList[employeeIndex]);
   }
 
   // 근로자가 하나의 월에 일한 시간을 return하는 함수
@@ -231,11 +219,11 @@ contract LaborContract {
 
     for (uint x = startIndex ; x <= endIndex ; x++) {
       
-      hour = workplaceinfo[wpindex].attendanceList[employeeIndex].endTimeHour[x] 
-      - workplaceinfo[wpindex].attendanceList[employeeIndex].startTimeHour[x];
+      hour = wpinfo[wpindex].attendanceList[employeeIndex].endHour[x] 
+      - wpinfo[wpindex].attendanceList[employeeIndex].startHour[x];
 
-      minute = workplaceinfo[wpindex].attendanceList[employeeIndex].endTimeMinute[x] 
-      - workplaceinfo[wpindex].attendanceList[employeeIndex].startTimeMinute[x];
+      minute = wpinfo[wpindex].attendanceList[employeeIndex].endMinute[x] 
+      - wpinfo[wpindex].attendanceList[employeeIndex].startMinute[x];
 
       if (hour < 0) hour = hour + 24;
       if (minute < 0) minute = minute + 60;
@@ -287,11 +275,11 @@ contract LaborContract {
     address [] memory employee;
     uint [] memory laborContractIndex;
 
-    workplaceinfo.push();
-    workplaceinfo[_workplaceIndex].name = workplaceName;
-    workplaceinfo[_workplaceIndex].location = location;
-    workplaceinfo[_workplaceIndex].employee = employee;
-    workplaceinfo[_workplaceIndex].laborContractIndex = laborContractIndex;
+    wpinfo.push();
+    wpinfo[_workplaceIndex].name = workplaceName;
+    wpinfo[_workplaceIndex].location = location;
+    wpinfo[_workplaceIndex].employee = employee;
+    wpinfo[_workplaceIndex].laborContractIndex = laborContractIndex;
 
     // _employerWorkplaceList mapping에 사업장 index 등록
     _employerWorkplaceList[employerAddress].push(_workplaceIndex);
@@ -313,7 +301,7 @@ contract LaborContract {
     newLabor.wageday = laborContractItems[5];
     newLabor.comment =  laborContractItems[6];
 
-    laborcontract.push(newLabor);
+    lbcontract.push(newLabor);
 
     // _employeeLaborContractList mapping에 근로계약서 index 등록
     // _employeeWorkplaceList mapping에 근무지 index 등록
@@ -321,26 +309,26 @@ contract LaborContract {
     _employeeWorkplaceList[employeeAddress].push(wpindex);
 
     // workplace의 근로자로 등록하기
-    workplaceinfo[wpindex].employee.push(employeeAddress);
+    wpinfo[wpindex].employee.push(employeeAddress);
     
     // workspace에다가 근로계약서의 index 저장하기
-    workplaceinfo[wpindex].laborContractIndex.push(_laborContractIndex);
+    wpinfo[wpindex].laborContractIndex.push(_laborContractIndex);
 
     _person[employeeAddress].career.index.push(wpindex);
     _person[employeeAddress].career.startDay.push(stday);
     _person[employeeAddress].career.endDay.push("0");
 
-    string [] memory startDay;
-    int [] memory startTimeHour;
-    int [] memory startTimeMinute;
-    string [] memory endDay;
-    int [] memory endTimeHour;
-    int [] memory endTimeMinute;
+    string [] memory sd;
+    int [] memory sh;
+    int [] memory sm;
+    string [] memory ed;
+    int [] memory eh;
+    int [] memory em;
 
-    attendance memory newAttendance = attendance(startDay, startTimeHour, startTimeMinute, endDay, endTimeHour, endTimeMinute);
+    attendance memory newAttendance = attendance(sd, sh, sm, ed, eh, em);
 
     // 새로운 출석부 만들어서 출석부 리스트에 넣기
-    workplaceinfo[wpindex].attendanceList.push(newAttendance);
+    wpinfo[wpindex].attendanceList.push(newAttendance);
 
     // 근로계약서 index 증가
     _laborContractIndex++;
@@ -350,57 +338,55 @@ contract LaborContract {
   // 출퇴근 올리는 함수
   // classifyNum : 0 -> 출근 / 1 -> 퇴근
   function uploadAttendance (uint8 classifyNum, uint wpindex,
-  string calldata day, int timeHour, int timeMinute) public {
-    uint employeeIndex = getIndexOfEmployee(wpindex, msg.sender);
+  string calldata day, int hour, int minute) public {
+    uint index = getIndexOfEmployee(wpindex, msg.sender);
 
     // 출근
     if (classifyNum == 0) {
 
-      workplaceinfo[wpindex].attendanceList[employeeIndex].startDay.push(day);
-      workplaceinfo[wpindex].attendanceList[employeeIndex].startTimeHour.push(timeHour);
-      workplaceinfo[wpindex].attendanceList[employeeIndex].startTimeMinute.push(timeMinute);
+      wpinfo[wpindex].attendanceList[index].startDay.push(day);
+      wpinfo[wpindex].attendanceList[index].startHour.push(hour);
+      wpinfo[wpindex].attendanceList[index].startMinute.push(minute);
 
-      emit Onwork(_person[msg.sender].name, timeHour, timeMinute);
+      emit Onwork(_person[msg.sender].name, hour, minute);
     
     // 퇴근
     } else if (classifyNum == 1){
 
-      workplaceinfo[wpindex].attendanceList[employeeIndex].endDay.push(day);
-      workplaceinfo[wpindex].attendanceList[employeeIndex].endTimeHour.push(timeHour);
-      workplaceinfo[wpindex].attendanceList[employeeIndex].endTimeMinute.push(timeMinute);
+      wpinfo[wpindex].attendanceList[index].endDay.push(day);
+      wpinfo[wpindex].attendanceList[index].endHour.push(hour);
+      wpinfo[wpindex].attendanceList[index].endMinute.push(minute);
 
-      emit Offwork(_person[msg.sender].name, timeHour, timeMinute);
+      emit Offwork(_person[msg.sender].name, hour, minute);
 
     }
 
   }
 
   // 근로자와 계약 종료하는 함수
-  function deleteEmployee(uint256 wpindex, address employeeAddress, string calldata endDay) public {
-    uint index = getIndexOfEmployee(wpindex, employeeAddress);
-    uint length = workplaceinfo[wpindex].employee.length;
+  function deleteEmployee(uint256 wpindex, address ad, string calldata endDay) public {
+    uint index = getIndexOfEmployee(wpindex, ad);
+    uint length = wpinfo[wpindex].employee.length;
 
-    workplaceinfo[wpindex].employee[index] = workplaceinfo[wpindex].employee[length - 1];
-    workplaceinfo[wpindex].laborContractIndex[index] = workplaceinfo[wpindex].laborContractIndex[length - 1];
-    workplaceinfo[wpindex].attendanceList[index] = workplaceinfo[wpindex].attendanceList[length - 1];
+    wpinfo[wpindex].employee[index] = wpinfo[wpindex].employee[length - 1];
+    wpinfo[wpindex].laborContractIndex[index] = wpinfo[wpindex].laborContractIndex[length - 1];
+    wpinfo[wpindex].attendanceList[index] = wpinfo[wpindex].attendanceList[length - 1];
 
-    workplaceinfo[wpindex].employee.pop();
-    workplaceinfo[wpindex].laborContractIndex.pop();
-    workplaceinfo[wpindex].attendanceList.pop();
+    wpinfo[wpindex].employee.pop();
+    wpinfo[wpindex].laborContractIndex.pop();
+    wpinfo[wpindex].attendanceList.pop();
 
-    for(uint x = 0; x < _person[employeeAddress].career.index.length; x++) {
-      if (_person[employeeAddress].career.index[x] == wpindex) {
-        _person[employeeAddress].career.endDay[x] = endDay;
+    for(uint x = 0; x < _person[ad].career.index.length; x++) {
+      if (_person[ad].career.index[x] == wpindex) {
+        _person[ad].career.endDay[x] = endDay;
       }
     }
 
-    for(uint x = 0; x < _employeeWorkplaceList[employeeAddress].length; x++) {
-      if (_employeeWorkplaceList[employeeAddress][x] == wpindex) {
-        _employeeWorkplaceList[employeeAddress][x] = _employeeWorkplaceList[employeeAddress][_employeeWorkplaceList[employeeAddress].length - 1];
-         _employeeWorkplaceList[employeeAddress].pop();
+    for(uint x = 0; x < _employeeWorkplaceList[ad].length; x++) {
+      if (_employeeWorkplaceList[ad][x] == wpindex) {
+        _employeeWorkplaceList[ad][x] = _employeeWorkplaceList[ad][_employeeWorkplaceList[ad].length - 1];
+         _employeeWorkplaceList[ad].pop();
       }
     }
   }
-
-
 } 

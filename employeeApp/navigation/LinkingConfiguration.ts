@@ -30,13 +30,21 @@ const linking: LinkingOptions<RootStackParamList> = {
               TabThreeScreen: 'three',
             },
           },
+          TabFour: {
+            screens: {
+              TabFourScreen: 'four',
+            },
+          },
         },
       },
-      AttendancePayScreen: 'AttendancePayScreen',
-      LaborContractScreen: 'LaborContractScreen',
+      CheckAttendancePayScreen: 'CheckAttendancePayScreen',
+      LaborContractViewScreen: 'LaborContractViewScreen',
       NotificationModal: 'modal',
-      AttendanceCheckScreen: 'AttendanceCheckScreen',
+      SendAttendanceScreen: 'SendAttendanceScreen',
+      SendLaborContractScreen: 'SendLaborContractScreen',
       NotFound: '*',
+      LaborContractViewAllScreen: 'LaborContractViewAllScreen',
+      NFTViewScreen: 'NFTViewScreen'
     },
   },
 };

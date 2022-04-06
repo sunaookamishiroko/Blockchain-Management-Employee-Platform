@@ -1,35 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity} from 'react-native';
+import { StyleSheet, TouchableOpacity, Image } from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
 import { styles } from '../css/styles';
 import { Text, View } from '../components/Themed';
 
+import axios from "axios";
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
 
 import "react-native-get-random-values";
 import "@ethersproject/shims";
 import { ethers } from "ethers";
-import { makeLabortxobj, infuraProvider, laborContract } from "../connectETH/Transaction";
+import { makeLabortxobj, NFTContract, laborContract } from "../connectETH/Transaction";
 //import { connectWallet } from "../connectETH/connectWallet";
 
-// 프로필
+export default function TabThreeScreen({navigation} : RootTabScreenProps<'TabThree'>) {
 
-const shortenAddress = (address: string) => {
-  return `${address.slice(0, 10)}...${address.slice(
-    address.length - 4,
-    address.length
-  )}`;
-}
-
-export default function TabThreeScreen() {
-
-  const [personalinfo, setPersonalinfo] = useState<string[]>([]);
-  const [ready, setReady] = useState<boolean>(false);
+  const [tokeninfo, setTokeninfo] = useState();
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     if (connector.connected) {
-      getPersonInformation();
+      getTokens();
     }
   }, []);
 
@@ -38,45 +29,61 @@ export default function TabThreeScreen() {
 
   const connectWallet = React.useCallback(() => {
     return connector.connect();
-}, [connector]);
-
-  // wallet과 연결 종료하기
-  const killSession = React.useCallback(() => {
-    return connector.killSession();
   }, [connector]);
 
-  // 개인정보 불러오기
-  const getPersonInformation = (async() => {
-    let result = await laborContract.getPersonInformation(connector.accounts[0], { from : connector.accounts[0] });
+  const getTokens = async() => {
+    let result = await NFTContract.getAllTokens(connector.accounts[0], { from : connector.accounts[0] });
     console.log(result);
+    let temp = [];
 
-    setPersonalinfo([
-      decodeURI(result[1]),
-      ethers.utils.formatUnits(result[2], 0),
-      decodeURI(result[3])
-    ])
-    setReady(true);
-  })
+    const url = `https://api.pinata.cloud/data/pinList?status=pinned&metadata[keyvalues]={"owner":{"value":"", "op":"eq"}}`;
 
-  // 개인정보 업로드
-  const uploadPersonalInfo = (async () => {
+    if (result.length == 0) {
+      setReady(null);
+    } else {
+      let res = await axios
+      .get(url, {
+          headers: {
+              pinata_api_key: "",
+              pinata_secret_api_key: ""
+          }
+      })
 
-      let abidata = new ethers.utils
-      .Interface(["function uploadPersonalInfo(address person, uint8 identiNumber, string calldata name, uint age, string calldata gender)"])
-      .encodeFunctionData("uploadPersonalInfo", [connector.accounts[0], 0, encodeURI("이서윤"), 24, encodeURI("남")]);
-      let txObj = await makeLabortxobj(connector.accounts[0], abidata, 100000);
-  
-      try {
-        await connector.sendTransaction(txObj)
-        .then((result) => {
-          console.log("tx hash:", result);
-          console.log(`https://ropsten.etherscan.io/tx/${result}`)
-        });
-      } catch (e) {
-        console.error(e);
-      };
-  
-  })
+      for (let x = 0 ; x < res.data.rows.length; x++) {
+        let res2 = await axios.get(`https://gateway.pinata.cloud/ipfs/${res.data.rows[x].ipfs_pin_hash}`)
+        console.log(res2.data);
+
+        let res3 = await laborContract.getWorkplcesInfo(parseInt(res2.data.wpindex), { from : connector.accounts[0] });
+        console.log(res3);
+        temp.push([res2.data, res3]);
+      }
+    }
+
+      setTokeninfo(temp);
+      setReady(true);
+  }
+
+  // nft jsx 컴포넌트 만들기
+  const makeJsx = () => {
+    let nfts = [];
+    //`${tokeninfo[x].image}`
+    for (let x = tokeninfo.length -1 ; x != -1 ; x--) {
+      nfts.push(
+        <View key={x}>
+          <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('NFTViewScreen', { tokeninfo : tokeninfo[x] })}>
+            <Image 
+            source={{uri: ""}}
+            style={{width: 100, height: 100}}
+            />
+          </TouchableOpacity>
+          <Text>name : {tokeninfo[x][0].name}</Text>
+        </View>
+      );
+    }
+    
+
+    return nfts;
+  }
 
   return (
     <View style={styles.container}>
@@ -87,23 +94,19 @@ export default function TabThreeScreen() {
           <Text style={styles.buttonTextStyle}>Connect a Wallet</Text>
         </TouchableOpacity>
       )}
-      {connector.connected && !ready && (
+      {connector.connected && ready == false && (
         <>
-          <TouchableOpacity onPress={uploadPersonalInfo} style={styles.buttonStyle}>
-            <Text style={styles.buttonTextStyle}>개인정보 업로드</Text>
-          </TouchableOpacity>
           <Text>잠시만 기다려주세요...</Text>
+        </>
+      )}
+      {connector.connected && ready == null && (
+        <>
+          <Text>보유하고 있는 뱃지가 존재하지 않습니다.</Text>
         </>
       )}
       {(connector.connected && ready) && (
         <>
-          <Text>{personalinfo[0]}</Text>
-          <Text>Address : {shortenAddress(connector.accounts[0])}</Text>
-          <Text>성별 : {personalinfo[1]}</Text>
-          <Text>나이 : {personalinfo[2]}</Text>
-          <TouchableOpacity onPress={killSession} style={styles.buttonStyle}>
-            <Text style={styles.buttonTextStyle}>Logout</Text>
-          </TouchableOpacity>
+          {makeJsx()}
         </>
       )}
     </View>

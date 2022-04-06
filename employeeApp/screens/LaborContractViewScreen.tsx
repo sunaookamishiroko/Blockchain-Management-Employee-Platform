@@ -15,7 +15,7 @@ import { makeLabortxobj, infuraProvider, laborContract } from "../connectETH/Tra
 
 // 내 근무지
 
-export default function LaborContractScreen({ route }) {
+export default function LaborContractViewScreen({ route }) {
 
   const [ready, setReady] = useState<boolean>(false);
   const [contractdata, setContractdata] = useState<any[]>([]);
@@ -32,28 +32,60 @@ export default function LaborContractScreen({ route }) {
     return connector.connect();
   }, [connector]);
 
+  // 근로계약서를 가져옴
   const getLaborContract = (async() => {
-    let result = await laborContract.getLaborContract(
-      route.params.index, 
-      connector.accounts[0], 
-      { from : connector.accounts[0] }
-      );
 
-    console.log(result);
-    
-    let temp = [];
+    // 근무지 정보에서 조회하는 경우
+    if (route.params.classify == 0) {
 
-    temp.push(ethers.utils.formatUnits(result[0], 0))
-    temp.push(result[1])
-    temp.push(decodeURI(result[2]))
-    temp.push(result[3])
-    temp.push(decodeURI(result[4]))
-    temp.push(result[5])
-    temp.push(decodeURI(result[6]))
-    temp.push(decodeURI(result[7]))
+      let result = await laborContract.getLaborContract(
+        route.params.index, 
+        connector.accounts[0], 
+        { from : connector.accounts[0] }
+        );
+  
+      console.log(result);
+      
+      let temp = [];
+  
+      temp.push(ethers.utils.formatUnits(result[0], 0))
+      temp.push(result[1])
+      temp.push(decodeURI(result[2]))
+      temp.push(result[3])
+      temp.push(decodeURI(result[4]))
+      temp.push(result[5])
+      temp.push(decodeURI(result[6]))
+      temp.push(decodeURI(result[7]))
+      
+      setContractdata(temp);
+      setReady(true);
+
+    } 
+    // 모든 계약서 조회에서 조회하는 경우
+    else {
+      
+      let result = await laborContract.getLaborContract2(
+        route.params.index,
+        { from : connector.accounts[0] }
+        );
+  
+      console.log(result);
+      
+      let temp = [];
+  
+      temp.push(ethers.utils.formatUnits(result[0], 0))
+      temp.push(result[1])
+      temp.push(decodeURI(result[2]))
+      temp.push(result[3])
+      temp.push(decodeURI(result[4]))
+      temp.push(result[5])
+      temp.push(decodeURI(result[6]))
+      temp.push(decodeURI(result[7]))
+      
+      setContractdata(temp);
+      setReady(true);
+    }
     
-    setContractdata(temp);
-    setReady(true);
   })
 
   return (
