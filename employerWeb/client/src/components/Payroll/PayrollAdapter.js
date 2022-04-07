@@ -4,7 +4,13 @@ import PayrollItem from "./PayrollItem";
 
 const Adapter = styled.div`
   display: flex;
-  overflow-y: auto;
+  flex-direction: column;
+  width: 100%;
+  height: 80%;
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
+  border-radius: 20px;
+  background-color: #f7f7f7;
+  padding: 0 24px 0 24px;
 
   table {
     width: 100%;
@@ -40,9 +46,9 @@ const Adapter = styled.div`
 `;
 
 const PayrollAdapter = ({ workers, payWage }) => {
-
   return (
     <Adapter>
+      <h1>근로자 목록</h1>
       <table>
         <tr>
           <th>번호</th>
@@ -59,16 +65,16 @@ const PayrollAdapter = ({ workers, payWage }) => {
           <td>tet</td>
         </tr>
 
-      {workers.map((x, index) => (
-          <PayrollItem 
+        {workers.map((x, index) => (
+          <PayrollItem
             index={index + 1}
             address={workers[index][0]}
             name={workers[index][1]}
             total={workers[index][2]}
-            payWage ={payWage}
+            payWage={payWage}
           />
-      ))}
-        </table>
+        ))}
+      </table>
     </Adapter>
   );
 };
