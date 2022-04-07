@@ -1,6 +1,8 @@
+import { Dialog } from "@mui/material";
 import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import Categories from "../components/Categories/Categories";
+import SubmitDialog from "../components/Enroll/Dialog/SubmitDialog";
 import EnrollContent from "../components/Enroll/EnrollContent";
 //import { firestore } from "./firebase.js";
 //import { collection, addDoc } from "firebase/firestore";
@@ -116,6 +118,13 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
     comment: "",
   });
 
+  // 계약서 작성 요청 보내기 클릭 시 다이얼로그 띄우기
+  const [submitOpen, setSubmitOpen] = useState(false);
+  // 다이얼로그 없애기
+  const handleClose = () => {
+    setSubmitOpen(false);
+  };
+
   const onChange = (event) => {
     const { name, value } = event.target;
     setWorker({ ...worker, [name]: value });
@@ -172,8 +181,14 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
   return (
     <Container>
       <Categories name={name} wpname={wpinfo[1]} />
+
+      {/* 계약서 작성 요청 보내기 클릭 시 다이얼로그 */}
+      <Dialog maxWidth={1280} onClose={handleClose} open={submitOpen}>
+        <SubmitDialog onClickClose={handleClose} onClickSubmit={onSubmit} />
+      </Dialog>
+
       <EnrollContent
-        onSubmit={onSubmit}
+        onSubmit={setSubmitOpen}
         onChange={onChange}
         onClickHandler={onClickHandler}
       />

@@ -45,7 +45,7 @@ const StyledProfile = styled.div`
   }
 `;
 
-const Profile = ({ userData }) => {
+const Profile = ({ selectedWorker, userData }) => {
   const profileCategories = ["이름", "연락처", "Address"];
 
   return (

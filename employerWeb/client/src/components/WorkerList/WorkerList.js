@@ -19,7 +19,7 @@ const Content = styled.div`
   }
 `;
 
-const WorkerList = ({ ready, customworkers }) => {
+const WorkerList = ({ ready, customworkers, onClickEnquiry }) => {
   const [open, setOpen] = useState(false);
 
   // 근로계약서 다이얼로그 상태
@@ -46,6 +46,9 @@ const WorkerList = ({ ready, customworkers }) => {
     setWorkername(name);
     setContractAddress(address);
   };
+
+  //
+
   return (
     <Content>
       <h1> 근로자 목록 </h1>
@@ -53,8 +56,9 @@ const WorkerList = ({ ready, customworkers }) => {
       {ready && (
         <WorkerListAdapter
           workers={customworkers}
-          handleClickContract={handleClickContract}
-          handleClickSettlement={handleClickSettlement}
+          // handleClickContract={handleClickContract}
+          // handleClickSettlement={handleClickSettlement}
+          onClickEnquiry={onClickEnquiry}
         />
       )}
     </Content>

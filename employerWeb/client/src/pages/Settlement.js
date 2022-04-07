@@ -250,7 +250,7 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
             <table>
               <tr>
                 <td>
-                  이름:&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;{" "}
+                  이름:&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
                   {workerinfo["name"]}
                 </td>
                 <td>

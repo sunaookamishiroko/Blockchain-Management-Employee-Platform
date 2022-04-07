@@ -43,6 +43,7 @@ const WorkerListAdapter = ({
   workers,
   handleClickContract,
   handleClickSettlement,
+  onClickEnquiry,
 }) => {
   return (
     <Adapter>
@@ -65,6 +66,7 @@ const WorkerListAdapter = ({
             address={workers[index][0]}
             name={workers[index][1]}
             handleClickContract={handleClickContract}
+            onClickEnquiry={onClickEnquiry}
           />
         ))}
       </table>
