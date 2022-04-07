@@ -114,6 +114,10 @@ const EnrollContent = ({
     comment: "",
   });
 
+  const onClickSubmit = () => {
+    onSubmit(true);
+  };
+
   const onChangeHandler = (e) => {
     console.log(e.target);
   };
@@ -121,7 +125,7 @@ const EnrollContent = ({
   return (
     <Content>
       <h1> 근로자 등록 </h1>
-      <form className="Enroll" onSubmit={onSubmit}>
+      <form className="Enroll">
         <div>
           <LeftInput>
             <EnrollLabel>
@@ -211,7 +215,7 @@ const EnrollContent = ({
           </RightInput>
         </div>
         <SubmitDiv>
-          <button onClick={onClickHandler}>계약서 작성 요청 보내기</button>
+          <button onClick={onClickSubmit}>계약서 작성 요청 보내기</button>
           <input type={"reset"} value="초기화"></input>
         </SubmitDiv>
       </form>
