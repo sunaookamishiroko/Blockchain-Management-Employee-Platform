@@ -4,7 +4,8 @@
 ## Description
 
 ```
-todo
+사업주 웹 버전 이미지
+![웹 1920 – 8](https://user-images.githubusercontent.com/90198645/162354281-f6844fa9-0900-4198-8be3-04efb6d472e7.png)
 ```
 
 ## Architecture
