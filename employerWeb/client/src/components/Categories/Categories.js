@@ -7,7 +7,7 @@ import Title from "./Title";
 const LeftSidebar = styled.div`
   padding: 50px;
 
-  width: 280px;
+  width: 360px;
   height: auto;
   background-color: white;
   float: left;
@@ -61,11 +61,11 @@ const categories = [
     ],
   },
   {
-    name: "근로자 관리",
+    name: "통합 관리",
     submenu: [
       {
-        name: "list",
-        text: "근로자 목록",
+        name: "manage",
+        text: "근로자 관리",
       },
       {
         name: "enroll",
@@ -78,15 +78,15 @@ const categories = [
       },
     ],
   },
-  {
-    name: "추가 항목",
-    submenu: [
-      {
-        name: "another",
-        text: "메뉴 추가 필요",
-      },
-    ],
-  },
+  // {
+  //   name: "추가 항목",
+  //   submenu: [
+  //     {
+  //       name: "another",
+  //       text: "메뉴 추가 필요",
+  //     },
+  //   ],
+  // },
   {
     name: "설정",
     submenu: [

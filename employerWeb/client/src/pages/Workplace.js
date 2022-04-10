@@ -3,8 +3,8 @@ import Categories from "../components/Categories/Categories";
 import styled from "styled-components";
 
 const Container = styled.div`
-  width: 1800px;
-  height: 1080px;
+  width: 100%;
+  height: auto;
   display: flex;
   background: #f5f8fb;
 `;
@@ -14,9 +14,8 @@ const Content = styled.div`
   flex-flow: row wrap;
   align-content: flex-start;
 
-  margin: 30px;
-  padding: 10px;
-  width: 1416px;
+  padding: 30px;
+  width: 100%;
   height: auto;
   border-radius: 20px;
 
@@ -35,9 +34,17 @@ const Item = styled.div`
   margin-right: 50px;
   margin-bottom: 50px;
   overflow: hidden;
+  cursor: pointer;
 `;
 
-const Workplace = ({ accounts, contract, name, wpinfo }) => {
+const Workplace = ({
+  accounts,
+  contract,
+  name,
+  wpinfo,
+  workplaceList,
+  employerSetting,
+}) => {
   const [workplaceinfo, setWorkplaceinfo] = useState();
 
   const [ready, setReady] = useState(false);
@@ -46,7 +53,8 @@ const Workplace = ({ accounts, contract, name, wpinfo }) => {
     getWorkplaceinfo();
   }, []);
 
-  const workplace = [
+  // TODO workplaceList 이미지와 일치시킬 것
+  const workplaceImg = [
     "img/cgv.png",
     "img/cu.png",
     "",
@@ -73,18 +81,26 @@ const Workplace = ({ accounts, contract, name, wpinfo }) => {
     setReady(true);
   };
 
+  const onClickItem = (i) => {
+    employerSetting(i);
+  };
+
   return (
     <Container>
       <Categories name={name} wpname={wpinfo[1]} />
       {!ready && <p>잠시만 기다려주세요... </p>}
       {ready && (
         <Content>
-          {workplace.map((c, i) => (
-            <Item>
+          {workplaceList.map((c, i) => (
+            <Item
+              onClick={() => {
+                onClickItem(i);
+              }}
+            >
               <img
                 style={{ objectFit: "cover", width: "100%", height: "100%" }}
-                src={c}
-                alt={i}
+                src={workplaceImg[i]}
+                alt={workplaceImg[i]}
               />
             </Item>
           ))}

@@ -7,13 +7,13 @@ import styled from "styled-components";
 const CalendarDiv = styled.div`
   width: 762px;
   height: 730px;
-  box-shadow: 5px 5px 5px 5px gray;
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
   border-radius: 20px;
   padding: 20px;
   background-color: #f7f7f7;
 `;
 
-const Calendar = ({attendance}) => {
+const Calendar = ({ attendance }) => {
   const testEvent = [
     {
       title: "홍길동 결근",

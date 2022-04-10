@@ -1,8 +1,10 @@
 import React from "react";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import PayrollAdapter from "../components/Payroll/PayrollAdapter";
 import Categories from "../components/Categories/Categories";
+import WorkerBalance from "../components/Payroll/WorkerBalance";
+import WorkerInformation from "../components/Payroll/WorkerInformation";
 
 const Container = styled.div`
   width: 100%;
@@ -12,23 +14,27 @@ const Container = styled.div`
 
 const Content = styled.div`
   display: flex;
-  flex-direction: column;
-  margin: 30px;
-  padding: 30px;
+  flex-direction: row;
   width: 100%;
   height: auto;
-  box-shadow: 5px 5px 5px 5px gray;
-  border-radius: 20px;
-  background-color: #f7f7f7;
+  background-color: #f5f8fb;
+  padding: 48px;
 
   h1 {
     font-size: 26px;
     font-family: "Noto Sans CJK KR";
   }
 
-  .bottom{
-    margin-left:auto;
-    margin-top:auto;
+  .bottom {
+    margin-left: auto;
+    margin-top: auto;
+  }
+
+  > div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-right: 48px;
   }
 `;
 
@@ -173,10 +179,19 @@ const Payroll = ({
         <>
           <Categories name={name} wpname={wpinfo[1]} />
           <Content>
-            <h1> 급여 지급 </h1>
-            <h2>{todaydate}</h2>
-            <PayrollAdapter workers={customworkers} payWage={payWage} />
-            <h2 className="bottom">나의 잔고 : {balance}원</h2>
+            <div>
+              {/* TODO 계정 주소 전달해야 함 */}
+              <WorkerBalance
+                name={name}
+                accounts={accounts[0]}
+                balance={balance}
+              />
+              {/* <h2>{todaydate}</h2> */}
+              <PayrollAdapter workers={customworkers} payWage={payWage} />
+            </div>
+            {/* <div>
+              <WorkerInformation />
+            </div> */}
           </Content>
         </>
       )}

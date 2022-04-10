@@ -39,7 +39,7 @@ const LeftMenu = styled.div`
 const Information = styled.div`
   width: 762px;
   height: 150px;
-  box-shadow: 5px 5px 5px 5px gray;
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
   border-radius: 20px;
   padding: 20px;
   background-color: #f7f7f7;
@@ -56,7 +56,7 @@ const Information = styled.div`
 // const Calendar = styled.div`
 //   width: 762px;
 //   height: 702px;
-//   box-shadow: 5px 5px 5px 5px gray;
+//    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
 //   border-radius: 20px;
 //   padding: 20px;
 //   background-color: #f7f7f7;
@@ -65,7 +65,7 @@ const Information = styled.div`
 const History = styled.div`
   width: 606px;
   height: 950px;
-  box-shadow: 5px 5px 5px 5px gray;
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
   border-radius: 20px;
   padding: 20px;
   background-color: #f7f7f7;
@@ -250,7 +250,7 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
             <table>
               <tr>
                 <td>
-                  이름:&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;{" "}
+                  이름:&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
                   {workerinfo["name"]}
                 </td>
                 <td>
