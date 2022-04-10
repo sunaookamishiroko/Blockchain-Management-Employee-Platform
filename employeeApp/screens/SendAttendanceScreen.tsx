@@ -17,7 +17,7 @@ import { makeLabortxobj, infuraProvider, laborContract } from "../connectETH/Tra
 
 // 출근 퇴근하기
 
-export default function AttendanceCheckScreen({ navigation, route }: RootTabScreenProps<'AttendanceCheckScreen'>) {
+export default function SendAttendanceScreen({ navigation, route }: RootTabScreenProps<'AttendanceCheckScreen'>) {
   
   const [hasPermission, setHasPermission] = useState<null | boolean>(null);
   const [scanned, setScanned] = useState<boolean>(false);
@@ -68,7 +68,7 @@ export default function AttendanceCheckScreen({ navigation, route }: RootTabScre
 
     let abidata = new ethers.utils
     .Interface(["function uploadAttendance(uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute)"])
-    .encodeFunctionData("uploadAttendance", [route.params.num, route.params.index, "2022-02-01", 20, 0]);
+    .encodeFunctionData("uploadAttendance", [route.params.num, route.params.index, "2022-03-31", 20, 30]);
     let txObj = await makeLabortxobj(connector.accounts[0], abidata, 200000);
 
     try {

@@ -4,7 +4,8 @@
 ## Description
 
 ```
-todo
+사업주 웹 버전 이미지
+
 ```
 
 ## Architecture

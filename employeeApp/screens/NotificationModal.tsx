@@ -26,7 +26,7 @@ export default function NotificationModal({ navigation }: RootTabScreenProps<'No
       )}
       {connector.connected && (
         <>
-        <TouchableOpacity onPress={() => navigation.navigate('LaborContractSendScreen')}style={styles.notificationBox}>
+        <TouchableOpacity onPress={() => navigation.navigate('SendLaborContractScreen')}style={styles.notificationBox}>
           <Text style={styles.notificationBoxText}>홍길동 사장님의 롯데리아에서 근로계약서 확인요청이 들어왔습니다!</Text>
         </TouchableOpacity>
         </>
