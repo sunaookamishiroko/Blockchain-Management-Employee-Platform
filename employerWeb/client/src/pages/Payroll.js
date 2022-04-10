@@ -181,7 +181,11 @@ const Payroll = ({
           <Content>
             <div>
               {/* TODO 계정 주소 전달해야 함 */}
-              <WorkerBalance name={name} balance={balance} />
+              <WorkerBalance
+                name={name}
+                accounts={accounts[0]}
+                balance={balance}
+              />
               {/* <h2>{todaydate}</h2> */}
               <PayrollAdapter workers={customworkers} payWage={payWage} />
             </div>

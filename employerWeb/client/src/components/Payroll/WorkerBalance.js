@@ -35,7 +35,7 @@ const Content = styled.div`
           color: #999999;
           font-weight: bold;
           margin: 0px;
-          width: 84px; 
+          width: 84px;
         }
       }
     }
@@ -49,7 +49,7 @@ const Content = styled.div`
   }
 `;
 
-const WorkerBalance = ({ name, balance }) => {
+const WorkerBalance = ({ name, accounts, balance }) => {
   return (
     <Content>
       <div className="div1">
@@ -61,7 +61,7 @@ const WorkerBalance = ({ name, balance }) => {
           </div>
           <div>
             <p>계정주소:</p>
-            <p>{name}</p>
+            <p>{accounts}</p>
           </div>
         </div>
       </div>

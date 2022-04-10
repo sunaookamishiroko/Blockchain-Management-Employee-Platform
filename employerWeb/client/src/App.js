@@ -25,6 +25,9 @@ const App = () => {
   const [workers, setWorkers] = useState();
   const [wpinfo, setWpinfo] = useState();
 
+  // 사업장 관리용 근로지
+  const [workplaceList, setWorkplaceList] = useState([]);
+
   const [loginready, setLoginready] = useState(false);
   const [ready, setReady] = useState(false);
 
@@ -33,7 +36,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    employerSetting();
+    employerSetting(0);
   }, [loginready]);
 
   // 컨트랙트 ABI를 설정하고, Web3 provider, 메타마스크 로그인을 설정하는 함수
@@ -85,7 +88,7 @@ const App = () => {
 
   // 사업주의 이름과 사업장의 근로자들 정보를 불러오는 함수
   // 맨 처음은 무조건 0번 index의 정보를 불러옴
-  const employerSetting = async () => {
+  const employerSetting = async (index) => {
     try {
       const personalinfo = await contract.methods
         .getPersonInformation(accounts[0])
@@ -94,19 +97,26 @@ const App = () => {
         .getWorkplaces()
         .call({ from: accounts[0] });
 
+      // 근로지 수 변경
+      setWorkplaceList(workplaceinfo[0]);
+
       let temp = [];
       temp.push(
-        workplaceinfo[0][0],
-        decodeURI(workplaceinfo[1][0]),
-        decodeURI(workplaceinfo[2][0])
+        workplaceinfo[0][index],
+        decodeURI(workplaceinfo[1][index]),
+        decodeURI(workplaceinfo[2][index])
       );
 
+      // workplaceinfo : 사업장 index list, 사업장 이름 list, 사업장 location list(사업장 주소)
       const workersinfo = await contract.methods
-        .getEmployeeInfo(workplaceinfo[0][0])
+        .getEmployeeInfo(workplaceinfo[0][index])
         .call({ from: accounts[0] });
 
+      // 사장 이름
       setName(decodeURI(personalinfo[1]));
+      //
       setWorkers(workersinfo);
+      //
       setWpinfo(temp);
       setReady(true);
     } catch (e) {
@@ -119,82 +129,87 @@ const App = () => {
     return <div>메타마스크 로그인, web3, 초기정보 설정중 ...</div>;
   } else {
     return (
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Main
-              accounts={accounts}
-              contract={contract}
-              name={name}
-              workers={workers}
-              wpinfo={wpinfo}
-            />
-          }
-        />
-        <Route
-          path="/manage"
-          element={
-            <WorkerManagement
-              accounts={accounts}
-              contract={contract}
-              name={name}
-              workers={workers}
-              wpinfo={wpinfo}
-            />
-          }
-        />
-        <Route
-          path="/enroll"
-          element={<EnrollWorker name={name} wpinfo={wpinfo} />}
-        />
-        <Route
-          path="/settlement"
-          element={
-            <Settlement
-              accounts={accounts}
-              contract={contract}
-              name={name}
-              wpinfo={wpinfo}
-            />
-          }
-        />
-        <Route
-          path="/payroll"
-          element={
-            <Payroll
-              accounts={accounts}
-              contract={contract}
-              tokencontract={tokencontract}
-              name={name}
-              workers={workers}
-              wpinfo={wpinfo}
-            />
-          }
-        />
-        <Route
-          path="/workplace"
-          element={
-            <Workplace
-              accounts={accounts}
-              contract={contract}
-              name={name}
-              wpinfo={wpinfo}
-            />
-          }
-        />
-        <Route
-          path="/test"
-          element={
-            <Test
-              accounts={accounts}
-              contract={contract}
-              tokencontract={tokencontract}
-              nftcontract={nftcontract}
-            />
-          }
-        />
-      </Routes>
+      <div>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Main
+                accounts={accounts}
+                contract={contract}
+                // 사장 이름
+                name={name}
+                workers={workers}
+                wpinfo={wpinfo}
+              />
+            }
+          />
+          <Route
+            path="/manage"
+            element={
+              <WorkerManagement
+                accounts={accounts}
+                contract={contract}
+                name={name}
+                workers={workers}
+                wpinfo={wpinfo}
+              />
+            }
+          />
+          <Route
+            path="/enroll"
+            element={<EnrollWorker name={name} wpinfo={wpinfo} />}
+          />
+          <Route
+            path="/settlement"
+            element={
+              <Settlement
+                accounts={accounts}
+                contract={contract}
+                name={name}
+                wpinfo={wpinfo}
+              />
+            }
+          />
+          <Route
+            path="/payroll"
+            element={
+              <Payroll
+                accounts={accounts}
+                contract={contract}
+                tokencontract={tokencontract}
+                name={name}
+                workers={workers}
+                wpinfo={wpinfo}
+              />
+            }
+          />
+          <Route
+            path="/workplace"
+            element={
+              <Workplace
+                accounts={accounts}
+                contract={contract}
+                name={name}
+                wpinfo={wpinfo}
+                workplaceList={workplaceList}
+                employerSetting={employerSetting}
+              />
+            }
+          />
+          <Route
+            path="/test"
+            element={
+              <Test
+                accounts={accounts}
+                contract={contract}
+                tokencontract={tokencontract}
+                nftcontract={nftcontract}
+              />
+            }
+          />
+        </Routes>
+      </div>
     );
   }
 };

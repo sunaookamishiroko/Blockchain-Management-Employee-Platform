@@ -79,7 +79,7 @@ const WorkerManagement = ({ accounts, contract, name, workers, wpinfo }) => {
   const [laborcontract, setLaborcontract] = useState();
 
   // 조회 선택 시 state customeworkers index
-  const [selectedWorker, setSelectedWorker] = useState();
+  const [selectedWorker, setSelectedWorker] = useState({});
   // 조회 선택 시 state laborcontract index
 
   const [ready, setReady] = useState(false);
@@ -155,6 +155,7 @@ const WorkerManagement = ({ accounts, contract, name, workers, wpinfo }) => {
     setCustomworkers(temp);
     setReady(true);
     setSelectedWorker(temp[0]);
+    setContractAddress(temp[0][0]);
   };
 
   // 근로 계약서 불러오는 메소드
@@ -232,22 +233,30 @@ const WorkerManagement = ({ accounts, contract, name, workers, wpinfo }) => {
       <Categories name={name} wpname={wpinfo[1]} />
 
       {/* 근로자 목록 */}
-      <WorkerList
-        ready={ready}
-        customworkers={customworkers}
-        onClickEnquiry={onClickEnquiry}
-      />
+      {customworkers ? (
+        <WorkerList
+          ready={ready}
+          customworkers={customworkers}
+          onClickEnquiry={onClickEnquiry}
+        />
+      ) : (
+        <></>
+      )}
 
       {/* 근로자 정보 */}
       {/* TODO 조회가 클릭된 근로자의 데이터를 삽입해야 함 */}
-      <WorkerInformation
-        badges={badges}
-        selectedWorker={selectedWorker}
-        laborContract={laborcontract}
-        handleClickContract={handleClickContract}
-        handleClickReward={handleClickReward}
-        handleClickTermination={handleClickTermination}
-      />
+      {laborcontract ? (
+        <WorkerInformation
+          badges={badges}
+          selectedWorker={selectedWorker}
+          laborContract={laborcontract}
+          handleClickContract={handleClickContract}
+          handleClickReward={handleClickReward}
+          handleClickTermination={handleClickTermination}
+        />
+      ) : (
+        <></>
+      )}
     </Container>
   );
 };

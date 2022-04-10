@@ -34,12 +34,14 @@ const Detail = styled.h5`
   }
 `;
 
-const WorkingDetails = ({ userData, workPlaceData }) => {
+const WorkingDetails = ({ laborContract, userData, workPlaceData }) => {
   const categories = ["입사일", "근무일수", "마지막 근무일", "지각률"];
 
   return (
     <>
+      {console.log(laborContract)}
       <StyeldWorkingDetails>
+        {/* TODO 입사일, 근무일수, 마지막 근무일, 지각률 처리할 것 */}
         {categories.map((category, index) => (
           <>
             <h4>{category}: </h4>

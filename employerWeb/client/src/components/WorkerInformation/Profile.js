@@ -14,7 +14,7 @@ const StyledProfile = styled.div`
     border-radius: 25px;
     background: white;
     overflow: hidden;
-    margin-right: 48px;
+    margin-right: 32px;
   }
 
   div {
@@ -46,18 +46,20 @@ const StyledProfile = styled.div`
 `;
 
 const Profile = ({ selectedWorker, userData }) => {
-  const profileCategories = ["이름", "연락처", "Address"];
+  const profileCategories = ["이름", "Address"];
 
   return (
     <StyledProfile>
-      <img src="img/profile.png" alt="프로필" />
+      <img src="img/anonymous_profile.jpg" alt="프로필" />
       <div>
-        {profileCategories.map((data, index) => (
-          <div>
-            <h4>{data}</h4>
-            <p>{userData[index]}</p>
-          </div>
-        ))}
+        <div>
+          <h4>이름</h4>
+          <p>{selectedWorker[1]}</p>
+        </div>
+        <div>
+          <h4>Address</h4>
+          <p>{selectedWorker[0]}</p>
+        </div>
       </div>
     </StyledProfile>
   );

@@ -54,11 +54,6 @@ const WorkerListAdapter = ({
           <th>Address</th>
           <th>근로계약서</th>
         </tr>
-        <tr>
-          <td>tet</td>
-          <td>tet</td>
-          <td>tet</td>
-        </tr>
 
         {workers.map((x, index) => (
           <WorkerListItem

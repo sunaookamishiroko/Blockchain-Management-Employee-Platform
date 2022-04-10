@@ -81,6 +81,7 @@ const WorkerInformation = ({
       <hr />
       {/* userData, workPlaceData 가져와야 함 */}
       <WorkingDetails
+        laborContract={laborContract}
         selectedWorker={selectedWorker}
         userData={userData2}
         workPlaceData={workPlaceData}

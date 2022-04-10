@@ -58,12 +58,6 @@ const PayrollAdapter = ({ workers, payWage }) => {
           <th>급여지급</th>
           <th>급여정산</th>
         </tr>
-        <tr>
-          <td>tet</td>
-          <td>tet</td>
-          <td>tet</td>
-          <td>tet</td>
-        </tr>
 
         {workers.map((x, index) => (
           <PayrollItem
