@@ -87,6 +87,9 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
   const [detail, setDetail] = useState();
   const [attendance, setAttendance] = useState();
   const [schedule, setSchedule] = useState();
+  const [workday, setWorkday] = useState();
+  const [todaydate, setTodaydate] = useState();
+
   const [workerindex, setWorkerindex] = useState();
 
   const [indexready, setIndexready] = useState(false);
@@ -151,7 +154,6 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
             display: "list-item",
           });
         }
-
         event.push({
           title: "근무중",
           start: caldata[0][caldata[0].length - 1],
@@ -159,6 +161,8 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
           display: "list-item",
         });
       }
+
+
     } catch (e) {
       console.log(e);
     }
@@ -171,6 +175,8 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
     let year = time.getFullYear();
     let month = time.getMonth() + 1;
 
+    setTodaydate([year, month]);
+
     let selectdate = year + "-" + ("0" + month.toString()).slice(-2);
 
     let indexarr = await patternMatching(selectdate, workerindex);
@@ -180,6 +186,7 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
 
     let temp = {};
     if (startIndex != -1) {
+      setWorkday((endIndex - startIndex) + 1);
       try {
         let hourwage = await contract.methods
           .getWage(0, workerindex)
@@ -202,6 +209,7 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
         console.log(e);
       }
     } else {
+      setWorkday(0);
       temp["hourwage"] = 0;
       temp["totalwage"] = 0;
       temp["allhours"] = 0;
@@ -277,8 +285,8 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
           {!detailready && <p>계산중입니다...</p>}
           {detailready && (
             <>
-              <p>정상출근 몇 번</p>
-              <p>결근 몇 번</p>
+              <p>{todaydate[0]}년 {todaydate[1]}월 정산</p>
+              <p>정상출근 {workday}일</p>
               <p>
                 총 근무 {detail["allhours"]}시간 {detail["allmin"]}분
               </p>
