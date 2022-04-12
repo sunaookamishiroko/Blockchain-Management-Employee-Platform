@@ -209,11 +209,19 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
         console.log(e);
       }
     } else {
-      setWorkday(0);
-      temp["hourwage"] = 0;
+      let hourwage;
+      try {
+        hourwage = await contract.methods
+          .getWage(0, workerindex)
+          .call({ from: accounts[0] });
+      } catch(e) {
+        console.log(e);
+      }
+      temp["hourwage"] = hourwage;
       temp["totalwage"] = 0;
       temp["allhours"] = 0;
       temp["allmin"] = 0;
+      setWorkday(0);
     }
     setDetail(temp);
     setDetailready(true);
