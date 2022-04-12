@@ -174,27 +174,27 @@ const Payroll = ({
 
   return (
     <Container>
-      {!ready && <p>잠시만 기다려주세요 ... </p>}
-      {ready && (
-        <>
-          <Categories name={name} wpname={wpinfo[1]} />
+      <Categories name={name} wpname={wpinfo[1]} />
           <Content>
-            <div>
-              {/* TODO 계정 주소 전달해야 함 */}
-              <WorkerBalance
-                name={name}
-                accounts={accounts[0]}
-                balance={balance}
-              />
-              {/* <h2>{todaydate}</h2> */}
-              <PayrollAdapter workers={customworkers} payWage={payWage} />
-            </div>
-            {/* <div>
-              <WorkerInformation />
-            </div> */}
+            {!ready && <p>잠시만 기다려주세요...</p>}
+            {ready && (
+              <>
+                <div>
+                  {/* TODO 계정 주소 전달해야 함 */}
+                  <WorkerBalance
+                    name={name}
+                    accounts={accounts[0]}
+                    balance={balance}
+                  />
+                  {/* <h2>{todaydate}</h2> */}
+                  <PayrollAdapter workers={customworkers} payWage={payWage} />
+                </div>
+                {/* <div>
+                  <WorkerInformation />
+                </div> */}
+              </>
+            )}
           </Content>
-        </>
-      )}
     </Container>
   );
 };
