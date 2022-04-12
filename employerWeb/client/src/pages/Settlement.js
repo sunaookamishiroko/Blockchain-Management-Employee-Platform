@@ -86,6 +86,7 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
 
   const [detail, setDetail] = useState();
   const [attendance, setAttendance] = useState();
+  const [schedule, setSchedule] = useState();
   const [workerindex, setWorkerindex] = useState();
 
   const [indexready, setIndexready] = useState(false);
@@ -106,14 +107,20 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
 
   const getWorkerindex = async () => {
     let response;
+    let lbcontract;
     try {
       response = await contract.methods
         .getIndexOfEmployee(wpinfo[0], workerinfo["address"])
         .call({ from: accounts[0] });
+        // 근무일정 가져오기 위한 근로계약서 가져오기 추가
+      lbcontract = await contract.methods
+        .getLaborContract(wpinfo[0], workerinfo["address"])
+        .call({ from: accounts[0] });
     } catch (e) {
       console.log(e);
     }
-
+    // 근무일정 설정
+    setSchedule(decodeURI(lbcontract[4]));
     setWorkerindex(response);
     setIndexready(true);
   };
@@ -258,7 +265,7 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
                 </td>
               </tr>
               <tr>
-                <td>근무일정:&nbsp; &nbsp; &nbsp; &nbsp; cc</td>
+                <td>근무일정:&nbsp; &nbsp; &nbsp; &nbsp; {schedule}</td>
               </tr>
             </table>
           </Information>
