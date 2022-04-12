@@ -52,7 +52,7 @@ const WorkerListAdapter = ({
           <th>번호</th>
           <th>이름</th>
           <th>Address</th>
-          <th>근로계약서</th>
+          <th>정보 조회</th>
         </tr>
 
         {workers.map((x, index) => (

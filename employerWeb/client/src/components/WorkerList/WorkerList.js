@@ -52,7 +52,7 @@ const WorkerList = ({ ready, customworkers, onClickEnquiry }) => {
   return (
     <Content>
       <h1> 근로자 목록 </h1>
-      {!ready && <p>잠시만 기다려 주세요...</p>}
+      {ready == false && <p>잠시만 기다려 주세요...</p>}  
       {ready && (
         <WorkerListAdapter
           workers={customworkers}

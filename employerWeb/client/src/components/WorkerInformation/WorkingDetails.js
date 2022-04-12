@@ -22,7 +22,7 @@ const StyeldWorkingDetails = styled.div`
     font-size: 20px;
   }
 `;
-
+/*
 const Detail = styled.h5`
   margin-top: 8px;
   font-size: 16px;
@@ -32,7 +32,7 @@ const Detail = styled.h5`
   span {
     color: #1c89e9;
   }
-`;
+`;*/
 
 const WorkingDetails = ({ laborContract, userData, workPlaceData }) => {
   const categories = ["입사일", "근무일수", "마지막 근무일", "지각률"];
@@ -49,13 +49,16 @@ const WorkingDetails = ({ laborContract, userData, workPlaceData }) => {
           </>
         ))}
       </StyeldWorkingDetails>
+    </>
+  );
+
+  /*
       <Detail>
         {workPlaceData[0]}의 재직자 평균 근무일수는
         <span> {workPlaceData[1]}</span>, 평균 지각률은
         <span> {workPlaceData[2]}</span> 입니다.
       </Detail>
-    </>
-  );
+  */
 };
 
 export default WorkingDetails;

@@ -124,15 +124,12 @@ const WorkerManagement = ({ accounts, contract, name, workers, wpinfo }) => {
   // 근로자 목록에서 조회 클릭 시
   // TODO 이 페이지가 로드가 완료되면, 0번 인덱스 조회버튼이 눌리도록 할 것
   const onClickEnquiry = (index, e) => {
-    alert("onClickEnquiry 클릭");
 
     // 선택된 근로자 정보 설정
     setSelectedWorker(customworkers[index]);
 
     // 근로계약서 정보 가져오기
     setContractAddress(selectedWorker[0]);
-
-    console.log(laborcontract);
   };
 
   const handleClose = () => {
@@ -148,14 +145,23 @@ const WorkerManagement = ({ accounts, contract, name, workers, wpinfo }) => {
   // 근로자 데이터 불러오는 메소드
   const makeCustomWorker = async () => {
     let temp = [];
-
-    for (let x = 0; x < workers[0].length; x++) {
-      temp.push([workers[0][x], decodeURI(workers[1][x])]);
+    
+    // TODO
+    // if문 -> 근로자가 1명 이상일때
+    // else문 -> 근로자가 0명일때 처리
+    if (workers[0].length != 0) {
+      for (let x = 0; x < workers[0].length; x++) {
+        temp.push([workers[0][x], decodeURI(workers[1][x])]);
+      }
+      setCustomworkers(temp);
+      setSelectedWorker(temp[0]);
+      setContractAddress(temp[0][0]);
+      setReady(true);
+    } else {
+      setSelectedWorker(null);
+      setContractAddress(null);
+      setReady(null);
     }
-    setCustomworkers(temp);
-    setReady(true);
-    setSelectedWorker(temp[0]);
-    setContractAddress(temp[0][0]);
   };
 
   // 근로 계약서 불러오는 메소드
@@ -164,7 +170,6 @@ const WorkerManagement = ({ accounts, contract, name, workers, wpinfo }) => {
       const response = await contract.methods
         .getLaborContract(0, contractaddress)
         .call({ from: accounts[0] });
-      console.log(response);
       setLaborcontract(response);
       setContractready(true);
     } catch (e) {
