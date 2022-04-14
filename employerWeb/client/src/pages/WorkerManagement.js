@@ -171,9 +171,9 @@ const WorkerManagement = ({ accounts, contract, nftcontract, name, workers, wpin
       const response = await contract.methods
         .getLaborContract(0, contractaddress)
         .call({ from: accounts[0] });
+      await getUserData(response);
       setLaborcontract(response);
       setContractready(true);
-      await getUserData(response);
     } catch (e) {
       console.log(e);
     }
@@ -196,9 +196,9 @@ const WorkerManagement = ({ accounts, contract, nftcontract, name, workers, wpin
       parseInt(startday.substr(5, 6)) - 1, 
       parseInt(startday.substr(8, 9))
       );
-    const elapsedMSec = date2.getTime() - date1.getTime();
+    const elapsedMSec = date1.getTime() - date2.getTime();
     const elapsedDay = elapsedMSec / 1000 / 60 / 60 / 24; 
-    temp.push(elapsedDay);
+    temp.push(elapsedDay.toString() + "일");
 
     // 마지막 근무일
     let caldata;
@@ -216,31 +216,31 @@ const WorkerManagement = ({ accounts, contract, nftcontract, name, workers, wpin
       console.log(e);
     }
     temp.push(caldata[0][caldata[0].length - 1]);
-
+    console.log(caldata);
     // 지각률
     let checkhour;
     let checkmin;
     let sum = 0;
 
-    if (lbcontract[3].substr(0) == "0")  {
-      checkhour = lbcontract[3].substr(1, 1);
+    if (lbcontract[3][0] == "0")  {
+      checkhour = lbcontract[3][1];
     } else {
-      checkhour = lbcontract[3].substr(0, 1);
+      checkhour = lbcontract[3].substring(0, 2); 
     }
 
-    if (lbcontract[3].substr(3,3) == "0") {
-      checkmin = lbcontract[3].substr(4, 4);
+    if (lbcontract[3][3] == "0") {
+      checkmin = lbcontract[3][4];
     } else {
-      checkmin = lbcontract[3].substr(3, 4);
+      checkmin = lbcontract[3].substring(3, 5);
     }
 
-    for(let x = 0; x < caldata.length ; x++) {
-      if (caldata[x][1] == checkhour && caldata[x][2] == checkmin) {
+    for(let x = 0; x < caldata[0].length ; x++) {
+      if (caldata[1][x] != checkhour || caldata[2][x] != checkmin) {
         sum += 1;
       } 
     }
 
-    temp.push((sum / caldata[0].length).toString() + "%");
+    temp.push(((sum / caldata[0].length) * 100).toString() + "%");
     console.log(temp);
     setUserdata(temp);
   })
