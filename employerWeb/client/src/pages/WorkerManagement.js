@@ -65,7 +65,7 @@ const CloseButton = styled.button`
   padding-right: 30px;
 `;
 
-const WorkerManagement = ({ accounts, contract, name, workers, wpinfo }) => {
+const WorkerManagement = ({ accounts, contract, nftcontract, name, workers, wpinfo }) => {
   const [open, setOpen] = useState(false);
 
   // 근로계약서 다이얼로그 상태
@@ -292,7 +292,14 @@ const WorkerManagement = ({ accounts, contract, name, workers, wpinfo }) => {
       <Dialog maxWidth={1280} onClose={handleClose} open={rewardOpen}>
         <DialogTitle> {workername} 님 </DialogTitle>
         <CloseButton onClick={handleClose} />
-        <AwardDialog badges={badges} onClickClose={handleClose} />
+        <AwardDialog
+          accounts={accounts}
+          nftcontract={nftcontract}
+          selectedWorker={selectedWorker}
+          badges={badges}
+          wpinfo={wpinfo} 
+          onClickClose={handleClose}
+        />
       </Dialog>
 
       {/* 근로계약 해지 시 Dialog */}
