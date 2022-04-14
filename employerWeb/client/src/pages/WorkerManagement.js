@@ -132,6 +132,9 @@ const WorkerManagement = ({ accounts, contract, nftcontract, name, workers, wpin
 
     // 근로계약서 정보 가져오기
     setContractAddress(selectedWorker[0]);
+    
+    // 유저 데이터 만들기
+    getUserData(customworkers[index][0]);
   };
 
   const handleClose = () => {
@@ -150,6 +153,9 @@ const WorkerManagement = ({ accounts, contract, nftcontract, name, workers, wpin
     // TODO
     // if문 -> 근로자가 1명 이상일때
     // else문 -> 근로자가 0명일때 처리
+
+    // 맨 처음 index 1번의 유저 데이터를 만듬
+    await getUserData(workers[0][0]);
     if (workers[0].length != 0) {
       for (let x = 0; x < workers[0].length; x++) {
         temp.push([workers[0][x], decodeURI(workers[1][x])]);
@@ -171,7 +177,6 @@ const WorkerManagement = ({ accounts, contract, nftcontract, name, workers, wpin
       const response = await contract.methods
         .getLaborContract(0, contractaddress)
         .call({ from: accounts[0] });
-      await getUserData(response);
       setLaborcontract(response);
       setContractready(true);
     } catch (e) {
@@ -180,9 +185,19 @@ const WorkerManagement = ({ accounts, contract, nftcontract, name, workers, wpin
   };
 
   // 유저 데이터 만드는 메소드
-  const getUserData = (async (lbcontract) => {
+  const getUserData = (async (workeraddress) => {
     let temp = []
-    
+    let lbcontract;
+
+    // 근로계약서 가져오기
+    try {
+      lbcontract = await contract.methods
+        .getLaborContract(0, workeraddress)
+        .call({ from: accounts[0] });
+    } catch (e) {
+      console.log(e);
+    }
+
     // 입사일
     let startday = lbcontract[1].substr(0,10);
     temp.push(startday);
@@ -205,7 +220,7 @@ const WorkerManagement = ({ accounts, contract, nftcontract, name, workers, wpin
 
     try {
       let index = await contract.methods
-        .getIndexOfEmployee(0, selectedWorker[0])
+        .getIndexOfEmployee(0, workeraddress)
         .call({ from: accounts[0] });
 
       caldata = await contract.methods
@@ -216,7 +231,7 @@ const WorkerManagement = ({ accounts, contract, nftcontract, name, workers, wpin
       console.log(e);
     }
     temp.push(caldata[0][caldata[0].length - 1]);
-    console.log(caldata);
+    
     // 지각률
     let checkhour;
     let checkmin;
