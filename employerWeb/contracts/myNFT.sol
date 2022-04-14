@@ -18,4 +18,8 @@ contract myNFT is ERC721URIStorage {
 
         return _tokenId;
     }
+
+    function getTokenIdNow() public view returns (uint256) {
+        return _tokenId;
+    }
 }
