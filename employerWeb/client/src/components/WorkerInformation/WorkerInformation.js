@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Badge from "./Badge";
 import Buttons from "./Buttons";
@@ -32,16 +32,13 @@ const Content = styled.div`
 // TODO 근로자 정보 받아오는 메소드가 contract에 명시된 형식으로 불러와져야 함
 // TODO 평균 근무일수, 지각률 가져와야 함 workPlaceData
 const WorkerInformation = ({
+  userdata,
   selectedWorker,
   laborContract,
   handleClickContract,
   handleClickReward,
   handleClickTermination,
 }) => {
-  const userData = ["사오륙", "010-1234-5678", "hddgf-24-df23"];
-  const userData2 = ["2021/03/01", "375일", "2022/03/11", "18%"];
-  const workPlaceData = ["CU편의점 산기대점", "482일", "22%"];
-
   // TODO 하드코딩 데이터
   const [badges, setBadges] = useState([
     {
@@ -58,7 +55,7 @@ const WorkerInformation = ({
     "",
   ]);
 
-  // TODO 근로계약서 조회 버튼 클릭 시
+  // 근로계약서 조회
   const onClickContract = () => {
     handleClickContract(selectedWorker[1], selectedWorker[0]);
   };
@@ -76,17 +73,11 @@ const WorkerInformation = ({
   return (
     <Content>
       <h1>근로자 정보</h1>
-      {/* <p>근로자 {laborContract}</p> */}
-      <Profile selectedWorker={selectedWorker} userData={userData} />
+      <Profile selectedWorker={selectedWorker}/>
       <hr />
-      {/* userData, workPlaceData 가져와야 함 */}
       <WorkingDetails
-        laborContract={laborContract}
-        selectedWorker={selectedWorker}
-        userData={userData2}
-        workPlaceData={workPlaceData}
+        userdata={userdata}
       />
-      <hr />
       <Badge badges={badges} setBadges={setBadges} />
       <Buttons
         onClickReward={onClickReward}

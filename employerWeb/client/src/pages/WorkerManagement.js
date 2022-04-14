@@ -78,6 +78,8 @@ const WorkerManagement = ({ accounts, contract, name, workers, wpinfo }) => {
   const [contractaddress, setContractAddress] = useState();
   const [laborcontract, setLaborcontract] = useState();
 
+  const [userdata, setUserdata] = useState([]);
+
   // 조회 선택 시 state customeworkers index
   const [selectedWorker, setSelectedWorker] = useState({});
   // 조회 선택 시 state laborcontract index
@@ -145,7 +147,6 @@ const WorkerManagement = ({ accounts, contract, name, workers, wpinfo }) => {
   // 근로자 데이터 불러오는 메소드
   const makeCustomWorker = async () => {
     let temp = [];
-    
     // TODO
     // if문 -> 근로자가 1명 이상일때
     // else문 -> 근로자가 0명일때 처리
@@ -172,10 +173,77 @@ const WorkerManagement = ({ accounts, contract, name, workers, wpinfo }) => {
         .call({ from: accounts[0] });
       setLaborcontract(response);
       setContractready(true);
+      await getUserData(response);
     } catch (e) {
       console.log(e);
     }
   };
+
+  // 유저 데이터 만드는 메소드
+  const getUserData = (async (lbcontract) => {
+    let temp = []
+    
+    // 입사일
+    let startday = lbcontract[1].substr(0,10);
+    temp.push(startday);
+
+    // 근무일수
+    const now = new Date();
+    
+    const date1 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const date2 = new Date(
+      parseInt(startday.substr(0, 4)),
+      parseInt(startday.substr(5, 6)) - 1, 
+      parseInt(startday.substr(8, 9))
+      );
+    const elapsedMSec = date2.getTime() - date1.getTime();
+    const elapsedDay = elapsedMSec / 1000 / 60 / 60 / 24; 
+    temp.push(elapsedDay);
+
+    // 마지막 근무일
+    let caldata;
+
+    try {
+      let index = await contract.methods
+        .getIndexOfEmployee(0, selectedWorker[0])
+        .call({ from: accounts[0] });
+
+      caldata = await contract.methods
+          .getAllAttendance(wpinfo[0], index)
+          .call({ from: accounts[0] });
+
+    } catch(e) {
+      console.log(e);
+    }
+    temp.push(caldata[0][caldata[0].length - 1]);
+
+    // 지각률
+    let checkhour;
+    let checkmin;
+    let sum = 0;
+
+    if (lbcontract[3].substr(0) == "0")  {
+      checkhour = lbcontract[3].substr(1, 1);
+    } else {
+      checkhour = lbcontract[3].substr(0, 1);
+    }
+
+    if (lbcontract[3].substr(3,3) == "0") {
+      checkmin = lbcontract[3].substr(4, 4);
+    } else {
+      checkmin = lbcontract[3].substr(3, 4);
+    }
+
+    for(let x = 0; x < caldata.length ; x++) {
+      if (caldata[x][1] == checkhour && caldata[x][2] == checkmin) {
+        sum += 1;
+      } 
+    }
+
+    temp.push((sum / caldata[0].length).toString() + "%");
+    console.log(temp);
+    setUserdata(temp);
+  })
 
   // // TODO 선택된 badge
   // const [selectedBadge, setSelectedBadge] = useState({
@@ -231,7 +299,13 @@ const WorkerManagement = ({ accounts, contract, name, workers, wpinfo }) => {
       {/* 사용자 이름 전달해야 함 name */}
       {/* 해지 버튼클릭 시 이벤트 전달해야 함 */}
       <Dialog maxWidth={1280} onClose={handleClose} open={terminationOpen}>
-        <TerminationDialog onClickClose={handleClose} />
+        <TerminationDialog
+          accounts={accounts}
+          contract={contract}
+          selectedWorker={selectedWorker}
+          wpinfo={wpinfo}
+          onClickClose={handleClose} 
+        />
       </Dialog>
 
       {/* 좌측 카테고리 */}
@@ -250,9 +324,10 @@ const WorkerManagement = ({ accounts, contract, name, workers, wpinfo }) => {
 
       {/* 근로자 정보 */}
       {/* TODO 조회가 클릭된 근로자의 데이터를 삽입해야 함 */}
-      {laborcontract ? (
+      {userdata ? (
         <WorkerInformation
           badges={badges}
+          userdata={userdata}
           selectedWorker={selectedWorker}
           laborContract={laborcontract}
           handleClickContract={handleClickContract}
