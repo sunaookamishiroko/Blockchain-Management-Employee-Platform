@@ -27,7 +27,7 @@ class Test extends Component {
       .uploadPersonalInfo(
         accounts[0],
         0,
-        encodeURI("이서윤3"),
+        encodeURI("호우호"),
         26,
         encodeURI("여")
       )
@@ -42,9 +42,9 @@ class Test extends Component {
       .uploadPersonalInfo(
         accounts[0],
         1,
-        encodeURI("홍길동2"),
+        encodeURI("홍참동"),
         50,
-        encodeURI("여2")
+        encodeURI("남")
       )
       .send({ from: accounts[0] });
     console.log("uploadPersonalInfo1 complete");
@@ -88,12 +88,12 @@ class Test extends Component {
       "2022/03/27-2022/06/30",
       encodeURI("서빙"),
       "03:00-12:00",
-      encodeURI("매주 화"),
-      "10000",
+      encodeURI("수"),
+      "12000",
       encodeURI("매월 10일"),
-      encodeURI("없음"),
+      encodeURI("바보임"),
     ];
-    await contract.methods.uploadLaborContract(items, "2022-03-27", accounts[0], 0).send({ from: accounts[0] });
+    await contract.methods.uploadLaborContract(items, "2022-04-12", accounts[0], 1).send({ from: accounts[0] });
     
     console.log("uploadLaborContract complete");
   };

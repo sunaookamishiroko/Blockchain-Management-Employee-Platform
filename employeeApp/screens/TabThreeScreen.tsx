@@ -36,7 +36,7 @@ export default function TabThreeScreen({navigation} : RootTabScreenProps<'TabThr
     console.log(result);
     let temp = [];
 
-    const url = `https://api.pinata.cloud/data/pinList?status=pinned&metadata[keyvalues]={"owner":{"value":"", "op":"eq"}}`;
+    const url = `https://api.pinata.cloud/data/pinList?status=pinned&metadata[keyvalues]={"owner":{"value":"0x8F22cbB2Fe066d8671c9C09bfF005F0507e1627e", "op":"eq"}}`;
 
     if (result.length == 0) {
       setReady(null);
@@ -66,17 +66,19 @@ export default function TabThreeScreen({navigation} : RootTabScreenProps<'TabThr
   // nft jsx 컴포넌트 만들기
   const makeJsx = () => {
     let nfts = [];
-    //`${tokeninfo[x].image}`
+
     for (let x = tokeninfo.length -1 ; x != -1 ; x--) {
       nfts.push(
         <View key={x}>
           <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('NFTViewScreen', { tokeninfo : tokeninfo[x] })}>
             <Image 
-            source={{uri: ""}}
-            style={{width: 100, height: 100}}
+              source={{uri: tokeninfo[x][0].image}}
+              style={{width: 100, height: 100}}
             />
           </TouchableOpacity>
-          <Text>name : {tokeninfo[x][0].name}</Text>
+          <Text>{tokeninfo[x][0].name}</Text>
+          <Text>{tokeninfo[x][0].description}</Text>
+          <Text>{decodeURI(tokeninfo[x][1][0])}</Text>
         </View>
       );
     }
