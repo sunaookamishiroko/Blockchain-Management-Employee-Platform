@@ -24,7 +24,7 @@ module.exports.getQrcode = async (event, context, callback) => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify(results);
+    body: JSON.stringify(results)
   };
 };
 
@@ -80,11 +80,9 @@ module.exports.setLaborcontract = async (event, context, callback) => {
     wageday,
     comment
   } = JSON.parse(event.body);
-
+  
   let results = await mysql.query(
-    `INSERT INTO laborcontract VALUES ("${address}", "${wpname}", "${wpemployer}", 
-    ${workplaceindex}, "${period}", "${duties}", "${workingtime}", "${workingdays}", 
-    "${wage}", "${wageday}", "${comment})`
+    `INSERT INTO laborcontract VALUES ("${address}", "${wpname}", "${wpemployer}", ${workplaceindex}, "${period}", "${duties}", "${workingtime}", "${workingdays}", "${wage}", "${wageday}", "${comment}")`
   );
 
   await mysql.end();
