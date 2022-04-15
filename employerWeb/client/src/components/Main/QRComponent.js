@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import QRCode from "qrcode.react";
 /*
@@ -18,6 +18,8 @@ const StyledQRComponent = styled.div`
 `;
 
 const QRComponent = () => {
+
+
   const QRValue = Math.floor(Math.random() * 100000000) + 1;
   return (
     <StyledQRComponent>
