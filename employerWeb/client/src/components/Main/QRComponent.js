@@ -18,7 +18,7 @@ const StyledQRComponent = styled.div`
 `;
 
 const QRComponent = () => {
-  const QRValue = Math.random(1, 100);
+  const QRValue = Math.floor(Math.random() * 100000000) + 1;
   return (
     <StyledQRComponent>
       <h2 style={{ textAlign: "center" }}>QR 코드 인증</h2>
