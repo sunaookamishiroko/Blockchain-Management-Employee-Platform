@@ -96,7 +96,6 @@ const App = () => {
       const workplaceinfo = await contract.methods
         .getWorkplaces()
         .call({ from: accounts[0] });
-
       // 근로지 수 변경
       setWorkplaceList(workplaceinfo[0]);
 
@@ -150,6 +149,7 @@ const App = () => {
               <WorkerManagement
                 accounts={accounts}
                 contract={contract}
+                nftcontract={nftcontract}
                 name={name}
                 workers={workers}
                 wpinfo={wpinfo}
@@ -158,7 +158,11 @@ const App = () => {
           />
           <Route
             path="/enroll"
-            element={<EnrollWorker name={name} wpinfo={wpinfo} />}
+            element={
+              <EnrollWorker 
+                name={name} 
+                wpinfo={wpinfo} 
+              />}
           />
           <Route
             path="/settlement"

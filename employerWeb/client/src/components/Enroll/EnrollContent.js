@@ -114,7 +114,8 @@ const EnrollContent = ({
     comment: "",
   });
 
-  const onClickSubmit = () => {
+  const onClickSubmit = (e) => {
+    e.preventDefault();
     onSubmit(true);
   };
 
@@ -132,7 +133,7 @@ const EnrollContent = ({
               <h2> 이름 </h2>
               <input
                 placeholder="근로자 이름을 입력해주세요."
-                name="name"
+                name="employeename"
                 onChange={onChange}
               />
             </EnrollLabel>

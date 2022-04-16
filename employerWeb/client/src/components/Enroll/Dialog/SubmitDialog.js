@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import React from "react";
 import styled from "styled-components";
 
@@ -21,6 +22,7 @@ const SubmitDialog = ({ name, onClickSubmit, onClickClose }) => {
     <StyledSubmit>
       <h2>{name}님에게</h2>
       <h2>근로계약서 작성을 요청하시겠습니까?</h2>
+      <Button onClick={onClickSubmit}>넹</Button>
     </StyledSubmit>
   );
 };

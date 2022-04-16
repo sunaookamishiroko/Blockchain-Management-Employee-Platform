@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "mysql": "^2.18.1",
+    "serverless-mysql": "^1.5.4"
+  }
+}

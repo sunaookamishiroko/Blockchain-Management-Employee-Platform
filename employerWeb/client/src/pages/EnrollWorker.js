@@ -7,6 +7,8 @@ import EnrollContent from "../components/Enroll/EnrollContent";
 //import { firestore } from "./firebase.js";
 //import { collection, addDoc } from "firebase/firestore";
 
+import axios from "axios";
+
 const Container = styled.div`
   background: #f5f8fb;
   width: 100%;
@@ -107,6 +109,7 @@ const EnrollLabel = styled.label`
 
 const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
   const [worker, setWorker] = useState({
+    employeename: "",
     address: "",
     period1: "",
     period2: "",
@@ -130,10 +133,37 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
     setWorker({ ...worker, [name]: value });
   };
 
-  const onSubmit = (e) => {
-    //TODO 입력값 검증 필요
+  const onSubmit = async (e) => {
     console.log(worker);
+    console.log(wpinfo);  
 
+    // period1, period2 onchange 안먹힘 -> 해결해야함
+    let body = {
+      "address" : worker.address,
+      "wpname" : wpinfo[1],
+      "wpemployer" : name,
+      "employeename" : worker.employeename,
+      "workplaceindex" : wpinfo[0],
+      "period" : "2022-04-01~2022-04-31",
+      "duties" : worker.duties,
+      "workingtime" : worker.workingTime,
+      "workingdays" : worker.workingDays,
+      "wage" : worker.wage,
+      "wageday" : worker.wageday,
+      "comment" : worker.comment
+    };
+
+    try {
+      const response = await axios.post(`setcontract`, body);
+
+      if (response.status !== 200) alert("db 에러 발생");
+      else {
+        alert("근로계약서를 정상적으로 요청했습니다!");
+      }
+    } catch(e) {
+      console.log(e);
+    }
+    
     // 사업장 index를 포함하여 등록할 것
     //onEnroll(worker);
     e.preventDefault();
@@ -147,19 +177,6 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
   const onClickHandler = (e) => {
     e.preventDefault();
     try {
-      // firestore.collection("workersData").add({
-      //   address: this.state.worker.address,
-      //   age: this.state.worker.age,
-      //   gender: this.state.worker.gender,
-      //   period1: this.state.worker.period1,
-      //   period2: this.state.worker.period2,
-      //   duties: this.state.worker.duties,
-      //   workingTime: this.state.worker.workingTime,
-      //   workingDays: this.state.worker.workingDays,
-      //   wage: this.state.worker.wage,
-      //   wageday: this.state.worker.wageday,
-      //   comment: this.state.worker.comment,
-      // });
       setWorker({
         address: "",
         period1: "",
@@ -192,105 +209,6 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
         onChange={onChange}
         onClickHandler={onClickHandler}
       />
-      {/* <Content>
-        <h1> 근로자 등록 </h1>
-        <form className="Enroll" onSubmit={onSubmit}>
-          <div>
-            <LeftInput>
-              <EnrollLabel>
-                <h2> 이름 </h2>
-                <input
-                  placeholder="근로자 이름을 입력해주세요."
-                  name="name"
-                  onChange={onChange}
-                />
-              </EnrollLabel>
-              <EnrollLabel>
-                <h2>주소</h2>
-                <input
-                  placeholder="근로자 주소를 입력하세요"
-                  name="address"
-                  onChange={onChange}
-                />
-              </EnrollLabel>
-              <EnrollLabel>
-                <h2>계약기간</h2>
-                <div style={{ display: "flex", width: "auto" }}>
-                  <input type="date" name="period1" />
-                  <p
-                    style={{
-                      color: "#999999",
-                      fontFamily: "Noto Sans CJK KR",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    부터
-                  </p>
-                  <input type="date" name="period2" />
-                </div>
-              </EnrollLabel>
-              </LeftInput>
-
-            <RightInput>
-              
-
-              <EnrollLabel>
-                <h2> 업무 내용 </h2>
-                <input
-                  placeholder="업무 내용을 입력하세요"
-                  name="duties"
-                  onChange={onChange}
-                />
-              </EnrollLabel>
-
-              <EnrollLabel>
-                <h2> 소정 근로 시간 </h2>
-                <input
-                  placeholder="소정 근로 시간을 입력하세요"
-                  name="workingTime"
-                  onChange={onChange}
-                />
-              </EnrollLabel>
-              <EnrollLabel>
-                <h2> 근무일 </h2>
-                <input
-                  placeholder="근무일을 입력하세요"
-                  name="workingDays"
-                  onChange={onChange}
-                />
-              </EnrollLabel>
-              <EnrollLabel>
-                <h2> 임금(시급) </h2>
-                <input
-                  placeholder="임금(시급)을 입력하세요"
-                  name="wage"
-                  onChange={onChange}
-                />
-              </EnrollLabel>
-              <EnrollLabel>
-                <h2> 임금지급일 </h2>
-                <input
-                  placeholder="임금(시급)지급일을 입력하세요"
-                  name="wageday"
-                  onChange={onChange}
-                />
-              </EnrollLabel>
-              <EnrollLabel>
-                <h2> 기타사항 </h2>
-                <input
-                  placeholder="기타 사항을 입력하세요"
-                  name="comment"
-                  onChange={onChange}
-                />
-              </EnrollLabel>
-            </RightInput>
-          </div>
-          <SubmitDiv>
-            <button onClick={onClickHandler}>계약서 작성 요청 보내기</button>
-            <input type={"reset"} value="초기화"></input>
-          </SubmitDiv>
-        </form>
-      </Content> */}
     </Container>
   );
 };

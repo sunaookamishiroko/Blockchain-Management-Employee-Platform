@@ -134,7 +134,7 @@ const Main = ({ accounts, contract, name, workers, wpinfo }) => {
         {calready && <Calendar attendance={attendance} />}
       </Content>
       {/* TODO QR 데이터, 근태 데이터 전달해줄 것 */}
-      <RightSideComponent />
+      <RightSideComponent workplaceindex={wpinfo[0]}/>
     </Container>
   );
 };

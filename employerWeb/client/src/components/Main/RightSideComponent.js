@@ -10,10 +10,10 @@ const RightSide = styled.div`
   margin: 25px;
 `;
 
-const RightSideComponent = () => {
+const RightSideComponent = (workplaceindex) => {
   return (
     <RightSide>
-      <QRComponent />
+      <QRComponent workplaceindex = {workplaceindex}/>
       <TANotificationComponent />
     </RightSide>
   );

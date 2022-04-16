@@ -15,6 +15,10 @@ import "@ethersproject/shims";
 import { ethers } from "ethers";
 import { makeLabortxobj, infuraProvider, laborContract } from "../connectETH/Transaction";
 
+import { ENDPOINT } from "@env";
+
+import axios from "axios";
+
 // 출근 퇴근하기
 
 export default function SendAttendanceScreen({ navigation, route }: RootTabScreenProps<'AttendanceCheckScreen'>) {
@@ -22,6 +26,7 @@ export default function SendAttendanceScreen({ navigation, route }: RootTabScree
   const [hasPermission, setHasPermission] = useState<null | boolean>(null);
   const [scanned, setScanned] = useState<boolean>(false);
   const [scandata, setScandata] = useState<any>();
+  const [isright, setIsrigt] = useState(null);
 
   const [txhash, setTxhash] = useState<any>();
   const [issendtx, setIssendtx] = useState<null | boolean>(null);
@@ -68,7 +73,7 @@ export default function SendAttendanceScreen({ navigation, route }: RootTabScree
 
     let abidata = new ethers.utils
     .Interface(["function uploadAttendance(uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute)"])
-    .encodeFunctionData("uploadAttendance", [route.params.num, route.params.index, "2022-03-31", 20, 30]);
+    .encodeFunctionData("uploadAttendance", [route.params.num, route.params.index, "2022-04-03", 8, 5]);
     let txObj = await makeLabortxobj(connector.accounts[0], abidata, 200000);
 
     try {
@@ -95,7 +100,16 @@ export default function SendAttendanceScreen({ navigation, route }: RootTabScree
     setScanned(true);
     setScandata(data);
 
-    uploadWork();
+    try {
+      const response = await axios.get(
+        `${ENDPOINT}getqrcode?workplaceindex=${route.params.index}&date=2022-04-16`
+      );
+
+      if (response.data[0].randomnum == data) await uploadWork();
+      else setIsrigt(false);
+    } catch(e) {
+      console.log(e);
+    }
   };
 
   if (hasPermission === null) {
@@ -113,7 +127,13 @@ export default function SendAttendanceScreen({ navigation, route }: RootTabScree
         style={StyleSheet.absoluteFillObject}
         />
       )}
-      {scanned && issendtx == null &&(
+      {scanned && isright == false &&(
+        <>
+          <Text style={styles.title}>해당 QR코드가 근로지의 QR코드와 일치하지 않습니다.</Text>
+          <Text>{scandata}</Text>
+        </>
+      )}
+      {scanned && issendtx == null && isright != false &&(
         <Text style={styles.title}>잠시만 기다려주세요...</Text>
       )}
       {scanned && issendtx == false &&(

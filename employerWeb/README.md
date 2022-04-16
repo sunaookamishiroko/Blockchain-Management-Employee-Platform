@@ -6,6 +6,10 @@ dependencies 설치
 npm install
 ```
 
+## **cors error**
+
+cors error를 해결하기 위해 package.json 맨 마지막 줄 proxy에 db 인스턴스의 endpoint를 적어줍니다.
+
 ## **contract function description**
 
 아래는 프론트에서 사용할 contract의 함수들에 대해 설명합니다.
