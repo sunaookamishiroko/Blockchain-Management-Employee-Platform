@@ -30,6 +30,7 @@ const QRComponent = (workplaceindex) => {
   const [isqrcode, setIsqrcode] = useState(null);
   const [QRvalue, setQRvalue] = useState(null);
 
+  // 해당하는 날짜에 생성한 qr코드가 db에 있는지 체크하는 함수
   const isMakeQrcode = async () => {
 
     //const response = await axios.get(`/getqrcode?workplaceindex=${workplaceindex}&date=2022-04-15`);
@@ -48,6 +49,7 @@ const QRComponent = (workplaceindex) => {
     }
   }
 
+  // qr코드를 생성해 db에 올리는 함수
   const MakeQrcode = async () => {
 
     let random = Math.floor(Math.random() * 100000000) + 1;
@@ -60,8 +62,8 @@ const QRComponent = (workplaceindex) => {
 
     try {
       const response = await axios.post(`setqrcode`, body);
-      
-      if (response.status !== 200) alert("db에 에러 발생");
+
+      if (response.status !== 200) alert("db 에러 발생");
       else {
         setQRvalue(random);
         setIsqrcode(true);
