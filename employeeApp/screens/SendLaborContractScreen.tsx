@@ -17,42 +17,28 @@ import { makeLabortxobj, infuraProvider, laborContract } from "../connectETH/Tra
 
 export default function SendLaborContractScreen({ navigation, route }: RootTabScreenProps<'NotificationModal'>) {
 
-  const [ready, setReady] = useState<boolean>(false);
-  const [contractdata, setContractdata] = useState<any[]>([]);
   const [issendtx, setIssendtx] = useState<Boolean | null>(null);
   const [answer, setAnswer] = useState<Boolean | null>(null);
-
-  useEffect(() => {
-    getLaborContract();
-  }, []);
 
   // walletconnect 세션을 저장하는 hook
   const connector = useWalletConnect();
 
-  // wallet과 연결함
-  const connectWallet = React.useCallback(() => {
-    return connector.connect();
-  }, [connector]);
-
-  const getLaborContract = async () => {
-    setContractdata([
-      "2022/01/04 ~ 2022/03/31",
-      encodeURI("매장 청소 / 매장 관리 / 계산"),
-      "22:00 ~ 08:00",
-      encodeURI("매주 토요일"),
-      "12000",
-      encodeURI("매월 10일"),
-      encodeURI("없음")
-    ]);
-    setReady(true);
-  }
-
   const uploadLaborContract = async () => {
     setAnswer(true);
 
+    let temp = [];
+
+    temp.push(route.params.laborcontract.period);
+    temp.push(route.params.laborcontract.duties);
+    temp.push(route.params.laborcontract.workingtime);
+    temp.push(route.params.laborcontract.workingdays);
+    temp.push(route.params.laborcontract.wage);
+    temp.push(route.params.laborcontract.wageday);
+    temp.push(route.params.laborcontract.comment);
+
     let abidata = new ethers.utils
-    .Interface(["function uploadLaborContract(string [] calldata laborContractItems, address employeeAddress, uint workplaceInfoIndex)"])
-    .encodeFunctionData("uploadLaborContract", [contractdata, connector.accounts[0], 2]);
+    .Interface(["function uploadLaborContract(string [] calldata laborContractItems, string calldata stday, address employeeAddress, uint wpindex)"])
+    .encodeFunctionData("uploadLaborContract", [temp, "2022-04-16", connector.accounts[0], route.params.laborcontract.workplaceindex]);
     let txObj = await makeLabortxobj(connector.accounts[0], abidata, 1000000);
 
     try {
@@ -68,25 +54,24 @@ export default function SendLaborContractScreen({ navigation, route }: RootTabSc
 
   };
 
-  const setanswer = () => { setAnswer(false); }
+  const setanswer = () => { 
+    setAnswer(false); 
+    
+    
+  }
 
   return (
     <View style={styles.container}>
-      {!ready && issendtx == null && (
+      {issendtx == null && answer == null && (
         <>
-          <Text style={styles.title}>잠시만 기다려주세요..</Text>
-        </>
-      )}
-      {ready && issendtx == null && answer == null && (
-        <>
-          <Text style={styles.title}>{contractdata[0]}</Text>
-          <Text style={styles.title}>{contractdata[1]}</Text>
-          <Text style={styles.title}>{contractdata[2]}</Text>
-          <Text style={styles.title}>{contractdata[3]}</Text>
-          <Text style={styles.title}>{contractdata[4]}</Text>
-          <Text style={styles.title}>{contractdata[5]}</Text>
-          <Text style={styles.title}>{contractdata[6]}</Text>
-          <Text style={styles.title}>{contractdata[7]}</Text>
+          <Text style={styles.title}>{route.params.laborcontract.wpname}</Text>
+          <Text style={styles.title}>{route.params.laborcontract.period}</Text>
+          <Text style={styles.title}>{route.params.laborcontract.duties}</Text>
+          <Text style={styles.title}>{route.params.laborcontract.workingtime}</Text>
+          <Text style={styles.title}>{route.params.laborcontract.workingdays}</Text>
+          <Text style={styles.title}>{route.params.laborcontract.wage}</Text>
+          <Text style={styles.title}>{route.params.laborcontract.wageday}</Text>
+          <Text style={styles.title}>{route.params.laborcontract.comment}</Text>
           <Text>위 근로계약서의 모든 내용을 업로드하는데 동의하시겠습니까?</Text>
           <View style={styles.buttonContainer}>
               <TouchableOpacity style={styles.buttonStyle} onPress = {uploadLaborContract}>
@@ -98,13 +83,13 @@ export default function SendLaborContractScreen({ navigation, route }: RootTabSc
           </View>
         </>
       )}
-      {ready && !issendtx && answer == false &&(
+      {!issendtx && answer == false &&(
         <Text>트랜잭션 전송에 실패했습니다.</Text>
       )}
-      {ready && issendtx && answer == true &&(
+      {issendtx && answer == true &&(
         <Text>근로계약이 완료되었습니다.</Text>
       )} 
-      {ready && issendtx == null && answer == false &&(
+      {issendtx == null && answer == false &&(
         <Text>근로계약서가 반려되었습니다.</Text>
       )} 
     </View>
