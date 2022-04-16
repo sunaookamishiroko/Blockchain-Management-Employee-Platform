@@ -35,3 +35,9 @@ functions:
       - http:
           path: setcontract
           method: post 
+  deleteLaborcontract:
+    handler: src/handler.deleteLaborcontract
+    events:
+      - http:
+          path: deletecontract
+          method: post
