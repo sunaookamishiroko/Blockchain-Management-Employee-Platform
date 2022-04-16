@@ -13,6 +13,8 @@ import "@ethersproject/shims";
 import { ethers } from "ethers";
 import { makeLabortxobj, infuraProvider, laborContract } from "../connectETH/Transaction";
 
+import { ENDPOINT } from "@env";
+
 import axios from "axios";
 
 // 근로계약서 알림 모달창
@@ -34,7 +36,7 @@ export default function NotificationModal({ navigation }: RootTabScreenProps<'No
   const getContract = async() => {
     try {
       const response = await axios.get(
-        ``
+        `${ENDPOINT}getcontract?address=${connector.accounts[0]}`
       );
       
       if (response.data.length == 0) {
