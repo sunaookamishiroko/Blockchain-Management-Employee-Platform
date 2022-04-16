@@ -2,10 +2,10 @@
 
 const mysql = require('serverless-mysql')({
   config: {
-    host     : 'blockchain-db.c8fuurdwdt8q.ap-northeast-2.rds.amazonaws.com',    // 호스트 주소
-    user     : 'admin',           // mysql user
-    password : 'adminadmin',      // mysql password
-    database : 'capstone'         // mysql 데이터베이스
+    host     : '',    // 호스트 주소
+    user     : '',           // mysql user
+    password : '',      // mysql password
+    database : ''         // mysql 데이터베이스
   }
 })
 
