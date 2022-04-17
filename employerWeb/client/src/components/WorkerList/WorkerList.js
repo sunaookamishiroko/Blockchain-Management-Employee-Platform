@@ -51,15 +51,16 @@ const WorkerList = ({ ready, customworkers, onClickEnquiry }) => {
 
   return (
     <Content>
-      <h1> 근로자 목록 </h1>
-      {ready == false && <p>잠시만 기다려 주세요...</p>}  
-      {ready && (
+      <h1>근로자 목록</h1>
+      {ready == true || !ready ? (
         <WorkerListAdapter
           workers={customworkers}
           // handleClickContract={handleClickContract}
           // handleClickSettlement={handleClickSettlement}
           onClickEnquiry={onClickEnquiry}
         />
+      ) : (
+        <p>잠시만 기다려 주세요...</p>
       )}
     </Content>
   );
