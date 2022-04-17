@@ -22,7 +22,8 @@ const SubmitDialog = ({ name, onClickSubmit, onClickClose }) => {
     <StyledSubmit>
       <h2>{name}님에게</h2>
       <h2>근로계약서 작성을 요청하시겠습니까?</h2>
-      <Button onClick={onClickSubmit}>넹</Button>
+      <input type={"submit"} value="예" />
+      <Button onClick={onClickClose}>아니오</Button>
     </StyledSubmit>
   );
 };

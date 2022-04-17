@@ -1,5 +1,7 @@
+import { Dialog } from "@mui/material";
 import React, { useState, useCallback } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import SubmitDialog from "./Dialog/SubmitDialog";
 //import { firestore } from "./firebase.js";
 //import { collection, addDoc } from "firebase/firestore";
 
@@ -56,7 +58,7 @@ const SubmitDiv = styled.div`
     margin-right: 20px;
   }
 
-  input {
+  /* input {
     width: 260px;
     border-radius: 30px;
     font-family: "Noto Sans CJK KR";
@@ -67,7 +69,12 @@ const SubmitDiv = styled.div`
     background-color: #f1f1f1;
     color: #999999;
     margin-right: 20px;
-  }
+
+    :hover {
+      cursor: pointer;
+      background-color: #f1f1f1cc;
+    }
+  } */
 `;
 
 const EnrollLabel = styled.label`
@@ -91,6 +98,42 @@ const EnrollLabel = styled.label`
     font-family: "Noto Sans CJK KR";
     font-weight: bold;
     border-radius: 40px;
+  }
+`;
+
+const StyledResetButton = styled.input`
+  width: 260px;
+  border-radius: 30px;
+  font-family: "Noto Sans CJK KR";
+  border: 0px;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px;
+  background-color: #f1f1f1;
+  color: #999999;
+  margin-right: 20px;
+
+  :hover {
+    cursor: pointer;
+    background-color: #f1f1f1cc;
+  }
+`;
+
+const StyledSubmitButton = styled.input`
+  width: 260px;
+  border-radius: 30px;
+  font-family: "Noto Sans CJK KR";
+  border: 0px;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px;
+  background-color: #1c89e9;
+  color: white;
+  margin-right: 20px;
+
+  :hover {
+    cursor: pointer;
+    background-color: #1c89e9cc;
   }
 `;
 
@@ -123,10 +166,26 @@ const EnrollContent = ({
     console.log(e.target);
   };
 
+  const [submitOpen, setSubmitOpen] = useState(false);
+
+  const onClose = () => {
+    setSubmitOpen(false);
+  };
+
+  const openSubmit = () => {
+    setSubmitOpen(true);
+  };
+
   return (
     <Content>
       <h1> 근로자 등록 </h1>
       <form className="Enroll">
+        {/* 계약서 작성 요청 보내기 클릭 시 다이얼로그 */}
+        <Dialog maxWidth={1280} onClose={onClose} open={submitOpen}>
+          <SubmitDialog onClickClose={onClose} />
+          <input type={"submit"} value="제출" />
+        </Dialog>
+
         <div>
           <LeftInput>
             <EnrollLabel>
@@ -216,8 +275,12 @@ const EnrollContent = ({
           </RightInput>
         </div>
         <SubmitDiv>
-          <button type="submit">계약서 작성 요청 보내기</button>
-          <input type={"reset"} value="초기화"></input>
+          <StyledSubmitButton
+            type={"submit"}
+            value="계약서 작성 요청 보내기"
+            // onClick={openSubmit}
+          />
+          <StyledResetButton gray type={"reset"} value="초기화" />
         </SubmitDiv>
       </form>
     </Content>

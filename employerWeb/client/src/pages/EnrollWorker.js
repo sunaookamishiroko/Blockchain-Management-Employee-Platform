@@ -200,11 +200,6 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
     <Container>
       <Categories name={name} wpname={wpinfo[1]} />
 
-      {/* 계약서 작성 요청 보내기 클릭 시 다이얼로그 */}
-      <Dialog maxWidth={1280} onClose={handleClose} open={submitOpen}>
-        <SubmitDialog onClickClose={handleClose} onClickSubmit={onSubmit} />
-      </Dialog>
-
       <EnrollContent
         onSubmit={setSubmitOpen}
         onChange={onChange}
