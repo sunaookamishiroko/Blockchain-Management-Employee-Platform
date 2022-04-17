@@ -10,10 +10,10 @@ const RightSide = styled.div`
   margin: 25px;
 `;
 
-const RightSideComponent = (workplaceindex) => {
+const RightSideComponent = ({ wpinfo }) => {
   return (
     <RightSide>
-      <QRComponent workplaceindex = {workplaceindex}/>
+      <QRComponent wpinfo={wpinfo} />
       <TANotificationComponent />
     </RightSide>
   );
