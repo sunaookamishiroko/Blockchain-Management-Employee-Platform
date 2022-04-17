@@ -5,7 +5,7 @@ import styled from "styled-components";
 const StyledTermination = styled.div`
   display: flex;
   flex-direction: column;
-  width: 640px;
+  width: 800px;
 
   > h2 {
     text-align: center;
@@ -50,22 +50,30 @@ const CancelButton = styled.button`
   cursor: pointer;
 `;
 
-const TerminationDialog = ({ accounts, contract, selectedWorker, wpinfo, onClickClose }) => {
-
+const TerminationDialog = ({
+  accounts,
+  contract,
+  selectedWorker,
+  wpinfo,
+  onClickClose,
+}) => {
   // 근로계약 해제
-  const deleteEmployee = (async() => {
+  const deleteEmployee = async () => {
     try {
       await contract.methods
-      .deleteEmployee(wpinfo[0], selectedWorker[0], "2022-04-16")
-      .send({ from: accounts[0] });
-    } catch(e) {
+        .deleteEmployee(wpinfo[0], selectedWorker[0], "2022-04-16")
+        .send({ from: accounts[0] });
+    } catch (e) {
       console.log(e);
     }
-  })
+  };
 
   return (
     <StyledTermination>
-      <h2>{selectedWorker[1]}({selectedWorker[0]})님과의 근로계약을 해지하시겠습니까?</h2>
+      <h2>
+        {selectedWorker[1]}({selectedWorker[0]})님과의 근로계약을
+        해지하시겠습니까?
+      </h2>
       <div>
         <TerminationButton onClick={deleteEmployee}>해지</TerminationButton>
         <CancelButton onClick={onClickClose}>취소</CancelButton>
