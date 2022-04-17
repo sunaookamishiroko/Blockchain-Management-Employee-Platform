@@ -241,7 +241,7 @@ const AwardDialog = ({
               id="radio1"
             />
             <label for="radio1">
-              <StyledBadge src="img/badge_test.png" />
+              <StyledBadge src="img/cgv_badge.png" />
               <p>장기근속</p>
             </label>
 
@@ -253,7 +253,7 @@ const AwardDialog = ({
               id="radio2"
             />
             <label for="radio2">
-              <StyledBadge src="img/badge_test.png" />
+              <StyledBadge src="img/lm_badge.png" />
               <p>친절</p>
             </label>
 
@@ -265,7 +265,7 @@ const AwardDialog = ({
               id="radio3"
             />
             <label for="radio3">
-              <StyledBadge src="img/badge_test.png" />
+              <StyledBadge src="img/sb_badge.png" />
               <p>개근</p>
             </label>
           </div>
