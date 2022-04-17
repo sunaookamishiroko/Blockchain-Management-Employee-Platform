@@ -148,7 +148,7 @@ const EnrollContent = ({
             <EnrollLabel>
               <h2>계약기간</h2>
               <div style={{ display: "flex", width: "auto" }}>
-                <input type="date" name="period1" />
+                <input type="date" name="period1" onChange={onChange} />
                 <p
                   style={{
                     color: "#999999",
@@ -158,7 +158,7 @@ const EnrollContent = ({
                 >
                   부터
                 </p>
-                <input type="date" name="period2" />
+                <input type="date" name="period2" onChange={onChange} />
               </div>
             </EnrollLabel>
           </LeftInput>
@@ -216,7 +216,7 @@ const EnrollContent = ({
           </RightInput>
         </div>
         <SubmitDiv>
-          <button onClick={onClickSubmit}>계약서 작성 요청 보내기</button>
+          <button type="submit">계약서 작성 요청 보내기</button>
           <input type={"reset"} value="초기화"></input>
         </SubmitDiv>
       </form>
