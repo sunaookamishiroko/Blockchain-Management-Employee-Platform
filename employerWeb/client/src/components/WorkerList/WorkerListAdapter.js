@@ -55,15 +55,16 @@ const WorkerListAdapter = ({
           <th>정보 조회</th>
         </tr>
 
-        {workers.map((x, index) => (
-          <WorkerListItem
-            index={index + 1}
-            address={workers[index][0]}
-            name={workers[index][1]}
-            handleClickContract={handleClickContract}
-            onClickEnquiry={onClickEnquiry}
-          />
-        ))}
+        {workers &&
+          workers.map((x, index) => (
+            <WorkerListItem
+              index={index + 1}
+              address={workers[index][0]}
+              name={workers[index][1]}
+              handleClickContract={handleClickContract}
+              onClickEnquiry={onClickEnquiry}
+            />
+          ))}
       </table>
     </Adapter>
   );

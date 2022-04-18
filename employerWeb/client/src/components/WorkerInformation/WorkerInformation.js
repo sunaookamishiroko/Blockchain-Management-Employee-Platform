@@ -73,17 +73,21 @@ const WorkerInformation = ({
   return (
     <Content>
       <h1>근로자 정보</h1>
-      <Profile selectedWorker={selectedWorker}/>
-      <hr />
-      <WorkingDetails
-        userdata={userdata}
-      />
-      <Badge badges={badges} setBadges={setBadges} />
-      <Buttons
-        onClickReward={onClickReward}
-        onClickContract={onClickContract}
-        onClickTermination={onClickTermination}
-      />
+      {selectedWorker ? (
+        <>
+          <Profile selectedWorker={selectedWorker} />
+          <hr />
+          <WorkingDetails userdata={userdata} />
+          <Badge badges={badges} setBadges={setBadges} />
+          <Buttons
+            onClickReward={onClickReward}
+            onClickContract={onClickContract}
+            onClickTermination={onClickTermination}
+          />
+        </>
+      ) : (
+        <></>
+      )}
     </Content>
   );
 };

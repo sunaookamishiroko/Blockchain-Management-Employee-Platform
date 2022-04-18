@@ -65,7 +65,14 @@ const CloseButton = styled.button`
   padding-right: 30px;
 `;
 
-const WorkerManagement = ({ accounts, contract, nftcontract, name, workers, wpinfo }) => {
+const WorkerManagement = ({
+  accounts,
+  contract,
+  nftcontract,
+  name,
+  workers,
+  wpinfo,
+}) => {
   const [open, setOpen] = useState(false);
 
   // 근로계약서 다이얼로그 상태
@@ -126,13 +133,12 @@ const WorkerManagement = ({ accounts, contract, nftcontract, name, workers, wpin
   // 근로자 목록에서 조회 클릭 시
   // TODO 이 페이지가 로드가 완료되면, 0번 인덱스 조회버튼이 눌리도록 할 것
   const onClickEnquiry = (index, e) => {
-
     // 선택된 근로자 정보 설정
     setSelectedWorker(customworkers[index]);
 
     // 근로계약서 정보 가져오기
     setContractAddress(selectedWorker[0]);
-    
+
     // 유저 데이터 만들기
     getUserData(customworkers[index][0]);
   };
@@ -155,7 +161,10 @@ const WorkerManagement = ({ accounts, contract, nftcontract, name, workers, wpin
     // else문 -> 근로자가 0명일때 처리
 
     // 맨 처음 index 1번의 유저 데이터를 만듬
-    await getUserData(workers[0][0]);
+    if (workers.length > 1) {
+      await getUserData(workers[0][0]);
+    }
+
     if (workers[0].length != 0) {
       for (let x = 0; x < workers[0].length; x++) {
         temp.push([workers[0][x], decodeURI(workers[1][x])]);
@@ -185,8 +194,8 @@ const WorkerManagement = ({ accounts, contract, nftcontract, name, workers, wpin
   };
 
   // 유저 데이터 만드는 메소드
-  const getUserData = (async (workeraddress) => {
-    let temp = []
+  const getUserData = async (workeraddress) => {
+    let temp = [];
     let lbcontract;
 
     // 근로계약서 가져오기
@@ -199,20 +208,20 @@ const WorkerManagement = ({ accounts, contract, nftcontract, name, workers, wpin
     }
 
     // 입사일
-    let startday = lbcontract[1].substr(0,10);
+    let startday = lbcontract[1].substr(0, 10);
     temp.push(startday);
 
     // 근무일수
     const now = new Date();
-    
+
     const date1 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const date2 = new Date(
       parseInt(startday.substr(0, 4)),
-      parseInt(startday.substr(5, 6)) - 1, 
+      parseInt(startday.substr(5, 6)) - 1,
       parseInt(startday.substr(8, 9))
-      );
+    );
     const elapsedMSec = date1.getTime() - date2.getTime();
-    const elapsedDay = elapsedMSec / 1000 / 60 / 60 / 24; 
+    const elapsedDay = elapsedMSec / 1000 / 60 / 60 / 24;
     temp.push(elapsedDay.toString() + "일");
 
     // 마지막 근무일
@@ -224,23 +233,22 @@ const WorkerManagement = ({ accounts, contract, nftcontract, name, workers, wpin
         .call({ from: accounts[0] });
 
       caldata = await contract.methods
-          .getAllAttendance(wpinfo[0], index)
-          .call({ from: accounts[0] });
-
-    } catch(e) {
+        .getAllAttendance(wpinfo[0], index)
+        .call({ from: accounts[0] });
+    } catch (e) {
       console.log(e);
     }
     temp.push(caldata[0][caldata[0].length - 1]);
-    
+
     // 지각률
     let checkhour;
     let checkmin;
     let sum = 0;
 
-    if (lbcontract[3][0] == "0")  {
+    if (lbcontract[3][0] == "0") {
       checkhour = lbcontract[3][1];
     } else {
-      checkhour = lbcontract[3].substring(0, 2); 
+      checkhour = lbcontract[3].substring(0, 2);
     }
 
     if (lbcontract[3][3] == "0") {
@@ -249,16 +257,16 @@ const WorkerManagement = ({ accounts, contract, nftcontract, name, workers, wpin
       checkmin = lbcontract[3].substring(3, 5);
     }
 
-    for(let x = 0; x < caldata[0].length ; x++) {
+    for (let x = 0; x < caldata[0].length; x++) {
       if (caldata[1][x] != checkhour || caldata[2][x] != checkmin) {
         sum += 1;
-      } 
+      }
     }
 
     temp.push(((sum / caldata[0].length) * 100).toString() + "%");
     console.log(temp);
     setUserdata(temp);
-  })
+  };
 
   // // TODO 선택된 badge
   // const [selectedBadge, setSelectedBadge] = useState({
@@ -312,7 +320,7 @@ const WorkerManagement = ({ accounts, contract, nftcontract, name, workers, wpin
           nftcontract={nftcontract}
           selectedWorker={selectedWorker}
           badges={badges}
-          wpinfo={wpinfo} 
+          wpinfo={wpinfo}
           onClickClose={handleClose}
         />
       </Dialog>
@@ -326,7 +334,7 @@ const WorkerManagement = ({ accounts, contract, nftcontract, name, workers, wpin
           contract={contract}
           selectedWorker={selectedWorker}
           wpinfo={wpinfo}
-          onClickClose={handleClose} 
+          onClickClose={handleClose}
         />
       </Dialog>
 
@@ -334,15 +342,11 @@ const WorkerManagement = ({ accounts, contract, nftcontract, name, workers, wpin
       <Categories name={name} wpname={wpinfo[1]} />
 
       {/* 근로자 목록 */}
-      {customworkers ? (
-        <WorkerList
-          ready={ready}
-          customworkers={customworkers}
-          onClickEnquiry={onClickEnquiry}
-        />
-      ) : (
-        <></>
-      )}
+      <WorkerList
+        ready={ready}
+        customworkers={customworkers}
+        onClickEnquiry={onClickEnquiry}
+      />
 
       {/* 근로자 정보 */}
       {/* TODO 조회가 클릭된 근로자의 데이터를 삽입해야 함 */}

@@ -131,26 +131,27 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
   const onChange = (event) => {
     const { name, value } = event.target;
     setWorker({ ...worker, [name]: value });
+    console.log(worker);
   };
 
   const onSubmit = async (e) => {
     console.log(worker);
-    console.log(wpinfo);  
+    console.log(wpinfo);
 
     // period1, period2 onchange 안먹힘 -> 해결해야함
     let body = {
-      "address" : worker.address,
-      "wpname" : wpinfo[1],
-      "wpemployer" : name,
-      "employeename" : worker.employeename,
-      "workplaceindex" : wpinfo[0],
-      "period" : "2022-04-01~2022-04-31",
-      "duties" : worker.duties,
-      "workingtime" : worker.workingTime,
-      "workingdays" : worker.workingDays,
-      "wage" : worker.wage,
-      "wageday" : worker.wageday,
-      "comment" : worker.comment
+      address: worker.address,
+      wpname: wpinfo[1],
+      wpemployer: name,
+      employeename: worker.employeename,
+      workplaceindex: wpinfo[0],
+      period: "2022-04-01~2022-04-31",
+      duties: worker.duties,
+      workingtime: worker.workingTime,
+      workingdays: worker.workingDays,
+      wage: worker.wage,
+      wageday: worker.wageday,
+      comment: worker.comment,
     };
 
     try {
@@ -160,10 +161,10 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
       else {
         alert("근로계약서를 정상적으로 요청했습니다!");
       }
-    } catch(e) {
+    } catch (e) {
       console.log(e);
     }
-    
+
     // 사업장 index를 포함하여 등록할 것
     //onEnroll(worker);
     e.preventDefault();
@@ -198,11 +199,6 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
   return (
     <Container>
       <Categories name={name} wpname={wpinfo[1]} />
-
-      {/* 계약서 작성 요청 보내기 클릭 시 다이얼로그 */}
-      <Dialog maxWidth={1280} onClose={handleClose} open={submitOpen}>
-        <SubmitDialog onClickClose={handleClose} onClickSubmit={onSubmit} />
-      </Dialog>
 
       <EnrollContent
         onSubmit={setSubmitOpen}

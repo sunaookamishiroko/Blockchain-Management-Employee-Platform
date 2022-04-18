@@ -17,7 +17,7 @@ const Content = styled.div`
   border-radius: 20px;
   padding: 10px;
   margin: 30px;
-  width: 100%;
+  width: 60%;
   height: 100%;
   background-color: #f7f7f7;
   float: left;
@@ -134,7 +134,7 @@ const Main = ({ accounts, contract, name, workers, wpinfo }) => {
         {calready && <Calendar attendance={attendance} />}
       </Content>
       {/* TODO QR 데이터, 근태 데이터 전달해줄 것 */}
-      <RightSideComponent workplaceindex={wpinfo[0]}/>
+      <RightSideComponent wpinfo={wpinfo} />
     </Container>
   );
 };

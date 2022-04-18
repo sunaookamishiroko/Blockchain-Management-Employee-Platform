@@ -13,8 +13,57 @@ const StyledAward = styled.div`
   }
 
   > div {
+    width: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    div {
+      display: flex;
+      justify-content: center;
+
+      align-items: center;
+    }
+
+    > form {
+      width: 100%;
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      > p {
+        width: 180px;
+        border-radius: 30px;
+        font-family: "Noto Sans CJK KR";
+        border: 0px;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+        padding: 5px;
+        background-color: #999999;
+        color: #ffffff;
+        margin: 24px;
+      }
+    }
+
+    #radio-group {
+      input {
+        display: none;
+      }
+
+      label {
+        cursor: pointer;
+      }
+
+      input:checked + label {
+        > p {
+          background-color: #1c89e9;
+        }
+      }
+    }
   }
 `;
 
@@ -52,13 +101,39 @@ const Button = styled.button`
     `}
 `;
 
-const AwardDialog = ({ accounts, nftcontract, selectedWorker, badges, wpinfo, onClickClose }) => {
+const StyledInput = styled.input`
+  background-color: red;
 
+  // text 입력의 경우
+  ${(props) =>
+    props.type == "text" &&
+    css`
+      width: 640px;
+      border-radius: 30px;
+      font-family: "Noto Sans CJK KR";
+      border: 0px;
+      font-size: 20px;
+      font-weight: bold;
+      padding: 10px;
+      background-color: #f1f1f1;
+      color: #999999;
+      margin: 24px;
+    `}
+`;
+
+const AwardDialog = ({
+  accounts,
+  nftcontract,
+  selectedWorker,
+  badges,
+  wpinfo,
+  onClickClose,
+}) => {
   const [badgeclassfiy, setBadgeclassfiy] = useState();
   const [description, setDescription] = useState();
 
   // nft 지급하기
-  const onClickAwardBadge = async() => {
+  const onClickAwardBadge = async () => {
     console.log(badgeclassfiy);
 
     if (badgeclassfiy == undefined) {
@@ -68,7 +143,7 @@ const AwardDialog = ({ accounts, nftcontract, selectedWorker, badges, wpinfo, on
 
     try {
       let image;
-      
+
       // 뱃지에 해당하는 이미지 ipfshash
       if (badgeclassfiy == "장기근속") {
         image = "QmVmMoy5Ax3HzeLkZvYekiwd3s6q6YKwTGmNU2VoUiVi3P";
@@ -80,8 +155,9 @@ const AwardDialog = ({ accounts, nftcontract, selectedWorker, badges, wpinfo, on
 
       // 현재 nft index 불러오기
       let nftindex = await nftcontract.methods
-          .getTokenIdNow().call({ from: accounts[0] });
-      
+        .getTokenIdNow()
+        .call({ from: accounts[0] });
+
       // pinata 업로드 위한 json 만들기
       let JSONBody = {
         pinataMetadata: {
@@ -94,12 +170,11 @@ const AwardDialog = ({ accounts, nftcontract, selectedWorker, badges, wpinfo, on
           description: description,
           nftindex: nftindex,
           wpindex: wpinfo[0],
-          image:
-            `https://gateway.pinata.cloud/ipfs/${image}`,
+          image: `https://gateway.pinata.cloud/ipfs/${image}`,
           name: badgeclassfiy,
         },
       };
-      
+
       // pinata에 업로드
       await axios
         .post(`https://api.pinata.cloud/pinning/pinJSONToIPFS`, JSONBody, {
@@ -120,14 +195,13 @@ const AwardDialog = ({ accounts, nftcontract, selectedWorker, badges, wpinfo, on
         .catch(function (error) {
           console.log(error);
         });
-      
-    } catch(e) {
+    } catch (e) {
       console.log(e);
     }
   };
 
   // 라디오박스 change 핸들러
-  const handleChange = e => {
+  const handleChange = (e) => {
     const target = e.target;
     console.log(target.value);
     if (target.checked) {
@@ -136,65 +210,83 @@ const AwardDialog = ({ accounts, nftcontract, selectedWorker, badges, wpinfo, on
   };
 
   // 설명 change 핸들러
-  const descriptinHandleChange = e => {
+  const descriptinHandleChange = (e) => {
     const target = e.target;
     console.log(target.value);
     setDescription(target.value);
   };
 
   // submit 핸들러
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     onClickAwardBadge();
   };
-  
+
   return (
     <StyledAward>
       <h2>증정할 배지를 선택해주세요</h2>
-      <div>
+      {/* <div>
         {badges.map((badge) => (
           <StyledBadge src={badge.image} />
         ))}
-      </div>
+      </div> */}
       <div>
         <form onSubmit={handleSubmit}>
-          <div>
-          <label>
+          <div id="radio-group">
             <input
               type="radio"
               value="장기근속"
               checked={badgeclassfiy === "장기근속"}
               onChange={handleChange}
+              id="radio1"
             />
-            장기근속
-          </label>
-          <label>
+            <label for="radio1">
+              <StyledBadge src="img/cgv_badge.png" />
+              <p>장기근속</p>
+            </label>
+
             <input
               type="radio"
               value="친절"
               checked={badgeclassfiy === "친절"}
               onChange={handleChange}
+              id="radio2"
             />
-            친절
-          </label>
-          <label>
+            <label for="radio2">
+              <StyledBadge src="img/lm_badge.png" />
+              <p>친절</p>
+            </label>
+
             <input
               type="radio"
               value="개근"
               checked={badgeclassfiy === "개근"}
               onChange={handleChange}
+              id="radio3"
             />
-            개근
-          </label>
-          <label>
-            <input
-              placeholder="설명을 입력해주세요"
-              name="description"
-              onChange={descriptinHandleChange}
-            />
-          </label>
-          <Button blue type="submit">배지지급</Button>
-          <Button type="button" onClick={onClickClose}>취소</Button>
+            <label for="radio3">
+              <StyledBadge src="img/sb_badge.png" />
+              <p>개근</p>
+            </label>
+          </div>
+          <div>
+            <label>
+              <StyledInput
+                type="text"
+                placeholder="설명을 입력해주세요"
+                name="description"
+                onChange={descriptinHandleChange}
+              />
+            </label>
+          </div>
+
+          <div>
+            <Button blue type="submit">
+              배지지급
+            </Button>
+            <Button type="button" onClick={onClickClose}>
+              취소
+            </Button>
           </div>
         </form>
       </div>
