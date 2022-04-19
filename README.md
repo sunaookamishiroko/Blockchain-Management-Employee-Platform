@@ -19,7 +19,7 @@ TODO
 
 - [근로자 App](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/blob/main/employeeApp/README.md)
 
-- [SmartContract](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/blob/main/API_decription.md)
+- [SmartContract](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/tree/main/employerWeb/contracts)
 
 ## Members
 
