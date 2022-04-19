@@ -6,11 +6,11 @@
 
 - 팀원과 어떤게 어떤 역할을 하는 함수인지 소통하기 위해서 만들었습니다.
 
-- 다른 이유로는 아직 여전히 Solidity라는 언어가 대중화되지 않은 언어고, 이더리움 Dapp을 만드려는 분들에게 도움이 될 수 있을 것 같아 기술합니다.
+- 다른 이유로는 아직 여전히 Solidity라는 언어가 대중화되지 않은 언어고, 이더리움 Dapp을 만드려는 분들에게 도움이 될 수 있을지 몰라 남겨둡니다.
 
-## **LaborContract**
+## **LaborContract.sol**
 
-### Get function
+### 조회 함수 (public view)
 
 ```
 getPersonInformation (address person) public view returns (personalInfo memory)
@@ -110,7 +110,7 @@ getPayment (uint employeeIndex, uint workplaceInfoIndex, uint startIndex, uint e
   - 인자로 사업장/근무지의 index, 근로자의 근무지에서의 index, 해당하는 월의 시작 index, 끝 index, 시급 wage가 필요합니다. 
   - 월급을 return합니다.
  
-### Upload function
+### 업로드 함수
 
 ```
 uploadPersonalInfo(address person, uint8 identiNumber, string calldata name, uint age, string calldata gender) public
@@ -154,7 +154,7 @@ uploadAttendance (uint8 classifyNum, uint workPlaceInfoIndex, string calldata da
   - 인자로 classifyNum, workPlaceInfoIndex, 날짜, 시간, 분이 필요합니다.
   - 아무것도 return하지 않습니다.
 
-## **ERC20**
+## **ERC20.sol**
 
 ```
 mint(address account, uint256 amount) public
@@ -180,3 +180,6 @@ transfer(address recipient, uint256 amount) public virtual override returns (boo
 - Input / Output
   - 인자로 수신자 address와, 토큰의 양이 필요합니다.
   - 정상적으로 전송이 완료되면 true를 return합니다.
+
+## **MyNFT.sol**
+`TODO`
