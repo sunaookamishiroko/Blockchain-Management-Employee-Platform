@@ -13,6 +13,14 @@ TODO
 TODO
 ```
 
+## Tech Stack
+
+|분류|기술
+|---|-----|
+|FrontEnd|![react-native](https://img.shields.io/badge/React--Native-61DAFB?style=flat&logo=React&logoColor=black) ![expo](https://img.shields.io/badge/Expo-000?style=flat&logo=Expo&logoColor=white)|
+|BackEnd||
+|Blockchain||
+
 ## More Descripton...
 
 - [사업주 Web](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/blob/main/employerWeb/README.md)
@@ -26,7 +34,7 @@ TODO
 ## Members
 
 |이름|학과|역할|
-|------|---|---|
+|------|---|-----|
 |이서윤|컴퓨터공학과|Web/App 총괄, DB Backend, Blockchain, 컨트랙트 작성|
 |표민성|소프트웨어공학과|계획서/보고서 작성, 디자인, 컨트랙트 작성|
 |박태민|소프트웨어공학과|컨트랙트 작성|
