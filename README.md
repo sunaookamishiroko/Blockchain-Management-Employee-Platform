@@ -13,6 +13,14 @@ TODO
 TODO
 ```
 
+## More Descripton...
+
+- [사업주 Web](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/blob/main/employerWeb/README.md)
+
+- [근로자 App](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/blob/main/employeeApp/README.md)
+
+- [SmartContract](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/blob/main/API_decription.md)
+
 ## Members
 
 |이름|학과|역할|
