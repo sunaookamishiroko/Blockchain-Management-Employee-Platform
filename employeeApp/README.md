@@ -4,7 +4,7 @@
 
 ## 추가 사항
 
-현재 expo 버그가 있어서 안드로이드에서의 walletconnect가 비정상적으로 동작합니다.
+현재 walletconnect 라이브러리에 버그가 있어서 안드로이드에서의 walletconnect가 비정상적으로 동작합니다.
 `yarn install` 후에 다음 조치를 따라주세요
 `node_modules/@walletconnect/react-native-dapp/dist/providers/WalletConnectProvider.js`
 에서
