@@ -19,7 +19,7 @@ TODO
 |---|-----|
 |FrontEnd|![react-native](https://img.shields.io/badge/React--Native-61DAFB?style=flat&logo=React&logoColor=black) ![expo](https://img.shields.io/badge/Expo-000?style=flat&logo=Expo&logoColor=white)|
 |BackEnd||
-|Blockchain||
+|BlockChain||
 
 ## More Descripton...
 
