@@ -1,5 +1,5 @@
 # 🏢 Blockchain-Management-Employee-Platform
-한국공학대학교(구 산기대) 졸업작품 스마트 컨트랙트를 활용한 근로자 통합관리 플랫폼
+한국공학대학교 졸업작품 스마트 컨트랙트를 활용한 근로자 통합관리 플랫폼
 
 ## Description
 
