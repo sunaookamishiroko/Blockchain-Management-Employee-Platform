@@ -63,6 +63,11 @@ getLaborContract (uint workplaceInfoIndex, address employeeAddress) public view 
   - laborContract 구조체를 return합니다. (peroid, duties, workingTime, workingDays, wage, wageday, comment)
 
 ```
+function getLaborContract2 (uint lbindex) public view returns (laborContract memory)
+
+```
+
+```
 getWage (uint workplaceInfoIndex, uint employeeIndex) public view returns (string memory)
 ```
 -  고용주가 선택한 근로자 또는 근로자가 선택한 근무지에서의 시급을 조회하는 함수입니다.
