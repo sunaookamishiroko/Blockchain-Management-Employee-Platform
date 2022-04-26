@@ -2,8 +2,6 @@ import { Dialog } from "@mui/material";
 import React, { useState, useCallback } from "react";
 import styled, { css } from "styled-components";
 import SubmitDialog from "./Dialog/SubmitDialog";
-//import { firestore } from "./firebase.js";
-//import { collection, addDoc } from "firebase/firestore";
 
 const Content = styled.div`
   display: flex;
@@ -278,7 +276,7 @@ const EnrollContent = ({
           <StyledSubmitButton
             type={"submit"}
             value="계약서 작성 요청 보내기"
-            // onClick={openSubmit}
+            onClick={onSubmit}
           />
           <StyledResetButton gray type={"reset"} value="초기화" />
         </SubmitDiv>

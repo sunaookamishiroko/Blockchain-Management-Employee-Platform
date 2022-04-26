@@ -61,7 +61,7 @@ const TerminationDialog = ({
   const deleteEmployee = async () => {
     try {
       await contract.methods
-        .deleteEmployee(wpinfo[0], selectedWorker[0], "2022-04-16")
+        .deleteEmployee(wpinfo[0], selectedWorker[0], "2022-06-30")
         .send({ from: accounts[0] });
     } catch (e) {
       console.log(e);

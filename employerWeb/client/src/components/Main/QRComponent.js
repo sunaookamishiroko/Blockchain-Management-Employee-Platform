@@ -31,10 +31,10 @@ const QRComponent = ({ wpinfo }) => {
 
   // 해당하는 날짜에 생성한 qr코드가 db에 있는지 체크하는 함수
   const isMakeQrcode = async () => {
-    //const response = await axios.get(`/getqrcode?workplaceindex=${workplaceindex}&date=2022-04-15`);
     try {
       const response = await axios.get(
-        `/getqrcode?workplaceindex=0&date=2022-04-16`
+        //`${api}getqrcode?workplaceindex=${wpinfo[0]}&date=2022-04-26`
+        `getqrcode?workplaceindex=${wpinfo[0]}&date=2022-04-28`
       );
 
       if (response.data.length == 0) {
@@ -54,7 +54,7 @@ const QRComponent = ({ wpinfo }) => {
 
     const body = {
       workplaceindex: 0,
-      date: "2022-04-16",
+      date: "2022-04-28",
       randomnum: random,
     };
 
@@ -73,13 +73,10 @@ const QRComponent = ({ wpinfo }) => {
 
   return (
     <StyledQRComponent>
-      {/* TEST용 출력 코드 -> 삭제할 것 */}
-      <p>{wpinfo}</p>
       <h2 style={{ textAlign: "center" }}>QR 코드 인증</h2>
       {isqrcode == null && <p>데이터를 불러오는 중입니다...</p>}
       {isqrcode == true && (
         <>
-          <h1>{QRvalue}</h1>
           <QRCode value={QRvalue.toString()} />
         </>
       )}

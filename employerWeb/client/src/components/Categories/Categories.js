@@ -93,11 +93,7 @@ const categories = [
       {
         name: "workplace",
         text: "사업장 변경",
-      },
-      {
-        name: "logout",
-        text: "로그아웃",
-      },
+      }
     ],
   },
 ];

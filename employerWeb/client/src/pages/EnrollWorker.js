@@ -135,17 +135,14 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
   };
 
   const onSubmit = async (e) => {
-    console.log(worker);
-    console.log(wpinfo);
-
-    // period1, period2 onchange 안먹힘 -> 해결해야함
+    e.preventDefault();
     let body = {
       address: worker.address,
       wpname: wpinfo[1],
       wpemployer: name,
       employeename: worker.employeename,
       workplaceindex: wpinfo[0],
-      period: "2022-04-01~2022-04-31",
+      period: `${worker.period1}~${worker.period2}`,
       duties: worker.duties,
       workingtime: worker.workingTime,
       workingdays: worker.workingDays,
@@ -153,7 +150,7 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
       wageday: worker.wageday,
       comment: worker.comment,
     };
-
+    
     try {
       const response = await axios.post(`setcontract`, body);
 
@@ -164,10 +161,9 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
     } catch (e) {
       console.log(e);
     }
-
-    // 사업장 index를 포함하여 등록할 것
+    
     //onEnroll(worker);
-    e.preventDefault();
+
   };
 
   const onChangeHandler = (e) => {
@@ -201,7 +197,7 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
       <Categories name={name} wpname={wpinfo[1]} />
 
       <EnrollContent
-        onSubmit={setSubmitOpen}
+        onSubmit={onSubmit}
         onChange={onChange}
         onClickHandler={onClickHandler}
       />

@@ -78,7 +78,7 @@ const WorkerInformation = ({
           <Profile selectedWorker={selectedWorker} />
           <hr />
           <WorkingDetails userdata={userdata} />
-          <Badge badges={badges} setBadges={setBadges} />
+          {/* <Badge badges={badges} setBadges={setBadges} /> */}
           <Buttons
             onClickReward={onClickReward}
             onClickContract={onClickContract}
