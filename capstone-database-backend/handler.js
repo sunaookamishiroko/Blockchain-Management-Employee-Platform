@@ -25,7 +25,9 @@ module.exports.getQrcode = async (event, context, callback) => {
   return {
     statusCode: 200,
     headers: {
-      "Access-Control-Allow-Origin" : "*"
+      "Access-Control-Allow-Headers" : "Content-Type",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST,GET"
     },
     body: JSON.stringify(results)
   };
@@ -45,6 +47,11 @@ module.exports.setQrcode = async (event, context, callback) => {
 
   return {
     statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Headers" : "Content-Type",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST,GET"
+    },
     body: JSON.stringify(results)
   };
 }
@@ -63,6 +70,11 @@ module.exports.getLaborcontract = async (event, context, callback) => {
 
   return {
     statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Headers" : "Content-Type",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST,GET"
+    },
     body: JSON.stringify(results)
   };
 }
@@ -97,6 +109,11 @@ module.exports.setLaborcontract = async (event, context, callback) => {
 
   return {
     statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Headers" : "Content-Type",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST,GET"
+    },
     body : JSON.stringify(results)
   }
   
@@ -116,6 +133,11 @@ module.exports.deleteLaborcontract = async (event, context, callback) => {
 
   return {
     statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Headers" : "Content-Type",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST,GET"
+    },
     body : JSON.stringify(results)
   }
   
