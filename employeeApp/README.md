@@ -14,6 +14,15 @@
 
 위와 같이 해당 부분을 주석처리 해주시면 정상 동작합니다.
 
++ 2022/04/30 추가
+
+안드로이드 11 이상에서 발생하는 오류라고 합니다.
+
+해결방법은 
+
+https://stackoverflow.com/questions/64699801/linking-canopenurl-returning-false-when-targeting-android-30-sdk-on-react-native
+
+AndroidManifest.xml에서 컨픽추가 해주면 된다고 합니다.
 
 ## env 관련
 
