@@ -132,7 +132,7 @@ const WorkerManagement = ({
 
   // 근로자 목록에서 조회 클릭 시
   // TODO 이 페이지가 로드가 완료되면, 0번 인덱스 조회버튼이 눌리도록 할 것
-  const onClickEnquiry = (index, e) => {
+  const onClickEnquiry = (index) => {
     // 선택된 근로자 정보 설정
     setSelectedWorker(customworkers[index]);
 
@@ -172,6 +172,9 @@ const WorkerManagement = ({
       setCustomworkers(temp);
       setSelectedWorker(temp[0]);
       setContractAddress(temp[0][0]);
+
+      getUserData(temp[0][0]);
+
       setReady(true);
     } else {
       setSelectedWorker(null);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import WorkerListAdapter from "./WorkerListAdapter";
 
@@ -46,8 +46,6 @@ const WorkerList = ({ ready, customworkers, onClickEnquiry }) => {
     setWorkername(name);
     setContractAddress(address);
   };
-
-  //
 
   return (
     <Content>
