@@ -4,8 +4,7 @@ pragma solidity ^0.8.0;
 
 import "./ERC20.sol";
 
-contract WonToken {
-
+contract newtoken {
     ERC20 public token;
 
     constructor() public {
@@ -13,7 +12,7 @@ contract WonToken {
     }
     
     function buy() payable public {
-        uint256 amountTobuy = (msg.value / 1000 gwei) * 2;
+        uint256 amountTobuy = (msg.value / 1000 gwei);
         uint256 dexBalance = token.balanceOf(address(this));
 
         require(amountTobuy > 0, "You need to send some Ether");
@@ -24,16 +23,12 @@ contract WonToken {
     
     function sell(uint256 amount) public {
         require(amount > 0, "You need to sell at least some tokens");
-        uint256 allowance = token.allowance(msg.sender, address(this));
-
-        require(allowance >= amount, "Check the token allowance");
 
         token.transferFrom(msg.sender, address(this), amount);
-
-        payable(msg.sender).transfer(amount); 
+        payable(msg.sender).transfer(amount * 1000 gwei); 
     }
 
-    function balance(address account) public view returns(uint) {
-        return token.balanceOf(account);
+    function geterc20address() public view returns(address) {
+        return address(token);
     }
 }

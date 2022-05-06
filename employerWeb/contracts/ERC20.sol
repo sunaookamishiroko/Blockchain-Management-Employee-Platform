@@ -49,10 +49,10 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      * All two of these values are immutable: they can only be set once during
      * construction.
      */
-    constructor(string memory name_, string memory symbol_, address wontoken) {
+    constructor(string memory name_, string memory symbol_, address newtoken) {
         _name = name_;
         _symbol = symbol_;
-        _mint(wontoken, 100000000); // 1억 생성
+        _mint(newtoken, 100000000); // 1억 생성
     }
 
     /**
@@ -159,15 +159,16 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
         uint256 amount
     ) public virtual override returns (bool) {
         _transfer(sender, recipient, amount);
-
+        // approve 하는 과정 생략. 우리 주제에는 불필요
+        /*
         uint256 currentAllowance = _allowances[sender][_msgSender()];
         require(currentAllowance >= amount, "ERC20: transfer amount exceeds allowance");
         unchecked {
             _approve(sender, _msgSender(), currentAllowance - amount);
-        }
+        }*/
 
         return true;
-    }
+    }   
 
     /**
      * @dev Atomically increases the allowance granted to `spender` by the caller.
