@@ -26,7 +26,7 @@ export default function CheckAttendancePayScreen({ navigation, route }: RootTabS
 
   const [allcaldata, setAllcaldata] = useState<any[]>([]);
   const [caldata, setCaldata] = useState<any>();
-  const [wage, setWage] = useState<string []>([]);
+  const [wage, setWage] = useState<object>();
   const [stedindex, setStedindex] = useState<any []>([]);
 
   const [selectdate, setSelectdate] = useState<string>("");
@@ -61,7 +61,6 @@ export default function CheckAttendancePayScreen({ navigation, route }: RootTabS
       { from : connector.accounts[0] }
     );
 
-
     const index = ethers.utils.formatUnits(result, 0);
 
     result = await laborContract.getAllAttendance(
@@ -70,9 +69,7 @@ export default function CheckAttendancePayScreen({ navigation, route }: RootTabS
       { from : connector.accounts[0] }
     );
 
-    console.log(result);
-
-    if (result[0].length == 0) {
+    if (result[0].length === 0) {
       setCalready(null);
       setWageready(null);
     } else {
@@ -129,14 +126,12 @@ export default function CheckAttendancePayScreen({ navigation, route }: RootTabS
         route.params.index, employeeindex, startIndex, endIndex
       );
   
-      wagetemp.push(
-        hourwage, 
-        ethers.utils.formatUnits(wage, 0),
-        ethers.utils.formatUnits(allworktime[0], 0),
-        ethers.utils.formatUnits(allworktime[1], 0)
-        );
-      
-      setWage(wagetemp);
+      setWage({
+        hourwage,
+        allwage: ethers.utils.formatUnits(wage, 0),
+        hour: ethers.utils.formatUnits(allworktime[0], 0),
+        min: ethers.utils.formatUnits(allworktime[1], 0)
+      });
       setWageready(true);
     } else {
       setWageready(null);
@@ -211,10 +206,10 @@ export default function CheckAttendancePayScreen({ navigation, route }: RootTabS
   return (
     <ScrollView>
       <View style={styles.container}>
-      {calready == false && wageready == false && (
+      {calready === false && wageready === false && (
         <Text>잠시만 기다려주세요...</Text>
       )}
-      {calready == null && wageready == null &&(
+      {calready === null && wageready === null &&(
         <>
           <Text>{selectdate}</Text>
           <Text>출퇴근 데이터가 존재하지 않습니다</Text>
@@ -242,17 +237,17 @@ export default function CheckAttendancePayScreen({ navigation, route }: RootTabS
           </View>
           <View>
             <Text>{selectdate}</Text>
-            {wageready == false && (
+            {wageready === false && (
               <Text>급여를 계산중입니다...</Text>
             )}
-            {wageready == null && (
+            {wageready === null && (
               <Text>해당 월의 근무시간 데이터가 존재하지 않습니다</Text>
             )}
             {wageready && (
               <>
-              <Text>시급 : {wage[0]}</Text>
-              <Text>총 {wage[2]}시간 {wage[3]}분 근무</Text>
-              <Text>이번 달 급여 : {wage[1]}</Text>
+              <Text>시급 : {wage.hourwage}</Text>
+              <Text>총 {wage.hour}시간 {wage.min}분 근무</Text>
+              <Text>이번 달 급여 : {wage.allwage}</Text>
               </>
             )}
           </View>
