@@ -22,7 +22,6 @@ export type RootStackParamList = {
   SendAttendanceScreen: any;
   LaborContractViewAllScreen: any;
   NFTViewScreen: any;
-  NotFound: any;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
