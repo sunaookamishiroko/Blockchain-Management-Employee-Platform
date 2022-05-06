@@ -233,9 +233,6 @@ export default function CheckAttendancePayScreen({ navigation, route }: RootTabS
           
           />
           <View>
-            <Text></Text>
-          </View>
-          <View>
             <Text>{selectdate}</Text>
             {wageready === false && (
               <Text>급여를 계산중입니다...</Text>
