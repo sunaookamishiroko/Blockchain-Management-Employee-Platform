@@ -47,7 +47,7 @@ export default function TabThreeScreen({navigation} : RootTabScreenProps<'TabThr
               pinata_secret_api_key: PANATA_SECRET_APIKEY
           }
       })
-
+      console.log(tokendata)
       for (let x = 0 ; x < tokendata.data.rows.length; x++) {
         let detaildata = await axios.get(`https://gateway.pinata.cloud/ipfs/${tokendata.data.rows[x].ipfs_pin_hash}`)
         let wpinfo = await laborContract.getWorkplcesInfo(parseInt(detaildata.data.wpindex), { from : connector.accounts[0] });
@@ -68,7 +68,6 @@ export default function TabThreeScreen({navigation} : RootTabScreenProps<'TabThr
   // nft jsx 컴포넌트 만들기
   const makeJsx = () => {
     let nfts = [];
-
     for (let x = tokeninfo.length -1 ; x != -1 ; x--) {
       nfts.push(
         <View key={x}>

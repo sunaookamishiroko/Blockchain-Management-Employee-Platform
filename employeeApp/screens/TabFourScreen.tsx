@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity} from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import Slider from '@react-native-community/slider'
 
 import { styles } from '../css/styles';
 import { Text, View } from '../components/Themed';
@@ -25,6 +26,7 @@ export default function TabFourScreen({navigation} : RootTabScreenProps<'TabFour
 
   const [personalinfo, setPersonalinfo] = useState<object>();
   const [wpinfo, setWpinfo] = useState<object[]>();
+  const [money, setMoney] = useState<number>();
   const [ready, setReady] = useState<boolean | null>(false);
 
   useEffect(() => {
@@ -94,7 +96,6 @@ export default function TabFourScreen({navigation} : RootTabScreenProps<'TabFour
   
   })
 
-
   // 경력 jsx 컴포넌트 만들기
   const makeJsx = () => {
     let workplaceInfo = [];
@@ -121,10 +122,12 @@ export default function TabFourScreen({navigation} : RootTabScreenProps<'TabFour
     return workplaceInfo;
   }
 
+  const handleSubmit = async () => {
+    console.log(money);
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Four</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       {!connector.connected && (
         <TouchableOpacity onPress={connectWallet} style={styles.buttonStyle}>
           <Text style={styles.buttonTextStyle}>Connect a Wallet</Text>
@@ -155,6 +158,17 @@ export default function TabFourScreen({navigation} : RootTabScreenProps<'TabFour
           <Text>내 잔액 : {personalinfo.money}</Text>
           <TouchableOpacity onPress={killSession} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>Logout</Text>
+          </TouchableOpacity>
+          <Text>교환할 돈 : {money}원</Text>
+          <Slider
+            style={{width: 200, height: 40}}
+            minimumValue={0}
+            step={1000}
+            maximumValue={parseInt(personalinfo.money)}
+            onValueChange={value => {setMoney(value)}}
+          />
+          <TouchableOpacity onPress={handleSubmit} style={styles.buttonStyle}>
+            <Text style={styles.buttonTextStyle}>교환하기</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('LaborContractViewAllScreen')} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>근로계약서 모두 보기</Text>

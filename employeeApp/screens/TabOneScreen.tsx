@@ -111,7 +111,6 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           slideInterpolatedStyle={animatedStyles}
           useScrollView={true}          
           />
-          <Text style={styles.counter}>{carddata[cardindex].wpname}</Text>
           <TouchableOpacity onPress={() => navigation.navigate('SendAttendanceScreen', { index : workplaeindex[cardindex], num : 0 })} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>출근</Text>
           </TouchableOpacity>
