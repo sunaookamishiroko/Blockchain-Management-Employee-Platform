@@ -1,4 +1,4 @@
-import { PROVIDER_APIKEY, CONTRACT_ADDRESS1, CONTRACT_ADDRESS2, CONTRACT_ADDRESS3} from "@env";
+import { PROVIDER_APIKEY, LABORCONTRACT_ADDRESS, ERC20_ADDRESS, MYNFT_ADDRESS, WONTOKEN_ADDRESS} from "@env";
 
 import LaborContractABI from "../contracts/LaborContract.json";
 import ERC20ContractABI from "../contracts/ERC20.json";
@@ -9,9 +9,10 @@ import "@ethersproject/shims";
 import { ethers } from "ethers";
 
 export const infuraProvider = new ethers.providers.InfuraProvider("ropsten", PROVIDER_APIKEY);
-export const laborContract = new ethers.Contract(CONTRACT_ADDRESS1, LaborContractABI.abi, infuraProvider);
-export const ERC20Contract = new ethers.Contract(CONTRACT_ADDRESS2, ERC20ContractABI.abi, infuraProvider);
-export const NFTContract = new ethers.Contract(CONTRACT_ADDRESS3, NFTContractABI.abi, infuraProvider);
+
+export const laborContract = new ethers.Contract(LABORCONTRACT_ADDRESS, LaborContractABI.abi, infuraProvider);
+export const ERC20Contract = new ethers.Contract(ERC20_ADDRESS, ERC20ContractABI.abi, infuraProvider);
+export const NFTContract = new ethers.Contract(MYNFT_ADDRESS, NFTContractABI.abi, infuraProvider);
 
 export async function makeLabortxobj(from: string, abidata: string, gaslimit: number) {
 
@@ -24,7 +25,7 @@ export async function makeLabortxobj(from: string, abidata: string, gaslimit: nu
       gas: gaslimit,
       gasPrice: gasfee,
       nonce: nonce,
-      to: CONTRACT_ADDRESS1,
+      to: LABORCONTRACT_ADDRESS,
       value: "0x00"
   };
   return txObj;
@@ -41,7 +42,7 @@ export async function makeTokentxobj(from: string, abidata: string, gaslimit: nu
       gas: gaslimit,
       gasPrice: gasfee,
       nonce: nonce,
-      to: CONTRACT_ADDRESS2,
+      to: ERC20_ADDRESS,
       value: "0x00"
   };
   return txObj;
@@ -58,7 +59,7 @@ export async function makeNfttxobj(from: string, abidata: string, gaslimit: numb
       gas: gaslimit,
       gasPrice: gasfee,
       nonce: nonce,
-      to: CONTRACT_ADDRESS3,
+      to: MYNFT_ADDRESS,
       value: "0x00"
   };
   return txObj;
