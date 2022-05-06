@@ -23,11 +23,11 @@ TODO
 
 ## More Descripton...
 
-- [사업주 Web](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/blob/main/employerWeb/README.md)
+- [사업주 Web](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/blob/main/employerWeb)
 
-- [근로자 App](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/blob/main/employeeApp/README.md)
+- [근로자 App](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/blob/main/employeeApp)
 
-- [Backend](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/blob/main/capstone-database-backend/README.md)
+- [Backend](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/blob/main/database-backend)
 
 - [SmartContract](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/tree/main/employerWeb/contracts)
 
