@@ -3,31 +3,21 @@ import { StyleSheet, Image } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import { styles } from '../css/styles';
-import { RootTabScreenProps } from '../types';
-import { PROVIDER_APIKEY, CONTRACT_ADDRESS1, CONTRACT_ADDRESS2} from "@env";
 
-import { useWalletConnect } from '@walletconnect/react-native-dapp';
-
-import "react-native-get-random-values";
-import "@ethersproject/shims";
-import { ethers } from "ethers";
-import { makeLabortxobj, infuraProvider, laborContract } from "../connectETH/Transaction";
-
-// 내 근무지
-
+// NFT 자세히 보기
 export default function NFTViewScreen({ route }) {
 
   return (
     <View style={styles.container}>
       <Image 
-        source={{uri: route.params.tokeninfo[0].image}}
+        source={{uri: route.params.tokeninfo.metadata.image}}
         style={{width: 250, height: 250}}
       />
-      <Text>{route.params.tokeninfo[0].name}</Text>
-      <Text>설명 : {route.params.tokeninfo[0].description}</Text>
-      <Text>nftindex : {route.params.tokeninfo[0].nftindex}</Text>
-      <Text>{decodeURI(route.params.tokeninfo[1][0])}</Text>
-      <Text>{decodeURI(route.params.tokeninfo[1][1])}</Text>
+      <Text>{route.params.tokeninfo.metadata.name}</Text>
+      <Text>설명 : {route.params.tokeninfo.metadata.description}</Text>
+      <Text>nftindex : {route.params.tokeninfo.metadata.nftindex}</Text>
+      <Text>{route.params.tokeninfo.wpinfo.wpname}</Text>
+      <Text>{route.params.tokeninfo.wpinfo.wplocation}</Text>
     </View>
   );
 }

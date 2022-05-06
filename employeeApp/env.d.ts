@@ -1,7 +1,10 @@
 declare module '@env' {
     export const PROVIDER_APIKEY: string;
-    export const CONTRACT_ADDRESS1: string;
-    export const CONTRACT_ADDRESS2: string;
-    export const CONTRACT_ADDRESS3: string;
+    export const PINATA_APIKEY: string;
+    export const PANATA_SECRET_APIKEY: string;
+    export const LABORCONTRACT_ADDRESS: string;
+    export const ERC20_ADDRESS: string;
+    export const MYNFT_ADDRESS: string;
+    export const WONTOKEN_ADDRESS: string;
     export const ENDPOINT: string;
 }

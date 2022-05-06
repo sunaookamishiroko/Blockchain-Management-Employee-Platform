@@ -42,7 +42,6 @@ const linking: LinkingOptions<RootStackParamList> = {
       NotificationModal: 'modal',
       SendAttendanceScreen: 'SendAttendanceScreen',
       SendLaborContractScreen: 'SendLaborContractScreen',
-      NotFound: '*',
       LaborContractViewAllScreen: 'LaborContractViewAllScreen',
       NFTViewScreen: 'NFTViewScreen'
     },

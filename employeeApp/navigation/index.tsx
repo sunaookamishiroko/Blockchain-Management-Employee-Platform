@@ -13,7 +13,6 @@ import { ColorSchemeName, Pressable } from 'react-native';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import NotificationScreen from '../screens/NotificationModal';
-import NotFoundScreen from '../screens/NotFoundScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import TabThreeScreen from '../screens/TabThreeScreen';
@@ -47,7 +46,6 @@ function RootNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Screen name="LaborContractViewScreen" component={LaborContractViewScreen} options={{ title: '근로계약서 조회' }} />
       <Stack.Screen name="LaborContractViewAllScreen" component={LaborContractViewAllScreen} options={{ title: '모든 근로계약서 조회' }} />
       <Stack.Screen name="CheckAttendancePayScreen" component={CheckAttendancePayScreen} options={{ title: '근태 / 급여 조회' }} />

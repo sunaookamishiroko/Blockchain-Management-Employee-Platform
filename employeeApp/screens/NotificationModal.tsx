@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { RootTabScreenProps } from '../types';
@@ -8,21 +7,15 @@ import { Text, View } from '../components/Themed';
 
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
 
-import "react-native-get-random-values";
-import "@ethersproject/shims";
-import { ethers } from "ethers";
-import { makeLabortxobj, infuraProvider, laborContract } from "../connectETH/Transaction";
-
 import { ENDPOINT } from "@env";
 
 import axios from "axios";
 
 // 근로계약서 알림 모달창
-
 export default function NotificationModal({ navigation }: RootTabScreenProps<'NotificationModal'>) {
 
-  const [laborcontract, setLaborcontract] = useState();
-  const [ready, setReady] = useState(null);
+  const [laborcontract, setLaborcontract] = useState<object[]>();
+  const [ready, setReady] = useState<boolean | null>(null);
 
   const connector = useWalletConnect();
 
@@ -73,10 +66,10 @@ export default function NotificationModal({ navigation }: RootTabScreenProps<'No
       {!connector.connected && (
         <Text style={styles.buttonTextStyle}>로그인 해주세요</Text>
       )}
-      {connector.connected && ready == null &&(
+      {connector.connected && ready === null &&(
         <Text>잠시만 기다려주세요...</Text>
       )}
-      {connector.connected && ready == false &&(
+      {connector.connected && ready === false &&(
         <Text>근로계약서 요청이 없습니다!</Text>
       )}
       {connector.connected && ready &&(

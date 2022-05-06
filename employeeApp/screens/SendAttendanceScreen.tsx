@@ -5,7 +5,6 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Text, View } from '../components/Themed';
 import { styles } from '../css/styles';
 import { RootTabScreenProps } from '../types';
-import { PROVIDER_APIKEY, CONTRACT_ADDRESS1, CONTRACT_ADDRESS2} from "@env";
 import * as WebBrowser from 'expo-web-browser';
 
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
@@ -13,6 +12,7 @@ import { useWalletConnect } from '@walletconnect/react-native-dapp';
 import "react-native-get-random-values";
 import "@ethersproject/shims";
 import { ethers } from "ethers";
+
 import { makeLabortxobj, infuraProvider, laborContract } from "../connectETH/Transaction";
 
 import { ENDPOINT } from "@env";
@@ -20,18 +20,17 @@ import { ENDPOINT } from "@env";
 import axios from "axios";
 
 // 출근 퇴근하기
-
 export default function SendAttendanceScreen({ navigation, route }: RootTabScreenProps<'AttendanceCheckScreen'>) {
   
-  const [hasPermission, setHasPermission] = useState<null | boolean>(null);
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState<boolean>(false);
   const [scandata, setScandata] = useState<any>();
-  const [isright, setIsrigt] = useState(null);
+  const [isright, setIsrigt] = useState<boolean | null>(null);
 
   const [txhash, setTxhash] = useState<any>();
-  const [issendtx, setIssendtx] = useState<null | boolean>(null);
+  const [issendtx, setIssendtx] = useState<boolean | null>(null);
 
-  const [time, setTime] = useState<any[]>([]);
+  const [time, setTime] = useState<object>();
 
   useEffect(() => {
     (async () => {
@@ -44,7 +43,7 @@ export default function SendAttendanceScreen({ navigation, route }: RootTabScree
   const connector = useWalletConnect();
 
   // 현재 시간과 날짜를 불러옴
-  const getTime = () => {
+  const getTime = async() => {
     let time = new Date();
 
     let year = time.getFullYear();
@@ -54,26 +53,22 @@ export default function SendAttendanceScreen({ navigation, route }: RootTabScree
     let hour = time.getHours();
     let min = time.getMinutes();
 
-    let temp = [
-      year+"-"+(("0"+month.toString()).slice(-2))+"-"+(("0"+day.toString()).slice(-2)),
+    let temp = {
+      date : year+"-"+(("0"+month.toString()).slice(-2))+"-"+(("0"+day.toString()).slice(-2)),
       hour,
       min
-    ];
-
-    console.log(temp);
+    };
     setTime(temp);
-
-    return (temp);
   }
 
   // 출/퇴근하기
   const uploadWork = async () => {
 
-    let timedata = getTime();
+    await getTime();
 
     let abidata = new ethers.utils
     .Interface(["function uploadAttendance(uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute)"])
-    .encodeFunctionData("uploadAttendance", [route.params.num, route.params.index, "2022-04-03", 8, 5]);
+    .encodeFunctionData("uploadAttendance", [route.params.num, route.params.index, "2022-04-28", 19, 0]);
     let txObj = await makeLabortxobj(connector.accounts[0], abidata, 200000);
 
     try {
@@ -99,13 +94,13 @@ export default function SendAttendanceScreen({ navigation, route }: RootTabScree
   const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
     setScandata(data);
-
+    
     try {
       const response = await axios.get(
-        `${ENDPOINT}getqrcode?workplaceindex=${route.params.index}&date=2022-04-16`
+        `${ENDPOINT}getqrcode?workplaceindex=${route.params.index}&date=2022-04-28`
       );
 
-      if (response.data[0].randomnum == data) await uploadWork();
+      if (response.data[0].randomnum === data) await uploadWork();
       else setIsrigt(false);
     } catch(e) {
       console.log(e);
@@ -127,38 +122,31 @@ export default function SendAttendanceScreen({ navigation, route }: RootTabScree
         style={StyleSheet.absoluteFillObject}
         />
       )}
-      {scanned && isright == false &&(
+      {scanned && isright === false &&(
         <>
           <Text style={styles.title}>해당 QR코드가 근로지의 QR코드와 일치하지 않습니다.</Text>
           <Text>{scandata}</Text>
         </>
       )}
-      {scanned && issendtx == null && isright != false &&(
+      {scanned && issendtx === null && isright !== false &&(
         <Text style={styles.title}>잠시만 기다려주세요...</Text>
       )}
-      {scanned && issendtx == false &&(
+      {scanned && issendtx === false &&(
         <Text style={styles.title}>트랜잭션 전송에 실패했습니다.</Text>
       )}
-      {scanned && route.params.num == 0 && issendtx &&(
+      {scanned && issendtx &&(
         <>
-          <Text>{time[0]} {time[1]}:{time[2]}</Text>
-          <Text style={styles.title}>출근을 완료했습니다.</Text>
+          <Text>{time.date} {time.hour}:{time.min}</Text>
+          {route.params.num === 0 && (
+            <Text style={styles.title}>출근을 완료했습니다.</Text>
+          )}
+          {route.params.num === 1 && (
+            <Text style={styles.title}>퇴근을 완료했습니다.</Text>
+          )}
           <TouchableOpacity style={styles.buttonStyle} onPress={_handlePressButtonAsync}>
             <Text style={styles.buttonTextStyle}>etherscan</Text>
           </TouchableOpacity>
           <Text>{scandata}</Text>
-          <Text>{route.params.index}</Text>
-        </>
-      )}
-      {scanned && route.params.num == 1 && issendtx &&(
-        <>
-          <Text>{time[0]} {time[1]}:{time[2]}</Text>
-          <Text style={styles.title}>퇴근을 완료했습니다.</Text>
-          <TouchableOpacity style={styles.buttonStyle} onPress={_handlePressButtonAsync}>
-            <Text style={styles.buttonTextStyle}>etherscan</Text>
-          </TouchableOpacity>
-          <Text>{scandata}</Text>
-          <Text>{route.params.index}</Text>
         </>
       )}
       </View>
