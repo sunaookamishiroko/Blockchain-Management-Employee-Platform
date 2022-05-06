@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity} from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
 import { styles } from '../css/styles';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
@@ -11,6 +10,7 @@ import { useWalletConnect } from '@walletconnect/react-native-dapp';
 import "react-native-get-random-values";
 import "@ethersproject/shims";
 import { ethers } from "ethers";
+
 import { makeLabortxobj, laborContract, ERC20Contract } from "../connectETH/Transaction";
 
 // 프로필

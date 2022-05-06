@@ -45,7 +45,6 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
    // 근무지 불러오기
   const getCardinfo = (async() => {
     let result = await laborContract.getWorkplaces({ from : connector.accounts[0] });
-    console.log(result);
 
     let temp  = [];
     let index = [];
@@ -78,7 +77,6 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
       </View>
     );
   }
-
 
   return (
     <View style={styles.container}>

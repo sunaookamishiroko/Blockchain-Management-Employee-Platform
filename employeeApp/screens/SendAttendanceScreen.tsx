@@ -5,7 +5,6 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Text, View } from '../components/Themed';
 import { styles } from '../css/styles';
 import { RootTabScreenProps } from '../types';
-import { PROVIDER_APIKEY, CONTRACT_ADDRESS1, CONTRACT_ADDRESS2} from "@env";
 import * as WebBrowser from 'expo-web-browser';
 
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
@@ -13,6 +12,7 @@ import { useWalletConnect } from '@walletconnect/react-native-dapp';
 import "react-native-get-random-values";
 import "@ethersproject/shims";
 import { ethers } from "ethers";
+
 import { makeLabortxobj, infuraProvider, laborContract } from "../connectETH/Transaction";
 
 import { ENDPOINT } from "@env";
@@ -20,7 +20,6 @@ import { ENDPOINT } from "@env";
 import axios from "axios";
 
 // 출근 퇴근하기
-
 export default function SendAttendanceScreen({ navigation, route }: RootTabScreenProps<'AttendanceCheckScreen'>) {
   
   const [hasPermission, setHasPermission] = useState<null | boolean>(null);

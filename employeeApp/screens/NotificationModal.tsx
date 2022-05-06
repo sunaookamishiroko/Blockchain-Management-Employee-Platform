@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { RootTabScreenProps } from '../types';
@@ -8,17 +7,11 @@ import { Text, View } from '../components/Themed';
 
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
 
-import "react-native-get-random-values";
-import "@ethersproject/shims";
-import { ethers } from "ethers";
-import { makeLabortxobj, infuraProvider, laborContract } from "../connectETH/Transaction";
-
 import { ENDPOINT } from "@env";
 
 import axios from "axios";
 
 // 근로계약서 알림 모달창
-
 export default function NotificationModal({ navigation }: RootTabScreenProps<'NotificationModal'>) {
 
   const [laborcontract, setLaborcontract] = useState();

@@ -11,6 +11,7 @@ import { useWalletConnect } from '@walletconnect/react-native-dapp';
 import "react-native-get-random-values";
 import "@ethersproject/shims";
 import { ethers } from "ethers";
+
 import { makeLabortxobj } from "../connectETH/Transaction";
 
 import { ENDPOINT } from "@env";
@@ -18,7 +19,6 @@ import { ENDPOINT } from "@env";
 import axios from "axios";
 
 // 내 근무지
-
 export default function SendLaborContractScreen({ navigation, route }: RootTabScreenProps<'NotificationModal'>) {
 
   const [issendtx, setIssendtx] = useState<Boolean | null>(null);
@@ -27,7 +27,6 @@ export default function SendLaborContractScreen({ navigation, route }: RootTabSc
 
   // walletconnect 세션을 저장하는 hook
   const connector = useWalletConnect();
-
 
   // 근로계약서 컨트랙트에 올리기 위해 트랜잭션 보내기
   const uploadLaborContract = async () => {

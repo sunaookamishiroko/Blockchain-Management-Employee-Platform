@@ -10,11 +10,10 @@ import { useWalletConnect } from '@walletconnect/react-native-dapp';
 import "react-native-get-random-values";
 import "@ethersproject/shims";
 import { ethers } from "ethers";
+
 import { laborContract } from "../connectETH/Transaction";
-//import { connectWallet } from "../connectETH/connectWallet";
 
 // 근무지 정보
-
 export default function TabTwoScreen({navigation} : RootTabScreenProps<'TabTwo'>) {
 
   const [ready, setReady] = useState<boolean>(false);
