@@ -130,12 +130,12 @@ export default function TabFourScreen({navigation} : RootTabScreenProps<'TabFour
           <Text style={styles.buttonTextStyle}>Connect a Wallet</Text>
         </TouchableOpacity>
       )}
-      {connector.connected && ready == false && (
+      {connector.connected && ready === false && (
         <>
           <Text>잠시만 기다려주세요...</Text>
         </>
       )}
-      {connector.connected && ready == null && (
+      {connector.connected && ready === null && (
         <>
           <TouchableOpacity onPress={uploadPersonalInfo} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>개인정보 업로드</Text>

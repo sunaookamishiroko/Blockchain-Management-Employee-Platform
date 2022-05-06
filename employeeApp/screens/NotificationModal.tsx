@@ -73,10 +73,10 @@ export default function NotificationModal({ navigation }: RootTabScreenProps<'No
       {!connector.connected && (
         <Text style={styles.buttonTextStyle}>로그인 해주세요</Text>
       )}
-      {connector.connected && ready == null &&(
+      {connector.connected && ready === null &&(
         <Text>잠시만 기다려주세요...</Text>
       )}
-      {connector.connected && ready == false &&(
+      {connector.connected && ready === false &&(
         <Text>근로계약서 요청이 없습니다!</Text>
       )}
       {connector.connected && ready &&(
