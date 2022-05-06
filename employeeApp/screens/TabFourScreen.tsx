@@ -12,10 +12,8 @@ import "react-native-get-random-values";
 import "@ethersproject/shims";
 import { ethers } from "ethers";
 import { makeLabortxobj, laborContract, ERC20Contract } from "../connectETH/Transaction";
-//import { connectWallet } from "../connectETH/connectWallet";
 
 // 프로필
-
 const shortenAddress = (address: string) => {
   return `${address.slice(0, 10)}...${address.slice(
     address.length - 4,
@@ -25,9 +23,8 @@ const shortenAddress = (address: string) => {
 
 export default function TabFourScreen({navigation} : RootTabScreenProps<'TabFour'>) {
 
-  const [personalinfo, setPersonalinfo] = useState<string[]>([]);
-  const [mymoney, setMymoney] = useState<string>();
-  const [wpinfo, setWpinfo] = useState();
+  const [personalinfo, setPersonalinfo] = useState<object>();
+  const [wpinfo, setWpinfo] = useState<object[]>();
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -41,7 +38,7 @@ export default function TabFourScreen({navigation} : RootTabScreenProps<'TabFour
 
   const connectWallet = React.useCallback(() => {
     return connector.connect();
-}, [connector]);
+ }, [connector]);
 
   // wallet과 연결 종료하기
   const killSession = React.useCallback(() => {
@@ -51,34 +48,35 @@ export default function TabFourScreen({navigation} : RootTabScreenProps<'TabFour
   // 개인정보 불러오기
   const getPersonInformation = (async() => {
     let result = await laborContract.getPersonInformation(connector.accounts[0], { from : connector.accounts[0] });
-
     let result2 = await ERC20Contract.balanceOf(connector.accounts[0], { from : connector.accounts[0] });
 
     let temp = [];
 
     for (let x = 0 ; x < result[4][1].length; x++) {
       let result3 = await laborContract.getWorkplcesInfo(ethers.utils.formatUnits(result[4][0][x], 0), { from : connector.accounts[0] });
-      temp.push(result3);
+      temp.push({
+        wpname: decodeURI(result3[0]),
+        wplocation: decodeURI(result3[1])
+      });
     }
 
-    if (result[1] == 0) {
+    if (result[1] === 0) {
       setReady(null);
     } else {
-      setPersonalinfo([
-      decodeURI(result[1]),
-      ethers.utils.formatUnits(result[2], 0),
-      decodeURI(result[3]),
-      result[4]
-      ])
+      setPersonalinfo({
+        name: decodeURI(result[1]),
+        age: ethers.utils.formatUnits(result[2], 0),
+        gender: decodeURI(result[3]),
+        money: ethers.utils.formatUnits(result2, 0),
+        career: result[4]
+      })
       setWpinfo(temp);
-      setMymoney(ethers.utils.formatUnits(result2, 0));
       setReady(true);
     }
   })
 
   // 개인정보 업로드
   const uploadPersonalInfo = (async () => {
-
       let abidata = new ethers.utils
       .Interface(["function uploadPersonalInfo(address person, uint8 identiNumber, string calldata name, uint age, string calldata gender)"])
       .encodeFunctionData("uploadPersonalInfo", [connector.accounts[0], 0, encodeURI("이서윤"), 24, encodeURI("남")]);
@@ -100,21 +98,20 @@ export default function TabFourScreen({navigation} : RootTabScreenProps<'TabFour
   // 경력 jsx 컴포넌트 만들기
   const makeJsx = () => {
     let workplaceInfo = [];
-    console.log(wpinfo);
-    for (let x = 0 ; x < personalinfo[3][1].length; x++) {
+    for (let x = 0 ; x < personalinfo.career[0].length; x++) {
 
-      if(personalinfo[3][2][x] == "0") {
+      if(personalinfo.career[2][x] === "0") {
         workplaceInfo.push(
           <View key={x}>
-            <Text>{decodeURI(wpinfo[x][0])}</Text>
-            <Text>{personalinfo[3][1][x]} ~ 근무중</Text>
+            <Text>{wpinfo[x].wpname}</Text>
+            <Text>{personalinfo.career[1][x]} ~ 근무중</Text>
           </View>
         );
       } else {
         workplaceInfo.push(
           <View key={x}>
-            <Text>{decodeURI(wpinfo[x][0])}</Text>
-            <Text>{personalinfo[3][1][x]} ~ {personalinfo[3][2][x]}</Text>
+            <Text>{wpinfo[x].wpname}</Text>
+            <Text>{personalinfo.career[1][x]} ~ {personalinfo.career[2][x]}</Text>
           </View>
         );
       }
@@ -144,15 +141,18 @@ export default function TabFourScreen({navigation} : RootTabScreenProps<'TabFour
             <Text style={styles.buttonTextStyle}>개인정보 업로드</Text>
           </TouchableOpacity>
           <Text>개인 정보가 없습니다.</Text>
+          <TouchableOpacity onPress={killSession} style={styles.buttonStyle}>
+            <Text style={styles.buttonTextStyle}>Logout</Text>
+          </TouchableOpacity>
         </>
       )}
       {(connector.connected && ready) && (
         <>
-          <Text>{personalinfo[0]}</Text>
+          <Text>{personalinfo.name}</Text>
           <Text>Address : {shortenAddress(connector.accounts[0])}</Text>
-          <Text>성별 : {personalinfo[1]}</Text>
-          <Text>나이 : {personalinfo[2]}</Text>
-          <Text>내 잔액 : {mymoney}</Text>
+          <Text>나이 : {personalinfo.age}</Text>
+          <Text>성별 : {personalinfo.gender}</Text>
+          <Text>내 잔액 : {personalinfo.money}</Text>
           <TouchableOpacity onPress={() => navigation.navigate('LaborContractViewAllScreen')} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>근로계약서 모두 보기</Text>
           </TouchableOpacity>

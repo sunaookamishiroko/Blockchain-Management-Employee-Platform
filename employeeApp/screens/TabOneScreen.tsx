@@ -12,11 +12,10 @@ import { useWalletConnect } from '@walletconnect/react-native-dapp';
 import "react-native-get-random-values";
 import "@ethersproject/shims";
 import { ethers } from "ethers";
-//import { connectWallet } from "../connectETH/connectWallet";
-import { makeLabortxobj, laborContract } from "../connectETH/Transaction";
+
+import { laborContract } from "../connectETH/Transaction";
 
 // 내 근무지
-
 const SLIDER_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 const ITEM_HEIGHT = Math.round(ITEM_WIDTH * 3 / 4);
@@ -45,14 +44,13 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 
    // 근무지 불러오기
   const getCardinfo = (async() => {
-
     let result = await laborContract.getWorkplaces({ from : connector.accounts[0] });
     console.log(result);
 
-    let temp = [];
+    let temp  = [];
     let index = [];
 
-    if (result[1].length == 0) {
+    if (result[1].length === 0) {
       setWorkplaceindex(index);
       setCarddata(temp);
       setReady(null);
@@ -60,8 +58,8 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
       for (let x = 0 ; x < result[1].length; x++) {
         index.push(ethers.utils.formatUnits(result[0][x], 0));
         temp.push({
-          title : decodeURI(result[1][x]),
-          text: decodeURI(result[2][x])
+          wpname : decodeURI(result[1][x]),
+          wplocation: decodeURI(result[2][x])
         })
       }
       setWorkplaceindex(index);
@@ -75,9 +73,8 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
   const renderItem = ({item}) => {
     return (
       <View style={styles.itemContainer}>
-        <Text style={styles.itemLabel}>{item.title}</Text>
-        <Text>{item.text}</Text>
-        <Text>{item.wage}</Text>
+        <Text style={styles.itemLabel}>{item.wpname}</Text>
+        <Text>{item.wplocation}</Text>
       </View>
     );
   }
@@ -116,8 +113,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           slideInterpolatedStyle={animatedStyles}
           useScrollView={true}          
           />
-          <Text style={styles.counter}>{carddata[cardindex].title}</Text>
-          <Text style={styles.counter}>{workplaeindex[cardindex]}</Text>
+          <Text style={styles.counter}>{carddata[cardindex].wpname}</Text>
           <TouchableOpacity onPress={() => navigation.navigate('SendAttendanceScreen', { index : workplaeindex[cardindex], num : 0 })} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>출근</Text>
           </TouchableOpacity>
