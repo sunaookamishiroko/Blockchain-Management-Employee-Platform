@@ -64,7 +64,6 @@ export default function TabTwoScreen({navigation} : RootTabScreenProps<'TabTwo'>
     for (let x = 0 ; x < callresult.length; x++) {
       workplaceInfo.push(
         <View style={styles.container} key={x}>
-            <Text>{callresult[x].wpindex}</Text>
             <Text>{callresult[x].wpname}</Text>
             <Text>{callresult[x].wplocation}</Text>
             <View style={styles.buttonContainer}>

@@ -6,13 +6,9 @@ import { styles } from '../css/styles';
 
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
 
-import "react-native-get-random-values";
-import "@ethersproject/shims";
-import { ethers } from "ethers";
 import { laborContract } from "../connectETH/Transaction";
 
 // 내 근무지
-
 export default function LaborContractViewScreen({ route }) {
 
   const [ready, setReady] = useState<boolean>(false);
