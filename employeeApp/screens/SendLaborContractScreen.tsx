@@ -23,7 +23,7 @@ export default function SendLaborContractScreen({ navigation, route }: RootTabSc
 
   const [issendtx, setIssendtx] = useState<Boolean | null>(null);
   const [answer, setAnswer] = useState<Boolean | null>(null);
-  const [txhash, setTxhash] = useState();
+  const [txhash, setTxhash] = useState<string>();
 
   // walletconnect 세션을 저장하는 hook
   const connector = useWalletConnect();

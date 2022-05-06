@@ -10,14 +10,14 @@ export default function NFTViewScreen({ route }) {
   return (
     <View style={styles.container}>
       <Image 
-        source={{uri: route.params.tokeninfo[0].image}}
+        source={{uri: route.params.tokeninfo.metadata.image}}
         style={{width: 250, height: 250}}
       />
-      <Text>{route.params.tokeninfo[0].name}</Text>
-      <Text>설명 : {route.params.tokeninfo[0].description}</Text>
-      <Text>nftindex : {route.params.tokeninfo[0].nftindex}</Text>
-      <Text>{decodeURI(route.params.tokeninfo[1][0])}</Text>
-      <Text>{decodeURI(route.params.tokeninfo[1][1])}</Text>
+      <Text>{route.params.tokeninfo.metadata.name}</Text>
+      <Text>설명 : {route.params.tokeninfo.metadata.description}</Text>
+      <Text>nftindex : {route.params.tokeninfo.metadata.nftindex}</Text>
+      <Text>{route.params.tokeninfo.wpinfo.wpname}</Text>
+      <Text>{route.params.tokeninfo.wpinfo.wplocation}</Text>
     </View>
   );
 }

@@ -25,7 +25,7 @@ export default function TabFourScreen({navigation} : RootTabScreenProps<'TabFour
 
   const [personalinfo, setPersonalinfo] = useState<object>();
   const [wpinfo, setWpinfo] = useState<object[]>();
-  const [ready, setReady] = useState(false);
+  const [ready, setReady] = useState<boolean | null>(false);
 
   useEffect(() => {
     if (connector.connected) {
@@ -153,12 +153,13 @@ export default function TabFourScreen({navigation} : RootTabScreenProps<'TabFour
           <Text>나이 : {personalinfo.age}</Text>
           <Text>성별 : {personalinfo.gender}</Text>
           <Text>내 잔액 : {personalinfo.money}</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('LaborContractViewAllScreen')} style={styles.buttonStyle}>
-            <Text style={styles.buttonTextStyle}>근로계약서 모두 보기</Text>
-          </TouchableOpacity>
           <TouchableOpacity onPress={killSession} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>Logout</Text>
           </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('LaborContractViewAllScreen')} style={styles.buttonStyle}>
+            <Text style={styles.buttonTextStyle}>근로계약서 모두 보기</Text>
+          </TouchableOpacity>
+          <Text>경력</Text>
           {makeJsx()}
         </>
       )}

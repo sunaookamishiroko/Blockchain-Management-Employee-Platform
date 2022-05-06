@@ -16,7 +16,7 @@ import { laborContract } from "../connectETH/Transaction";
 // 모든 근로 계약서 정보
 export default function LaborContractViewAllScreen({navigation} : RootTabScreenProps<'LaborContractViewAllScreen'>) {
 
-  const [ready, setReady] = useState<boolean>(false);
+  const [ready, setReady] = useState<boolean | null>(false);
   const [callresult, setCallresult] = useState<object[]>();
   
   useEffect(() => {
@@ -32,19 +32,24 @@ export default function LaborContractViewAllScreen({navigation} : RootTabScreenP
 
     let temp = [];
 
-    for(let x = 0 ; x < result.length ; x++) {
-      let contract = await laborContract.getLaborContract2(ethers.utils.formatUnits(result[x], 0), { from : connector.accounts[0] });
-      let wpinfo = await laborContract.getWorkplcesInfo(ethers.utils.formatUnits(contract[0], 0), { from : connector.accounts[0] });
-
-      temp.push({
-          wpname: decodeURI(wpinfo[0]), 
-          wplocation: decodeURI(wpinfo[1]), 
-          contractindex: ethers.utils.formatUnits(result[x], 0) 
-      });
+    if (result.length === 0) {
+      setCallresult(temp);
+      setReady(null);
+    } else {
+      for(let x = 0 ; x < result.length ; x++) {
+        let contract = await laborContract.getLaborContract2(ethers.utils.formatUnits(result[x], 0), { from : connector.accounts[0] });
+        let wpinfo = await laborContract.getWorkplcesInfo(ethers.utils.formatUnits(contract[0], 0), { from : connector.accounts[0] });
+  
+        temp.push({
+            wpname: decodeURI(wpinfo[0]), 
+            wplocation: decodeURI(wpinfo[1]), 
+            contractindex: ethers.utils.formatUnits(result[x], 0) 
+        });
+      }
+  
+      setCallresult(temp);
+      setReady(true);
     }
-
-    setCallresult(temp);
-    setReady(true);
   })
 
   // 렌더링 하기 위해 배치작업

@@ -72,10 +72,7 @@ export default function LaborContractViewScreen({ route }) {
   return (
     <View style={styles.container}>
       {!ready && (
-        <>
-          <Text style={styles.title}>{route.params.index}</Text>
-          <Text style={styles.title}>잠시만 기다려주세요..</Text>
-        </>
+        <Text style={styles.title}>잠시만 기다려주세요..</Text>
       )}
       {ready && (
         <>

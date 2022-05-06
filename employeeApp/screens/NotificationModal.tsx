@@ -14,8 +14,8 @@ import axios from "axios";
 // 근로계약서 알림 모달창
 export default function NotificationModal({ navigation }: RootTabScreenProps<'NotificationModal'>) {
 
-  const [laborcontract, setLaborcontract] = useState();
-  const [ready, setReady] = useState(null);
+  const [laborcontract, setLaborcontract] = useState<object[]>();
+  const [ready, setReady] = useState<boolean | null>(null);
 
   const connector = useWalletConnect();
 

@@ -21,13 +21,13 @@ const ITEM_HEIGHT = Math.round(ITEM_WIDTH * 3 / 4);
 
 export default function CheckAttendancePayScreen({ navigation, route }: RootTabScreenProps<'CheckAttendancePayScreen'>) {
 
-  const [calready, setCalready] = useState<null | boolean>(false);
-  const [wageready, setWageready] = useState<null | boolean>(false);
+  const [calready, setCalready] = useState<boolean | null>(false);
+  const [wageready, setWageready] = useState<boolean | null>(false);
 
   const [allcaldata, setAllcaldata] = useState<any[]>([]);
   const [caldata, setCaldata] = useState<any>();
   const [wage, setWage] = useState<object>();
-  const [stedindex, setStedindex] = useState<any []>([]);
+  const [stedindex, setStedindex] = useState<any[]>([]);
 
   const [selectdate, setSelectdate] = useState<string>("");
 

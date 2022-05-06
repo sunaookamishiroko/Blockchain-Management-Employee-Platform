@@ -22,13 +22,13 @@ import axios from "axios";
 // 출근 퇴근하기
 export default function SendAttendanceScreen({ navigation, route }: RootTabScreenProps<'AttendanceCheckScreen'>) {
   
-  const [hasPermission, setHasPermission] = useState<null | boolean>(null);
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState<boolean>(false);
   const [scandata, setScandata] = useState<any>();
-  const [isright, setIsrigt] = useState(null);
+  const [isright, setIsrigt] = useState<boolean | null>(null);
 
   const [txhash, setTxhash] = useState<any>();
-  const [issendtx, setIssendtx] = useState<null | boolean>(null);
+  const [issendtx, setIssendtx] = useState<boolean | null>(null);
 
   const [time, setTime] = useState<object>();
 

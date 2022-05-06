@@ -16,7 +16,7 @@ import { laborContract } from "../connectETH/Transaction";
 // 근무지 정보
 export default function TabTwoScreen({navigation} : RootTabScreenProps<'TabTwo'>) {
 
-  const [ready, setReady] = useState<boolean>(false);
+  const [ready, setReady] = useState<boolean | null>(false);
   const [callresult, setCallresult] = useState<object[]>([]);
   
   useEffect(() => {

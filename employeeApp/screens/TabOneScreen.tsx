@@ -22,7 +22,7 @@ const ITEM_HEIGHT = Math.round(ITEM_WIDTH * 3 / 4);
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
 
-  const [ready, setReady] = useState(false);
+  const [ready, setReady] = useState<boolean | null>(false);
   const [cardindex, setCardindex] = useState<number>(0);
   const [carddata, setCarddata] = useState<any[]>([]);
   const [workplaeindex, setWorkplaceindex] = useState<any[]>([]);
