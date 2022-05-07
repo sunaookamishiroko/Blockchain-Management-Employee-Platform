@@ -4,7 +4,14 @@ import java.util.Objects;
 
 public class QrcodePK implements Serializable {
     private int workplaceIndex;
-    private String date1;
+    private String date;
+
+    public QrcodePK() {}
+
+    public QrcodePK(int workplaceIndex, String date) {
+        this.workplaceIndex = workplaceIndex;
+        this.date = date;
+    }
 
     public int getWorkplaceIndex() {
         return workplaceIndex;
@@ -15,11 +22,11 @@ public class QrcodePK implements Serializable {
     }
 
     public String getDate1() {
-        return date1;
+        return date;
     }
 
-    public void setDate1(String date1) {
-        this.date1 = date1;
+    public void setDate1(String date) {
+        this.date = date;
     }
 
     @Override
@@ -28,11 +35,11 @@ public class QrcodePK implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         QrcodePK that = (QrcodePK) o;
         return workplaceIndex == that.workplaceIndex &&
-                date1.equals(that.date1);
+                date.equals(that.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(workplaceIndex, date1);
+        return Objects.hash(workplaceIndex, date);
     }
 }

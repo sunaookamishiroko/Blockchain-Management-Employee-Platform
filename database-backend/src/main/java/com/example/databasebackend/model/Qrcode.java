@@ -13,7 +13,7 @@ public class Qrcode implements Serializable {
     private int workplaceIndex;
 
     @Id
-    private String date1;
+    private String date;
 
     @Column(name = "randomnum")
     private int randomNum;
@@ -26,12 +26,12 @@ public class Qrcode implements Serializable {
         this.workplaceIndex = workplaceIndex;
     }
 
-    public String getDate1() {
-        return date1;
+    public String getDate() {
+        return date;
     }
 
-    public void setDate1(String date1) {
-        this.date1 = date1;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public int getRandomNum() {

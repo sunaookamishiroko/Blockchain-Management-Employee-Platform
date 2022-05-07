@@ -2,23 +2,37 @@ package com.example.databasebackend.controller;
 
 import com.example.databasebackend.model.Qrcode;
 import com.example.databasebackend.repository.QrcodeRepository;
+import com.example.databasebackend.service.QrcodeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class QrcodeController {
 
-    @Autowired
-    private QrcodeRepository qrcodeRepository;
+    private QrcodeService service;
 
-    @GetMapping("/getqrcode")
-    public List<Qrcode> getAllQrcode() {
-        return qrcodeRepository.findAll();
+    @Autowired
+    public QrcodeController(QrcodeService service) {
+        this.service = service;
     }
 
-    //@PostMapping("/setqrcode")
+    @GetMapping("/getqrcode")
+    public Optional<Qrcode> getQrcode(
+            @RequestParam(value="workplaceindex") int workplaceindex,
+            @RequestParam(value="date") String date) {
+        return service.findByIndexAndDate(workplaceindex, date);
+    }
+
+    @GetMapping("/getqrcodeall")
+    public List<Qrcode> getAllQrcode() {
+        return service.findAll();
+    }
+
+    @PostMapping("/setqrcode")
+    public Qrcode setQrcode(@RequestBody Qrcode req) {
+        return service.setQrcode(req);
+    }
 }
