@@ -1,12 +1,14 @@
 package com.example.databasebackend.controller;
 
 import com.example.databasebackend.model.LaborContract;
+import com.example.databasebackend.model.LaborContractPK;
 import com.example.databasebackend.repository.LaborContractRepository;
 import com.example.databasebackend.service.LaborContractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -25,15 +27,17 @@ public class LaborContractController {
     }
 
     @GetMapping("/getcontract")
-    public Optional<LaborContract> getContract(
-            @RequestParam String address,
-            @RequestParam int workplaceIndex) {
-        return service.findByAddressAndWorkplaceIndex(
-                address, workplaceIndex);
+    public LaborContract getContract(@RequestParam String address) {
+        return service.findByAddress(address);
     }
 
     @PostMapping("/setcontract")
     public LaborContract setContract(@RequestBody LaborContract req) {
-        return service.setLaborContract(req);
+        return service.set(req);
+    }
+
+    @DeleteMapping("/deletecontract")
+    public Map<String, String> deleteLaborcontract(@RequestBody LaborContractPK req){
+        return service.delete(req);
     }
 }

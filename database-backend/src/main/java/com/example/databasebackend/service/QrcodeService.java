@@ -26,7 +26,7 @@ public class QrcodeService {
         return repository.findById(new QrcodePK(wpindex, date));
     }
 
-    public Qrcode setQrcode(Qrcode req) {
+    public Qrcode set(Qrcode req) {
         return repository.save(req);
     }
 

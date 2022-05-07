@@ -33,6 +33,6 @@ public class QrcodeController {
 
     @PostMapping("/setqrcode")
     public Qrcode setQrcode(@RequestBody Qrcode req) {
-        return service.setQrcode(req);
+        return service.set(req);
     }
 }

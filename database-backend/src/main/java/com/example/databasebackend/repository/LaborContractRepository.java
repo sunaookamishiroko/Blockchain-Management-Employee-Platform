@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LaborContractRepository extends JpaRepository<LaborContract, LaborContractPK> {
+    LaborContract findByAddress(String address);
 }
