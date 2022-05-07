@@ -10,20 +10,20 @@ public class Qrcode implements Serializable {
 
     @Id
     @Column(name = "workplaceindex")
-    private int workplaceIndex;
+    private int workplaceindex;
 
     @Id
     private String date;
 
     @Column(name = "randomnum")
-    private int randomNum;
+    private int randomnum;
 
-    public int getWorkplaceIndex() {
-        return workplaceIndex;
+    public int getWorkplaceindex() {
+        return workplaceindex;
     }
 
-    public void setWorkplaceIndex(int workplaceIndex) {
-        this.workplaceIndex = workplaceIndex;
+    public void setWorkplaceindex(int workplaceindex) {
+        this.workplaceindex = workplaceindex;
     }
 
     public String getDate() {
@@ -34,11 +34,11 @@ public class Qrcode implements Serializable {
         this.date = date;
     }
 
-    public int getRandomNum() {
-        return randomNum;
+    public int getRandomnum() {
+        return randomnum;
     }
 
-    public void setRandomNum(int randomNum) {
-        this.randomNum = randomNum;
+    public void setRandomnum(int randomnum) {
+        this.randomnum = randomnum;
     }
 }

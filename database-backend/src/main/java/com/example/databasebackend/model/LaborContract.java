@@ -11,32 +11,32 @@ public class LaborContract {
     private String address;
 
     @Column(name = "wpname")
-    private String wpName;
+    private String wpname;
 
     @Column(name = "wpemployer")
-    private String wpEmployer;
+    private String wpemployer;
 
     @Column(name = "employeename")
-    private String employeeName;
+    private String employeename;
 
     @Id
     @Column(name = "workplaceindex")
-    private int workplaceIndex;
+    private int workplaceindex;
 
     private String period;
 
     private String duties;
 
     @Column(name = "workingtime")
-    private String workingTime;
+    private String workingtime;
 
     @Column(name = "workingdays")
-    private String workingDays;
+    private String workingdays;
 
     private String wage;
 
     @Column(name = "wageday")
-    private String wageDay;
+    private String wageday;
 
     private String comment;
 
@@ -48,36 +48,36 @@ public class LaborContract {
         this.address = address;
     }
 
-    public String getWpName() {
-        return wpName;
+    public String getWpname() {
+        return wpname;
     }
 
-    public void setWpName(String wpName) {
-        this.wpName = wpName;
+    public void setWpname(String wpname) {
+        this.wpname = wpname;
     }
 
-    public String getWpEmployer() {
-        return wpEmployer;
+    public String getWpemployer() {
+        return wpemployer;
     }
 
-    public void setWpEmployer(String wpEmployer) {
-        this.wpEmployer = wpEmployer;
+    public void setWpemployer(String wpemployer) {
+        this.wpemployer = wpemployer;
     }
 
-    public String getEmployeeName() {
-        return employeeName;
+    public String getEmployeename() {
+        return employeename;
     }
 
-    public void setEmployeeName(String employeeName) {
-        this.employeeName = employeeName;
+    public void setEmployeename(String employeename) {
+        this.employeename = employeename;
     }
 
-    public int getWorkplaceIndex() {
-        return workplaceIndex;
+    public int getWorkplaceindex() {
+        return workplaceindex;
     }
 
-    public void setWorkplaceIndex(int workplaceIndex) {
-        this.workplaceIndex = workplaceIndex;
+    public void setWorkplaceindex(int workplaceindex) {
+        this.workplaceindex = workplaceindex;
     }
 
     public String getPeriod() {
@@ -96,20 +96,20 @@ public class LaborContract {
         this.duties = duties;
     }
 
-    public String getWorkingTime() {
-        return workingTime;
+    public String getWorkingtime() {
+        return workingtime;
     }
 
-    public void setWorkingTime(String workingTime) {
-        this.workingTime = workingTime;
+    public void setWorkingtime(String workingtime) {
+        this.workingtime = workingtime;
     }
 
-    public String getWorkingDays() {
-        return workingDays;
+    public String getWorkingdays() {
+        return workingdays;
     }
 
-    public void setWorkingDays(String workingDays) {
-        this.workingDays = workingDays;
+    public void setWorkingdays(String workingdays) {
+        this.workingdays = workingdays;
     }
 
     public String getWage() {
@@ -120,12 +120,12 @@ public class LaborContract {
         this.wage = wage;
     }
 
-    public String getWageDay() {
-        return wageDay;
+    public String getWageday() {
+        return wageday;
     }
 
-    public void setWageDay(String wageDay) {
-        this.wageDay = wageDay;
+    public void setWageday(String wageday) {
+        this.wageday = wageday;
     }
 
     public String getComment() {

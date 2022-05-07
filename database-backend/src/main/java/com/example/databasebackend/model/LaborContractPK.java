@@ -6,7 +6,14 @@ import java.util.Objects;
 
 public class LaborContractPK implements Serializable {
     private String address;
-    private int workplaceIndex;
+    private int workplaceindex;
+
+    public LaborContractPK() {}
+
+    public LaborContractPK(String address, int workplaceIndex) {
+        this.address = address;
+        this.workplaceindex =workplaceIndex;
+    }
 
     public String getAddress() {
         return address;
@@ -17,11 +24,11 @@ public class LaborContractPK implements Serializable {
     }
 
     public int getWorkplaceIndex() {
-        return workplaceIndex;
+        return workplaceindex;
     }
 
     public void setWorkplaceIndex(int workplaceIndex) {
-        this.workplaceIndex = workplaceIndex;
+        this.workplaceindex = workplaceIndex;
     }
 
     @Override
@@ -30,11 +37,11 @@ public class LaborContractPK implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         LaborContractPK that = (LaborContractPK) o;
         return address.equals(that.address) &&
-                workplaceIndex == that.workplaceIndex;
+                workplaceindex == that.workplaceindex;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(address, workplaceIndex);
+        return Objects.hash(address, workplaceindex);
     }
 }

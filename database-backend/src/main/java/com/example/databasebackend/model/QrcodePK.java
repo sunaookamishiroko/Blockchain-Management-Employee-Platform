@@ -3,22 +3,22 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class QrcodePK implements Serializable {
-    private int workplaceIndex;
+    private int workplaceindex;
     private String date;
 
     public QrcodePK() {}
 
     public QrcodePK(int workplaceIndex, String date) {
-        this.workplaceIndex = workplaceIndex;
+        this.workplaceindex = workplaceIndex;
         this.date = date;
     }
 
     public int getWorkplaceIndex() {
-        return workplaceIndex;
+        return workplaceindex;
     }
 
     public void setWorkplaceIndex(int workplaceIndex) {
-        this.workplaceIndex = workplaceIndex;
+        this.workplaceindex = workplaceIndex;
     }
 
     public String getDate1() {
@@ -34,12 +34,12 @@ public class QrcodePK implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         QrcodePK that = (QrcodePK) o;
-        return workplaceIndex == that.workplaceIndex &&
+        return workplaceindex == that.workplaceindex &&
                 date.equals(that.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(workplaceIndex, date);
+        return Objects.hash(workplaceindex, date);
     }
 }

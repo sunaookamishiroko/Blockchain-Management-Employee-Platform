@@ -14,8 +14,8 @@ public class QrcodeService {
     private QrcodeRepository repository;
 
     @Autowired
-    public QrcodeService(QrcodeRepository qrcodeRepository) {
-        repository = qrcodeRepository;
+    public QrcodeService(QrcodeRepository repository) {
+        this.repository = repository;
     }
 
     public List<Qrcode> findAll() {
