@@ -19,15 +19,35 @@ public class QrcodeService {
     }
 
     public List<Qrcode> findAll() {
-        return repository.findAll();
+        List<Qrcode> result = repository.findAll();
+
+        if (result.size() == 0) {
+            return null;
+        } else {
+            return result;
+        }
+
     }
 
-    public Optional<Qrcode> findByIndexAndDate(int wpindex, String date) {
-        return repository.findById(new QrcodePK(wpindex, date));
+    public Qrcode findByIndexAndDate(int wpindex, String date) {
+        Optional<Qrcode> result = repository.findById(new QrcodePK(wpindex, date));
+
+        if (result.isPresent()) {
+            return result.get();
+        } else {
+            return null;
+        }
     }
 
     public Qrcode set(Qrcode req) {
-        return repository.save(req);
+        Optional<Qrcode> result = repository.findById(
+                new QrcodePK(req.getWorkplaceindex(), req.getDate()));
+
+        if (result.isPresent()) {
+            return null;
+        } else {
+            return repository.save(req);
+        }
     }
 
 
