@@ -71,7 +71,7 @@ const StyledTokenInput = styled.input`
 `;
 
 const StyledButton = styled.button`
-  background-color: #2669a4;
+  background-color: #7970fc;
   font-family: "Noto Sans CJK KR";
   font-weight: bold;
   border: 0px;
@@ -79,8 +79,9 @@ const StyledButton = styled.button`
   text-decoration: none;
   font-size: 20px;
   border-radius: 30px;
-  padding-left: 30px;
-  padding-right: 30px;
+  /* padding-left: 30px;
+  padding-right: 30px; */
+  padding: 5px 30px 5px 30px;
 
   :hover {
     background-color: #2669a4cc;
