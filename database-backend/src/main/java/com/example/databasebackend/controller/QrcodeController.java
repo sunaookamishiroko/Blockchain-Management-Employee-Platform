@@ -49,7 +49,7 @@ public class QrcodeController {
     }
 
     @PostMapping("/setqrcode")
-    public ResponseEntity<Qrcode> setQrcode(@RequestBody Qrcode req) {
+    public ResponseEntity setQrcode(@RequestBody Qrcode req) {
         Qrcode answer = service.set(req);
 
         if (answer == null) {

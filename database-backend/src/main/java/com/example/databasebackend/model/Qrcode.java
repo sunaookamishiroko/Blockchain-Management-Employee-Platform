@@ -3,6 +3,8 @@ package com.example.databasebackend.model;
 import javax.persistence.*;
 import java.io.Serializable;
 
+// qrcode 테이블
+// PK -> workplaceindex, date
 @Entity
 @Table(name = "qrcodecheck")
 @IdClass(QrcodePK.class)

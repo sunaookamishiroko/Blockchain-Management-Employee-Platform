@@ -10,10 +10,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.Date;
 
+// 에러 핸들러
 @RestController
 @ControllerAdvice
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
+    // default 에러
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest req) {
         ExceptionResponse exceptionResponse =
@@ -22,11 +24,29 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    // 해당 workplaceindex와 해당 날짜에 qrcode가 이미 존재할 때 발생하는 에러
     @ExceptionHandler(QrcodeAlreadyExistsException.class)
     public final ResponseEntity<Object> handleQrcodeAlreadyExistsException(Exception ex, WebRequest req) {
         ExceptionResponse exceptionResponse =
                 new ExceptionResponse(new Date(), ex.getMessage(), req.getDescription(false));
 
         return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    //
+    @ExceptionHandler(LaborContractAlreadyExistsException.class)
+    public final ResponseEntity<Object> handleLaborContractAlreadyExistsException(Exception ex, WebRequest req) {
+        ExceptionResponse exceptionResponse =
+                new ExceptionResponse(new Date(), ex.getMessage(), req.getDescription(false));
+
+        return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(LaborContractNotFoundException.class)
+    public final ResponseEntity<Object> handleLaborContractNotFoundException(Exception ex, WebRequest req) {
+        ExceptionResponse exceptionResponse =
+                new ExceptionResponse(new Date(), ex.getMessage(), req.getDescription(false));
+
+        return new ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 }

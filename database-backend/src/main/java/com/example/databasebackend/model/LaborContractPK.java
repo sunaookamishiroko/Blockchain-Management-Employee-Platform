@@ -1,9 +1,9 @@
 package com.example.databasebackend.model;
 
-import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
+// PK address와 workplaceindex에 대한 class
 public class LaborContractPK implements Serializable {
     private String address;
     private int workplaceindex;
@@ -12,7 +12,7 @@ public class LaborContractPK implements Serializable {
 
     public LaborContractPK(String address, int workplaceIndex) {
         this.address = address;
-        this.workplaceindex =workplaceIndex;
+        this.workplaceindex = workplaceIndex;
     }
 
     public String getAddress() {
@@ -23,13 +23,16 @@ public class LaborContractPK implements Serializable {
         this.address = address;
     }
 
-    public int getWorkplaceIndex() {
+    public int getWorkplaceindex() {
         return workplaceindex;
     }
 
-    public void setWorkplaceIndex(int workplaceIndex) {
-        this.workplaceindex = workplaceIndex;
+    public void setWorkplaceindex(int workplaceindex) {
+        this.workplaceindex = workplaceindex;
     }
+
+
+
 
     @Override
     public boolean equals(Object o) {

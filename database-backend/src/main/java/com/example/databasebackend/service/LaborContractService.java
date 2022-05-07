@@ -2,6 +2,7 @@ package com.example.databasebackend.service;
 
 import com.example.databasebackend.model.LaborContract;
 import com.example.databasebackend.model.LaborContractPK;
+import com.example.databasebackend.model.Qrcode;
 import com.example.databasebackend.repository.LaborContractRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,19 +25,36 @@ public class LaborContractService {
         return repository.findAll();
     }
 
-    public LaborContract findByAddress(String address) {
-        return repository.findByAddress(address);
+    public List<LaborContract> findByAddress(String address) {
+        List<LaborContract> result = repository.findAllByAddress(address);
+
+        if (result == null) {
+            return null;
+        } else {
+            return result;
+        }
     }
 
     public LaborContract set(LaborContract req) {
-        return repository.save(req);
+        Optional<LaborContract> result = repository.findById(
+                new LaborContractPK(req.getAddress(), req.getWorkplaceindex()));
+
+        if (result.isPresent()) {
+            return null;
+        } else {
+            return repository.save(req);
+        }
     }
 
-    public Map<String, String> delete(LaborContractPK req) {
-        repository.deleteById(req);
+    public Boolean delete(LaborContractPK req) {
+        Optional<LaborContract> result = repository.findById(req);
 
-        Map<String, String> answer = new HashMap<String, String>();
-        answer.put("status", "ok");
-        return answer;
+        if (result.isPresent()) {
+            repository.deleteById(req);
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }

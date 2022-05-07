@@ -2,6 +2,7 @@ package com.example.databasebackend.model;
 import java.io.Serializable;
 import java.util.Objects;
 
+// PK workplaceindex, date에 대한 class
 public class QrcodePK implements Serializable {
     private int workplaceindex;
     private String date;

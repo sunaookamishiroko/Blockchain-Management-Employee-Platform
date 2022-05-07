@@ -1,11 +1,14 @@
 package com.example.databasebackend.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
+// laborcontract 테이블
+// PK -> address, workplaceindex
 @Entity
 @Table(name = "laborcontract")
 @IdClass(LaborContractPK.class)
-public class LaborContract {
+public class LaborContract implements Serializable {
 
     @Id
     private String address;
