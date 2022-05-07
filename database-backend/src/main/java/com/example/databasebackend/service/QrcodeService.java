@@ -18,6 +18,9 @@ public class QrcodeService {
         this.repository = repository;
     }
 
+    /* qrcode를 모두 return
+     * qrcode가 하나도 존재하지 않으면 null return
+     */
     public List<Qrcode> findAll() {
         List<Qrcode> result = repository.findAll();
 
@@ -29,6 +32,9 @@ public class QrcodeService {
 
     }
 
+    /* 해당하는 workplaceindex와 date의 qrcode를 찾아 return
+     * 존재하지 않으면 null return
+     */
     public Qrcode findByIndexAndDate(int wpindex, String date) {
         Optional<Qrcode> result = repository.findById(new QrcodePK(wpindex, date));
 
@@ -39,6 +45,9 @@ public class QrcodeService {
         }
     }
 
+    /* qrcode를 db에 저장
+     * qrcode가 이미 존재하면 null return
+     */
     public Qrcode set(Qrcode req) {
         Optional<Qrcode> result = repository.findById(
                 new QrcodePK(req.getWorkplaceindex(), req.getDate()));

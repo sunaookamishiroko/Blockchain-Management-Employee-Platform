@@ -2,6 +2,7 @@ package com.example.databasebackend.exceptions;
 
 import java.util.Date;
 
+// 커스텀 예외처리 때 사용하는 응답 class
 public class ExceptionResponse {
     private Date timestamp;
     private String message;

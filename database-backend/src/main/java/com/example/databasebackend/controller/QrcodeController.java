@@ -14,6 +14,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+// qrcode에 대한 controller
 @RestController
 public class QrcodeController {
 
@@ -24,6 +25,10 @@ public class QrcodeController {
         this.service = service;
     }
 
+    /*
+     * 저장된 모든 qrcode를 return
+     * 데이터 확인용으로 실제로는 사용되지 않음
+     */
     @GetMapping("/getqrcodeall")
     public List<Qrcode> getAllQrcode() {
         List<Qrcode> answer = service.findAll();
@@ -35,6 +40,10 @@ public class QrcodeController {
         }
     }
 
+    /*
+     * 요청한 workplaceindex와 해당 date의 qrcode를 return
+     * 존재하지 않으면 null return
+     */
     @GetMapping("/getqrcode")
     public Qrcode getQrcode(
             @RequestParam(value="workplaceindex") int workplaceindex,
@@ -48,6 +57,11 @@ public class QrcodeController {
         }
     }
 
+    /*
+     * 요청한 qrcode를 DB에 저장
+     * 해당 qrcode가 이미 존재하면 예외 발생
+     * 정상적으로 완료되면 status code 201 return
+     */
     @PostMapping("/setqrcode")
     public ResponseEntity setQrcode(@RequestBody Qrcode req) {
         Qrcode answer = service.set(req);

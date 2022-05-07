@@ -27,7 +27,7 @@ public class LaborContractController {
     }
 
     /*
-     * 가지고 있는 모든 근로계약서를 return
+     * 저장된 모든 근로계약서를 return
      * 데이터 확인용으로 실제로는 사용되지 않음
      */
     @GetMapping("/getcontractall")
@@ -57,8 +57,9 @@ public class LaborContractController {
     }
 
     /*
-     * 요청한 이더리움 address가 가지고 있는 근로계약서들을 return
-     * 없으면 null return
+     * 요청한 근로계약서를 DB에 저장
+     * address와 workplaceindex가 이미 존재하면 예외 발생
+     * 정상적으로 완료되면 status code 201 return
      */
     @PostMapping("/setcontract")
     public ResponseEntity setContract(@RequestBody LaborContract req) {
@@ -77,8 +78,9 @@ public class LaborContractController {
     }
 
     /*
-     * 요청한 이더리움 address가 가지고 있는 근로계약서들을 return
-     * 없으면 null return
+     * 요청한 address와 workplaceindex(PK)를 바탕으로 근로계약서를 DB에서 삭제
+     * 해당 근로계약서를 찾지 못하면 예외 발생
+     * 정상적으로 완료되면 status code 200 return
      */
     @DeleteMapping("/deletecontract")
     public ResponseEntity deleteLaborcontract(@RequestBody LaborContractPK req){

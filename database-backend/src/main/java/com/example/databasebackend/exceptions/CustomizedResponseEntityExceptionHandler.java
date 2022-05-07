@@ -10,12 +10,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.Date;
 
-// 에러 핸들러
+// 예외 핸들러
 @RestController
 @ControllerAdvice
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-    // default 에러
+    // default 예외
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest req) {
         ExceptionResponse exceptionResponse =
@@ -24,7 +24,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // 해당 workplaceindex와 해당 날짜에 qrcode가 이미 존재할 때 발생하는 에러
+    // 해당 qrcode가 이미 존재하면 발생하는 예외
     @ExceptionHandler(QrcodeAlreadyExistsException.class)
     public final ResponseEntity<Object> handleQrcodeAlreadyExistsException(Exception ex, WebRequest req) {
         ExceptionResponse exceptionResponse =
@@ -33,7 +33,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
-    //
+    // 해당 근로계약서가 이미 존재하면 발생하는 예외
     @ExceptionHandler(LaborContractAlreadyExistsException.class)
     public final ResponseEntity<Object> handleLaborContractAlreadyExistsException(Exception ex, WebRequest req) {
         ExceptionResponse exceptionResponse =
@@ -42,6 +42,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
+    // 해당 근로계약서를 찾을 수 없을 겨우 발생하는 예외
     @ExceptionHandler(LaborContractNotFoundException.class)
     public final ResponseEntity<Object> handleLaborContractNotFoundException(Exception ex, WebRequest req) {
         ExceptionResponse exceptionResponse =
