@@ -62,7 +62,7 @@ public class LaborContractController {
      * 정상적으로 완료되면 status code 201 return
      */
     @PostMapping("/setcontract")
-    public ResponseEntity setContract(@RequestBody LaborContract req) {
+    public ResponseEntity<String> setContract(@RequestBody LaborContract req) {
         LaborContract laborContract = service.set(req);
 
         if (laborContract == null) {
@@ -83,7 +83,7 @@ public class LaborContractController {
      * 정상적으로 완료되면 status code 200 return
      */
     @DeleteMapping("/deletecontract")
-    public ResponseEntity deleteLaborcontract(@RequestBody LaborContractPK req){
+    public ResponseEntity<String> deleteLaborcontract(@RequestBody LaborContractPK req){
 
         boolean answer = service.delete(req);
 
