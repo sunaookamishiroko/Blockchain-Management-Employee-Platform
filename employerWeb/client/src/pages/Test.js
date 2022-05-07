@@ -27,7 +27,7 @@ class Test extends Component {
       .uploadPersonalInfo(
         accounts[0],
         0,
-        encodeURI("호우호"),
+        encodeURI("호우호3"),
         26,
         encodeURI("여")
       )
@@ -64,7 +64,13 @@ class Test extends Component {
   // 사업장 등록
   uploadWorkplace = async () => {
     const { accounts, contract } = this.props;
-    await contract.methods.uploadWorkplace(accounts[0], encodeURI("GS25 한국공학대점"), encodeURI("경기도 시흥시 정왕동 산기대학로237")).send({ from: accounts[0] });
+    await contract.methods
+      .uploadWorkplace(
+        accounts[0],
+        encodeURI("GS25 한국공학대점"),
+        encodeURI("경기도 시흥시 정왕동 산기대학로237")
+      )
+      .send({ from: accounts[0] });
     console.log("uploadWorkplace complete");
   };
 
@@ -85,7 +91,7 @@ class Test extends Component {
   uploadLaborContract = async () => {
     const { accounts, contract } = this.props;
     let items = [
-      "2022/03/27-2022/06/30",
+      "2022/03/28-2022/06/30",
       encodeURI("서빙"),
       "03:00-12:00",
       encodeURI("수"),
@@ -93,8 +99,10 @@ class Test extends Component {
       encodeURI("매월 10일"),
       encodeURI("바보임"),
     ];
-    await contract.methods.uploadLaborContract(items, "2022-04-12", accounts[0], 1).send({ from: accounts[0] });
-    
+    await contract.methods
+      .uploadLaborContract(items, "2022-04-12", accounts[0], 0)
+      .send({ from: accounts[0] });
+
     console.log("uploadLaborContract complete");
   };
 

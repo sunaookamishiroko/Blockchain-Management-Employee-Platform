@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const Content = styled.div`
@@ -20,6 +20,9 @@ const Content = styled.div`
 
   > div {
     width: 100%;
+    padding: 0.5%;
+    overflow-x: hidden;
+    /* overflow-x: scroll; */
     > h2 {
       font-size: 26px;
       font-weight: bold;
@@ -49,7 +52,44 @@ const Content = styled.div`
   }
 `;
 
-const WorkerBalance = ({ name, accounts, balance }) => {
+const StyledTokenExchangeDiv = styled.div`
+  padding: 0.5%;
+`;
+
+const StyledTokenInput = styled.input`
+  width: auto;
+  height: auto;
+  padding: 10px;
+  margin-right: 1rem;
+  font-size: 16px;
+  border: 0px;
+  background-color: #f1f1f1;
+  color: #999999;
+  font-family: "Noto Sans CJK KR";
+  font-weight: bold;
+  border-radius: 40px;
+`;
+
+const StyledButton = styled.button`
+  background-color: #2669a4;
+  font-family: "Noto Sans CJK KR";
+  font-weight: bold;
+  border: 0px;
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  border-radius: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+
+  :hover {
+    background-color: #2669a4cc;
+  }
+`;
+
+const WorkerBalance = ({ name, accounts, balance, onExchangeButtonClick }) => {
+  const [inputBalance, setInputBalance] = useState(0);
+
   return (
     <Content>
       <div className="div1">
@@ -69,6 +109,26 @@ const WorkerBalance = ({ name, accounts, balance }) => {
         <h2>계정 잔액</h2>
         <h1>{balance} 원</h1>
       </div>
+      <StyledTokenExchangeDiv className="div1">
+        <h2>토큰 교환</h2>
+        <div>
+          <StyledTokenInput
+            type="number"
+            placeholder="금액을 입력해주세요"
+            value={inputBalance}
+            onChange={(e) => {
+              setInputBalance(e.target.value);
+            }}
+          />
+          <StyledButton
+            onClick={() => {
+              onExchangeButtonClick(inputBalance, setInputBalance);
+            }}
+          >
+            버튼
+          </StyledButton>
+        </div>
+      </StyledTokenExchangeDiv>
     </Content>
   );
 };

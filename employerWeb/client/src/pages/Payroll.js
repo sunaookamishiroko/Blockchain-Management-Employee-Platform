@@ -172,29 +172,36 @@ const Payroll = ({
     }
   };
 
+  // TODO 토큰 교환 버튼을 눌렀을 때 호출하는 메소드
+  const onExchangeButtonClick = (inputBalance, setInputBalance) => {
+    alert(inputBalance + " amount (onExchangeButtonClick)");
+    setInputBalance(0);
+  };
+
   return (
     <Container>
       <Categories name={name} wpname={wpinfo[1]} />
-          <Content>
-            {!ready && <p>잠시만 기다려주세요...</p>}
-            {ready && (
-              <>
-                <div>
-                  {/* TODO 계정 주소 전달해야 함 */}
-                  <WorkerBalance
-                    name={name}
-                    accounts={accounts[0]}
-                    balance={balance}
-                  />
-                  {/* <h2>{todaydate}</h2> */}
-                  <PayrollAdapter workers={customworkers} payWage={payWage} />
-                </div>
-                {/* <div>
+      <Content>
+        {!ready && <p>잠시만 기다려주세요...</p>}
+        {ready && (
+          <>
+            <div>
+              {/* TODO 계정 주소 전달해야 함 */}
+              <WorkerBalance
+                name={name}
+                accounts={accounts[0]}
+                balance={balance}
+                onExchangeButtonClick={onExchangeButtonClick}
+              />
+              {/* <h2>{todaydate}</h2> */}
+              <PayrollAdapter workers={customworkers} payWage={payWage} />
+            </div>
+            {/* <div>
                   <WorkerInformation />
                 </div> */}
-              </>
-            )}
-          </Content>
+          </>
+        )}
+      </Content>
     </Container>
   );
 };
