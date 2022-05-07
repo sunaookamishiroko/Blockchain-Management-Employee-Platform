@@ -2,17 +2,13 @@ package com.example.databasebackend.controller;
 
 import com.example.databasebackend.exceptions.QrcodeAlreadyExistsException;
 import com.example.databasebackend.model.Qrcode;
-import com.example.databasebackend.repository.QrcodeRepository;
 import com.example.databasebackend.service.QrcodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 // qrcode에 대한 controller
 @RestController

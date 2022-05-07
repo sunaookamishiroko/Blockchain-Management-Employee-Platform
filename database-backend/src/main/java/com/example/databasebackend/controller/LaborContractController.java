@@ -4,7 +4,6 @@ import com.example.databasebackend.exceptions.LaborContractAlreadyExistsExceptio
 import com.example.databasebackend.exceptions.LaborContractNotFoundException;
 import com.example.databasebackend.model.LaborContract;
 import com.example.databasebackend.model.LaborContractPK;
-import com.example.databasebackend.repository.LaborContractRepository;
 import com.example.databasebackend.service.LaborContractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 // laborcontract에 대한 controller
 @RestController
