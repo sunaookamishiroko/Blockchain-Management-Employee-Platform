@@ -1,10 +1,7 @@
 package com.example.databasebackend.model;
-
-import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Embeddable
 public class QrcodePK implements Serializable {
     private int workplaceIndex;
     private String date1;

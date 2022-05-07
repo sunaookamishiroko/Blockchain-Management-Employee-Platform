@@ -1,27 +1,52 @@
 package com.example.databasebackend.model;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "laborcontract")
+@IdClass(LaborContractPK.class)
 public class LaborContract {
 
-    @EmbeddedId
-    private LaborContractPK laborContractPK;
+    @Id
+    private String address;
 
+    @Column(name = "wpname")
     private String wpName;
+
+    @Column(name = "wpemployer")
     private String wpEmployer;
+
+    @Column(name = "employeename")
     private String employeeName;
+
+    @Id
+    @Column(name = "workplaceindex")
+    private int workplaceIndex;
+
     private String period;
+
     private String duties;
+
+    @Column(name = "workingtime")
     private String workingTime;
+
+    @Column(name = "workingdays")
     private String workingDays;
+
     private String wage;
+
+    @Column(name = "wageday")
     private String wageDay;
+
     private String comment;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public String getWpName() {
         return wpName;
@@ -45,6 +70,14 @@ public class LaborContract {
 
     public void setEmployeeName(String employeeName) {
         this.employeeName = employeeName;
+    }
+
+    public int getWorkplaceIndex() {
+        return workplaceIndex;
+    }
+
+    public void setWorkplaceIndex(int workplaceIndex) {
+        this.workplaceIndex = workplaceIndex;
     }
 
     public String getPeriod() {

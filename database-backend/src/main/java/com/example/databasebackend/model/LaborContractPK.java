@@ -4,7 +4,6 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Embeddable
 public class LaborContractPK implements Serializable {
     private String address;
     private int workplaceIndex;
