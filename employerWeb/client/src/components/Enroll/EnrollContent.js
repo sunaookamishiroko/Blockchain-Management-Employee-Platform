@@ -177,7 +177,7 @@ const EnrollContent = ({
   return (
     <Content>
       <h1> 근로자 등록 </h1>
-      <form className="Enroll">
+      <form className="Enroll" method="post">
         {/* 계약서 작성 요청 보내기 클릭 시 다이얼로그 */}
         <Dialog maxWidth={1280} onClose={onClose} open={submitOpen}>
           <SubmitDialog onClickClose={onClose} />

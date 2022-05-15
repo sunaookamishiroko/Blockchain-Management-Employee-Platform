@@ -158,11 +158,7 @@ const App = () => {
           />
           <Route
             path="/enroll"
-            element={
-              <EnrollWorker 
-                name={name} 
-                wpinfo={wpinfo} 
-              />}
+            element={<EnrollWorker name={name} wpinfo={wpinfo} />}
           />
           <Route
             path="/settlement"

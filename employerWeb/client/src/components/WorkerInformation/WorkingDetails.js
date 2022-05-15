@@ -39,6 +39,7 @@ const WorkingDetails = ({ userdata }) => {
 
   return (
     <>
+      {console.log("userdata:" + userdata)}
       <StyeldWorkingDetails>
         {/* TODO 입사일, 근무일수, 마지막 근무일, 지각률 처리할 것 */}
         {categories.map((category, index) => (
