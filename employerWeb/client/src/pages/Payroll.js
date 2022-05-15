@@ -4,11 +4,10 @@ import styled from "styled-components";
 import PayrollAdapter from "../components/Payroll/PayrollAdapter";
 import Categories from "../components/Categories/Categories";
 import WorkerBalance from "../components/Payroll/WorkerBalance";
-import WorkerInformation from "../components/Payroll/WorkerInformation";
 
 const Container = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 1920px;
+  height: 961px;
   display: flex;
 `;
 
@@ -46,9 +45,9 @@ const Payroll = ({
   workers,
   wpinfo,
 }) => {
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
 
-  const [todaydate, setTodaydate] = useState();
+  // const [todaydate, setTodaydate] = useState();
   const [customworkers, setCustomworkers] = useState();
   const [balance, setBalance] = useState();
 
@@ -74,7 +73,7 @@ const Payroll = ({
       let startIndex = indexarr[0];
       let endIndex = indexarr[1];
 
-      if (startIndex != -1) {
+      if (startIndex !== -1) {
         try {
           let employeeindex = await contract.methods
             .getIndexOfEmployee(0, workers[0][x])
@@ -98,7 +97,7 @@ const Payroll = ({
       }
     }
     await getBalnce();
-    setTodaydate(selectdate);
+    // setTodaydate(selectdate);
     setCustomworkers(temp);
     setReady(true);
   };
@@ -132,13 +131,13 @@ const Payroll = ({
       endIndex = -1;
 
     for (let x = 0; x < data[3].length; x++) {
-      if (data[3][x].search(selectdate) != -1) {
-        if (stflag == 0) {
+      if (data[3][x].search(selectdate) !== -1) {
+        if (stflag === 0) {
           startIndex = x;
           stflag = 1;
         }
       } else {
-        if (stflag == 0) continue;
+        if (stflag === 0) continue;
         else {
           endIndex = x - 1;
           edflag = 1;
@@ -147,7 +146,7 @@ const Payroll = ({
       }
     }
 
-    if (startIndex != -1 && edflag == 0) endIndex = data[3].length - 1;
+    if (startIndex !== -1 && edflag === 0) endIndex = data[3].length - 1;
     return [startIndex, endIndex];
   };
 

@@ -106,7 +106,7 @@ const StyledInput = styled.input`
 
   // text 입력의 경우
   ${(props) =>
-    props.type == "text" &&
+    props.type === "text" &&
     css`
       width: 640px;
       border-radius: 30px;
@@ -125,7 +125,6 @@ const AwardDialog = ({
   accounts,
   nftcontract,
   selectedWorker,
-  badges,
   wpinfo,
   onClickClose,
 }) => {
@@ -136,7 +135,7 @@ const AwardDialog = ({
   const onClickAwardBadge = async () => {
     console.log(badgeclassfiy);
 
-    if (badgeclassfiy == undefined) {
+    if (badgeclassfiy === undefined) {
       alert("뱃지를 선택해주세요");
       return;
     }
@@ -145,11 +144,11 @@ const AwardDialog = ({
       let image;
 
       // 뱃지에 해당하는 이미지 ipfshash
-      if (badgeclassfiy == "장기근속") {
+      if (badgeclassfiy === "장기근속") {
         image = "QmVmMoy5Ax3HzeLkZvYekiwd3s6q6YKwTGmNU2VoUiVi3P";
-      } else if (badgeclassfiy == "친절") {
+      } else if (badgeclassfiy === "친절") {
         image = "QmWuCNTkWmD72XmWUgY8BvpMhuRPABnC8veQTb4k6P7B9v";
-      } else if (badgeclassfiy == "개근") {
+      } else if (badgeclassfiy === "개근") {
         image = "QmRTk3MaRTW9LKSF6gVPgsrgt9cN7WFFYUNfiRdkyt3U5U";
       }
 

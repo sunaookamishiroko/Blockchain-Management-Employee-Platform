@@ -16,8 +16,6 @@ const Content = styled.div`
 
   margin-bottom: 50px;
 
-  background-color: #00ff0016;
-
   > div {
     width: 100%;
     padding: 0.5%;
@@ -42,13 +40,6 @@ const Content = styled.div`
         }
       }
     }
-  }
-
-  .div1 {
-    background-color: #ff000016;
-  }
-  .div2 {
-    background-color: #0000ff16;
   }
 `;
 
@@ -83,13 +74,22 @@ const StyledButton = styled.button`
   padding-right: 30px; */
   padding: 5px 30px 5px 30px;
 
+  cursor: pointer;
+
   :hover {
-    background-color: #2669a4cc;
+    background-color: #7970fccc;
   }
 `;
 
 const WorkerBalance = ({ name, accounts, balance, onExchangeButtonClick }) => {
   const [inputBalance, setInputBalance] = useState(0);
+
+  const shortenAddress = (accounts) => {
+    return `${accounts.slice(0, 6)}...${accounts.slice(
+      accounts.length - 6,
+      accounts.length
+    )}`;
+  };
 
   return (
     <Content>
@@ -102,7 +102,7 @@ const WorkerBalance = ({ name, accounts, balance, onExchangeButtonClick }) => {
           </div>
           <div>
             <p>계정주소:</p>
-            <p>{accounts}</p>
+            <p>{shortenAddress(accounts)}</p>
           </div>
         </div>
       </div>

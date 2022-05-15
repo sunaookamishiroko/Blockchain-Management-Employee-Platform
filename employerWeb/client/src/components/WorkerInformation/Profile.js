@@ -5,7 +5,6 @@ const StyledProfile = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  background-color: #ff000016;
 
   img {
     align-self: center;
@@ -18,7 +17,6 @@ const StyledProfile = styled.div`
   }
 
   div {
-    background-color: #00ff0016;
     display: flex;
     flex-direction: column;
 
@@ -46,7 +44,7 @@ const StyledProfile = styled.div`
 `;
 
 const Profile = ({ selectedWorker }) => {
-  const profileCategories = ["이름", "Address"];
+  // const profileCategories = ["이름", "Address"];
 
   return (
     <StyledProfile>

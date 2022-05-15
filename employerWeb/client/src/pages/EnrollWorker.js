@@ -1,8 +1,7 @@
-import { Dialog } from "@mui/material";
 import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import Categories from "../components/Categories/Categories";
-import SubmitDialog from "../components/Enroll/Dialog/SubmitDialog";
+
 import EnrollContent from "../components/Enroll/EnrollContent";
 
 import { api } from "../proxySetting.js";
@@ -11,103 +10,92 @@ import axios from "axios";
 
 const Container = styled.div`
   background: #f5f8fb;
-  width: 100%;
-  height: auto;
+  width: 1920px;
+  height: 961px;
   display: flex;
 `;
 
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
+// const Content = styled.div`
+//   box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
+//   border-radius: 20px;
+//   margin: 48px;
+//   padding: 10px;
+//   width: 100%;
+//   height: auto;
+//   background-color: #f7f7f7;
+//   float: left;
 
-  margin: 30px;
-  padding: 10px;
+//   h1 {
+//     font-family: "Noto Sans CJK KR";
+//     font-size: 28px;
+//   }
+// `;
 
-  width: 100%;
-  height: auto;
+// const LeftInput = styled.div`
+//   width: 480px;
+// `;
 
-  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
-  border-radius: 20px;
+// const RightInput = styled.div`
+//   width: 768px;
+// `;
 
-  background-color: #f7f7f7;
+// const SubmitDiv = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
 
-  h1 {
-    font-size: 26px;
-    font-family: "Noto Sans CJK KR";
-  }
+//   button {
+//     width: 260px;
+//     border-radius: 30px;
+//     font-family: "Noto Sans CJK KR";
+//     border: 0px;
+//     font-size: 20px;
+//     font-weight: bold;
+//     padding: 10px;
+//     background-color: #1c89e9;
+//     color: white;
+//     margin-right: 20px;
+//   }
 
-  form > div {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 20px;
-  }
-`;
+//   input {
+//     width: 260px;
+//     border-radius: 30px;
+//     font-family: "Noto Sans CJK KR";
+//     border: 0px;
+//     font-size: 20px;
+//     font-weight: bold;
+//     padding: 10px;
+//     background-color: #f1f1f1;
+//     color: #999999;
+//     margin-right: 20px;
+//   }
+// `;
 
-const LeftInput = styled.div`
-  width: 480px;
-`;
+// const EnrollLabel = styled.label`
+//   display: flex;
+//   flex-direction: column;
 
-const RightInput = styled.div`
-  width: 768px;
-`;
+//   h2 {
+//     font-family: "Noto Sans CJK KR";
+//     font-weight: bold;
+//     font-style: "normal";
+//     font-size: 22px;
+//   }
+//   input {
+//     width: auto;
+//     height: auto;
+//     padding: 10px;
+//     font-size: 16px;
+//     border: 0px;
+//     background-color: #f1f1f1;
+//     color: #999999;
+//     font-family: "Noto Sans CJK KR";
+//     font-weight: bold;
+//     border-radius: 40px;
+//   }
+// `;
 
-const SubmitDiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  button {
-    width: 260px;
-    border-radius: 30px;
-    font-family: "Noto Sans CJK KR";
-    border: 0px;
-    font-size: 20px;
-    font-weight: bold;
-    padding: 10px;
-    background-color: #1c89e9;
-    color: white;
-    margin-right: 20px;
-  }
-
-  input {
-    width: 260px;
-    border-radius: 30px;
-    font-family: "Noto Sans CJK KR";
-    border: 0px;
-    font-size: 20px;
-    font-weight: bold;
-    padding: 10px;
-    background-color: #f1f1f1;
-    color: #999999;
-    margin-right: 20px;
-  }
-`;
-
-const EnrollLabel = styled.label`
-  display: flex;
-  flex-direction: column;
-
-  h2 {
-    font-family: "Noto Sans CJK KR";
-    font-weight: bold;
-    font-style: "normal";
-    font-size: 22px;
-  }
-  input {
-    width: auto;
-    height: auto;
-    padding: 10px;
-    font-size: 16px;
-    border: 0px;
-    background-color: #f1f1f1;
-    color: #999999;
-    font-family: "Noto Sans CJK KR";
-    font-weight: bold;
-    border-radius: 40px;
-  }
-`;
-
-const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
+const EnrollWorker = ({ name, wpinfo }) => {
   const [worker, setWorker] = useState({
     employeename: "",
     address: "",
@@ -121,12 +109,12 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
     comment: "",
   });
 
-  // 계약서 작성 요청 보내기 클릭 시 다이얼로그 띄우기
-  const [submitOpen, setSubmitOpen] = useState(false);
-  // 다이얼로그 없애기
-  const handleClose = () => {
-    setSubmitOpen(false);
-  };
+  // // 계약서 작성 요청 보내기 클릭 시 다이얼로그 띄우기
+  // const [submitOpen, setSubmitOpen] = useState(false);
+  // // 다이얼로그 없애기
+  // const handleClose = () => {
+  //   setSubmitOpen(false);
+  // };
 
   const onChange = (event) => {
     const { name, value } = event.target;
@@ -150,7 +138,7 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
       wageday: worker.wageday,
       comment: worker.comment,
     };
-    
+
     try {
       const response = await axios.post(`${api}setcontract`, body);
 
@@ -161,14 +149,13 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
     } catch (e) {
       console.log(e);
     }
-    
+
     //onEnroll(worker);
-
   };
 
-  const onChangeHandler = (e) => {
-    console.log(e.target);
-  };
+  // const onChangeHandler = (e) => {
+  //   console.log(e.target);
+  // };
 
   // TODO 주석 해제해야함
   const onClickHandler = (e) => {

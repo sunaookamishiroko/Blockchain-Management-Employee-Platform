@@ -91,8 +91,8 @@ const Settlement = ({ accounts, contract, name, workers, wpinfo }) => {
 
   return (
     <Container>
-      <Categories name={name} wpname={wpinfo[1]}/>
-      {contractready != null && (
+      <Categories name={name} wpname={wpinfo[1]} />
+      {contractready !== null && (
         <Dialog fullWidth={true} onClose={handleClose} open={open}>
           <DialogTitle> {workername}님 </DialogTitle>
           <FullCalendar

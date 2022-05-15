@@ -16,11 +16,11 @@ const StyledQRComponent = styled.div`
   align-items: center;
   flex-direction: column;
   width: 294px;
-  height: 300px;
+  height: 325px;
   box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
   border-radius: 20px;
   background-color: #f7f7f7;
-  margin-bottom: 20px;
+  margin-bottom: 10%;
 `;
 
 const QRComponent = ({ wpinfo }) => {
@@ -38,8 +38,8 @@ const QRComponent = ({ wpinfo }) => {
         `${api}getqrcode?workplaceindex=${wpinfo[0]}&date=2022-04-28`
         //`getqrcode?workplaceindex=${wpinfo[0]}&date=2022-04-28`
       );
-        
-      if (response.data.length == 0) {
+
+      if (response.data.length === 0) {
         setIsqrcode(false);
       } else {
         setQRvalue(response.data[0].randomnum);
@@ -76,13 +76,13 @@ const QRComponent = ({ wpinfo }) => {
   return (
     <StyledQRComponent>
       <h2 style={{ textAlign: "center" }}>QR 코드 인증</h2>
-      {isqrcode == null && <p>데이터를 불러오는 중입니다...</p>}
-      {isqrcode == true && (
+      {isqrcode === null && <p>데이터를 불러오는 중입니다...</p>}
+      {isqrcode === true && (
         <>
           <QRCode value={QRvalue.toString()} />
         </>
       )}
-      {isqrcode == false && (
+      {isqrcode === false && (
         <Button onClick={MakeQrcode}>QR코드 생성하기</Button>
       )}
     </StyledQRComponent>

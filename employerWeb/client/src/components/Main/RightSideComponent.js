@@ -7,7 +7,7 @@ const RightSide = styled.div`
   display: flex;
   flex-direction: column;
 
-  margin: 25px;
+  margin: 48px 48px 48px 0;
 `;
 
 const RightSideComponent = ({ wpinfo }) => {

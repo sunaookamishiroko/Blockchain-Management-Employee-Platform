@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import styled from "styled-components";
 import Categories from "../components/Categories/Categories";
@@ -7,18 +7,18 @@ import Calendar from "../components/Main/Calendar";
 
 const Container = styled.div`
   background: #f5f8fb;
-  width: 100%;
-  height: auto;
+  width: 1920px;
+  height: 961px;
   display: flex;
 `;
 
 const Content = styled.div`
   box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
   border-radius: 20px;
-  padding: 10px;
-  margin: 30px;
-  width: 60%;
-  height: 100%;
+  margin: 48px;
+  padding: 15px;
+  width: 100%;
+  height: auto;
   background-color: #f7f7f7;
   float: left;
 
@@ -76,7 +76,7 @@ const Main = ({ accounts, contract, name, workers, wpinfo }) => {
           .call({ from: accounts[0] });
         console.log(caldata);
 
-        if (caldata[0].length == caldata[1].length) {
+        if (caldata[0].length === caldata[1].length) {
           for (let y = 0; y < caldata[0].length; y++) {
             event.push({
               title: decodeURI(workers[1][x]),

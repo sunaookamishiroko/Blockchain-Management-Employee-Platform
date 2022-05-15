@@ -82,7 +82,7 @@ const Total = styled.div`
 `;
 
 const Settlement = ({ accounts, contract, name, wpinfo }) => {
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
 
   const [detail, setDetail] = useState();
   const [attendance, setAttendance] = useState();

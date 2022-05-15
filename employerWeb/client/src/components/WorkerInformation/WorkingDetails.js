@@ -6,8 +6,6 @@ const StyeldWorkingDetails = styled.div`
   grid-template-columns: 150px 150px 150px 150px;
   grid-template-rows: 60px 60px;
 
-  background-color: #0000ff16;
-
   h4 {
     align-self: center;
     width: 140px;
