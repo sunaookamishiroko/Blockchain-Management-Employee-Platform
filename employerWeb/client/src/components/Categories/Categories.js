@@ -6,7 +6,8 @@ import Title from "./Title";
 
 const LeftSidebar = styled.div`
   padding: 50px;
-  /* width: 360px; */
+
+  width: 360px;
   height: auto;
   background-color: white;
   float: left;
@@ -92,7 +93,7 @@ const categories = [
       {
         name: "workplace",
         text: "사업장 변경",
-      },
+      }
     ],
   },
 ];

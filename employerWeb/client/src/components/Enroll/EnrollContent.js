@@ -1,16 +1,16 @@
 import { Dialog } from "@mui/material";
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState, useCallback } from "react";
+import styled, { css } from "styled-components";
 import SubmitDialog from "./Dialog/SubmitDialog";
 
 const Content = styled.div`
   display: flex;
   flex-direction: column;
 
-  margin: 50px 50px 96px 48px;
-  padding: 24px;
+  margin: 30px;
+  padding: 10px;
 
-  width: 1416px;
+  width: 100%;
   height: auto;
 
   box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
@@ -32,7 +32,6 @@ const Content = styled.div`
 
 const LeftInput = styled.div`
   width: 100%;
-  margin-right: 50px;
 `;
 
 const RightInput = styled.div`
@@ -136,23 +135,43 @@ const StyledSubmitButton = styled.input`
   }
 `;
 
-const EnrollContent = ({ onSubmit, onChange }) => {
-  // const [worker, setWorker] = useState({
-  //   address: "",
-  //   period1: "",
-  //   period2: "",
-  //   duties: "",
-  //   workingTime: "",
-  //   workingDays: "",
-  //   wage: "",
-  //   wageday: "",
-  //   comment: "",
-  // });
+const EnrollContent = ({
+  name,
+  onEnroll,
+  wpinfo,
+  onSubmit,
+  onChange,
+  onClickHandler,
+}) => {
+  const [worker, setWorker] = useState({
+    address: "",
+    period1: "",
+    period2: "",
+    duties: "",
+    workingTime: "",
+    workingDays: "",
+    wage: "",
+    wageday: "",
+    comment: "",
+  });
+
+  const onClickSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(true);
+  };
+
+  const onChangeHandler = (e) => {
+    console.log(e.target);
+  };
 
   const [submitOpen, setSubmitOpen] = useState(false);
 
   const onClose = () => {
     setSubmitOpen(false);
+  };
+
+  const openSubmit = () => {
+    setSubmitOpen(true);
   };
 
   return (
@@ -192,7 +211,6 @@ const EnrollContent = ({ onSubmit, onChange }) => {
                     color: "#999999",
                     fontFamily: "Noto Sans CJK KR",
                     fontWeight: "bold",
-                    margin: "20px",
                   }}
                 >
                   부터
@@ -200,6 +218,9 @@ const EnrollContent = ({ onSubmit, onChange }) => {
                 <input type="date" name="period2" onChange={onChange} />
               </div>
             </EnrollLabel>
+          </LeftInput>
+
+          <RightInput>
             <EnrollLabel>
               <h2> 업무 내용 </h2>
               <input
@@ -208,9 +229,7 @@ const EnrollContent = ({ onSubmit, onChange }) => {
                 onChange={onChange}
               />
             </EnrollLabel>
-          </LeftInput>
 
-          <RightInput>
             <EnrollLabel>
               <h2> 소정 근로 시간 </h2>
               <input

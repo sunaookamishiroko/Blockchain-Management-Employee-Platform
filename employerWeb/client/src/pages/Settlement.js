@@ -1,13 +1,18 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import styled from "styled-components";
+import { useState, useRef, useCallback, useEffect } from "react";
+
+import { NavLink, useLocation } from "react-router-dom";
+import styled, { ThemeConsumer } from "styled-components";
+import Dialog from "@mui/material/Dialog";
+import { autocompleteClasses, DialogTitle } from "@mui/material";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
 import Categories from "../components/Categories/Categories";
 import Calendar from "../components/Settlement/Calendar";
 
 const Container = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 1800px;
+  height: 1080px;
   display: flex;
 `;
 
@@ -16,7 +21,7 @@ const Content = styled.div`
   flex-direction: row;
   margin: 30px;
   padding: 10px;
-  width: 100%;
+  width: 1416px;
   height: auto;
 
   h1 {
@@ -33,7 +38,7 @@ const LeftMenu = styled.div`
 
 const Information = styled.div`
   width: 762px;
-  height: 18%;
+  height: 150px;
   box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
   border-radius: 20px;
   padding: 20px;
@@ -77,7 +82,7 @@ const Total = styled.div`
 `;
 
 const Settlement = ({ accounts, contract, name, wpinfo }) => {
-  // const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const [detail, setDetail] = useState();
   const [attendance, setAttendance] = useState();
@@ -110,7 +115,7 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
       response = await contract.methods
         .getIndexOfEmployee(wpinfo[0], workerinfo["address"])
         .call({ from: accounts[0] });
-      // 근무일정 가져오기 위한 근로계약서 가져오기 추가
+        // 근무일정 가져오기 위한 근로계약서 가져오기 추가
       lbcontract = await contract.methods
         .getLaborContract(wpinfo[0], workerinfo["address"])
         .call({ from: accounts[0] });
@@ -131,7 +136,7 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
         .getAllAttendance(wpinfo[0], workerindex)
         .call({ from: accounts[0] });
 
-      if (caldata[0].length === caldata[3].length) {
+      if (caldata[0].length == caldata[3].length) {
         for (let y = 0; y < caldata[0].length; y++) {
           event.push({
             title: "출근",
@@ -156,6 +161,8 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
           display: "list-item",
         });
       }
+
+
     } catch (e) {
       console.log(e);
     }
@@ -178,8 +185,8 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
     let endIndex = indexarr[1];
 
     let temp = {};
-    if (startIndex !== -1) {
-      setWorkday(endIndex - startIndex + 1);
+    if (startIndex != -1) {
+      setWorkday((endIndex - startIndex) + 1);
       try {
         let hourwage = await contract.methods
           .getWage(0, workerindex)
@@ -207,7 +214,7 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
         hourwage = await contract.methods
           .getWage(0, workerindex)
           .call({ from: accounts[0] });
-      } catch (e) {
+      } catch(e) {
         console.log(e);
       }
       temp["hourwage"] = hourwage;
@@ -234,13 +241,13 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
         .getAllAttendance(wpinfo[0], index)
         .call({ from: accounts[0] });
       for (let x = 0; x < data[3].length; x++) {
-        if (data[3][x].search(selectdate) !== -1) {
-          if (stflag === 0) {
+        if (data[3][x].search(selectdate) != -1) {
+          if (stflag == 0) {
             startIndex = x;
             stflag = 1;
           }
         } else {
-          if (stflag === 0) continue;
+          if (stflag == 0) continue;
           else {
             endIndex = x - 1;
             edflag = 1;
@@ -249,7 +256,7 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
         }
       }
 
-      if (startIndex !== -1 && edflag === 0) endIndex = data[3].length - 1;
+      if (startIndex != -1 && edflag == 0) endIndex = data[3].length - 1;
     } catch (e) {
       console.log(e);
     }
@@ -286,9 +293,7 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
           {!detailready && <p>계산중입니다...</p>}
           {detailready && (
             <>
-              <p>
-                {todaydate[0]}년 {todaydate[1]}월 정산
-              </p>
+              <p>{todaydate[0]}년 {todaydate[1]}월 정산</p>
               <p>정상출근 {workday}일</p>
               <p>
                 총 근무 {detail["allhours"]}시간 {detail["allmin"]}분

@@ -1,37 +1,43 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import styled from "styled-components";
+import { useState, useRef, useCallback, useEffect } from "react";
+
+import { NavLink } from "react-router-dom";
+import styled, { ThemeConsumer } from "styled-components";
+import WorkerListAdapter from "../components/WorkerList/WorkerListAdapter";
 import Dialog from "@mui/material/Dialog";
 import { DialogTitle } from "@mui/material";
 import Categories from "../components/Categories/Categories";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
 import WorkerList from "../components/WorkerList/WorkerList";
 import WorkerInformation from "../components/WorkerInformation/WorkerInformation";
+import BadgeDialog from "../components/WorkerManagement/Dialog/BadgeDialog";
 import TerminationDialog from "../components/WorkerManagement/Dialog/TerminationDialog";
 import AwardDialog from "../components/WorkerManagement/Dialog/AwardDialog";
 
 const Container = styled.div`
-  width: 1920px;
-  height: 961px;
+  width: 100%;
+  height: 100%;
   display: flex;
   background-color: #f5f8fb;
 `;
 
-// const Content = styled.div`
-//   display: flex;
-//   flex-direction: column;
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 30px;
+  padding: 10px;
+  width: 100%;
+  height: auto;
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
+  border-radius: 20px;
+  background-color: #f7f7f7;
 
-//   padding: 10px;
-//   width: 100%;
-//   height: auto;
-//   box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
-//   border-radius: 20px;
-//   background-color: #f7f7f7;
-
-//   h1 {
-//     font-size: 26px;
-//     font-family: "Noto Sans CJK KR";
-//   }
-// `;
+  h1 {
+    font-size: 26px;
+    font-family: "Noto Sans CJK KR";
+  }
+`;
 
 const ContractDialog = styled.div`
   width: 1280px;
@@ -67,12 +73,12 @@ const WorkerManagement = ({
   workers,
   wpinfo,
 }) => {
-  // const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   // 근로계약서 다이얼로그 상태
   const [contractOpen, setContractOpen] = useState(false);
   // 급여정산 다이얼로그 상태
-  // const [settlementOpen, setSettltmentOpen] = useState(false);
+  const [settlementOpen, setSettltmentOpen] = useState(false);
 
   const [workername, setWorkername] = useState();
   const [customworkers, setCustomworkers] = useState();
@@ -98,19 +104,19 @@ const WorkerManagement = ({
 
   // 근로계약서 조회 버튼 눌렀을 때 호출
   const handleClickContract = (name, address) => {
-    // setOpen(true);
+    setOpen(true);
     setContractOpen(true);
     setWorkername(name);
     setContractAddress(address);
   };
 
-  // // 급여정산 정산하기 버튼 눌렀을 때 호출
-  // const handleClickSettlement = (name, address) => {
-  //   // setOpen(true);
-  //   setSettltmentOpen(true);
-  //   setWorkername(name);
-  //   setContractAddress(address);
-  // };
+  // 급여정산 정산하기 버튼 눌렀을 때 호출
+  const handleClickSettlement = (name, address) => {
+    setOpen(true);
+    setSettltmentOpen(true);
+    setWorkername(name);
+    setContractAddress(address);
+  };
 
   const [rewardOpen, setRewardOpen] = useState(false);
   // Buttons에서 보상 지급 버튼 눌렀을 때 호출
@@ -139,9 +145,9 @@ const WorkerManagement = ({
 
   const handleClose = () => {
     setContractAddress(null);
-    // setOpen(false);
+    setOpen(false);
     setRewardOpen(false);
-    // setSettltmentOpen(false);
+    setSettltmentOpen(false);
     setContractOpen(false);
     setContractready(false);
     setTerminationOpen(false);
@@ -159,7 +165,7 @@ const WorkerManagement = ({
       await getUserData(workers[0][0]);
     }
 
-    if (workers[0].length !== 0) {
+    if (workers[0].length != 0) {
       for (let x = 0; x < workers[0].length; x++) {
         temp.push([workers[0][x], decodeURI(workers[1][x])]);
       }
@@ -242,20 +248,20 @@ const WorkerManagement = ({
     let checkmin;
     let sum = 0;
 
-    if (lbcontract[3][0] === "0") {
+    if (lbcontract[3][0] == "0") {
       checkhour = lbcontract[3][1];
     } else {
       checkhour = lbcontract[3].substring(0, 2);
     }
 
-    if (lbcontract[3][3] === "0") {
+    if (lbcontract[3][3] == "0") {
       checkmin = lbcontract[3][4];
     } else {
       checkmin = lbcontract[3].substring(3, 5);
     }
 
     for (let x = 0; x < caldata[0].length; x++) {
-      if (caldata[1][x] !== checkhour || caldata[2][x] !== checkmin) {
+      if (caldata[1][x] != checkhour || caldata[2][x] != checkmin) {
         sum += 1;
       }
     }
@@ -283,7 +289,7 @@ const WorkerManagement = ({
   return (
     <Container>
       {/* 근로 계약서 Dialog */}
-      {contractaddress !== null && (
+      {contractaddress != null && (
         <Dialog maxWidth={1280} onClose={handleClose} open={contractOpen}>
           <DialogTitle> {workername} 님 </DialogTitle>
           <CloseButton onClick={handleClose} />
@@ -307,6 +313,7 @@ const WorkerManagement = ({
           )}
         </Dialog>
       )}
+
       {/* 보상 지급 선택 시 Dialog */}
       <Dialog maxWidth={1280} onClose={handleClose} open={rewardOpen}>
         <DialogTitle> {workername} 님 </DialogTitle>
@@ -320,6 +327,7 @@ const WorkerManagement = ({
           onClickClose={handleClose}
         />
       </Dialog>
+
       {/* 근로계약 해지 시 Dialog */}
       {/* 사용자 이름 전달해야 함 name */}
       {/* 해지 버튼클릭 시 이벤트 전달해야 함 */}
@@ -342,6 +350,7 @@ const WorkerManagement = ({
         customworkers={customworkers}
         onClickEnquiry={onClickEnquiry}
       />
+
       {/* 근로자 정보 */}
       {/* TODO 조회가 클릭된 근로자의 데이터를 삽입해야 함 */}
       {userdata ? (
