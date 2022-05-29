@@ -36,7 +36,8 @@ export default function TabThreeScreen({navigation} : RootTabScreenProps<'TabThr
     let alltokens = await NFTContract.getAllTokens(connector.accounts[0], { from : connector.accounts[0] });
     let temp = [];
 
-    const url = `https://api.pinata.cloud/data/pinList?status=pinned&metadata[keyvalues]={"owner":{"value":"${connector.accounts[0]}", "op":"eq"}}`;
+    // const url = `https://api.pinata.cloud/data/pinList?status=pinned&metadata[keyvalues]={"owner":{"value":"${connector.accounts[0]}", "op":"eq"}}`;
+    const url = `https://api.pinata.cloud/data/pinList?status=pinned&metadata[keyvalues]={"owner":{"value":"0x8F22cbB2Fe066d8671c9C09bfF005F0507e1627e", "op":"eq"}}`;
 
     if (alltokens.length === 0) {
       setReady(null);
@@ -50,7 +51,8 @@ export default function TabThreeScreen({navigation} : RootTabScreenProps<'TabThr
       console.log(tokendata)
       for (let x = 0 ; x < tokendata.data.rows.length; x++) {
         let detaildata = await axios.get(`https://gateway.pinata.cloud/ipfs/${tokendata.data.rows[x].ipfs_pin_hash}`)
-        let wpinfo = await laborContract.getWorkplcesInfo(parseInt(detaildata.data.wpindex), { from : connector.accounts[0] });
+        let wpinfo = await laborContract.getWorkplcesInfo(parseInt(detaildata.data.wpindex), { from: connector.accounts[0] });
+        
 
         temp.push({
           metadata: detaildata.data,
