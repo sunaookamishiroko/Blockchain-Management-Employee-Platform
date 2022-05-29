@@ -14,6 +14,7 @@ import "@ethersproject/shims";
 import { ethers } from "ethers";
 
 import { laborContract } from "../connectETH/Transaction";
+import styled from 'styled-components/native';
 
 // 내 근무지
 const SLIDER_WIDTH = Dimensions.get('window').width;
@@ -41,6 +42,14 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
   const connectWallet = React.useCallback(() => {
     return connector.connect();
   }, [connector]);
+
+  const StyledComponent = styled.View`
+    width:100%;
+    height:100%;
+    padding-left:10;
+    padding-right:10;
+    
+  `;
 
    // 근무지 불러오기
   const getCardinfo = (async() => {
@@ -114,8 +123,8 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           <TouchableOpacity onPress={() => navigation.navigate('SendAttendanceScreen', { index : workplaeindex[cardindex], num : 0 })} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>출근</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('SendAttendanceScreen', { index : workplaeindex[cardindex], num : 1 })} style={styles.buttonStyle}>
-            <Text style={styles.buttonTextStyle}>퇴근</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('SendAttendanceScreen', { index : workplaeindex[cardindex], num : 1 })} style={styles.buttonStyleGray}>
+            <Text style={styles.buttonTextStyleGray}>퇴근</Text>
           </TouchableOpacity>
         </>
       )}
