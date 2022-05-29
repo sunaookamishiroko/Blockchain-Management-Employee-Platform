@@ -90,8 +90,8 @@ export const styles = StyleSheet.create({
     textAlign: "center",
   },
   notificatioonContainer: {
+    flex: 1,
     alignItems: "center",
-    justifyContent: "center",
   },
   notificationBox: {
     width: SLIDER_WIDTH,

@@ -72,7 +72,7 @@ export default function TabTwoScreen({
     width: 380;
     height: 200;
     border-radius: 20;
-    background-color: aqua;
+    background-color: white;
     padding: 20px;
   `;
 
@@ -88,6 +88,7 @@ export default function TabTwoScreen({
     justify-content: center;
     width: 130;
     margin-right: 20;
+    margin-left: 20;
 
     background-color: ${(props) =>
       props.gray === undefined ? `#3399ff` : `#f1f1f1`};
@@ -127,10 +128,12 @@ export default function TabTwoScreen({
             <StyledImage source={require("../assets/images/cu-icon.png")} />
             <StyledCol>
               <Text>{callresult[x].wpname}</Text>
-              <Text>{callresult[x].wplocation}</Text>
+              <Text style={{ width: 200, fontSize: 8 }}>
+                {callresult[x].wplocation}
+              </Text>
             </StyledCol>
           </StyledRow>
-          <StyledRow>
+          <StyledRow style={{ justifyContent: "center" }}>
             <StyledAttendance
               onPress={() =>
                 navigation.navigate("CheckAttendancePayScreen", {
