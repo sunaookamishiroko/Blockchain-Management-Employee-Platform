@@ -101,6 +101,10 @@ export const styles = StyleSheet.create({
   notificationBoxText: {
     fontSize: 20,
   },
+  test: {
+    borderRadius: 30,
+    backgroundColor: "white",
+  },
 });
 
 export default styles;
