@@ -1,0 +1,5 @@
+
+capstonedb/.serverless/serverless-state.json
+capstonedb/.serverless/cloudformation-template-update-stack.json
+capstonedb/.serverless/cloudformation-template-create-stack.json
+capstonedb/.serverless/capstonedb.zip
