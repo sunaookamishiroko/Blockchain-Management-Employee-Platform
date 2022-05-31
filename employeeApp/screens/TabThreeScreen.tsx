@@ -111,8 +111,8 @@ export default function TabThreeScreen({
 
   const BadgeView = styled.TouchableOpacity`
     background-color: #f1f1f1;
-    width: 180;
-    height: 180;
+    width: 150;
+    height: 150;
     border-radius: 30;
     margin-bottom: 20;
     overflow: hidden;

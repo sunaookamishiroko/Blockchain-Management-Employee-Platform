@@ -100,7 +100,7 @@ export default function SendAttendanceScreen({ navigation, route }: RootTabScree
         `${ENDPOINT}getqrcode?workplaceindex=${route.params.index}&date=2022-04-28`
       );
 
-      if (response.data[0].randomnum === data) await uploadWork();
+      if (response.data[0].randomnum == data) await uploadWork();
       else setIsrigt(false);
     } catch(e) {
       console.log(e);

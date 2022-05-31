@@ -207,7 +207,7 @@ export default function CheckAttendancePayScreen({
                   display: "flex",
                   flexDirection: "row",
                   justifyContent: "space-between",
-                  width: 270,
+                  width: 230,
                   backgroundColor: "#F1F1F1",
                   borderTopLeftRadius: 20,
                   borderTopRightRadius: 20,
@@ -222,7 +222,7 @@ export default function CheckAttendancePayScreen({
               </View>
               <View
                 style={{
-                  width: 270,
+                  width: 230,
                   backgroundColor: "#F1F1F1",
                   borderBottomLeftRadius: 20,
                   borderBottomRightRadius: 20,

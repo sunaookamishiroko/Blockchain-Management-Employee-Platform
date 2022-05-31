@@ -32,7 +32,7 @@ export default function TabFourScreen({
 }: RootTabScreenProps<"TabFour">) {
   const [personalinfo, setPersonalinfo] = useState<object>();
   const [wpinfo, setWpinfo] = useState<object[]>();
-  const [money, setMoney] = useState<number>();
+  const [money, setMoney] = useState<number>(0);
   const [ready, setReady] = useState<boolean | null>(false);
 
   useEffect(() => {
