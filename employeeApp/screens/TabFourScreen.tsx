@@ -14,6 +14,7 @@ import { ethers } from "ethers";
 
 import {
   makeLabortxobj,
+  makeWonTokentxobj,
   laborContract,
   ERC20Contract,
 } from "../connectETH/Transaction";
