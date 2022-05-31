@@ -14,98 +14,7 @@ const Container = styled.div`
   display: flex;
 `;
 
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  margin: 30px;
-  padding: 10px;
-
-  width: 100%;
-  height: auto;
-
-  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
-  border-radius: 20px;
-
-  background-color: #f7f7f7;
-
-  h1 {
-    font-size: 26px;
-    font-family: "Noto Sans CJK KR";
-  }
-
-  form > div {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 20px;
-  }
-`;
-
-const LeftInput = styled.div`
-  width: 480px;
-`;
-
-const RightInput = styled.div`
-  width: 768px;
-`;
-
-const SubmitDiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  button {
-    width: 260px;
-    border-radius: 30px;
-    font-family: "Noto Sans CJK KR";
-    border: 0px;
-    font-size: 20px;
-    font-weight: bold;
-    padding: 10px;
-    background-color: #1c89e9;
-    color: white;
-    margin-right: 20px;
-  }
-
-  input {
-    width: 260px;
-    border-radius: 30px;
-    font-family: "Noto Sans CJK KR";
-    border: 0px;
-    font-size: 20px;
-    font-weight: bold;
-    padding: 10px;
-    background-color: #f1f1f1;
-    color: #999999;
-    margin-right: 20px;
-  }
-`;
-
-const EnrollLabel = styled.label`
-  display: flex;
-  flex-direction: column;
-
-  h2 {
-    font-family: "Noto Sans CJK KR";
-    font-weight: bold;
-    font-style: "normal";
-    font-size: 22px;
-  }
-  input {
-    width: auto;
-    height: auto;
-    padding: 10px;
-    font-size: 16px;
-    border: 0px;
-    background-color: #f1f1f1;
-    color: #999999;
-    font-family: "Noto Sans CJK KR";
-    font-weight: bold;
-    border-radius: 40px;
-  }
-`;
-
-const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
+const EnrollWorker = ({ name, wpinfo }) => {
   const [worker, setWorker] = useState({
     employeename: "",
     address: "",
@@ -118,13 +27,6 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
     wageday: "",
     comment: "",
   });
-
-  // 계약서 작성 요청 보내기 클릭 시 다이얼로그 띄우기
-  const [submitOpen, setSubmitOpen] = useState(false);
-  // 다이얼로그 없애기
-  const handleClose = () => {
-    setSubmitOpen(false);
-  };
 
   const onChange = (event) => {
     const { name, value } = event.target;
@@ -159,16 +61,9 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
     } catch (e) {
       console.log(e);
     }
-    
-    //onEnroll(worker);
 
   };
 
-  const onChangeHandler = (e) => {
-    console.log(e.target);
-  };
-
-  // TODO 주석 해제해야함
   const onClickHandler = (e) => {
     e.preventDefault();
     try {

@@ -143,42 +143,16 @@ const EnrollContent = ({
   onChange,
   onClickHandler,
 }) => {
-  const [worker, setWorker] = useState({
-    address: "",
-    period1: "",
-    period2: "",
-    duties: "",
-    workingTime: "",
-    workingDays: "",
-    wage: "",
-    wageday: "",
-    comment: "",
-  });
-
-  const onClickSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(true);
-  };
-
-  const onChangeHandler = (e) => {
-    console.log(e.target);
-  };
-
   const [submitOpen, setSubmitOpen] = useState(false);
 
   const onClose = () => {
     setSubmitOpen(false);
   };
 
-  const openSubmit = () => {
-    setSubmitOpen(true);
-  };
-
   return (
     <Content>
       <h1> 근로자 등록 </h1>
       <form className="Enroll" method="post">
-        {/* 계약서 작성 요청 보내기 클릭 시 다이얼로그 */}
         <Dialog maxWidth={1280} onClose={onClose} open={submitOpen}>
           <SubmitDialog onClickClose={onClose} />
           <input type={"submit"} value="제출" />
