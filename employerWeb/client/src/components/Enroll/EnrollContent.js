@@ -1,6 +1,6 @@
 import { Dialog } from "@mui/material";
-import React, { useState, useCallback } from "react";
-import styled, { css } from "styled-components";
+import React, { useState } from "react";
+import styled from "styled-components";
 import SubmitDialog from "./Dialog/SubmitDialog";
 
 const Content = styled.div`

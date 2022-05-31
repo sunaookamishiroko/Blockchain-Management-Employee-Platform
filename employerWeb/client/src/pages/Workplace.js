@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Categories from "../components/Categories/Categories";
 import styled from "styled-components";
 
@@ -38,22 +38,11 @@ const Item = styled.div`
 `;
 
 const Workplace = ({
-  accounts,
-  contract,
   name,
   wpinfo,
   workplaceList,
   employerSetting,
 }) => {
-  const [workplaceinfo, setWorkplaceinfo] = useState();
-
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    getWorkplaceinfo();
-  }, []);
-
-  // TODO workplaceList 이미지와 일치시킬 것
   const workplaceImg = [
     "img/cgv.png",
     "img/cu.png",
@@ -67,19 +56,6 @@ const Workplace = ({
     "",
   ];
 
-  const getWorkplaceinfo = async () => {
-    try {
-      const workplaceinfo = await contract.methods
-        .getWorkplaces()
-        .call({ from: accounts[0] });
-      console.log(workplaceinfo);
-      setWorkplaceinfo(workplaceinfo);
-    } catch (e) {
-      console.log(e);
-    }
-
-    setReady(true);
-  };
 
   const onClickItem = (i) => {
     employerSetting(i);
@@ -88,8 +64,6 @@ const Workplace = ({
   return (
     <Container>
       <Categories name={name} wpname={wpinfo[1]} />
-      {!ready && <p>잠시만 기다려주세요... </p>}
-      {ready && (
         <Content>
           {workplaceList.map((c, i) => (
             <Item
@@ -105,7 +79,6 @@ const Workplace = ({
             </Item>
           ))}
         </Content>
-      )}
     </Container>
   );
 };

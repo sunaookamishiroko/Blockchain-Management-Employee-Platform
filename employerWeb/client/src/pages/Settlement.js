@@ -1,12 +1,8 @@
 import React from "react";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 
-import { NavLink, useLocation } from "react-router-dom";
-import styled, { ThemeConsumer } from "styled-components";
-import Dialog from "@mui/material/Dialog";
-import { autocompleteClasses, DialogTitle } from "@mui/material";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
+import { useLocation } from "react-router-dom";
+import styled from "styled-components";
 import Categories from "../components/Categories/Categories";
 import Calendar from "../components/Settlement/Calendar";
 
@@ -53,15 +49,6 @@ const Information = styled.div`
   }
 `;
 
-// const Calendar = styled.div`
-//   width: 762px;
-//   height: 702px;
-//    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
-//   border-radius: 20px;
-//   padding: 20px;
-//   background-color: #f7f7f7;
-// `;
-
 const History = styled.div`
   width: 606px;
   height: 950px;
@@ -82,7 +69,6 @@ const Total = styled.div`
 `;
 
 const Settlement = ({ accounts, contract, name, wpinfo }) => {
-  const [open, setOpen] = useState(false);
 
   const [detail, setDetail] = useState();
   const [attendance, setAttendance] = useState();

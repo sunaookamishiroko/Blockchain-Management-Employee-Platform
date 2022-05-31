@@ -1,4 +1,3 @@
-import { textAlign } from "@mui/system";
 import React from "react";
 import styled from "styled-components";
 
@@ -10,10 +9,11 @@ const TANotification = styled.div`
   background-color: #f7f7f7;
 `;
 
+// 실시간 근태 알람이 들어갈 자리지만 시간 관계상 생략
 const TANotificationComponent = () => {
   return (
     <TANotification>
-      <h2 style={{ textAlign: "center" }}>실시간 근태 알림</h2>
+      <h2 style={{ textAlign: "center" }}></h2>
     </TANotification>
   );
 };

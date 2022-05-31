@@ -14,21 +14,6 @@ const CalendarDiv = styled.div`
 `;
 
 const Calendar = ({ attendance }) => {
-  const testEvent = [
-    {
-      title: "홍길동 결근",
-      start: "2022-01-06",
-      color: "#FF0000",
-      display: "list-item",
-    },
-    {
-      title: "홍길순 출근",
-      start: "2022-01-06",
-      color: "#00FF00",
-      display: "list-item",
-    },
-  ];
-
   return (
     <CalendarDiv>
       <h1>출/퇴근 기록부</h1>

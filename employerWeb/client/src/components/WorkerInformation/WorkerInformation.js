@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import Badge from "./Badge";
 import Buttons from "./Buttons";
 import Profile from "./Profile";
 import WorkingDetails from "./WorkingDetails";
@@ -32,7 +31,6 @@ const Content = styled.div`
 const WorkerInformation = ({
   userdata,
   selectedWorker,
-  laborContract,
   handleClickContract,
   handleClickReward,
   handleClickTermination,

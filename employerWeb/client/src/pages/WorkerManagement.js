@@ -1,17 +1,12 @@
 import React from "react";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 
-import { NavLink } from "react-router-dom";
-import styled, { ThemeConsumer } from "styled-components";
-import WorkerListAdapter from "../components/WorkerList/WorkerListAdapter";
+import styled from "styled-components";
 import Dialog from "@mui/material/Dialog";
 import { DialogTitle } from "@mui/material";
 import Categories from "../components/Categories/Categories";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
 import WorkerList from "../components/WorkerList/WorkerList";
 import WorkerInformation from "../components/WorkerInformation/WorkerInformation";
-import BadgeDialog from "../components/WorkerManagement/Dialog/BadgeDialog";
 import TerminationDialog from "../components/WorkerManagement/Dialog/TerminationDialog";
 import AwardDialog from "../components/WorkerManagement/Dialog/AwardDialog";
 
@@ -20,23 +15,6 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   background-color: #f5f8fb;
-`;
-
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 30px;
-  padding: 10px;
-  width: 100%;
-  height: auto;
-  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
-  border-radius: 20px;
-  background-color: #f7f7f7;
-
-  h1 {
-    font-size: 26px;
-    font-family: "Noto Sans CJK KR";
-  }
 `;
 
 const ContractDialog = styled.div`
@@ -73,12 +51,9 @@ const WorkerManagement = ({
   workers,
   wpinfo,
 }) => {
-  const [open, setOpen] = useState(false);
 
   // 근로계약서 다이얼로그 상태
   const [contractOpen, setContractOpen] = useState(false);
-  // 급여정산 다이얼로그 상태
-  const [settlementOpen, setSettltmentOpen] = useState(false);
 
   const [workername, setWorkername] = useState();
   const [customworkers, setCustomworkers] = useState();
@@ -104,16 +79,7 @@ const WorkerManagement = ({
 
   // 근로계약서 조회 버튼 눌렀을 때 호출
   const handleClickContract = (name, address) => {
-    setOpen(true);
     setContractOpen(true);
-    setWorkername(name);
-    setContractAddress(address);
-  };
-
-  // 급여정산 정산하기 버튼 눌렀을 때 호출
-  const handleClickSettlement = (name, address) => {
-    setOpen(true);
-    setSettltmentOpen(true);
     setWorkername(name);
     setContractAddress(address);
   };
@@ -145,9 +111,7 @@ const WorkerManagement = ({
 
   const handleClose = () => {
     setContractAddress(null);
-    setOpen(false);
     setRewardOpen(false);
-    setSettltmentOpen(false);
     setContractOpen(false);
     setContractready(false);
     setTerminationOpen(false);
@@ -156,11 +120,8 @@ const WorkerManagement = ({
   // 근로자 데이터 불러오는 메소드
   const makeCustomWorker = async () => {
     let temp = [];
-    // TODO
     // if문 -> 근로자가 1명 이상일때
     // else문 -> 근로자가 0명일때 처리
-
-    // 맨 처음 index 1번의 유저 데이터를 만듬
     if (workers.length > 1) {
       await getUserData(workers[0][0]);
     }
@@ -271,20 +232,6 @@ const WorkerManagement = ({
     setUserdata(temp);
   };
 
-  // // TODO 선택된 badge
-  // const [selectedBadge, setSelectedBadge] = useState({
-  //   image: "img/badge_test.png",
-  //   issueData: "2021/05/24",
-  //   issuancePoint: "CGV용산",
-  //   etc: "필요한 내용 기입",
-  //   statement:
-  //     "이곳에는 추가적으로 배지에 관한 내용이 기재됩니다. 이 친구 고객들에게 친절하고 지각을 한 번도 하지 않음. 보장함ㅇㅇ",
-  // });
-
-  // TODO 보상 지급용 배지 리스트
-  const [badges, setBadges] = useState([
-    { name: "testBadge", image: "img/badge_test.png" },
-  ]);
 
   return (
     <Container>
@@ -321,7 +268,6 @@ const WorkerManagement = ({
           accounts={accounts}
           nftcontract={nftcontract}
           selectedWorker={selectedWorker}
-          badges={badges}
           wpinfo={wpinfo}
           onClickClose={handleClose}
         />
@@ -354,10 +300,8 @@ const WorkerManagement = ({
       {/* TODO 조회가 클릭된 근로자의 데이터를 삽입해야 함 */}
       {userdata ? (
         <WorkerInformation
-          badges={badges}
           userdata={userdata}
           selectedWorker={selectedWorker}
-          laborContract={laborcontract}
           handleClickContract={handleClickContract}
           handleClickReward={handleClickReward}
           handleClickTermination={handleClickTermination}

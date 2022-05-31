@@ -46,8 +46,6 @@ const StyledProfile = styled.div`
 `;
 
 const Profile = ({ selectedWorker }) => {
-  const profileCategories = ["이름", "Address"];
-
   return (
     <StyledProfile>
       <img src="img/anonymous_profile.jpg" alt="프로필" />

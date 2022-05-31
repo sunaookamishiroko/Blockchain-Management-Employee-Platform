@@ -57,16 +57,6 @@ const CalendarLegend = () => {
           marginRight: "10px",
         }}
       >
-        {/* <div
-          style={{
-            borderRadius: "30px",
-            background: "#E91C1C",
-            width: "10px",
-            height: "10px",
-            marginRight: "10px",
-          }}
-        ></div>
-        결근 */}
       </div>
     </div>
   );

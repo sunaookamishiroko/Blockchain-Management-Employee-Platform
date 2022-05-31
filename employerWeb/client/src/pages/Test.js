@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-//import { firestore } from "./firebase.js";
-//import { collection, addDoc } from "firebase/firestore";
 
 const axios = require("axios");
 
@@ -67,8 +65,8 @@ class Test extends Component {
     await contract.methods
       .uploadWorkplace(
         accounts[0],
-        encodeURI("GS25 한국공학대점"),
-        encodeURI("경기도 시흥시 정왕동 산기대학로237")
+        encodeURI("올리브영 시화점"),
+        encodeURI("경기 시흥시 중심상가3길 15-1")
       )
       .send({ from: accounts[0] });
     console.log("uploadWorkplace complete");

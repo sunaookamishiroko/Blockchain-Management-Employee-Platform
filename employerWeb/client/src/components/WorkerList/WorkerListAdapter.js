@@ -41,8 +41,6 @@ const Adapter = styled.div`
 
 const WorkerListAdapter = ({
   workers,
-  handleClickContract,
-  handleClickSettlement,
   onClickEnquiry,
 }) => {
   return (
@@ -61,7 +59,6 @@ const WorkerListAdapter = ({
               index={index + 1}
               address={workers[index][0]}
               name={workers[index][1]}
-              handleClickContract={handleClickContract}
               onClickEnquiry={onClickEnquiry}
             />
           ))}

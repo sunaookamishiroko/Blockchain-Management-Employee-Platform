@@ -28,7 +28,6 @@ const WorkingDetails = ({ userdata }) => {
 
   return (
     <>
-      {console.log("userdata:" + userdata)}
       <StyeldWorkingDetails>
         {categories.map((category, index) => (
           <>

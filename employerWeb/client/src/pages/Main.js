@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import styled from "styled-components";
 import Categories from "../components/Categories/Categories";
