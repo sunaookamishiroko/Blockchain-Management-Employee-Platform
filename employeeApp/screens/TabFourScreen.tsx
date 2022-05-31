@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Image, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import Slider from "@react-native-community/slider";
 
 import { styles } from "../css/styles";
-import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 
 import { useWalletConnect } from "@walletconnect/react-native-dapp";

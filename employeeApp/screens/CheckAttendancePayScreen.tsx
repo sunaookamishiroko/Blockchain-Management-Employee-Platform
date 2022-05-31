@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { TouchableOpacity, Dimensions, ScrollView } from "react-native";
+import { Dimensions } from "react-native";
 import { Calendar } from "react-native-calendars";
 
 import { Text, View } from "../components/Themed";
-import { styles } from "../css/styles";
 import { RootTabScreenProps } from "../types";
 
 import { useWalletConnect } from "@walletconnect/react-native-dapp";

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { ScrollView, TouchableOpacity } from "react-native";
 
 import { Text, View } from "../components/Themed";
 import { styles } from "../css/styles";

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity, Button } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
 import { Text, View } from '../components/Themed';
@@ -13,7 +13,7 @@ import "react-native-get-random-values";
 import "@ethersproject/shims";
 import { ethers } from "ethers";
 
-import { makeLabortxobj, infuraProvider, laborContract } from "../connectETH/Transaction";
+import { makeLabortxobj } from "../connectETH/Transaction";
 
 import { ENDPOINT } from "@env";
 

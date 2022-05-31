@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, TouchableOpacity, SafeAreaView, Dimensions } from 'react-native';
+import { TouchableOpacity, Dimensions } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import { scrollInterpolator, animatedStyles } from '../utils/animation.js';
 

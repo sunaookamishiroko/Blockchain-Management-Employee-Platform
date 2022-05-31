@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Image, StyleSheet, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 
-import { Text, View } from "../components/Themed";
+import { Text } from "../components/Themed";
 import { styles } from "../css/styles";
 import { RootTabScreenProps } from "../types";
 
