@@ -144,7 +144,6 @@ const App = () => {
               <Main
                 accounts={accounts}
                 contract={contract}
-                // 사장 이름
                 name={name}
                 workers={workers}
                 wpinfo={wpinfo}
@@ -185,6 +184,7 @@ const App = () => {
               <Payroll
                 accounts={accounts}
                 contract={contract}
+                erc20contract={erc20contract}
                 tokencontract={tokencontract}
                 name={name}
                 workers={workers}

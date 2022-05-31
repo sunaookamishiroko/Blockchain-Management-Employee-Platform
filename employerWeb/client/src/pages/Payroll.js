@@ -41,6 +41,7 @@ const Content = styled.div`
 const Payroll = ({
   accounts,
   contract,
+  erc20contract,
   tokencontract,
   name,
   workers,
@@ -106,7 +107,7 @@ const Payroll = ({
   // 토큰의 잔고를 조회하는 함수
   const getBalnce = async () => {
     try {
-      const response = await tokencontract.methods
+      const response = await erc20contract.methods
         .balanceOf(accounts[0])
         .call({ from: accounts[0] });
       setBalance(response);
@@ -159,7 +160,7 @@ const Payroll = ({
       )
     ) {
       try {
-        const response = await tokencontract.methods
+        const response = await erc20contract.methods
           .transfer(address, totalwage)
           .send({ from: accounts[0] });
         alert(
