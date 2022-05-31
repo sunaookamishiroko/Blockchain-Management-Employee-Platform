@@ -1,3 +1,4 @@
+import { LogBox } from "react-native";
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -8,7 +9,7 @@ import Navigation from './navigation';
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
-
+  LogBox.ignoreAllLogs();
   if (!isLoadingComplete) {
     return null;
   } else {
