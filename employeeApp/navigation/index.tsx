@@ -5,10 +5,10 @@
  */
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme, CommonActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { ColorSchemeName, Pressable } from 'react-native';
+import { ColorSchemeName, Pressable, Platform } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -79,10 +79,11 @@ function BottomTabNavigator() {
         component={TabOneScreen}
         options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
           title: '내 근무지',
+          unmountOnBlur: Platform.OS === 'ios' ? false : true,
           tabBarIcon: ({ color }) => <TabBarIcon name="briefcase" color={color} />,
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate('NotificationModal')}
+              onPress={() => navigation.dispatch(CommonActions.navigate('NotificationModal'))}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}>
@@ -101,10 +102,11 @@ function BottomTabNavigator() {
         component={TabTwoScreen}
         options={({ navigation }: RootTabScreenProps<'TabTwo'>) => ({
           title: '근무지 정보',
+          unmountOnBlur: Platform.OS === 'ios' ? false : true,
           tabBarIcon: ({ color }) => <TabBarIcon name="list-ul" color={color} />,
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate('NotificationModal')}
+              onPress={() => navigation.dispatch(CommonActions.navigate('NotificationModal'))}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}>
@@ -123,10 +125,11 @@ function BottomTabNavigator() {
         component={TabThreeScreen}
         options={({ navigation }: RootTabScreenProps<'TabThree'>) => ({
           title: '나의 보상',
+          unmountOnBlur: Platform.OS === 'ios' ? false : true,
           tabBarIcon: ({ color }) => <TabBarIcon name="trophy" color={color} />,
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate('NotificationModal')}
+              onPress={() => navigation.dispatch(CommonActions.navigate('NotificationModal'))}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}>
@@ -145,10 +148,11 @@ function BottomTabNavigator() {
         component={TabFourScreen}
         options={({ navigation }: RootTabScreenProps<'TabFour'>) => ({
           title: '프로필',
+          unmountOnBlur: Platform.OS === 'ios' ? false : true,
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate('NotificationModal')}
+              onPress={() => navigation.dispatch(CommonActions.navigate('NotificationModal'))}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}>
