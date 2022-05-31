@@ -169,7 +169,7 @@ const Payroll = ({
     }
   };
 
-  // TODO 토큰 교환 버튼을 눌렀을 때 호출하는 메소드
+  // 토큰 교환 함수
   const onExchangeButtonClick = async (inputBalance, setInputBalance) => {
     await tokencontract.methods
         .buy()
