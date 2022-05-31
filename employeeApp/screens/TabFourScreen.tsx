@@ -154,7 +154,11 @@ export default function TabFourScreen({
   };
 
   const handleSubmit = async () => {
-    console.log(money);
+    let abidata = new ethers.utils.Interface([
+      "function sell(uint256 amount)",
+    ]).encodeFunctionData("sell", [money]);
+
+    await makeWonTokentxobj(connector.accounts[0], abidata, 100000);
   };
 
   const StyledScreen = styled.ScrollView`

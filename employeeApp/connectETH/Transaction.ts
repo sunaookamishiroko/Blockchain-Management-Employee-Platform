@@ -33,7 +33,7 @@ export async function makeLabortxobj(from: string, abidata: string, gaslimit: nu
   return txObj;
 }
 
-export async function makeWonTokentxobj(from: string, abidata: string, gaslimit: number, value: number) {
+export async function makeWonTokentxobj(from: string, abidata: string, gaslimit: number) {
 
   let nonce = await infuraProvider.getTransactionCount(from, "latest");
   let gasfee = (await infuraProvider.getGasPrice())._hex;
@@ -45,7 +45,7 @@ export async function makeWonTokentxobj(from: string, abidata: string, gaslimit:
       gasPrice: gasfee,
       nonce: nonce,
       to: WONTOKEN_ADDRESS,
-      value: value
+      value: "0x00"
   };
   return txObj;
 }
