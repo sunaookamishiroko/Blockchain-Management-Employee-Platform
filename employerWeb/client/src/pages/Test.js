@@ -453,6 +453,8 @@ class Test extends Component {
         <h4>토큰 함수</h4>
         <button onClick={this.balanceOf}>balanceOf</button>
         <button onClick={this.transfer}>transfer</button>
+        <button onClick={this.buy}>buy</button>
+        <button onClick={this.sell}>sell</button>
         <button onClick={this.geterc20address}>geterc20address</button>
         <h4>nft 함수</h4>
         <button onClick={this.nft_mint}>nft_mint</button>
