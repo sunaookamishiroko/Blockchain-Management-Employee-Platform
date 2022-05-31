@@ -47,9 +47,6 @@ const Payroll = ({
   workers,
   wpinfo,
 }) => {
-  const [open, setOpen] = useState(false);
-
-  const [todaydate, setTodaydate] = useState();
   const [customworkers, setCustomworkers] = useState();
   const [balance, setBalance] = useState();
 
@@ -99,7 +96,6 @@ const Payroll = ({
       }
     }
     await getBalnce();
-    setTodaydate(selectdate);
     setCustomworkers(temp);
     setReady(true);
   };
@@ -187,19 +183,14 @@ const Payroll = ({
         {ready && (
           <>
             <div>
-              {/* TODO 계정 주소 전달해야 함 */}
               <WorkerBalance
                 name={name}
                 accounts={accounts[0]}
                 balance={balance}
                 onExchangeButtonClick={onExchangeButtonClick}
               />
-              {/* <h2>{todaydate}</h2> */}
               <PayrollAdapter workers={customworkers} payWage={payWage} />
             </div>
-            {/* <div>
-                  <WorkerInformation />
-                </div> */}
           </>
         )}
       </Content>
