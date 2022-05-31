@@ -146,11 +146,11 @@ const AwardDialog = ({
 
       // 뱃지에 해당하는 이미지 ipfshash
       if (badgeclassfiy == "장기근속") {
-        image = "QmVmMoy5Ax3HzeLkZvYekiwd3s6q6YKwTGmNU2VoUiVi3P";
+        image = "QmTFXycJ16E5mjuYuhKJyk689CHHMvuRX2dv7w5kSf6cQE";
       } else if (badgeclassfiy == "친절") {
-        image = "QmWuCNTkWmD72XmWUgY8BvpMhuRPABnC8veQTb4k6P7B9v";
+        image = "QmTu1PBPgivkKeX5RR3tuWm7GnBK8nDhxypdLmXuimS3Mz";
       } else if (badgeclassfiy == "개근") {
-        image = "QmRTk3MaRTW9LKSF6gVPgsrgt9cN7WFFYUNfiRdkyt3U5U";
+        image = "Qmf75qLJXuGYCLnurdUjTxzwrUNYZfhMDVAqgmHoGY5Spb";
       }
 
       // 현재 nft index 불러오기
