@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
 
+import { PINATA_API_KEY, PINATA_SECRET_API_KEY } from "../../../envSetting"
+
 const axios = require("axios");
 
 const StyledAward = styled.div`
@@ -125,7 +127,6 @@ const AwardDialog = ({
   accounts,
   nftcontract,
   selectedWorker,
-  badges,
   wpinfo,
   onClickClose,
 }) => {
@@ -170,7 +171,7 @@ const AwardDialog = ({
           description: description,
           nftindex: nftindex,
           wpindex: wpinfo[0],
-          image: `https://gateway.pinata.cloud/ipfs/${image}`,
+          image: image,
           name: badgeclassfiy,
         },
       };
@@ -179,8 +180,8 @@ const AwardDialog = ({
       await axios
         .post(`https://api.pinata.cloud/pinning/pinJSONToIPFS`, JSONBody, {
           headers: {
-            pinata_api_key: "",
-            pinata_secret_api_key: "",
+            pinata_api_key: PINATA_API_KEY,
+            pinata_secret_api_key: PINATA_SECRET_API_KEY,
           },
         })
         .then(function (response) {
