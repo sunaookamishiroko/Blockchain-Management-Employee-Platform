@@ -79,7 +79,7 @@ function BottomTabNavigator() {
         component={TabOneScreen}
         options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
           title: '내 근무지',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="briefcase" color={color} />,
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate('NotificationModal')}
@@ -101,7 +101,7 @@ function BottomTabNavigator() {
         component={TabTwoScreen}
         options={({ navigation }: RootTabScreenProps<'TabTwo'>) => ({
           title: '근무지 정보',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="list-ul" color={color} />,
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate('NotificationModal')}
@@ -123,7 +123,7 @@ function BottomTabNavigator() {
         component={TabThreeScreen}
         options={({ navigation }: RootTabScreenProps<'TabThree'>) => ({
           title: '나의 보상',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="trophy" color={color} />,
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate('NotificationModal')}
@@ -145,7 +145,7 @@ function BottomTabNavigator() {
         component={TabFourScreen}
         options={({ navigation }: RootTabScreenProps<'TabFour'>) => ({
           title: '프로필',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate('NotificationModal')}

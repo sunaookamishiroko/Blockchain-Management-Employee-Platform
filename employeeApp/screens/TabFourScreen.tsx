@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { TouchableOpacity } from "react-native";
 import Slider from "@react-native-community/slider";
 
+import { Text, View } from '../components/Themed';
 import { styles } from "../css/styles";
 import { RootTabScreenProps } from "../types";
 
