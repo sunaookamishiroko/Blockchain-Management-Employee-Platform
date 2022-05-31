@@ -23,11 +23,7 @@ export default function NotificationModal({
 
   useEffect(() => {
     if (connector.connected) {
-      // TODO 배포 시 주석 해제할 것
-      //getContract();
-
-      // TOOD 배포 시 코드 제거할 것
-      setReady(true);
+      getContract();
     }
   }, []);
 
@@ -53,50 +49,19 @@ export default function NotificationModal({
   const makeJsx = () => {
     let temp = [];
 
-    /*
-              <Text style={styles.title}>{route.params.laborcontract.wpname}</Text>
-          <Text style={styles.title}>{route.params.laborcontract.period}</Text>
-          <Text style={styles.title}>{route.params.laborcontract.duties}</Text>
-          <Text style={styles.title}>{route.params.laborcontract.workingtime}</Text>
-          <Text style={styles.title}>{route.params.laborcontract.workingdays}</Text>
-          <Text style={styles.title}>{route.params.laborcontract.wage}</Text>
-          <Text style={styles.title}>{route.params.laborcontract.wageday}</Text>
-          <Text style={styles.title}>{route.params.laborcontract.comment}</Text>
-    */
-
-    // TODO laborContract 하드코딩 데이터, 배포시 지울 것
-    let hardLaborContract = [
-      {
-        address: "0x8F22cbB2Fe066d8671c9C09bfF005F0507e1627e",
-        wpname: "GS25 한국공학대점",
-        wpemployer: "홍길동",
-        employeename: "이서윤",
-        workplaceindex: 1,
-        period: "2022-04-28~2022-06-30",
-        duties: "서빙 재고정리",
-        workingtime: "12:00-19:00",
-        workingdays: "목금",
-        wage: "9160",
-        wageday: "매달 31일",
-        comment: "없음",
-      },
-    ];
-
-    // TODO 배포시 아래와 같이 바꿀 것
-    // hardLaborContract -> laborContract
-    for (let x = 0; x < hardLaborContract.length; x++) {
+    for (let x = 0; x < laborcontract.length; x++) {
       temp.push(
         <StyledNotificationItem key={x}>
           <TouchableOpacity
             onPress={() =>
               navigation.navigate("SendLaborContractScreen", {
-                laborcontract: hardLaborContract[x],
+                laborcontract: laborcontract[x],
               })
             }
           >
             <Text style={{ fontSize: 18 }}>
-              {hardLaborContract[x].wpemployer} 사장님의{" "}
-              {hardLaborContract[x].wpname}에서 근로계약서 확인 요청이
+              {laborcontract[x].wpemployer} 사장님의{" "}
+              {laborcontract[x].wpname}에서 근로계약서 확인 요청이
               들어왔습니다!
             </Text>
           </TouchableOpacity>
