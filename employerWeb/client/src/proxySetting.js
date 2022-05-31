@@ -1,1 +1,1 @@
-export const ENDPOINT = `https://44t3mv8d6l.execute-api.ap-northeast-2.amazonaws.com/dev/`;
+export const ENDPOINT = ``;
