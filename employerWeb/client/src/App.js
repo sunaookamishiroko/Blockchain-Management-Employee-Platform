@@ -1,4 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
+import WonTokenContract from "./contracts/WonToken.json";
 import ERC20Contract from "./contracts/ERC20.json";
 import LaborContract from "./contracts/LaborContract.json";
 import ERC721Contract from "./contracts/myNFT.json";
@@ -12,13 +13,13 @@ import Settlement from "./pages/Settlement";
 import Payroll from "./pages/Payroll";
 import Test from "./pages/Test";
 import Workplace from "./pages/Workplace";
-//import { firestore } from "./components/firebase";
 
 const App = () => {
   const [web3, setWeb3] = useState();
   const [accounts, setAccounts] = useState();
   const [contract, setContract] = useState();
   const [tokencontract, setTokencontract] = useState();
+  const [erc20contract, setErc20contract] = useState();
   const [nftcontract, setNftcontract] = useState();
 
   const [name, setName] = useState();
@@ -56,14 +57,20 @@ const App = () => {
         deployedNetwork && deployedNetwork.address
       );
 
-      // ERC20 abi 설정
-      const TokenDeployNetwork = ERC20Contract.networks[networkId];
+      // wontoken abi 설정
+      const TokenDeployNetwork = WonTokenContract.networks[networkId];
       const Tokeninstance = new web3.eth.Contract(
-        ERC20Contract.abi,
+        WonTokenContract.abi,
         TokenDeployNetwork && TokenDeployNetwork.address
       );
 
-      // ERC20 abi 설정
+      const ERC20DeployNetwork = ERC20Contract.networks[networkId];
+      const ERC20instance = new web3.eth.Contract(
+        ERC20Contract.abi,
+        ERC20DeployNetwork && ERC20DeployNetwork.address
+      );
+
+      // ERC721 abi 설정
       const NftDeployNetwork = ERC721Contract.networks[networkId];
       const Nftinstance = new web3.eth.Contract(
         ERC721Contract.abi,
@@ -77,6 +84,7 @@ const App = () => {
       setAccounts(accounts);
       setContract(instance);
       setTokencontract(Tokeninstance);
+      setErc20contract(ERC20instance);
       setNftcontract(Nftinstance);
     } catch (error) {
       alert(`web3, accounts, contract를 로드하는데 실패했습니다.`);
@@ -201,10 +209,12 @@ const App = () => {
             path="/test"
             element={
               <Test
+                web3={web3}
                 accounts={accounts}
                 contract={contract}
                 tokencontract={tokencontract}
                 nftcontract={nftcontract}
+                erc20contract={erc20contract}
               />
             }
           />

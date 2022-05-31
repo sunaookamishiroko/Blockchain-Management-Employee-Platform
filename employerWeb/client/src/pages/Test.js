@@ -255,19 +255,10 @@ class Test extends Component {
   //////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
-  // 자신에게 토큰 발행
-  mint = async () => {
-    const { accounts, tokencontract } = this.props;
-    await tokencontract.methods
-      .mint(accounts[0], 2000000)
-      .send({ from: accounts[0] });
-    console.log("mint complete");
-  };
-
   // 토큰 잔고
   balanceOf = async () => {
-    const { accounts, tokencontract } = this.props;
-    const response = await tokencontract.methods
+    const { accounts, erc20contract } = this.props;
+    const response = await erc20contract.methods
       .balanceOf(accounts[0])
       .call({ from: accounts[0] });
     console.log(response);
@@ -275,11 +266,41 @@ class Test extends Component {
 
   // 토큰 전송
   transfer = async () => {
-    const { accounts, tokencontract } = this.props;
-    await tokencontract.methods
+    const { accounts, erc20contract } = this.props;
+    await erc20contract.methods
       .transfer("0x73fA89eDbc136AA1eC77a729D3409c760F631dcf", 100000)
       .send({ from: accounts[0] });
     console.log("transfer complete");
+  };
+
+  // 토큰 전송
+  transfer = async () => {
+    const { accounts, erc20contract } = this.props;
+    await erc20contract.methods
+      .transfer("0x73fA89eDbc136AA1eC77a729D3409c760F631dcf", 100000)
+      .send({ from: accounts[0] });
+    console.log("transfer complete");
+  };
+
+  // 이더 -> 토큰 구매
+  buy = async () => {
+    const { web3, accounts, tokencontract } = this.props;
+    await tokencontract.methods.buy().send({ from: accounts[0], value:  web3.utils.toWei('2', 'ether') });
+    console.log("buy compleate");
+  };
+
+  // 토큰 -> 이더 판매
+  sell = async () => {
+    const { accounts, tokencontract } = this.props;
+    await tokencontract.methods.sell().send({ from: accounts[0] });
+    console.log("sell compleate");
+  };
+
+  // erc20 주소 알아내기
+  geterc20address = async () => {
+    const { accounts, tokencontract } = this.props;
+    const response = await tokencontract.methods.geterc20address().call({ from: accounts[0] });
+    console.log(response);
   };
 
   //////////////////////////////////////////////////////////////////////////////
@@ -430,9 +451,9 @@ class Test extends Component {
         <button onClick={this.getWorkTime}>getWorkTime</button>
         <button onClick={this.getWage}>getWage</button>
         <h4>토큰 함수</h4>
-        <button onClick={this.mint}>mint</button>
         <button onClick={this.balanceOf}>balanceOf</button>
         <button onClick={this.transfer}>transfer</button>
+        <button onClick={this.geterc20address}>geterc20address</button>
         <h4>nft 함수</h4>
         <button onClick={this.nft_mint}>nft_mint</button>
         <button onClick={this.nft_balanceOf}>nft_balanceOf</button>
