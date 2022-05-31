@@ -27,9 +27,9 @@ class Test extends Component {
       .uploadPersonalInfo(
         accounts[0],
         0,
-        encodeURI("호우호3"),
-        26,
-        encodeURI("여")
+        encodeURI("이서윤"),
+        24,
+        encodeURI("남")
       )
       .send({ from: accounts[0] });
     console.log("uploadPersonalInfo0 complete");
@@ -42,7 +42,7 @@ class Test extends Component {
       .uploadPersonalInfo(
         accounts[0],
         1,
-        encodeURI("홍참동"),
+        encodeURI("김철수"),
         50,
         encodeURI("남")
       )
@@ -292,7 +292,7 @@ class Test extends Component {
   // 토큰 -> 이더 판매
   sell = async () => {
     const { accounts, tokencontract } = this.props;
-    await tokencontract.methods.sell().send({ from: accounts[0] });
+    await tokencontract.methods.sell(2000000).send({ from: accounts[0] });
     console.log("sell compleate");
   };
 

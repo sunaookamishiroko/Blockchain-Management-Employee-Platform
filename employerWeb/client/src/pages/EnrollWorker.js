@@ -1,11 +1,9 @@
-import { Dialog } from "@mui/material";
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Categories from "../components/Categories/Categories";
-import SubmitDialog from "../components/Enroll/Dialog/SubmitDialog";
 import EnrollContent from "../components/Enroll/EnrollContent";
 
-import { api } from "../proxySetting.js";
+import { ENDPOINT } from "../proxySetting.js";
 
 import axios from "axios";
 
@@ -152,7 +150,7 @@ const EnrollWorker = ({ name, onEnroll, wpinfo }) => {
     };
     
     try {
-      const response = await axios.post(`${api}setcontract`, body);
+      const response = await axios.post(`${ENDPOINT}setcontract`, body);
 
       if (response.status !== 200) alert("db 에러 발생");
       else {

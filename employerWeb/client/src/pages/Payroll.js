@@ -4,7 +4,6 @@ import styled from "styled-components";
 import PayrollAdapter from "../components/Payroll/PayrollAdapter";
 import Categories from "../components/Categories/Categories";
 import WorkerBalance from "../components/Payroll/WorkerBalance";
-import WorkerInformation from "../components/Payroll/WorkerInformation";
 
 const Container = styled.div`
   width: 100%;
@@ -39,6 +38,7 @@ const Content = styled.div`
 `;
 
 const Payroll = ({
+  web3,
   accounts,
   contract,
   erc20contract,
@@ -170,8 +170,11 @@ const Payroll = ({
   };
 
   // TODO 토큰 교환 버튼을 눌렀을 때 호출하는 메소드
-  const onExchangeButtonClick = (inputBalance, setInputBalance) => {
-    alert(inputBalance + " amount (onExchangeButtonClick)");
+  const onExchangeButtonClick = async (inputBalance, setInputBalance) => {
+    await tokencontract.methods
+        .buy()
+        .send({ from: accounts[0], value:  web3.utils.toWei(String(inputBalance / 1000000), 'ether') });
+
     setInputBalance(0);
   };
 

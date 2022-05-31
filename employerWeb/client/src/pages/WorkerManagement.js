@@ -317,7 +317,6 @@ const WorkerManagement = ({
       {/* 보상 지급 선택 시 Dialog */}
       <Dialog maxWidth={1280} onClose={handleClose} open={rewardOpen}>
         <DialogTitle> {workername} 님 </DialogTitle>
-        <CloseButton onClick={handleClose} />
         <AwardDialog
           accounts={accounts}
           nftcontract={nftcontract}

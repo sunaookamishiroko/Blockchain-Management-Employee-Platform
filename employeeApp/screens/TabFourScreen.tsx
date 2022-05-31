@@ -158,7 +158,16 @@ export default function TabFourScreen({
       "function sell(uint256 amount)",
     ]).encodeFunctionData("sell", [money]);
 
-    await makeWonTokentxobj(connector.accounts[0], abidata, 100000);
+    let txObj = await makeWonTokentxobj(connector.accounts[0], abidata, 100000);
+
+    try {
+      await connector.sendTransaction(txObj).then((result) => {
+        console.log("tx hash:", result);
+        console.log(`https://ropsten.etherscan.io/tx/${result}`);
+      });
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const StyledScreen = styled.ScrollView`
@@ -282,13 +291,12 @@ export default function TabFourScreen({
 
             <Text>교환할 돈 : {money}원</Text>
             <Slider
-              style={{ width: 200, height: 40 }}
+              style={{ width: 300, height: 40 }}
+              value={money}
               minimumValue={0}
               step={1000}
               maximumValue={parseInt(personalinfo.money)}
-              onValueChange={(value) => {
-                setMoney(value);
-              }}
+              onSlidingComplete={value => setMoney(value)}
             />
             <StyledButton onPress={handleSubmit}>
               <StyledButtonText fontSize={14}>교환하기</StyledButtonText>

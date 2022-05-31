@@ -68,7 +68,7 @@ export default function SendAttendanceScreen({ navigation, route }: RootTabScree
 
     let abidata = new ethers.utils
     .Interface(["function uploadAttendance(uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute)"])
-    .encodeFunctionData("uploadAttendance", [route.params.num, route.params.index, "2022-04-28", 19, 0]);
+    .encodeFunctionData("uploadAttendance", [route.params.num, route.params.index, "2022-05-30", 19, 0]);
     let txObj = await makeLabortxobj(connector.accounts[0], abidata, 200000);
 
     try {
@@ -97,7 +97,7 @@ export default function SendAttendanceScreen({ navigation, route }: RootTabScree
     
     try {
       const response = await axios.get(
-        `${ENDPOINT}getqrcode?workplaceindex=${route.params.index}&date=2022-04-28`
+        `${ENDPOINT}getqrcode?workplaceindex=${route.params.index}&date=2022-05-31`
       );
 
       if (response.data[0].randomnum == data) await uploadWork();
@@ -146,7 +146,6 @@ export default function SendAttendanceScreen({ navigation, route }: RootTabScree
           <TouchableOpacity style={styles.buttonStyle} onPress={_handlePressButtonAsync}>
             <Text style={styles.buttonTextStyle}>etherscan</Text>
           </TouchableOpacity>
-          <Text>{scandata}</Text>
         </>
       )}
       </View>

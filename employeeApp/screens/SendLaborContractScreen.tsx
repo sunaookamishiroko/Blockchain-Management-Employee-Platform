@@ -199,7 +199,7 @@ export default function SendLaborContractScreen({
       {issendtx && answer === true && (
         <>
           <Text>근로계약이 완료되었습니다.</Text>
-          <TouchableOpacity style={styles.buttonStyle} onPress={etherscan}>
+          <TouchableOpacity style={styles.etherscanStyle} onPress={etherscan}>
             <Text style={styles.buttonTextStyle}>etherscan</Text>
           </TouchableOpacity>
         </>
