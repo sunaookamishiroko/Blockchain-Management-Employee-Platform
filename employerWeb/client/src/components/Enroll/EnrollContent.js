@@ -1,7 +1,7 @@
 import { Dialog } from "@mui/material";
 import React, { useState } from "react";
 import styled from "styled-components";
-import SubmitDialog from "./Dialog/SubmitDialog";
+import SubmitDialog from "./SubmitDialog";
 
 const Content = styled.div`
   display: flex;
