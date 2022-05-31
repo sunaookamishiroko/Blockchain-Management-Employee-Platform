@@ -16,8 +16,6 @@ const Content = styled.div`
 
   margin-bottom: 50px;
 
-  background-color: #00ff0016;
-
   > div {
     width: 100%;
     padding: 0.5%;
@@ -42,13 +40,6 @@ const Content = styled.div`
         }
       }
     }
-  }
-
-  .div1 {
-    background-color: #ff000016;
-  }
-  .div2 {
-    background-color: #0000ff16;
   }
 `;
 
@@ -101,7 +92,7 @@ const WorkerBalance = ({ name, accounts, balance, onExchangeButtonClick }) => {
             <p>{name}</p>
           </div>
           <div>
-            <p>계정주소:</p>
+            <p>주소:</p>
             <p>{accounts}</p>
           </div>
         </div>
