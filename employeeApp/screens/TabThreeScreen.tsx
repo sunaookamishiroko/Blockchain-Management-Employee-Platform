@@ -94,16 +94,8 @@ export default function TabThreeScreen({
               resizeMode: "contain",
             }}
           />
-
-          {/* TODO XD에는 이미지만 있기에 우선 주석처리 */}
-          {/* <Text>{tokeninfo[x].metadata.name}</Text>
-          <Text>{tokeninfo[x].metadata.description}</Text>
-          <Text>{tokeninfo[x].wpinfo.wpname}</Text> */}
         </BadgeView>
       );
-      // TODO 뱃지 테스트용 : 지울 것
-      nfts.push(<BadgeView></BadgeView>);
-      nfts.push(<BadgeView></BadgeView>);
     }
 
     return nfts;
