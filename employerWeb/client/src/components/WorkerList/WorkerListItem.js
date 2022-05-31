@@ -73,15 +73,6 @@ const WorkerListItem = ({
           조회
         </Button>
       </td>
-      {/* <td>
-        <ContractButton
-          onClick={() => {
-            handleClickContract(name, address);
-          }}
-        >
-          확인
-        </ContractButton>
-      </td> */}
     </tr>
   );
 };

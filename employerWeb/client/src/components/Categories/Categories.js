@@ -78,15 +78,6 @@ const categories = [
       },
     ],
   },
-  // {
-  //   name: "추가 항목",
-  //   submenu: [
-  //     {
-  //       name: "another",
-  //       text: "메뉴 추가 필요",
-  //     },
-  //   ],
-  // },
   {
     name: "설정",
     submenu: [
@@ -101,7 +92,6 @@ const categories = [
 const Categories = ({ name, wpname }) => {
   return (
     <LeftSidebar>
-      {/* TODO 매장 이름, 사장 이름 전달해야 함 */}
       <Title name={name} wpname={wpname} />
 
       {categories.map((c) => (

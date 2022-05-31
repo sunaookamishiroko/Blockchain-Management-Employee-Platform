@@ -22,17 +22,6 @@ const StyeldWorkingDetails = styled.div`
     font-size: 20px;
   }
 `;
-/*
-const Detail = styled.h5`
-  margin-top: 8px;
-  font-size: 16px;
-  color: #999999;
-  height: 5px;
-
-  span {
-    color: #1c89e9;
-  }
-`;*/
 
 const WorkingDetails = ({ userdata }) => {
   const categories = ["입사일", "근무일수", "마지막 근무일", "지각률"];
@@ -41,7 +30,6 @@ const WorkingDetails = ({ userdata }) => {
     <>
       {console.log("userdata:" + userdata)}
       <StyeldWorkingDetails>
-        {/* TODO 입사일, 근무일수, 마지막 근무일, 지각률 처리할 것 */}
         {categories.map((category, index) => (
           <>
             <h4>{category}: </h4>
@@ -52,13 +40,6 @@ const WorkingDetails = ({ userdata }) => {
     </>
   );
 
-  /*
-      <Detail>
-        {workPlaceData[0]}의 재직자 평균 근무일수는
-        <span> {workPlaceData[1]}</span>, 평균 지각률은
-        <span> {workPlaceData[2]}</span> 입니다.
-      </Detail>
-  */
 };
 
 export default WorkingDetails;

@@ -89,7 +89,7 @@ const StyledButton = styled.button`
 `;
 
 const WorkerBalance = ({ name, accounts, balance, onExchangeButtonClick }) => {
-  const [inputBalance, setInputBalance] = useState(0);
+  const [inputBalance, setInputBalance] = useState();
 
   return (
     <Content>
@@ -126,7 +126,7 @@ const WorkerBalance = ({ name, accounts, balance, onExchangeButtonClick }) => {
               onExchangeButtonClick(inputBalance, setInputBalance);
             }}
           >
-            버튼
+            교환
           </StyledButton>
         </div>
       </StyledTokenExchangeDiv>

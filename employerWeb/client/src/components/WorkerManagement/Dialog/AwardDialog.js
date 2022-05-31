@@ -225,11 +225,6 @@ const AwardDialog = ({
   return (
     <StyledAward>
       <h2>증정할 배지를 선택해주세요</h2>
-      {/* <div>
-        {badges.map((badge) => (
-          <StyledBadge src={badge.image} />
-        ))}
-      </div> */}
       <div>
         <form onSubmit={handleSubmit}>
           <div id="radio-group">

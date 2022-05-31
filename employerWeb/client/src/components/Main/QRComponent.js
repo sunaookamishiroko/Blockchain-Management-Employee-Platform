@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import QRCode from "qrcode.react";
 
-//import { api } from "../../proxySetting.js";
+import { ENDPOINT } from "../../proxySetting.js";
 
 import axios from "axios";
 import { Button } from "@mui/material";
@@ -35,8 +35,7 @@ const QRComponent = ({ wpinfo }) => {
   const isMakeQrcode = async () => {
     try {
       const response = await axios.get(
-        //`${api}getqrcode?workplaceindex=${wpinfo[0]}&date=2022-04-28`
-        `getqrcode?workplaceindex=${wpinfo[0]}&date=2022-04-28`
+        `${ENDPOINT}getqrcode?workplaceindex=${wpinfo[0]}&date=2022-05-31`
       );
         
       if (response.data.length == 0) {
@@ -56,17 +55,12 @@ const QRComponent = ({ wpinfo }) => {
 
     const body = {
       workplaceindex: 0,
-      date: "2022-04-28",
+      date: "2022-05-31",
       randomnum: random,
     };
 
     try {
-      const response = await axios.post(`setqrcode`, body, {
-          "Access-Control-Allow-Headers" : "Content-Type",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST,GET"
-        
-      });
+      const response = await axios.post(`${ENDPOINT}setqrcode`, body);
 
       if (response.status !== 200) alert("db 에러 발생");
       else {

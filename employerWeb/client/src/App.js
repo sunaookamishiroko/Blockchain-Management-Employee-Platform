@@ -182,6 +182,7 @@ const App = () => {
             path="/payroll"
             element={
               <Payroll
+                web3={web3}
                 accounts={accounts}
                 contract={contract}
                 erc20contract={erc20contract}
