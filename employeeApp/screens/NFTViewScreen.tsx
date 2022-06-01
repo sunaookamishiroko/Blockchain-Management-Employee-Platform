@@ -9,7 +9,7 @@ export default function NFTViewScreen({ route }) {
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: `https://gateway.pinata.cloud/ipfs/${route.params.tokeninfo.metadata.image}` }}
+        source={{ uri: route.params.tokeninfo.metadata.image }}
         style={{
           width: 250,
           height: 250,

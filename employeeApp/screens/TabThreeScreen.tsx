@@ -87,7 +87,7 @@ export default function TabThreeScreen({
           }
         >
           <Image
-            source={{ uri: `https://gateway.pinata.cloud/ipfs/${tokeninfo[x].metadata.image}` }}
+            source={{ uri: tokeninfo[x].metadata.image }}
             style={{
               width: "100%",
               height: "100%",
