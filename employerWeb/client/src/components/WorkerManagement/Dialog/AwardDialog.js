@@ -171,11 +171,11 @@ const AwardDialog = ({
           description: description,
           nftindex: nftindex,
           wpindex: wpinfo[0],
-          image: image,
+          image: `https://gateway.pinata.cloud/ipfs/${image}`,
           name: badgeclassfiy,
         },
       };
-
+    
       // pinata에 업로드
       await axios
         .post(`https://api.pinata.cloud/pinning/pinJSONToIPFS`, JSONBody, {
@@ -188,7 +188,7 @@ const AwardDialog = ({
           console.log(response);
           // 컨트랙트에 트랜잭션
           nftcontract.methods
-            .mintNFT(selectedWorker[0], response.data.IpfsHash)
+            .mintNFT(selectedWorker[0], `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`)
             .send({ from: accounts[0] });
 
           console.log("nft_mint complete");
