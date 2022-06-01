@@ -20,7 +20,6 @@ const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 4);
 // 근태 / 급여 조회
 
 export default function CheckAttendancePayScreen({
-  navigation,
   route,
 }: RootTabScreenProps<"CheckAttendancePayScreen">) {
   const [calready, setCalready] = useState<boolean | null>(false);
@@ -39,7 +38,7 @@ export default function CheckAttendancePayScreen({
 
   useEffect(() => {
     renderWage();
-  }, [allcaldata, selectdate]);
+  }, [selectdate]);
 
   useEffect(() => {
     makeDateCard();
@@ -93,11 +92,9 @@ export default function CheckAttendancePayScreen({
   };
 
   const renderWage = async () => {
-    // 월급 설정
-    let wagetemp = [];
     // 패턴 매칭
     let indexarr = await patternMatching(allcaldata);
-
+    
     let startIndex = indexarr[0];
     let endIndex = indexarr[1];
 
@@ -296,6 +293,7 @@ export default function CheckAttendancePayScreen({
 
   const AttendanceText = styled.Text``;
 
+
   return (
     <StyledCheckAttendancePayScreen>
       {calready === false && wageready === false && (
@@ -313,17 +311,12 @@ export default function CheckAttendancePayScreen({
             style={{
               width: ITEM_WIDTH,
             }}
-            onMonthChange={(obj) => {
-              console.log("month changed", obj);
+            current={selectdate}
+            onMonthChange={obj => {
               setWageready(false);
-              setSelectdate(
-                obj.year + "-" + ("0" + obj.month.toString()).slice(-2)
-              );
+              setSelectdate(obj.year+"-"+(("0"+obj.month.toString()).slice(-2))); 
             }}
             markedDates={caldata}
-            onDayPress={(day) => {
-              console.log("selected day", day);
-            }}
           />
           <View>
             <Text>{selectdate}</Text>
