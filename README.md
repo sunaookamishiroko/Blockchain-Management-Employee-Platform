@@ -27,7 +27,7 @@ TODO
 
 - [근로자 App](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/blob/main/employeeApp)
 
-- [Backend](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/blob/main/database-backend)
+- [DB Backend](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/tree/main/capstonedb)
 
 - [SmartContract](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/tree/main/employerWeb/contracts)
 
