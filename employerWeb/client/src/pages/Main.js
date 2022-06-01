@@ -133,7 +133,6 @@ const Main = ({ accounts, contract, name, workers, wpinfo }) => {
         {!calready && <p>잠시만 기다려주세요 ...</p>}
         {calready && <Calendar attendance={attendance} />}
       </Content>
-      {/* TODO QR 데이터, 근태 데이터 전달해줄 것 */}
       <RightSideComponent wpinfo={wpinfo} />
     </Container>
   );

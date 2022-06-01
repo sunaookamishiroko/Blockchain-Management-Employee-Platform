@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Categories from "../components/Categories/Categories";
 import EnrollContent from "../components/Enroll/EnrollContent";
 
-import { ENDPOINT } from "../proxySetting.js";
+import { ENDPOINT } from "../envSetting";
 
 import axios from "axios";
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import QRCode from "qrcode.react";
 
-import { ENDPOINT } from "../../proxySetting.js";
+import { ENDPOINT } from "../../envSetting";
 
 import axios from "axios";
 import { Button } from "@mui/material";
