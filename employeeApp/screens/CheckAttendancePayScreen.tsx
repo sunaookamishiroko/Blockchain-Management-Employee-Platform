@@ -15,7 +15,6 @@ import styled from "styled-components/native";
 
 const SLIDER_WIDTH = Dimensions.get("window").width;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
-const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 4);
 
 // 근태 / 급여 조회
 

@@ -90,8 +90,6 @@ export default function NotificationModal({
     margin-bottom: 10;
   `;
 
-  const StyledNotificationComponent = styled.View``;
-
   return (
     <View style={styles.notificatioonContainer}>
       {!connector.connected && (
