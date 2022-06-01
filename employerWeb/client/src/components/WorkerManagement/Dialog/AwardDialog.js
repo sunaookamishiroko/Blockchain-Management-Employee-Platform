@@ -135,7 +135,6 @@ const AwardDialog = ({
 
   // nft 지급하기
   const onClickAwardBadge = async () => {
-    console.log(badgeclassfiy);
 
     if (badgeclassfiy == undefined) {
       alert("뱃지를 선택해주세요");
@@ -185,7 +184,6 @@ const AwardDialog = ({
           },
         })
         .then(function (response) {
-          console.log(response);
           // 컨트랙트에 트랜잭션
           nftcontract.methods
             .mintNFT(selectedWorker[0], `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`)
@@ -204,7 +202,6 @@ const AwardDialog = ({
   // 라디오박스 change 핸들러
   const handleChange = (e) => {
     const target = e.target;
-    console.log(target.value);
     if (target.checked) {
       setBadgeclassfiy(target.value);
     }
@@ -213,7 +210,6 @@ const AwardDialog = ({
   // 설명 change 핸들러
   const descriptinHandleChange = (e) => {
     const target = e.target;
-    console.log(target.value);
     setDescription(target.value);
   };
 

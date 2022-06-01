@@ -31,7 +31,6 @@ const EnrollWorker = ({ name, wpinfo }) => {
   const onChange = (event) => {
     const { name, value } = event.target;
     setWorker({ ...worker, [name]: value });
-    console.log(worker);
   };
 
   const onSubmit = async (e) => {
@@ -79,7 +78,7 @@ const EnrollWorker = ({ name, wpinfo }) => {
         comment: "",
       });
 
-      console.log(e.target);
+      //console.log(e.target);
     } catch (e) {
       console.error("Error adding document: ", e);
     }

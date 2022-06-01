@@ -228,7 +228,6 @@ const WorkerManagement = ({
     }
 
     temp.push(((sum / caldata[0].length) * 100).toString() + "%");
-    console.log(temp);
     setUserdata(temp);
   };
 

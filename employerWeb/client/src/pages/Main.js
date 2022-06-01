@@ -74,7 +74,6 @@ const Main = ({ accounts, contract, name, workers, wpinfo }) => {
         let caldata = await contract.methods
           .getCalAttendance(wpinfo[0], x)
           .call({ from: accounts[0] });
-        console.log(caldata);
 
         if (caldata[0].length == caldata[1].length) {
           for (let y = 0; y < caldata[0].length; y++) {
