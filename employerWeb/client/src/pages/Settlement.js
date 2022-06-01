@@ -58,6 +58,8 @@ const History = styled.div`
   background-color: #f7f7f7;
 
   p {
+    font-size: 20px;
+    font-weight: bold;
     font-family: "Noto Sans CJK KR";
   }
 `;
