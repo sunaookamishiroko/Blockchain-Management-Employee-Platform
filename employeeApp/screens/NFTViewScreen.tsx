@@ -9,7 +9,7 @@ export default function NFTViewScreen({ route }) {
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: route.params.tokeninfo.metadata.image }}
+        source={{ uri: `https://gateway.pinata.cloud/ipfs/${route.params.tokeninfo.metadata.image}` }}
         style={{
           width: 250,
           height: 250,
@@ -18,9 +18,8 @@ export default function NFTViewScreen({ route }) {
         }}
       />
       <View style={{}}>
-        <Text>NFT : {route.params.tokeninfo.metadata.name}</Text>
+        <Text>NFT#{route.params.tokeninfo.metadata.nftindex} : {route.params.tokeninfo.metadata.name}</Text>
         <Text>설명 : {route.params.tokeninfo.metadata.description}</Text>
-        {/* <Text>nftindex : {route.params.tokeninfo.metadata.nftindex}</Text> */}
         <Text>발급 지점 : {route.params.tokeninfo.wpinfo.wpname}</Text>
         <Text>지점 주소 : {route.params.tokeninfo.wpinfo.wplocation}</Text>
       </View>

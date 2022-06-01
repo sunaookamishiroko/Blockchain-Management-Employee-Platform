@@ -87,7 +87,7 @@ export default function TabThreeScreen({
           }
         >
           <Image
-            source={{ uri: tokeninfo[x].metadata.image }}
+            source={{ uri: `https://gateway.pinata.cloud/ipfs/${tokeninfo[x].metadata.image}` }}
             style={{
               width: "100%",
               height: "100%",
@@ -104,7 +104,7 @@ export default function TabThreeScreen({
   const BadgeView = styled.TouchableOpacity`
     background-color: #f1f1f1;
     width: 150;
-    height: 150;
+    height: 200;
     border-radius: 30;
     margin-bottom: 20;
     overflow: hidden;

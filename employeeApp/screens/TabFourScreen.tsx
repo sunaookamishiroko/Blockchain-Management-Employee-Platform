@@ -287,7 +287,7 @@ export default function TabFourScreen({
           <Text style={{ fontWeight: "bold", fontSize: 18 }}>토큰 교환</Text>
 
           <SecondProfileView>
-            <Text>내 잔액 : {personalinfo.money}</Text>
+            <Text>내 잔액 : {personalinfo.money}원</Text>
 
             <Text>교환할 돈 : {money}원</Text>
             <Slider
