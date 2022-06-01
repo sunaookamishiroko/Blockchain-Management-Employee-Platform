@@ -35,10 +35,10 @@ TODO
 
 |이름|학과|역할|
 |------|---|-----|
-|이서윤|컴퓨터공학과|Web/App 총괄, DB Backend, Blockchain, 컨트랙트 작성|
-|표민성|소프트웨어공학과|계획서/보고서 작성, 디자인, 컨트랙트 작성|
-|박태민|소프트웨어공학과|컨트랙트 작성|
-|김동현|소프트웨어공학과|Web Front 담당, 디자인|
+|이서윤|컴퓨터공학과|Web, App Blcokchain 연결, DB, Blockchain, Smart Contract 작성|
+|표민성|소프트웨어공학과|계획서/보고서 작성, 디자인, Smart Contract 작성|
+|박태민|소프트웨어공학과|DB, Smart Contract 작성|
+|김동현|소프트웨어공학과|Web, App Front 담당|
 
 ## Git Convention
 
