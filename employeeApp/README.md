@@ -4,7 +4,7 @@
 
 ## 추가 사항
 
-현재 walletconnect 라이브러리에 버그가 있어서 안드로이드에서의 walletconnect가 비정상적으로 동작합니다.
+만약 안드로이드에서의 walletconnect가 비정상적으로 동작한다면
 
 `yarn install` 후에 다음 조치를 따라주세요.
 
@@ -27,4 +27,3 @@ AndroidManifest.xml에서 컨픽추가 해주면 된다고 합니다.
 ## env 관련
 
 .env 파일에 해당하는 값을 넣어주면 됩니다.
-git에 올리지 않도록 주의해주세요
