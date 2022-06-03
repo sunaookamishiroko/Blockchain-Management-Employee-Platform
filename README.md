@@ -32,9 +32,9 @@
 
 |분류|기술
 |---|-----|
-|FrontEnd|![react-native](https://img.shields.io/badge/React--Native-61DAFB?style=flat&logo=React&logoColor=black) ![expo](https://img.shields.io/badge/Expo-000?style=flat&logo=Expo&logoColor=white)|
-|BackEnd||
-|BlockChain||
+|FrontEnd|<img src="https://img.shields.io/badge/React&React--Native-61DAFB?style=flat&logo=React&logoColor=black"> <img src="https://img.shields.io/badge/Expo-000?style=flat&logo=React&logoColor=white"> <img src="https://img.shields.io/badge/Web3.js-F16822?style=flat&logo=Web3.js&logoColor=black"> <img src="https://img.shields.io/badge/Ethers.js-2535a0?style=flat&logo=Solidity&logoColor=white">|
+|BackEnd|<img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=flat&logo=Amazon AWS&logoColor=white"> <img src="https://img.shields.io/badge/Node.js-339933?style=flat&logo=Node.js&logoColor=white">|
+|BlockChain|<img src="https://img.shields.io/badge/Ethereum-3C3C3D?style=flat&logo=Ethereum&logoColor=white"> <img src="https://img.shields.io/badge/Solidity-363636?style=flat&logo=Solidity&logoColor=white">|
 
 ## Members
 
