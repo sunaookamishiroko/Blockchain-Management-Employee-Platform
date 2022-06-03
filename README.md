@@ -14,9 +14,7 @@
 
 ## Architecture
 
-```
-TODO
-```
+<img src="/images/Architecture.png">
 
 ## Tech Stack
 
