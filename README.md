@@ -16,15 +16,9 @@
 
 <img src="/images/Architecture.png">
 
-## Tech Stack
-
-|분류|기술
-|---|-----|
-|FrontEnd|![react-native](https://img.shields.io/badge/React--Native-61DAFB?style=flat&logo=React&logoColor=black) ![expo](https://img.shields.io/badge/Expo-000?style=flat&logo=Expo&logoColor=white)|
-|BackEnd||
-|BlockChain||
-
 ## More Descripton...
+
+각 애플리케이션의 스크린샷과 구동 방법은 아래를 참조해주세요.
 
 - [사업주 Web](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/blob/main/employerWeb)
 
@@ -33,6 +27,14 @@
 - [DB Backend](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/tree/main/capstonedb)
 
 - [SmartContract](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/tree/main/employerWeb/contracts)
+
+## Tech Stack
+
+|분류|기술
+|---|-----|
+|FrontEnd|![react-native](https://img.shields.io/badge/React--Native-61DAFB?style=flat&logo=React&logoColor=black) ![expo](https://img.shields.io/badge/Expo-000?style=flat&logo=Expo&logoColor=white)|
+|BackEnd||
+|BlockChain||
 
 ## Members
 
