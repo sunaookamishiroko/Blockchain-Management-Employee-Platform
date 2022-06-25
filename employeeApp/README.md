@@ -1,6 +1,9 @@
 ## 시작하기
 
-`yarn install`로 라이브러리 설치 후, `yarn start`이나 `expo start`를 통해 실행합니다.
+1. `yarn install`로 라이브러리를 설치합니다
+2. `employeeApp/contracts/` 경로에 컨트랙트 ABI 파일을 넣습니다. -> ERC20, LaborContract, myNFT, WonToken
+3. env 파일을 설정합니다.
+4. `yarn start`이나 `expo start`를 통해 실행합니다.
 
 ## 추가 사항
 
@@ -23,7 +26,3 @@
 https://stackoverflow.com/questions/64699801/linking-canopenurl-returning-false-when-targeting-android-30-sdk-on-react-native
 
 AndroidManifest.xml에서 컨픽추가 해주면 된다고 합니다.
-
-## env 관련
-
-.env 파일에 해당하는 값을 넣어주면 됩니다.
