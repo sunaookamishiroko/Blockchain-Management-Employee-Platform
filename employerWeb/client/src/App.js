@@ -54,27 +54,27 @@ const App = () => {
       const deployedNetwork = LaborContract.networks[networkId];
       const instance = new web3.eth.Contract(
         LaborContract.abi,
-        deployedNetwork && deployedNetwork.address
+        deployedNetwork.address
       );
 
       // wontoken abi 설정
       const TokenDeployNetwork = WonTokenContract.networks[networkId];
       const Tokeninstance = new web3.eth.Contract(
         WonTokenContract.abi,
-        TokenDeployNetwork && TokenDeployNetwork.address
+        TokenDeployNetwork.address
       );
 
       const ERC20DeployNetwork = ERC20Contract.networks[networkId];
       const ERC20instance = new web3.eth.Contract(
         ERC20Contract.abi,
-        ERC20DeployNetwork && ERC20DeployNetwork.address
+        ERC20DeployNetwork.address
       );
 
       // ERC721 abi 설정
       const NftDeployNetwork = ERC721Contract.networks[networkId];
       const Nftinstance = new web3.eth.Contract(
         ERC721Contract.abi,
-        NftDeployNetwork && NftDeployNetwork.address
+        NftDeployNetwork.address
       );
 
       // Set web3, accounts, and contract to the state, and then proceed with an
