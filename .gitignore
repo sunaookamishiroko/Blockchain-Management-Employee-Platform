@@ -3,3 +3,7 @@ capstonedb/.serverless/serverless-state.json
 capstonedb/.serverless/cloudformation-template-update-stack.json
 capstonedb/.serverless/cloudformation-template-create-stack.json
 capstonedb/.serverless/capstonedb.zip
+database-backend/.idea/vcs.xml
+database-backend/.idea/modules.xml
+database-backend/.idea/database-backend.iml
+database-backend/.DS_Store
