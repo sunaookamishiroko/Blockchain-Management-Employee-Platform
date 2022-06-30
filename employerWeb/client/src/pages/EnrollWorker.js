@@ -35,12 +35,20 @@ const EnrollWorker = ({ name, wpinfo }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    if (worker.address == "" || worker.employeename == "" || worker.period1 == "" || 
+    worker.period2 == "" || worker.duties == "" || worker.workingTime == "" || 
+    worker.workingDays == "" || worker.wage == "" || worker.wageday == "" || worker.comment == "") {
+      alert("양식을 전부 채워주세요!");
+      return;
+    }
+
     let body = {
       address: worker.address,
       wpname: wpinfo[1],
       wpemployer: name,
       employeename: worker.employeename,
-      workplaceindex: wpinfo[0],
+      workplaceindex: parseInt(wpinfo[0]),
       period: `${worker.period1}~${worker.period2}`,
       duties: worker.duties,
       workingtime: worker.workingTime,
@@ -51,14 +59,11 @@ const EnrollWorker = ({ name, wpinfo }) => {
     };
     
     try {
-      const response = await axios.post(`${ENDPOINT}setcontract`, body);
-
-      if (response.status !== 200) alert("db 에러 발생");
-      else {
-        alert("근로계약서를 정상적으로 요청했습니다!");
-      }
+      await axios.post(`${ENDPOINT}contract`, body);
+      alert("근로계약서를 정상적으로 요청했습니다!");
     } catch (e) {
       console.log(e);
+      alert("db 에러 발생");
     }
 
   };
