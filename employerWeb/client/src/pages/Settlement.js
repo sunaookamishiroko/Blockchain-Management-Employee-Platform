@@ -177,13 +177,13 @@ const Settlement = ({ accounts, contract, name, wpinfo }) => {
       setWorkday((endIndex - startIndex) + 1);
       try {
         let hourwage = await contract.methods
-          .getWage(0, workerindex)
+          .getWage(wpinfo[0], workerindex)
           .call({ from: accounts[0] });
         temp["hourwage"] = hourwage;
         hourwage = parseInt(hourwage);
 
         let wage = await contract.methods
-          .getPayment(0, workerindex, startIndex, endIndex, hourwage)
+          .getPayment(wpinfo[0], workerindex, startIndex, endIndex, hourwage)
           .call({ from: accounts[0] });
         temp["totalwage"] = wage;
 

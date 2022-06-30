@@ -148,7 +148,7 @@ const WorkerManagement = ({
   const getLaborContract = async () => {
     try {
       const response = await contract.methods
-        .getLaborContract(0, contractaddress)
+        .getLaborContract(wpinfo[0], contractaddress)
         .call({ from: accounts[0] });
       setLaborcontract(response);
       setContractready(true);
@@ -165,7 +165,7 @@ const WorkerManagement = ({
     // 근로계약서 가져오기
     try {
       lbcontract = await contract.methods
-        .getLaborContract(0, workeraddress)
+        .getLaborContract(wpinfo[0], workeraddress)
         .call({ from: accounts[0] });
     } catch (e) {
       console.log(e);
@@ -193,7 +193,7 @@ const WorkerManagement = ({
 
     try {
       let index = await contract.methods
-        .getIndexOfEmployee(0, workeraddress)
+        .getIndexOfEmployee(wpinfo[0], workeraddress)
         .call({ from: accounts[0] });
 
       caldata = await contract.methods
