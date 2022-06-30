@@ -10,7 +10,6 @@ import (
 
 func main() {
 	handler := gin.Default()
-	handler.GET("/test", test)
 
 	handler.GET("/qrcode", getQRcode)
 	handler.POST("/qrcode", setQRcode)
@@ -24,10 +23,9 @@ func main() {
 
 func getQRcode(c *gin.Context) {
 	wpindex, date := c.Query("workplaceindex"), c.Query("date")
+
 	db, err := sql.Open("mysql", "root:rootroot@tcp(127.0.0.1:3306)/capstone")
-
 	defer db.Close()
-
 	if err != nil {
 		panic(err)
 	}
@@ -37,7 +35,11 @@ func getQRcode(c *gin.Context) {
 	err = db.QueryRow("SELECT * FROM qrcodecheck WHERE workplaceindex= ? AND date1= ?",
 		wpindex, date).Scan(&qr.WorkplaceIndex, &qr.Date, &qr.RandomNum)
 
-	if err != nil {
+	switch {
+	case err == sql.ErrNoRows:
+		c.Status(http.StatusOK)
+		return
+	case err != nil:
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
@@ -67,29 +69,131 @@ func setQRcode(c *gin.Context) {
 	_, err = db.Exec("INSERT INTO qrcodecheck VALUES (?, ?, ?)", qr.WorkplaceIndex, qr.Date, qr.RandomNum)
 
 	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.Status(http.StatusCreated)
+}
+
+func getLaborContract(c *gin.Context) {
+	address := c.Query("address")
+
+	db, err := sql.Open("mysql", "root:rootroot@tcp(127.0.0.1:3306)/capstone")
+	defer db.Close()
+	if err != nil {
+		panic(err)
+	}
+
+	rows, err := db.Query("SELECT * FROM laborcontract WHERE address= ?", address)
+
+	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, qr)
-}
+	contracts := make([]entity.LaborContract, 0)
 
-func getLaborContract(c *gin.Context) {
-	
+	for rows.Next() {
+		var contract entity.LaborContract
+		err = rows.Scan(
+			&contract.Address,
+			&contract.WpName,
+			&contract.WpEmployer,
+			&contract.EmployeeName,
+			&contract.WorkplaceIndex,
+			&contract.Period,
+			&contract.Duties,
+			&contract.WorkingTime,
+			&contract.WorkingDays,
+			&contract.Wage,
+			&contract.WageDay,
+			&contract.Comment,
+		)
+
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+
+		contracts = append(contracts, contract)
+	}
+
+	c.JSON(http.StatusOK, contracts)
 }
 
 func setLaborContract(c *gin.Context) {
+	var contract entity.LaborContract
 
+	err := c.BindJSON(&contract)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	db, err := sql.Open("mysql", "root:rootroot@tcp(127.0.0.1:3306)/capstone")
+	defer db.Close()
+	if err != nil {
+		panic(err)
+	}
+
+	_, err = db.Exec("INSERT INTO laborcontract VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?",
+		contract.Address,
+		contract.WpName,
+		contract.WpEmployer,
+		contract.EmployeeName,
+		contract.WorkplaceIndex,
+		contract.Period,
+		contract.Duties,
+		contract.WorkingTime,
+		contract.WorkingDays,
+		contract.Wage,
+		contract.WageDay,
+		contract.Comment)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.Status(http.StatusCreated)
 }
 
 func deleteLaborContract(c *gin.Context) {
+	var info map[string]interface{}
+	err := c.BindJSON(&info)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
 
-}
+	db, err := sql.Open("mysql", "root:rootroot@tcp(127.0.0.1:3306)/capstone")
+	defer db.Close()
+	if err != nil {
+		panic(err)
+	}
 
-func test(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"message": "testok",
-	})
+	_, err = db.Exec("DELETE FROM laborcontract WHERE address= ? AND workplaceindex= ?",
+		info["address"].(string), int(info["workplaceindex"].(float64)))
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.Status(http.StatusOK)
 }
