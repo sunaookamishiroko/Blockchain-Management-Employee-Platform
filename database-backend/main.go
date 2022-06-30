@@ -150,7 +150,7 @@ func setLaborContract(c *gin.Context) {
 		panic(err)
 	}
 
-	_, err = db.Exec("INSERT INTO laborcontract VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?",
+	_, err = db.Exec("INSERT INTO laborcontract VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		contract.Address,
 		contract.WpName,
 		contract.WpEmployer,
@@ -168,6 +168,7 @@ func setLaborContract(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
+		log.Print(err.Error())
 		return
 	}
 
