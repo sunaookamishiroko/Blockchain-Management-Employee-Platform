@@ -31,7 +31,7 @@ export default function NotificationModal({
   const getContract = async () => {
     try {
       const response = await axios.get(
-        `${ENDPOINT}getcontract?address=${connector.accounts[0]}`
+        `${ENDPOINT}contract?address=${connector.accounts[0]}`
       );
 
       if (response.data.length == 0) {

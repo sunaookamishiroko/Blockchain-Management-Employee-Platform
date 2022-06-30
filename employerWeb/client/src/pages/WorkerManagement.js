@@ -164,6 +164,7 @@ const WorkerManagement = ({
 
     // 근로계약서 가져오기
     try {
+      console.log(wpinfo[0])
       lbcontract = await contract.methods
         .getLaborContract(wpinfo[0], workeraddress)
         .call({ from: accounts[0] });
