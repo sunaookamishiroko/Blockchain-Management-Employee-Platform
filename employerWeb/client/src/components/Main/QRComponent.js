@@ -35,17 +35,18 @@ const QRComponent = ({ wpinfo }) => {
   const isMakeQrcode = async () => {
     try {
       const response = await axios.get(
-        `${ENDPOINT}getqrcode?workplaceindex=${wpinfo[0]}&date=2022-05-31`
+        `${ENDPOINT}qrcode?workplaceindex=${wpinfo[0]}&date=2022-07-01`
       );
         
       if (response.data.length == 0) {
         setIsqrcode(false);
       } else {
-        setQRvalue(response.data[0].randomnum);
+        setQRvalue(response.data.randomnum);
         setIsqrcode(true);
       }
     } catch (e) {
       console.log(e);
+      //alert("db 에러 발생");
     }
   };
 
@@ -54,21 +55,18 @@ const QRComponent = ({ wpinfo }) => {
     let random = Math.floor(Math.random() * 100000000) + 1;
 
     const body = {
-      workplaceindex: 0,
-      date: "2022-05-31",
+      workplaceindex: parseInt(wpinfo[0]),
+      date: "2022-07-01",
       randomnum: random,
     };
 
     try {
-      const response = await axios.post(`${ENDPOINT}setqrcode`, body);
-
-      if (response.status !== 200) alert("db 에러 발생");
-      else {
-        setQRvalue(random);
-        setIsqrcode(true);
-      }
+      await axios.post(`${ENDPOINT}qrcode`, body);
+      setQRvalue(random);
+      setIsqrcode(true);
     } catch (e) {
       console.log(e);
+      alert("db 에러 발생");
     }
   };
 
