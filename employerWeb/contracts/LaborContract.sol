@@ -162,7 +162,7 @@ contract LaborContract {
   returns(laborContract memory) {
     uint tempIndex;
      // mapping _employeeLaborContractList와 근로계약서에 들어있는 workplaceIndex를 이용하여 찾음
-    for (uint x = 0 ; x < _employeeLaborContractList[employeeAddress].length ; x++){
+    for (uint x = _employeeLaborContractList[employeeAddress].length - 1 ; x >= 0 ; x--){
       if (lbcontract[_employeeLaborContractList[employeeAddress][x]].workplaceIndex == wpindex) {
           tempIndex = x;
           break;
