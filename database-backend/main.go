@@ -5,11 +5,13 @@ import (
 	"database/sql"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
+	"log"
 	"net/http"
 )
 
 func main() {
 	handler := gin.Default()
+	handler.Use(CORSMiddleware())
 
 	handler.GET("/qrcode", getQRcode)
 	handler.POST("/qrcode", setQRcode)
@@ -18,7 +20,7 @@ func main() {
 	handler.POST("/contract", setLaborContract)
 	handler.DELETE("/contract", deleteLaborContract)
 
-	handler.Run()
+	handler.Run(":8080")
 }
 
 func getQRcode(c *gin.Context) {
@@ -57,6 +59,7 @@ func setQRcode(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
+		log.Print(err.Error())
 		return
 	}
 
@@ -93,6 +96,7 @@ func getLaborContract(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
+		log.Print(err.Error())
 		return
 	}
 
@@ -136,6 +140,7 @@ func setLaborContract(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
+		log.Print(err.Error())
 		return
 	}
 
@@ -176,6 +181,7 @@ func deleteLaborContract(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
+		log.Print(err.Error())
 		return
 	}
 
@@ -196,4 +202,20 @@ func deleteLaborContract(c *gin.Context) {
 	}
 
 	c.Status(http.StatusOK)
+}
+
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Header("Access-Control-Allow-Headers", "Content-Type, Authorization, Origin")
+		c.Header("Access-Control-Allow-Credentials", "true")
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Methods", "GET, DELETE, POST")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
 }
