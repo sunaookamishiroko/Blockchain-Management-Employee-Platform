@@ -18,4 +18,5 @@ type LaborContract struct {
 	WorkingDays    string `json:"workingdays"`
 	Wage           string `json:"wage"`
 	WageDay        string `json:"wageday"`
+	Comment        string `json:"comment"`
 }
