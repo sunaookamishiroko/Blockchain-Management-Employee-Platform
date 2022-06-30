@@ -80,10 +80,11 @@ export default function SendLaborContractScreen({
       workplaceindex: route.params.laborcontract.workplaceindex,
     };
     try {
-      await axios.post(`${ENDPOINT}deletecontract`, body);
+      await axios.delete(`${ENDPOINT}contract`, {
+        data: body
+      });
     } catch (e) {
       console.log(e);
-      throw e;
     }
   };
 
