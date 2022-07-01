@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
+import { DELETEDAY } from "../../../envSetting";
+
 const StyledTermination = styled.div`
   display: flex;
   flex-direction: column;
@@ -60,7 +62,7 @@ const TerminationDialog = ({
   const deleteEmployee = async () => {
     try {
       await contract.methods
-        .deleteEmployee(wpinfo[0], selectedWorker[0], "2022-06-30")
+        .deleteEmployee(wpinfo[0], selectedWorker[0], DELETEDAY)
         .send({ from: accounts[0] });
     } catch (e) {
       console.log(e);

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
 
-import { PINATA_API_KEY, PINATA_SECRET_API_KEY } from "../../../envSetting"
+import { PINATA_API_KEY, PINATA_SECRET_API_KEY, BADGE1, BADGE2, BADGE3 } from "../../../envSetting"
 
 const axios = require("axios");
 
@@ -146,11 +146,11 @@ const AwardDialog = ({
 
       // 뱃지에 해당하는 이미지 ipfshash
       if (badgeclassfiy == "장기근속") {
-        image = "QmTFXycJ16E5mjuYuhKJyk689CHHMvuRX2dv7w5kSf6cQE";
+        image = BADGE1;
       } else if (badgeclassfiy == "친절") {
-        image = "QmTu1PBPgivkKeX5RR3tuWm7GnBK8nDhxypdLmXuimS3Mz";
+        image = BADGE2;
       } else if (badgeclassfiy == "개근") {
-        image = "Qmf75qLJXuGYCLnurdUjTxzwrUNYZfhMDVAqgmHoGY5Spb";
+        image = BADGE3;
       }
 
       // 현재 nft index 불러오기

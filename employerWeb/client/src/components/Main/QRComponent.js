@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import QRCode from "qrcode.react";
 
-import { ENDPOINT } from "../../envSetting";
+import { ENDPOINT, TODAY } from "../../envSetting";
 
 import axios from "axios";
 import { Button } from "@mui/material";
@@ -35,7 +35,7 @@ const QRComponent = ({ wpinfo }) => {
   const isMakeQrcode = async () => {
     try {
       const response = await axios.get(
-        `${ENDPOINT}qrcode?workplaceindex=${wpinfo[0]}&date=2022-07-01`
+        `${ENDPOINT}qrcode?workplaceindex=${wpinfo[0]}&date=${TODAY}`
       );
         
       if (response.data.length == 0) {
@@ -56,7 +56,7 @@ const QRComponent = ({ wpinfo }) => {
 
     const body = {
       workplaceindex: parseInt(wpinfo[0]),
-      date: "2022-07-01",
+      date: TODAY,
       randomnum: random,
     };
 
