@@ -12,6 +12,8 @@ export const BADGE2 = ``;
 export const BADGE3 = ``;
 
 // TODAY : 오늘 날짜
+// QR 코드 조회, 등록에 사용
 export const TODAY = `2022-07-01`;
-// DELETEDAY : 근로자 근로 계약 해지하는 날짜 -> 근로자 경력에 입력됨
+// DELETEDAY : 근로자 근로 계약 해지하는 날짜
+// 계약 해지할 때 경력에 등록됨
 export const DELETEDAY = `2022-08-31`
