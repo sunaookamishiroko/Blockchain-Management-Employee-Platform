@@ -24,7 +24,7 @@
 
 - [근로자 App](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/blob/main/employeeApp)
 
-- [DB Backend](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/tree/main/database-backend)
+- [Backend](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/tree/main/database-backend)
 
 - [SmartContract](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/tree/main/employerWeb/contracts)
 
