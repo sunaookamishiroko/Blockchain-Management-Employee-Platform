@@ -24,6 +24,7 @@ const Content = styled.div`
     font-family: "Noto Sans CJK KR";
   }
 
+
   .bottom {
     margin-left: auto;
     margin-top: auto;
@@ -182,7 +183,7 @@ const Payroll = ({
     <Container>
       <Categories name={name} wpname={wpinfo[1]} />
       <Content>
-        {!ready && <p>잠시만 기다려주세요...</p>}
+        {!ready && <h2>잠시만 기다려주세요...</h2>}
         {ready && (
           <>
             <div>
