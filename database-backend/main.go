@@ -10,17 +10,17 @@ import (
 )
 
 func main() {
-	handler := gin.Default()
-	handler.Use(CORSMiddleware())
+	router := gin.Default()
+	router.Use(CORSMiddleware())
 
-	handler.GET("/qrcode", getQRcode)
-	handler.POST("/qrcode", setQRcode)
+	router.GET("/qrcode", getQRcode)
+	router.POST("/qrcode", setQRcode)
 
-	handler.GET("/contract", getLaborContract)
-	handler.POST("/contract", setLaborContract)
-	handler.DELETE("/contract", deleteLaborContract)
+	router.GET("/contract", getLaborContract)
+	router.POST("/contract", setLaborContract)
+	router.DELETE("/contract", deleteLaborContract)
 
-	handler.Run(":8080")
+	router.Run(":8080")
 }
 
 func getQRcode(c *gin.Context) {
