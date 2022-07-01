@@ -37,7 +37,7 @@ const LeftMenu = styled.div`
 
 const Information = styled.div`
   width: 100%;
-  height: auto;
+  height: 15%;
   box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
   border-radius: 20px;
   padding: 20px;

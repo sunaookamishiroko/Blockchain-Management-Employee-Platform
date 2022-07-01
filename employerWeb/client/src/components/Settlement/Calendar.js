@@ -5,8 +5,8 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import styled from "styled-components";
 
 const CalendarDiv = styled.div`
-  width: 762px;
-  height: 730px;
+  width: 100%;
+  height: 85%;
   box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
   border-radius: 20px;
   padding: 20px;
@@ -14,13 +14,14 @@ const CalendarDiv = styled.div`
 `;
 
 const Calendar = ({ attendance }) => {
+
   return (
     <CalendarDiv>
       <h1>출/퇴근 기록부</h1>
       <CalendarLegend />
 
       <FullCalendar
-        contentHeight={560}
+        contentHeight={590}
         plugins={[dayGridPlugin]}
         initialView="dayGridMonth"
         events={attendance}
