@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 
 import "./ERC20.sol";
 
-contract newtoken {
+contract WonToken {
     ERC20 public token;
 
     constructor() public {
