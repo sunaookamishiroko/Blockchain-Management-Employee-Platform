@@ -6,7 +6,7 @@ import TANotificationComponent from "./TANotificationComponent";
 const RightSide = styled.div`
   display: flex;
   flex-direction: column;
-  width: 20%;
+  width: 25%;
   margin: 25px;
 `;
 
