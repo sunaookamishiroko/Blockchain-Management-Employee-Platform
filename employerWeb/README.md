@@ -7,9 +7,9 @@
 2. `LaborContract.sol, WonToken.sol, myNFT.sol`을 컴파일 후 배포합니다.
 3. `LaborContract.json, WonToken.json, myNFT.json, ERC20.json` 4개의 ABI 파일에 다음 `networks` 항목이 없다면 추가합니다. 배포한 contract의 address와 txhash를 추가하면 됩니다. ERC20의 address는 WonToken contract의 `geterc20address()` 함수를 통해 알아낼 수 있습니다.
 
--> remix로 배포했다면 무조건 존재하지 않으므로 추가합니다.
+-> remix로 컴파일, 배포했다면 무조건 존재하지 않으므로 추가합니다.
 
--> truffle을 이용했다면 존재합니다.
+-> truffle로 컴파일, 배포했다면 과정을 생략해도 됩니다.
 
 ```
 {
