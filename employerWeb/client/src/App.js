@@ -1,10 +1,13 @@
 import React, { Component, useEffect, useState } from "react";
+import styled from "styled-components";
+
 import WonTokenContract from "./contracts/WonToken.json";
 import ERC20Contract from "./contracts/ERC20.json";
 import LaborContract from "./contracts/LaborContract.json";
 import ERC721Contract from "./contracts/myNFT.json";
 import getWeb3 from "./getWeb3";
 import { Routes, Route } from "react-router-dom";
+
 import "./App.css";
 import Main from "./pages/Main";
 import WorkerManagement from "./pages/WorkerManagement";
@@ -13,6 +16,49 @@ import Settlement from "./pages/Settlement";
 import Payroll from "./pages/Payroll";
 import Test from "./pages/Test";
 import Workplace from "./pages/Workplace";
+
+const StyledSubmitButton = styled.input`
+  width: 260px;
+  border-radius: 30px;
+  font-family: "Noto Sans CJK KR";
+  border: 0px;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px;
+  background-color: #1c89e9;
+  color: white;
+  margin-top: 50px;
+
+  :hover {
+    cursor: pointer;
+    background-color: #1c89e9cc;
+  }
+`;
+
+const InputDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center; 
+
+  input {
+    width: auto;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+    border: 0px;
+    background-color: #f1f1f1;
+    color: #999999;
+    font-family: "Noto Sans CJK KR";
+    font-weight: bold;
+    border-radius: 40px;
+  }
+
+  select {
+    border: 1px solid #1c89e9cc;
+    border-radius: 0px; 
+  }
+`;
 
 const App = () => {
   const [web3, setWeb3] = useState();
@@ -166,7 +212,7 @@ const App = () => {
       alert("양식을 전부 채워주세요!");
       return;
     }
-    console.log(personaldata)
+
     try {
       await contract.methods
       .uploadPersonalInfo(
@@ -200,7 +246,6 @@ const App = () => {
       return;
     }
     
-    console.log(workplacedata)
     try {
       await contract.methods
       .uploadWorkplace(
@@ -232,7 +277,7 @@ const App = () => {
       <div style={{display:"flex", justifyContent:"center", alignItems:"center", height:"100vh", flexDirection:"column"}}>
         <h2>개인정보 업로드</h2>
         <form>
-          <div>
+          <InputDiv>
             <h3>이름</h3>
             <input
               placeholder="사장님 이름을 입력해주세요"
@@ -240,8 +285,8 @@ const App = () => {
               value={personaldata.name}
               onChange={personalOnChange}
             />
-          </div>
-          <div>
+          </InputDiv>
+          <InputDiv>
             <h3>나이</h3>
             <input
               type="number"
@@ -250,15 +295,17 @@ const App = () => {
               value={personaldata.age}
               onChange={personalOnChange}
             />
-          </div>
-          <div>
+          </InputDiv>
+          <InputDiv>
             <h3>성별</h3>
             <select name="gender" onChange={personalOnChange}>
               <option value="남">남</option>
               <option value="여">여</option>
             </select>
+          </InputDiv>
+          <div>
+            <StyledSubmitButton type={"submit"} value="제출" onClick={personalOnSubmit}/>
           </div>
-          <input type={"submit"} value="제출" onClick={personalOnSubmit}/>
         </form>
       </div>
     )
@@ -267,7 +314,7 @@ const App = () => {
       <div style={{display:"flex", justifyContent:"center", alignItems:"center", height:"100vh", flexDirection:"column"}}>
         <h2>사업장 업로드</h2>
         <form>
-          <div>
+          <InputDiv>
             <h3>이름</h3>
             <input
               placeholder="사업장 이름을 입력해주세요"
@@ -275,8 +322,8 @@ const App = () => {
               value={workplacedata.name}
               onChange={workplaceOnChange}
             />
-          </div>
-          <div>
+          </InputDiv>
+          <InputDiv>
             <h3>주소</h3>
             <input
               placeholder="사업장 주소를 입력해주세요"
@@ -284,8 +331,8 @@ const App = () => {
               value={workplacedata.location}
               onChange={workplaceOnChange}
             />
-          </div>
-          <input type={"submit"} value="제출" onClick={workplaceOnSubmit}/>
+          </InputDiv>
+          <StyledSubmitButton type={"submit"} value="제출" onClick={workplaceOnSubmit}/>
         </form>
       </div>
     )
