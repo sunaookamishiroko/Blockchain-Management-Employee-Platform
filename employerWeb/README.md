@@ -1,8 +1,62 @@
 # **employerWeb**
 
 ## 시작하기
+- node.js의 설치가 필요합니다.
 
-`npm install`을 실행하여 라이브러리 설치후 `npm start`를 통해 웹을 실행합니다.
+1. `employerWeb/contracts` 폴더에 존재하는 컨트랙트들의 컴파일이 필요합니다. remix 또는 truffle을 이용해주세요.
+2. `LaborContract.sol, WonToken.sol, myNFT.sol`을 컴파일 후 배포합니다.
+3. `LaborContract.json, WonToken.json, myNFT.json, ERC20.json` 4개의 ABI 파일에 다음 `networks` 항목이 없다면 추가합니다. 배포한 contract의 address와 txhash를 추가하면 됩니다. ERC20의 address는 WonToken contract의 `geterc20address()` 함수를 통해 알아낼 수 있습니다.
+
+-> remix로 배포했다면 무조건 존재하지 않으므로 추가합니다.
+
+
+-> truffle을 이용했다면 존재합니다.
+
+```
+{
+	"deploy": {
+		"VM:-": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"main:1": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"ropsten:3": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"rinkeby:4": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"kovan:42": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"görli:5": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"Custom": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		}
+	},
+	"networks": {
+		"3": {
+		  "events": {},
+		  "links": {},
+		  "address": "0xffffffffffffffffffffffffffffffffffffffff",
+		  "transactionHash": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+		}
+	},
+  ......
+```
+4. 4개의 ABI 파일을 `employerWeb/client/src/contractABI`폴더에 넣어주세요.
+5. `employerWeb/client/src/envSetting.js`에서 알맞은 환경 변수를 넣어주세요.
+6. `npm install`을 실행하여 라이브러리 설치후 `npm start`를 통해 웹을 실행합니다.
 
 ## Screenshot
 
