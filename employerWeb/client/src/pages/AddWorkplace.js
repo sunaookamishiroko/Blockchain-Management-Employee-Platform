@@ -6,7 +6,7 @@ import styled from "styled-components";
 const Container = styled.div`
   background: #f5f8fb;
   width: 100%;
-  height: auto;
+  height: 100%;
   display: flex;
 `;
 
@@ -15,7 +15,7 @@ const Content = styled.div`
   padding: 10px;
 
   width: 100%;
-  height: auto;
+  height: auto%;
 
   box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
   border-radius: 20px;
@@ -118,7 +118,7 @@ const AddWorkplace = ({
       <Categories name={name} wpname={wpinfo[1]} />
       <Content>
         <h1>사업장 추가</h1>
-        <div style={{display:"flex", justifyContent:"center", alignItems:"center", height:"50vh", flexDirection:"column"}}>
+        <div style={{display:"flex", justifyContent:"center", alignItems:"center", height:"80%", flexDirection:"column"}}>
           <form>
             <InputDiv>
               <h2>이름</h2>
