@@ -82,6 +82,10 @@ const categories = [
     name: "설정",
     submenu: [
       {
+        name: "addworkplace",
+        text: "사업장 추가",
+      },
+      {
         name: "workplace",
         text: "사업장 변경",
       }

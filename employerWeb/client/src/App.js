@@ -16,6 +16,7 @@ import Settlement from "./pages/Settlement";
 import Payroll from "./pages/Payroll";
 import Test from "./pages/Test";
 import Workplace from "./pages/Workplace";
+import AddWorkplace from "./pages/AddWorkplace";
 
 const StyledSubmitButton = styled.input`
   width: 260px;
@@ -419,6 +420,18 @@ const App = () => {
                 tokencontract={tokencontract}
                 nftcontract={nftcontract}
                 erc20contract={erc20contract}
+              />
+            }
+          />
+          <Route
+            path="/addworkplace"
+            element={
+              <AddWorkplace
+                name={name}
+                wpinfo={wpinfo}
+                web3={web3}
+                accounts={accounts}
+                contract={contract}
               />
             }
           />
