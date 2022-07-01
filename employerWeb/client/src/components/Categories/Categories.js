@@ -8,7 +8,7 @@ const LeftSidebar = styled.div`
   padding: 50px;
 
   width: 360px;
-  height: auto;
+  height: 100vh;
   background-color: white;
   float: left;
   display: flex;

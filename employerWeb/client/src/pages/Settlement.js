@@ -7,8 +7,9 @@ import Categories from "../components/Categories/Categories";
 import Calendar from "../components/Settlement/Calendar";
 
 const Container = styled.div`
-  width: 1800px;
-  height: 1080px;
+  background: #f5f8fb;
+  width: 100%;
+  height: 100%;
   display: flex;
 `;
 
@@ -17,7 +18,7 @@ const Content = styled.div`
   flex-direction: row;
   margin: 30px;
   padding: 10px;
-  width: 1416px;
+  width: 100%;
   height: auto;
 
   h1 {
@@ -28,13 +29,15 @@ const Content = styled.div`
 
 const LeftMenu = styled.div`
   display: flex;
+  width:100%;
+  height:auto;
   flex-direction: column;
   margin-right: 30px;
 `;
 
 const Information = styled.div`
-  width: 762px;
-  height: 150px;
+  width: 100%;
+  height: auto;
   box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
   border-radius: 20px;
   padding: 20px;
@@ -51,7 +54,7 @@ const Information = styled.div`
 
 const History = styled.div`
   width: 606px;
-  height: 950px;
+  height: auto;
   box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
   border-radius: 20px;
   padding: 20px;

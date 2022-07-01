@@ -10,7 +10,7 @@ const Calendar = ({ attendance }) => {
     <>
       <CalendarLegend />
       <FullCalendar
-        contentHeight={600}
+        contentHeight="auto"
         plugins={[dayGridPlugin, bootstrap5Plugin]}
         initialView="dayGridMonth"
         events={attendance}

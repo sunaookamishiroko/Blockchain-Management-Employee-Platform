@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import WonTokenContract from "./contracts/WonToken.json";
@@ -194,7 +194,7 @@ const App = () => {
       }
 
       // Test 데이터 설정중에는 주석해제 해주어야 합니다.
-      // setReady(true);
+      setReady(true);
     } catch (e) {
       console.log(e);
     }

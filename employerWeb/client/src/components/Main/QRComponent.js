@@ -15,8 +15,8 @@ const StyledQRComponent = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 294px;
-  height: 300px;
+  width: 100%;
+  height: 30%;
   box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
   border-radius: 20px;
   background-color: #f7f7f7;
@@ -75,9 +75,9 @@ const QRComponent = ({ wpinfo }) => {
       <h2 style={{ textAlign: "center" }}>QR 코드 인증</h2>
       {isqrcode == null && <p>데이터를 불러오는 중입니다...</p>}
       {isqrcode == true && (
-        <>
+        <div style={{display:"flex", justifyContent:"center", alignItems:"center", height:"60%"}}>
           <QRCode value={QRvalue.toString()} />
-        </>
+        </div>
       )}
       {isqrcode == false && (
         <Button onClick={MakeQrcode}>QR코드 생성하기</Button>
