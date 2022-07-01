@@ -11,7 +11,7 @@ import (
 
 func main() {
 	router := gin.Default()
-	router.Use(CORSMiddleware())
+	router.Use(corsMiddleware())
 
 	router.GET("/qrcode", getQRcode)
 	router.POST("/qrcode", setQRcode)
@@ -42,9 +42,8 @@ func getQRcode(c *gin.Context) {
 		c.Status(http.StatusOK)
 		return
 	case err != nil:
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
+		c.JSON(http.StatusBadRequest, errorResponse(err))
+		log.Print(err.Error())
 		return
 	}
 
@@ -56,9 +55,7 @@ func setQRcode(c *gin.Context) {
 
 	err := c.BindJSON(&qr)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		c.JSON(http.StatusInternalServerError, errorResponse(err))
 		log.Print(err.Error())
 		return
 	}
@@ -72,9 +69,8 @@ func setQRcode(c *gin.Context) {
 	_, err = db.Exec("INSERT INTO qrcodecheck VALUES (?, ?, ?)", qr.WorkplaceIndex, qr.Date, qr.RandomNum)
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
+		c.JSON(http.StatusBadRequest, errorResponse(err))
+		log.Print(err.Error())
 		return
 	}
 
@@ -93,9 +89,7 @@ func getLaborContract(c *gin.Context) {
 	rows, err := db.Query("SELECT * FROM laborcontract WHERE address= ?", address)
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		c.JSON(http.StatusInternalServerError, errorResponse(err))
 		log.Print(err.Error())
 		return
 	}
@@ -120,9 +114,8 @@ func getLaborContract(c *gin.Context) {
 		)
 
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
+			c.JSON(http.StatusBadRequest, errorResponse(err))
+			log.Print(err.Error())
 			return
 		}
 
@@ -137,9 +130,7 @@ func setLaborContract(c *gin.Context) {
 
 	err := c.BindJSON(&contract)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		c.JSON(http.StatusInternalServerError, errorResponse(err))
 		log.Print(err.Error())
 		return
 	}
@@ -165,9 +156,7 @@ func setLaborContract(c *gin.Context) {
 		contract.Comment)
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
+		c.JSON(http.StatusBadRequest, errorResponse(err))
 		log.Print(err.Error())
 		return
 	}
@@ -179,9 +168,7 @@ func deleteLaborContract(c *gin.Context) {
 	var info map[string]interface{}
 	err := c.BindJSON(&info)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		c.JSON(http.StatusInternalServerError, errorResponse(err))
 		log.Print(err.Error())
 		return
 	}
@@ -196,16 +183,15 @@ func deleteLaborContract(c *gin.Context) {
 		info["address"].(string), int(info["workplaceindex"].(float64)))
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
+		c.JSON(http.StatusBadRequest, errorResponse(err))
+		log.Print(err.Error())
 		return
 	}
 
 	c.Status(http.StatusOK)
 }
 
-func CORSMiddleware() gin.HandlerFunc {
+func corsMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Header("Access-Control-Allow-Headers", "Content-Type, Authorization, Origin")
 		c.Header("Access-Control-Allow-Credentials", "true")
@@ -218,5 +204,11 @@ func CORSMiddleware() gin.HandlerFunc {
 		}
 
 		c.Next()
+	}
+}
+
+func errorResponse(err error) gin.H {
+	return gin.H{
+		"error": err.Error(),
 	}
 }
