@@ -12,13 +12,13 @@ import AwardDialog from "../components/WorkerManagement/Dialog/AwardDialog";
 
 const Container = styled.div`
   width: 100%;
-  height: 100%;
+  height: auto;
   display: flex;
   background-color: #f5f8fb;
 `;
 
 const ContractDialog = styled.div`
-  width: 1280px;
+  width: 900px;
   height: 720px;
   padding: 30px;
   border-radius: 15px;
@@ -227,7 +227,7 @@ const WorkerManagement = ({
         sum += 1;
       }
     }
-    
+
     if (isNaN(sum / caldata[0].length) * 100) {
       temp.push("0%");
     } else {
