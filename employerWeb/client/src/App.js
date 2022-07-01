@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import WonTokenContract from "./contracts/WonToken.json";
-import ERC20Contract from "./contracts/ERC20.json";
-import LaborContract from "./contracts/LaborContract.json";
-import ERC721Contract from "./contracts/myNFT.json";
+import WonTokenContract from "./contractABI/WonToken.json";
+import ERC20Contract from "./contractABI/ERC20.json";
+import LaborContract from "./contractABI/LaborContract.json";
+import ERC721Contract from "./contractABI/myNFT.json";
 import getWeb3 from "./getWeb3";
 import { Routes, Route } from "react-router-dom";
 
