@@ -25,9 +25,9 @@ class Test extends Component {
       .uploadPersonalInfo(
         accounts[0],
         0,
-        encodeURI("이서윤"),
+        encodeURI("이영희"),
         24,
-        encodeURI("남")
+        encodeURI("여")
       )
       .send({ from: accounts[0] });
     console.log("uploadPersonalInfo0 complete");
@@ -40,7 +40,7 @@ class Test extends Component {
       .uploadPersonalInfo(
         accounts[0],
         1,
-        encodeURI("김철수"),
+        encodeURI("이철수"),
         50,
         encodeURI("남")
       )
@@ -66,7 +66,7 @@ class Test extends Component {
       .uploadWorkplace(
         accounts[0],
         encodeURI("올리브영 시화점"),
-        encodeURI("경기 시흥시 중심상가3길 15-1")
+        encodeURI("경기도 시흥시 정왕동 1737-16")
       )
       .send({ from: accounts[0] });
     console.log("uploadWorkplace complete");
@@ -89,16 +89,16 @@ class Test extends Component {
   uploadLaborContract = async () => {
     const { accounts, contract } = this.props;
     let items = [
-      "2022/03/28-2022/06/30",
-      encodeURI("서빙"),
-      "03:00-12:00",
-      encodeURI("수"),
-      "12000",
+      "2022/05/01-2022/09/30",
+      encodeURI("진열"),
+      "14:00-20:00",
+      encodeURI("화금"),
+      "11000",
       encodeURI("매월 10일"),
-      encodeURI("바보임"),
+      encodeURI("x"),
     ];
     await contract.methods
-      .uploadLaborContract(items, "2022-04-12", accounts[0], 0)
+      .uploadLaborContract(items, "2022-05-01", accounts[0], 0)
       .send({ from: accounts[0] });
 
     console.log("uploadLaborContract complete");
@@ -140,7 +140,7 @@ class Test extends Component {
   uploadAttendance0 = async () => {
     const { accounts, contract } = this.props;
     await contract.methods
-      .uploadAttendance(0, 0, "2022-02-05", 18, 0)
+      .uploadAttendance(0, 0, "2022-07-07", 12, 0)
       .send({ from: accounts[0] });
     console.log("uploadAttendance0 complete");
   };
@@ -149,7 +149,7 @@ class Test extends Component {
   uploadAttendance1 = async () => {
     const { accounts, contract } = this.props;
     await contract.methods
-      .uploadAttendance(1, 0, "2022-02-05", 3, 45)
+      .uploadAttendance(1, 0, "2022-07-07", 20, 0)
       .send({ from: accounts[0] });
     console.log("uploadAttendance1 complete");
   };
@@ -266,16 +266,7 @@ class Test extends Component {
   transfer = async () => {
     const { accounts, erc20contract } = this.props;
     await erc20contract.methods
-      .transfer("0x73fA89eDbc136AA1eC77a729D3409c760F631dcf", 100000)
-      .send({ from: accounts[0] });
-    console.log("transfer complete");
-  };
-
-  // 토큰 전송
-  transfer = async () => {
-    const { accounts, erc20contract } = this.props;
-    await erc20contract.methods
-      .transfer("0x73fA89eDbc136AA1eC77a729D3409c760F631dcf", 100000)
+      .transfer("0x8F22cbB2Fe066d8671c9C09bfF005F0507e1627e", 1000000)
       .send({ from: accounts[0] });
     console.log("transfer complete");
   };
@@ -290,7 +281,7 @@ class Test extends Component {
   // 토큰 -> 이더 판매
   sell = async () => {
     const { accounts, tokencontract } = this.props;
-    await tokencontract.methods.sell(2000000).send({ from: accounts[0] });
+    await tokencontract.methods.sell(1000000).send({ from: accounts[0] });
     console.log("sell compleate");
   };
 
