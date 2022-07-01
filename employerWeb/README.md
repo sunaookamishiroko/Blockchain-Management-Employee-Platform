@@ -59,8 +59,15 @@
 
 ## Screenshot
 
-### 1. 출/퇴근 현황
+### 0. 개인 정보 업로드
+<img src="/images/web/0-uploadpersonal.png">
+<img src="/images/web/0-uploadworkplace.png">
 
+- 개인 정보가 등록되지 않은 address라면 등록하는 화면이 나타납니다.
+- 개인 정보 등록 트랜잭션이 정상적으로 완료되면 사업장을 등록하는 화면으로 넘어가게 됩니다.
+- 사업장 등록 트랜잭션이 정상적으로 완료되면 출/퇴근 현황 화면으로 진입합니다.
+
+### 1. 출/퇴근 현황
 <img src="/images/web/1-noqr.png">
 <img src="/images/web/1.png">
 
