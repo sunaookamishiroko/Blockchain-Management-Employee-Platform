@@ -32,6 +32,21 @@ const App = () => {
   const [loginready, setLoginready] = useState(false);
   const [ready, setReady] = useState(false);
 
+  const [ispersonaldata, setIspersonaldata] = useState(true);
+  const [isworkplacedata, setIsworkplacedata] = useState(true);
+
+  // 업로드용 state
+  const [personaldata, setPersonaldata] = useState({
+    name: "",
+    age: "",
+    gender: "남",
+  });
+
+  const [workplacedata, setWorkplacedata] = useState({
+    name: "",
+    location: "",
+  });
+
   useEffect(() => {
     loginSetting();
   }, []);
@@ -101,40 +116,181 @@ const App = () => {
       const personalinfo = await contract.methods
         .getPersonInformation(accounts[0])
         .call({ from: accounts[0] });
+
+      if (personalinfo["name"] == "") {
+        setIspersonaldata(false)
+      }
+
       const workplaceinfo = await contract.methods
         .getWorkplaces()
         .call({ from: accounts[0] });
-      // 근로지 수 변경
-      setWorkplaceList(workplaceinfo[0]);
 
-      let temp = [];
-      temp.push(
-        workplaceinfo[0][index],
-        decodeURI(workplaceinfo[1][index]),
-        decodeURI(workplaceinfo[2][index])
-      );
+      if (workplaceinfo[0].length == 0) {
+        setIsworkplacedata(false)
+      } else {
+        setWorkplaceList(workplaceinfo[0]);
+        let temp = [];
+        temp.push(
+          workplaceinfo[0][index],
+          decodeURI(workplaceinfo[1][index]),
+          decodeURI(workplaceinfo[2][index])
+        );
+  
+        const workersinfo = await contract.methods
+          .getEmployeeInfo(workplaceinfo[0][index])
+          .call({ from: accounts[0] });
+  
+        setName(decodeURI(personalinfo["name"]));
+        setWorkers(workersinfo);
+        setWpinfo(temp);
+        setReady(true);
+      }
 
-      // workplaceinfo : 사업장 index list, 사업장 이름 list, 사업장 location list(사업장 주소)
-      const workersinfo = await contract.methods
-        .getEmployeeInfo(workplaceinfo[0][index])
-        .call({ from: accounts[0] });
-
-      // 사장 이름
-      setName(decodeURI(personalinfo[1]));
-      //
-      setWorkers(workersinfo);
-      //
-      setWpinfo(temp);
-      setReady(true);
+      // Test 데이터 설정중에는 주석해제 해주어야 합니다.
+      // setReady(true);
     } catch (e) {
       console.log(e);
     }
   };
 
-  // Test 데이터 설정중에는 !ready -> !loginready로 바꿔줍니다
-  if (!ready) {
-    return <div>메타마스크 로그인, web3, 초기정보 설정중 ...</div>;
-  } else {
+  // 개인정보용
+  const personalOnChange = (event) => {
+    const { name, value } = event.target;
+    setPersonaldata({ ...personaldata, [name]: value });
+  };
+
+  const personalOnSubmit = async (e) => {
+    e.preventDefault();
+
+    if (personaldata.name == "" || personaldata.age == "") {
+      alert("양식을 전부 채워주세요!");
+      return;
+    }
+    console.log(personaldata)
+    try {
+      await contract.methods
+      .uploadPersonalInfo(
+        accounts[0],
+        1,
+        encodeURI(personaldata.name),
+        parseInt(personaldata.age),
+        encodeURI(personaldata.gender)
+      )
+      .send({ from: accounts[0] });
+      setIspersonaldata(true);
+      alert("개인 정보 업로드 트랜잭션을 성공적으로 보냈습니다.");
+    } catch (e) {
+      alert("트랜잭션 요청을 거절하거나 알 수 없는 오류가 발생했습니다.");
+      console.log(e);
+    }
+
+  };
+
+  // 사업장용
+  const workplaceOnChange = (event) => {
+    const { name, value } = event.target;
+    setWorkplacedata({ ...workplacedata, [name]: value });
+  };
+
+  const workplaceOnSubmit = async (e) => {
+    e.preventDefault();
+
+    if (workplacedata.name == "" || workplacedata.location == "") {
+      alert("양식을 전부 채워주세요!");
+      return;
+    }
+    
+    console.log(workplacedata)
+    try {
+      await contract.methods
+      .uploadWorkplace(
+        accounts[0],
+        encodeURI(workplacedata.name),
+        encodeURI(workplacedata.location)
+      )
+      .send({ from: accounts[0] });
+      await employerSetting(0);
+      alert("사업장 업로드 트랜잭션을 성공적으로 보냈습니다.");
+    } catch (e) {
+      alert("트랜잭션 요청을 거절하거나 알 수 없는 오류가 발생했습니다.");
+      console.log(e);
+    }
+
+  };
+  
+  if (!ready && ispersonaldata && isworkplacedata) {
+    return (
+    <h2 style={{
+      display:"flex",
+      justifyContent:"center", 
+      alignItems:"center", 
+      height:"100vh"}}>
+        메타마스크 로그인, web3, 초기 정보 설정중 ...
+    </h2>);
+  } else if (!ready && !ispersonaldata) {
+    return (
+      <div style={{display:"flex", justifyContent:"center", alignItems:"center", height:"100vh", flexDirection:"column"}}>
+        <h2>개인정보 업로드</h2>
+        <form>
+          <div>
+            <h3>이름</h3>
+            <input
+              placeholder="사장님 이름을 입력해주세요"
+              name="name"
+              value={personaldata.name}
+              onChange={personalOnChange}
+            />
+          </div>
+          <div>
+            <h3>나이</h3>
+            <input
+              type="number"
+              placeholder="나이를 입력해주세요"
+              name="age"
+              value={personaldata.age}
+              onChange={personalOnChange}
+            />
+          </div>
+          <div>
+            <h3>성별</h3>
+            <select name="gender" onChange={personalOnChange}>
+              <option value="남">남</option>
+              <option value="여">여</option>
+            </select>
+          </div>
+          <input type={"submit"} value="제출" onClick={personalOnSubmit}/>
+        </form>
+      </div>
+    )
+  } else if (!ready && !isworkplacedata) {
+    return (
+      <div style={{display:"flex", justifyContent:"center", alignItems:"center", height:"100vh", flexDirection:"column"}}>
+        <h2>사업장 업로드</h2>
+        <form>
+          <div>
+            <h3>이름</h3>
+            <input
+              placeholder="사업장 이름을 입력해주세요"
+              name="name"
+              value={workplacedata.name}
+              onChange={workplaceOnChange}
+            />
+          </div>
+          <div>
+            <h3>주소</h3>
+            <input
+              placeholder="사업장 주소를 입력해주세요"
+              name="location"
+              value={workplacedata.location}
+              onChange={workplaceOnChange}
+            />
+          </div>
+          <input type={"submit"} value="제출" onClick={workplaceOnSubmit}/>
+        </form>
+      </div>
+    )
+  }
+  else {
     return (
       <div>
         <Routes>
