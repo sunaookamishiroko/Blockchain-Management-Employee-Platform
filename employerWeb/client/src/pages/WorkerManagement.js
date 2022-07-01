@@ -227,8 +227,12 @@ const WorkerManagement = ({
         sum += 1;
       }
     }
-
-    temp.push(((sum / caldata[0].length) * 100).toString() + "%");
+    
+    if (isNaN(sum / caldata[0].length) * 100) {
+      temp.push("0%");
+    } else {
+      temp.push(((sum / caldata[0].length) * 100).toString() + "%");
+    }
     setUserdata(temp);
   };
 
