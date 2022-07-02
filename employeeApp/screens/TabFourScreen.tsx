@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, TextInput } from "react-native";
 import Slider from "@react-native-community/slider";
 
 import { Text, View } from '../components/Themed';
@@ -36,6 +36,11 @@ export default function TabFourScreen({
   const [money, setMoney] = useState<number>(0);
   const [ready, setReady] = useState<boolean | null>(false);
 
+  // 개인 정보 업로드 용
+  const [name, setName] = useState<string>("");
+  const [age, setAge] = useState<string>("");
+  const [gender, setGender] = useState<string>("");
+
   useEffect(() => {
     if (connector.connected) {
       getPersonInformation();
@@ -56,6 +61,7 @@ export default function TabFourScreen({
 
   // 개인정보 불러오기
   const getPersonInformation = async () => {
+
     let result = await laborContract.getPersonInformation(
       connector.accounts[0],
       { from: connector.accounts[0] }
@@ -77,7 +83,7 @@ export default function TabFourScreen({
       });
     }
 
-    if (result[1] === 0) {
+    if (result[1] === "") {
       setReady(null);
     } else {
       setPersonalinfo({
@@ -99,9 +105,9 @@ export default function TabFourScreen({
     ]).encodeFunctionData("uploadPersonalInfo", [
       connector.accounts[0],
       0,
-      encodeURI("이서윤"),
-      24,
-      encodeURI("남"),
+      encodeURI(name),
+      parseInt(age),
+      encodeURI(gender),
     ]);
     let txObj = await makeLabortxobj(connector.accounts[0], abidata, 100000);
 
@@ -243,33 +249,49 @@ export default function TabFourScreen({
   `;
 
   return (
-    <StyledScreen>
-      {!connector.connected && (
-        <TouchableOpacity onPress={connectWallet} style={styles.buttonStyle}>
-          <Text style={styles.buttonTextStyle}>Connect a Wallet</Text>
-        </TouchableOpacity>
-      )}
-      {connector.connected && ready === false && (
-        <>
-          <Text>잠시만 기다려주세요...</Text>
-        </>
+    <>
+      {!connector.connected &&(
+        <View style={styles.container}>
+          <TouchableOpacity onPress={connectWallet} style={styles.buttonStyle}>
+            <Text style={styles.buttonTextStyle}>Connect a Wallet</Text>
+          </TouchableOpacity>
+        </View>
       )}
       {connector.connected && ready === null && (
-        <>
+        <View style={styles.container}>
+          <View>
+            <Text>이름</Text>
+            <TextInput 
+              placeholder="이름을 입력해주세요." 
+              onChangeText={(value) => setName(value)}/>
+            <Text>나이</Text>
+            <TextInput 
+              placeholder="나이를 입력해주세요." 
+              keyboardType="phone-pad"
+              onChangeText={(value) => setAge(value)}/>
+            <Text>성별</Text>
+            <TextInput 
+              placeholder="성별을 입력해주세요." 
+              onChangeText={(value) => setGender(value)}/>
+          </View>
           <TouchableOpacity
             onPress={uploadPersonalInfo}
             style={styles.buttonStyle}
           >
             <Text style={styles.buttonTextStyle}>개인정보 업로드</Text>
           </TouchableOpacity>
-          <Text>개인 정보가 없습니다.</Text>
           <TouchableOpacity onPress={killSession} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>Logout</Text>
           </TouchableOpacity>
-        </>
+        </View>            
+      )}
+      {connector.connected && ready === false && (
+        <View style={styles.container}>
+          <Text>잠시만 기다려주세요...</Text>
+        </View>
       )}
       {connector.connected && ready && (
-        <>
+        <StyledScreen>
           <FirstProfileView>
             <StyledImage source={require("../assets/images/profile.png")} />
             <Text>{personalinfo.name}</Text>
@@ -314,14 +336,12 @@ export default function TabFourScreen({
           >
             경력
           </Text>
-
           {makeJsx()}
-
           <StyledButton logout onPress={killSession}>
             <StyledButtonText>Logout</StyledButtonText>
           </StyledButton>
-        </>
+        </StyledScreen>
       )}
-    </StyledScreen>
+    </>
   );
 }
