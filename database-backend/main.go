@@ -23,6 +23,9 @@ func main() {
 	router.Run(":8080")
 }
 
+// qrcode 불러오기 (GET)
+// 해당하는 workplaceindex와 날짜 필요
+// ex) /qrcode?workplaceindex=0&date=2022-07-01
 func getQRcode(c *gin.Context) {
 	wpindex, date := c.Query("workplaceindex"), c.Query("date")
 
@@ -50,6 +53,10 @@ func getQRcode(c *gin.Context) {
 	c.JSON(http.StatusOK, qr)
 }
 
+// qrcode 업로드 (POST)
+// 해당하는 workplaceindex, 날짜, randomnum 필요
+// ex) /qrcode
+// 입력은 json
 func setQRcode(c *gin.Context) {
 	var qr entity.Qrcode
 
@@ -77,6 +84,9 @@ func setQRcode(c *gin.Context) {
 	c.Status(http.StatusCreated)
 }
 
+// 임시 근로 계약서 불러오기 (GET)
+// 해당하는 address 필요
+// ex) /contract?address=0xffffffffffffffffffffffffffffffffffffffff
 func getLaborContract(c *gin.Context) {
 	address := c.Query("address")
 
@@ -125,6 +135,10 @@ func getLaborContract(c *gin.Context) {
 	c.JSON(http.StatusOK, contracts)
 }
 
+// 임시 근로 계약서 업로드 (POST)
+// 해당하는 entity 필요
+// ex) /contract
+// 입력은 json
 func setLaborContract(c *gin.Context) {
 	var contract entity.LaborContract
 
@@ -164,6 +178,10 @@ func setLaborContract(c *gin.Context) {
 	c.Status(http.StatusCreated)
 }
 
+// 임시 근로 계약서 삭제 (DELETE)
+// address와 workplaceindex 필요
+// ex) /contract
+// 입력은 json
 func deleteLaborContract(c *gin.Context) {
 	var info map[string]interface{}
 	err := c.BindJSON(&info)
@@ -191,6 +209,7 @@ func deleteLaborContract(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+// CORS 해결하기 위한 함수
 func corsMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Header("Access-Control-Allow-Headers", "Content-Type, Authorization, Origin")
@@ -207,6 +226,7 @@ func corsMiddleware() gin.HandlerFunc {
 	}
 }
 
+// error에 대한 Map 반환
 func errorResponse(err error) gin.H {
 	return gin.H{
 		"error": err.Error(),
