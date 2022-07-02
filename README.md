@@ -16,7 +16,7 @@
 
 <img src="/images/Architecture.png">
 
-## More Descripton...
+## More Descripton and Screenshot
 
 각 애플리케이션의 스크린샷과 구동 방법은 아래를 참조해주세요.
 
