@@ -8,6 +8,10 @@ import { RootTabScreenProps } from "../types";
 import axios from "axios";
 import { useWalletConnect } from "@walletconnect/react-native-dapp";
 
+import "react-native-get-random-values";
+import "@ethersproject/shims";
+import { ethers } from "ethers";
+
 import { NFTContract, laborContract } from "../connectETH/Transaction";
 
 import { PINATA_APIKEY, PANATA_SECRET_APIKEY } from "@env";
@@ -40,8 +44,7 @@ export default function TabThreeScreen({
     });
     let temp = [];
 
-    // const url = `https://api.pinata.cloud/data/pinList?status=pinned&metadata[keyvalues]={"owner":{"value":"${connector.accounts[0]}", "op":"eq"}}`;
-    const url = `https://api.pinata.cloud/data/pinList?status=pinned&metadata[keyvalues]={"owner":{"value":"0x8F22cbB2Fe066d8671c9C09bfF005F0507e1627e", "op":"eq"}}`;
+    const url = `https://api.pinata.cloud/data/pinList?status=pinned&metadata[keyvalues]={"owner":{"value":"${connector.accounts[0]}", "op":"eq"}}`;
 
     if (alltokens.length === 0) {
       setReady(null);
@@ -52,23 +55,28 @@ export default function TabThreeScreen({
           pinata_secret_api_key: PANATA_SECRET_APIKEY,
         },
       });
-      console.log(tokendata);
-      for (let x = 0; x < tokendata.data.rows.length; x++) {
-        let detaildata = await axios.get(
-          `https://gateway.pinata.cloud/ipfs/${tokendata.data.rows[x].ipfs_pin_hash}`
-        );
-        let wpinfo = await laborContract.getWorkplcesInfo(
-          parseInt(detaildata.data.wpindex),
-          { from: connector.accounts[0] }
-        );
 
-        temp.push({
-          metadata: detaildata.data,
-          wpinfo: {
-            wpname: decodeURI(wpinfo[0]),
-            wplocation: decodeURI(wpinfo[1]),
-          },
-        });
+      console.log(tokendata);
+
+      let length = tokendata.data.count;
+      for (let x = 0; x < length ; x++) {
+        if (ethers.utils.formatUnits(alltokens[x], 0) == tokendata.data.rows[length - 1 - x].metadata.name) {
+          let detaildata = await axios.get(
+            `https://gateway.pinata.cloud/ipfs/${tokendata.data.rows[x].ipfs_pin_hash}`
+          );
+          let wpinfo = await laborContract.getWorkplcesInfo(
+            parseInt(detaildata.data.wpindex),
+            { from: connector.accounts[0] }
+          );
+  
+          temp.push({
+            metadata: detaildata.data,
+            wpinfo: {
+              wpname: decodeURI(wpinfo[0]),
+              wplocation: decodeURI(wpinfo[1]),
+            },
+          });
+        }
       }
       setTokeninfo(temp);
       setReady(true);
