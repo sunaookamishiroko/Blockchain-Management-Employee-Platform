@@ -15,7 +15,7 @@ import { ethers } from "ethers";
 
 import { makeLabortxobj } from "../connectETH/Transaction";
 
-import { ENDPOINT } from "@env";
+import { ENDPOINT, TODAY, ONWORK, OFFWORK } from "@env";
 
 import axios from "axios";
 
@@ -31,6 +31,10 @@ export default function SendAttendanceScreen({ navigation, route }: RootTabScree
   const [issendtx, setIssendtx] = useState<boolean | null>(null);
 
   const [time, setTime] = useState<object>();
+
+  const TODAY = "2022-07-02"
+  const ONWORK = "14:30"
+  const OFFWORK = "16:00"
 
   useEffect(() => {
     (async () => {
@@ -66,9 +70,21 @@ export default function SendAttendanceScreen({ navigation, route }: RootTabScree
 
     await getTime();
 
+    let hour;
+    let min;
+
+    if (route.params.num === 0) {
+      hour = parseInt(ONWORK.slice(0, 2))
+      min = parseInt(ONWORK.slice(3, 5))
+    } else {
+      hour = parseInt(OFFWORK.slice(0, 2))
+      min = parseInt(OFFWORK.slice(3, 5))
+    }
+    console.log(hour, min)
+
     let abidata = new ethers.utils
     .Interface(["function uploadAttendance(uint8 classifyNum, uint workPlaceInfoIndex, string calldata day, int timeHour, int timeMinute)"])
-    .encodeFunctionData("uploadAttendance", [route.params.num, route.params.index, "2022-06-23", 20, 0]);
+    .encodeFunctionData("uploadAttendance", [route.params.num, route.params.index, TODAY, hour, min]);
     let txObj = await makeLabortxobj(connector.accounts[0], abidata, 200000);
 
     try {
@@ -94,13 +110,13 @@ export default function SendAttendanceScreen({ navigation, route }: RootTabScree
   const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
     setScandata(data);
-    
+
     try {
       const response = await axios.get(
-        `${ENDPOINT}qrcode?workplaceindex=${route.params.index}&date=2022-06-23`
+        `${ENDPOINT}qrcode?workplaceindex=${route.params.index}&date=${TODAY}`
       );
 
-      if (response.data[0].randomnum == data) await uploadWork();
+      if (response.data.randomnum == data) await uploadWork();
       else setIsrigt(false);
     } catch(e) {
       console.log(e);
@@ -125,7 +141,6 @@ export default function SendAttendanceScreen({ navigation, route }: RootTabScree
       {scanned && isright === false &&(
         <>
           <Text style={styles.title}>해당 QR코드가 근로지의 QR코드와 일치하지 않습니다.</Text>
-          <Text>{scandata}</Text>
         </>
       )}
       {scanned && issendtx === null && isright !== false &&(
