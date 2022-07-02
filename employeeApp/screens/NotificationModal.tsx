@@ -93,13 +93,19 @@ export default function NotificationModal({
   return (
     <View style={styles.notificatioonContainer}>
       {!connector.connected && (
-        <Text style={styles.buttonTextStyle}>로그인 해주세요</Text>
+        <View style={styles.container}>
+          <Text style={styles.buttonTextStyle}>로그인 해주세요</Text>
+        </View>
       )}
       {connector.connected && ready === null && (
-        <Text>잠시만 기다려주세요...</Text>
+        <View style={styles.container}>
+          <Text>잠시만 기다려주세요...</Text>
+        </View>
       )}
       {connector.connected && ready === false && (
-        <Text>근로계약서 요청이 없습니다!</Text>
+        <View style={styles.container}>
+          <Text>근로계약서 요청이 없습니다!</Text>
+        </View>
       )}
       {connector.connected && ready && <>{makeJsx()}</>}
     </View>
