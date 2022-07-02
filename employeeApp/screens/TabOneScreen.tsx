@@ -43,14 +43,6 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
     return connector.connect();
   }, [connector]);
 
-  const StyledComponent = styled.View`
-    width:100%;
-    height:100%;
-    padding-left:10;
-    padding-right:10;
-    
-  `;
-
    // 근무지 불러오기
   const getCardinfo = (async() => {
     let result = await laborContract.getWorkplaces({ from : connector.accounts[0] });
