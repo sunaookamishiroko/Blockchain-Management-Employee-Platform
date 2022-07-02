@@ -28,6 +28,8 @@ export default function SendLaborContractScreen({
   const [answer, setAnswer] = useState<Boolean | null>(null);
   const [txhash, setTxhash] = useState<string>();
 
+  const TODAY = "2022-07-01";
+
   // walletconnect 세션을 저장하는 hook
   const connector = useWalletConnect();
 
@@ -51,7 +53,7 @@ export default function SendLaborContractScreen({
       "function uploadLaborContract(string [] calldata laborContractItems, string calldata stday, address employeeAddress, uint wpindex)",
     ]).encodeFunctionData("uploadLaborContract", [
       temp,
-      "2022-04-28",
+      TODAY,
       connector.accounts[0],
       route.params.laborcontract.workplaceindex,
     ]);
