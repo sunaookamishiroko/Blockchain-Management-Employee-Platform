@@ -55,7 +55,7 @@
 ```
 4. 4개의 ABI 파일을 `employerWeb/client/src/contractABI`폴더에 넣어주세요.
 5. `employerWeb/client/src/envSetting.js`에서 알맞은 환경 변수를 넣어주세요.
-6. `npm install`을 실행하여 라이브러리 설치후 `npm start`를 통해 웹을 실행합니다.
+6. `npm install`을 실행하여 라이브러리 설치후 `npm start`를 통해 웹을 실행합니다. 크롬 익스텐션 metamask가 필요합니다.
 
 ## Screenshot
 
