@@ -2,16 +2,20 @@
 
 ## 시작하기
 
+- pinata, infura의 이더리움 node, expo, 배포한 contract의 address가 필요합니다.
+- 배포는 [여기](https://github.com/somewheregreeny/Blockchain-Management-Employee-Platform/blob/main/employerWeb)를 참조해주세요.
+
 1. `yarn install`로 라이브러리를 설치합니다
 2. `employeeApp/contracts/` 경로에 컨트랙트 ABI 파일을 넣습니다. -> ERC20, LaborContract, myNFT, WonToken
-3. env 파일을 설정합니다.
-4. `yarn start`이나 `expo start`를 통해 실행합니다.
+3. `.env` 파일에 pinata api key, infura api key, contract의 address, backend endpoint를 설정합니다.
+4. `expo start`를 통해 실행합니다.
+
+- `SendAttendanceScreen.tsx`에서 오늘의 날짜와 출근 시간, 퇴근 시간을 수정할 수 있습니다.
+- `SendLaborContractScreen.tsx`에서 경력에서 시작할 날짜를 수정할 수 있습니다.
 
 ## 추가 사항
 
-만약 안드로이드에서의 walletconnect가 비정상적으로 동작한다면
-
-`yarn install` 후에 다음 조치를 따라주세요.
+만약 안드로이드에서의 walletconnect가 비정상적으로 동작한다면 `yarn install` 후에 다음 조치를 따라주세요.
 
 `node_modules/@walletconnect/react-native-dapp/dist/providers/WalletConnectProvider.js`에서
 
