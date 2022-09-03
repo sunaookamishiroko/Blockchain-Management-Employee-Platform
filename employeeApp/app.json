@@ -26,7 +26,24 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["android.permissions.QUERY_ALL_PACKAGES"]
+      "intentFilters": [
+        {
+          "action" : "VIEW",
+          "data": [
+            {
+              "scheme": "https"
+            }
+          ]
+        },
+        {
+          "action" : "VIEW",
+          "data": [
+            {
+              "scheme": "metamask"
+            }
+          ]
+        }
+      ]
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
