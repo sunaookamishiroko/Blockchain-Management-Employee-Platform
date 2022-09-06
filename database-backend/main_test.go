@@ -197,9 +197,6 @@ func TestGetLaborContract(t *testing.T) {
 	defer db.Exec("DELETE FROM laborcontract WHERE address= ? AND workplaceindex= ?",
 		"0x8F22cbB2Fe066d8671c9C09bfF005F0507e1627e",
 		1)
-	defer db.Exec("DELETE FROM laborcontract WHERE address= ? AND workplaceindex= ?",
-		"0x8F22cbB2Fe066d8671c9C09bfF005F0507e1627e",
-		0)
 
 	db.Exec("INSERT INTO laborcontract VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		contract1.Address,
@@ -229,19 +226,35 @@ func TestGetLaborContract(t *testing.T) {
 		contract2.WageDay,
 		contract2.Comment)
 
-	// do
+	// do 1
 	req, _ := http.NewRequest("GET", "/contract?address=0x8F22cbB2Fe066d8671c9C09bfF005F0507e1627e", nil)
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, req)
 
-	// after
+	// after 1
 	assert := assert.New(t)
-	var actual []entity.LaborContract
-	json.Unmarshal(w.Body.Bytes(), &actual)
+	var actual1 []entity.LaborContract
+	json.Unmarshal(w.Body.Bytes(), &actual1)
 
 	assert.Equal(200, w.Code)
-	assert.Equal(contract1, actual[0])
-	assert.Equal(contract2, actual[1])
+	assert.Equal(contract1, actual1[0])
+	assert.Equal(contract2, actual1[1])
+
+	// do 2
+	db.Exec("DELETE FROM laborcontract WHERE address= ? AND workplaceindex= ?",
+		"0x8F22cbB2Fe066d8671c9C09bfF005F0507e1627e",
+		0)
+
+	req, _ = http.NewRequest("GET", "/contract?address=0x8F22cbB2Fe066d8671c9C09bfF005F0507e1627e", nil)
+	w = httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	// after 2
+	var actual2 []entity.LaborContract
+	json.Unmarshal(w.Body.Bytes(), &actual2)
+
+	assert.Equal(200, w.Code)
+	assert.Equal(contract2, actual2[0])
 }
 
 func TestDeleteLaborContract(t *testing.T) {
