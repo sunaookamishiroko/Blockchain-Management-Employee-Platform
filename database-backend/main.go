@@ -183,8 +183,11 @@ func setLaborContract(c *gin.Context) {
 // ex) /contract
 // 입력은 json
 func deleteLaborContract(c *gin.Context) {
+	var info struct {
+		address        string
+		workplaceindex int
+	}
 
-	var info map[string]any
 	err := c.BindJSON(&info)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, errorResponse(err))
@@ -199,7 +202,7 @@ func deleteLaborContract(c *gin.Context) {
 	}
 
 	_, err = db.Exec("DELETE FROM laborcontract WHERE address= ? AND workplaceindex= ?",
-		info["address"].(string), int(info["workplaceindex"].(float64)))
+		info.address, info.workplaceindex)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, errorResponse(err))
