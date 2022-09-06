@@ -21,10 +21,10 @@ create table laborcontract(
 ```
 
 ```
-create table qrcodecheck(
+create table qrcode(
   workplaceindex int,
-  date1 char(30),
+  date char(30),
   randomnum int,
-  primary key(workplaceindex, date1)
+  primary key(workplaceindex, date)
 );
 ```
