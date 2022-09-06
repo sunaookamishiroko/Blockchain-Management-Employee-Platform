@@ -184,7 +184,7 @@ func setLaborContract(c *gin.Context) {
 // 입력은 json
 func deleteLaborContract(c *gin.Context) {
 
-	var info map[string]interface{}
+	var info map[string]any
 	err := c.BindJSON(&info)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, errorResponse(err))
