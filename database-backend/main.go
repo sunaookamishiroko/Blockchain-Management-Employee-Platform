@@ -37,7 +37,7 @@ func getQRcode(c *gin.Context) {
 
 	var qr entity.Qrcode
 
-	err = db.QueryRow("SELECT * FROM qrcodecheck WHERE workplaceindex= ? AND date1= ?",
+	err = db.QueryRow("SELECT * FROM qrcode WHERE workplaceindex= ? AND date= ?",
 		wpindex, date).Scan(&qr.WorkplaceIndex, &qr.Date, &qr.RandomNum)
 
 	switch {
@@ -73,7 +73,7 @@ func setQRcode(c *gin.Context) {
 		panic(err)
 	}
 
-	_, err = db.Exec("INSERT INTO qrcodecheck VALUES (?, ?, ?)", qr.WorkplaceIndex, qr.Date, qr.RandomNum)
+	_, err = db.Exec("INSERT INTO qrcode VALUES (?, ?, ?)", qr.WorkplaceIndex, qr.Date, qr.RandomNum)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, errorResponse(err))
@@ -183,6 +183,7 @@ func setLaborContract(c *gin.Context) {
 // ex) /contract
 // 입력은 json
 func deleteLaborContract(c *gin.Context) {
+
 	var info map[string]interface{}
 	err := c.BindJSON(&info)
 	if err != nil {
