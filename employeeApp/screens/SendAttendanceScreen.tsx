@@ -15,7 +15,7 @@ import { ethers } from "ethers";
 
 import { makeLabortxobj } from "../connectETH/Transaction";
 
-import { ENDPOINT, TODAY, ONWORK, OFFWORK } from "@env";
+import { ENDPOINT } from "@env";
 
 import axios from "axios";
 
@@ -32,9 +32,9 @@ export default function SendAttendanceScreen({ navigation, route }: RootTabScree
 
   const [time, setTime] = useState<object>();
 
-  const TODAY = "2022-07-02"
-  const ONWORK = "14:30"
-  const OFFWORK = "16:00"
+  const TODAY = "2022-08-31"
+  const ONWORK = "12:00"
+  const OFFWORK = "20:00"
 
   useEffect(() => {
     (async () => {
