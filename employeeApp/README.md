@@ -24,6 +24,7 @@
 위와 같이 해당 부분을 주석처리 해주시면 정상 동작합니다.
 
 본격적인 해결방법은 아래를 참조해주세요
+https://github.com/WalletConnect/walletconnect-monorepo/issues/966
 https://github.com/celo-org/celo-composer/issues/120
 
 ## Screenshot
