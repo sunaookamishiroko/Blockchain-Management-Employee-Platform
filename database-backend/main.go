@@ -9,6 +9,10 @@ import (
 	"net/http"
 )
 
+// 드라이버 이름과 DB 연결 주소
+var driverName = "mysql"
+var dataSourceName = "root:rootroot@tcp(127.0.0.1:3306)/capstone"
+
 func main() {
 	router := gin.Default()
 	router.Use(corsMiddleware())
@@ -29,7 +33,7 @@ func main() {
 func getQRcode(c *gin.Context) {
 	wpindex, date := c.Query("workplaceindex"), c.Query("date")
 
-	db, err := sql.Open("mysql", "root:rootroot@tcp(127.0.0.1:3306)/capstone")
+	db, err := sql.Open(driverName, dataSourceName)
 	defer db.Close()
 	if err != nil {
 		panic(err)
@@ -67,7 +71,7 @@ func setQRcode(c *gin.Context) {
 		return
 	}
 
-	db, err := sql.Open("mysql", "root:rootroot@tcp(127.0.0.1:3306)/capstone")
+	db, err := sql.Open(driverName, dataSourceName)
 	defer db.Close()
 	if err != nil {
 		panic(err)
@@ -90,7 +94,7 @@ func setQRcode(c *gin.Context) {
 func getLaborContract(c *gin.Context) {
 	address := c.Query("address")
 
-	db, err := sql.Open("mysql", "root:rootroot@tcp(127.0.0.1:3306)/capstone")
+	db, err := sql.Open(driverName, dataSourceName)
 	defer db.Close()
 	if err != nil {
 		panic(err)
@@ -149,7 +153,7 @@ func setLaborContract(c *gin.Context) {
 		return
 	}
 
-	db, err := sql.Open("mysql", "root:rootroot@tcp(127.0.0.1:3306)/capstone")
+	db, err := sql.Open(driverName, dataSourceName)
 	defer db.Close()
 	if err != nil {
 		panic(err)
@@ -195,7 +199,7 @@ func deleteLaborContract(c *gin.Context) {
 		return
 	}
 
-	db, err := sql.Open("mysql", "root:rootroot@tcp(127.0.0.1:3306)/capstone")
+	db, err := sql.Open(driverName, dataSourceName)
 	defer db.Close()
 	if err != nil {
 		panic(err)
