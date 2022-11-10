@@ -47,14 +47,13 @@ func getQRcode(c *gin.Context) {
 	switch {
 	case err == sql.ErrNoRows:
 		c.Status(http.StatusOK)
-		return
 	case err != nil:
 		c.JSON(http.StatusBadRequest, errorResponse(err))
 		log.Print(err.Error())
-		return
+	default:
+		c.JSON(http.StatusOK, qr)
 	}
 
-	c.JSON(http.StatusOK, qr)
 }
 
 // qrcode 업로드 (POST)
